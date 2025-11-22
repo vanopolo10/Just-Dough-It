@@ -5,7 +5,7 @@ public class MainSettingSwitch : MonoBehaviour
     [SerializeField] private GameObject _main;
     [SerializeField] private GameObject _settings;
 
-    public void Start()
+    private void Start()
     {
         SwitchToMain();
     }

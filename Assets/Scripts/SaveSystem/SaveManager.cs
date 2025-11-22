@@ -12,7 +12,8 @@ public class SaveManager : MonoBehaviour
 
     public void SaveLanguage()
     {
-        SelectedLanguage selectedLanguage = new(LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale));
+        SelectedLanguage selectedLanguage = new(LocalizationSettings.SelectedLocale.Identifier.Code);
+
         string json = JsonUtility.ToJson(selectedLanguage);
         string key = "Language.json";
         string path = Path.Combine(Application.persistentDataPath, key);
@@ -38,7 +39,7 @@ public class SaveManager : MonoBehaviour
         string json = streamReader.ReadToEnd();
 
         SelectedLanguage selectedLanguange = JsonUtility.FromJson<SelectedLanguage>(json);
-        StartCoroutine(ChangeLanguage.SetLocale(selectedLanguange.LanguageID));
+        StartCoroutine(ChangeLanguage.SetLocale(selectedLanguange.LanguageCode));
 
         Debug.Log("[SaveManager] Сохранённый язык успешно загружен");
     }
@@ -47,10 +48,10 @@ public class SaveManager : MonoBehaviour
 [Serializable]
 public class SelectedLanguage
 {
-    public int LanguageID;
+    public string LanguageCode;
 
-    public SelectedLanguage(int ID)
+    public SelectedLanguage(string languageCode)
     {
-        this.LanguageID = ID;
+        LanguageCode = languageCode;
     }
 }
