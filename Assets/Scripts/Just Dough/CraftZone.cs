@@ -23,7 +23,7 @@ public class CraftZone : MonoBehaviour,
     }
     
     [Header("Контроллер крафта")]
-    [SerializeField] private DoughCraftController _controller;
+    [SerializeField] private DoughController _controller;
 
     [Header("Действия по клику")]
     [SerializeField] private DoughCraftAction _rightClickAction = DoughCraftAction.None;
@@ -67,15 +67,16 @@ public class CraftZone : MonoBehaviour,
         }
 
         if (_controller == null)
-            _controller = GetComponentInParent<DoughCraftController>();
+            _controller = GetComponentInParent<DoughController>();
     }
 
     private void OnValidate()
     {
-        var img = GetComponentInChildren<Image>();
-        
-        if (img != null)
-            img.color = _defaultColor;
+        if (_image == null)
+            _image = GetComponent<Image>();
+
+        if (_image != null)
+            _image.color = _defaultColor;
     }
 
     public void SetColor(Color color)
@@ -97,23 +98,16 @@ public class CraftZone : MonoBehaviour,
 
         if (_dragStartZone != null)
             return;
-
-        DoughCraftAction action = DoughCraftAction.None;
-
-        if(eventData.button == PointerEventData.InputButton.Right)
-            action = _rightClickAction;
-
-        if (action == DoughCraftAction.None)
+        
+        if (_rightClickAction == DoughCraftAction.None)
             return;
 
-        bool applied = _controller.ApplyAction(action, this);
-        Debug.Log($"[CraftZoneCanvas] button={eventData.button}, action={action}, applied={applied}");
+        bool applied = _controller.ApplyAction(_rightClickAction, this);
     }
     
     public void OnPointerDown(PointerEventData eventData)
     {
         _isPressed = true;
-        //UpdateVisual();
 
         if (_isDragStartZone == false)
             return;
@@ -128,7 +122,6 @@ public class CraftZone : MonoBehaviour,
     public void OnPointerEnter(PointerEventData eventData)
     {
         _isPointerOver = true;
-        //UpdateVisual();
         
         if (_isDragEndZone == false)
             return;
@@ -143,13 +136,11 @@ public class CraftZone : MonoBehaviour,
     public void OnPointerExit(PointerEventData eventData)
     {
         _isPointerOver = false;
-        //UpdateVisual();
     }
     
     public void OnPointerUp(PointerEventData eventData)
     {
         _isPressed = false;
-        //UpdateVisual();
         
         if (_dragActive && eventData.button == PointerEventData.InputButton.Left)
             ClearDrag();
@@ -178,24 +169,11 @@ public class CraftZone : MonoBehaviour,
                     continue;
 
                 bool applied = _controller.ApplyAction(action, this);
-                Debug.Log($"[CraftZoneCanvas] Drag {fromZone} -> {this}, action={action}, applied={applied}");
+                Debug.Log($"[CraftZone] Drag {fromZone.name} -> {name}, action={action}, applied={applied}");
                 return;
             }
         }
 
-        Debug.Log($"[CraftZoneCanvas] No drag rule for {fromZone} -> {this} on '{name}'");
+        Debug.Log($"[CraftZone] No drag rule for {fromZone.name} -> {name}");
     }
-    
-    // private void UpdateVisual()
-    // {
-    //     if (_image == null)
-    //         return;
-    //
-    //     if (_isPressed)
-    //         _image.color = _pressedColor;
-    //     else if (_isPointerOver)
-    //         _image.color = _hoverColor;
-    //     else
-    //         _image.color = _defaultColor;
-    // }
 }

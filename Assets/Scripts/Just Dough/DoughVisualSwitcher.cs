@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -16,7 +15,7 @@ public class DoughVisualSwitcher : MonoBehaviour
         public GameObject Model => _model;
     }
 
-    [SerializeField] private DoughCraftController _controller;
+    [SerializeField] private DoughController _controller;
     [SerializeField] private List<StateVisual> _visuals = new ();
 
     public readonly Dictionary<DoughState, GameObject> Map = new();
@@ -24,7 +23,7 @@ public class DoughVisualSwitcher : MonoBehaviour
     private void Awake()
     {
         if (_controller == null)
-            _controller = GetComponent<DoughCraftController>();
+            _controller = GetComponent<DoughController>();
 
         if (_controller == null)
         {
@@ -34,23 +33,28 @@ public class DoughVisualSwitcher : MonoBehaviour
         }
 
         Map.Clear();
-        
-        foreach (var stateVisual in _visuals.Where(stateVisual => stateVisual != null && stateVisual.Model != null))
+
+        foreach (var stateVisual in _visuals)
         {
-            if (Map.ContainsKey(stateVisual.State))
-            {
-                Debug.LogWarning($"[DoughVisualSwitcher] Дубликат состояния {stateVisual.State} в списке визуалов", this);
+            if (stateVisual == null || stateVisual.Model == null)
                 continue;
-            }
+
+            if (Map.ContainsKey(stateVisual.State))
+                continue;
 
             Map.Add(stateVisual.State, stateVisual.Model);
         }
 
         foreach (var model in Map.Values)
             model.SetActive(false);
-        
+
         _controller.StateChanged += OnStateChanged;
-        OnStateChanged();
+    }
+
+    private void OnEnable()
+    {
+        if (_controller != null)
+            OnStateChanged();
     }
 
     private void OnDisable()
@@ -61,7 +65,12 @@ public class DoughVisualSwitcher : MonoBehaviour
 
     private void OnStateChanged()
     {
-        Map[_controller.OldState].SetActive(false);
-        Map[_controller.CurrentState].SetActive(true);
+        foreach (var kvp in Map)
+        {
+            if (kvp.Value == null)
+                continue;
+
+            kvp.Value.SetActive(kvp.Key == _controller.CurrentState);
+        }
     }
 }

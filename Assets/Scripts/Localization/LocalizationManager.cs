@@ -46,7 +46,7 @@ public class LocalizationManager : MonoBehaviour
         sw.Write(json);
         sw.Close();
 
-        Debug.Log($"[{gameObject.name}] Язык {_selectedTable.Code} сохранён");
+        Debug.Log($"[{gameObject.name}] РЇР·С‹Рє {_selectedTable.Code} СЃРѕС…СЂР°РЅС‘РЅ");
     }
 
     private void LoadLanguage()
@@ -56,7 +56,7 @@ public class LocalizationManager : MonoBehaviour
 
         if (File.Exists(path) == false)
         {
-            Debug.Log($"[{gameObject.name}] Язык не сохранялся");
+            Debug.Log($"[{gameObject.name}] РЇР·С‹Рє РЅРµ СЃРѕС…СЂР°РЅСЏР»СЃСЏ");
             return;
         }
 
@@ -67,7 +67,7 @@ public class LocalizationManager : MonoBehaviour
         SelectedLanguage selectedLanguage = JsonUtility.FromJson<SelectedLanguage>(json);
         ChangeLanguage(selectedLanguage.LanguageCode);
 
-        Debug.Log($"[{gameObject.name}] Язык {_selectedTable.Code} загружен");
+        Debug.Log($"[{gameObject.name}] РЇР·С‹Рє {_selectedTable.Code} Р·Р°РіСЂСѓР¶РµРЅ");
     }
 
     public void SaveTables()
@@ -83,9 +83,9 @@ public class LocalizationManager : MonoBehaviour
             sw.Write(json);
             sw.Close();
 
-            Debug.Log($"[{gameObject.name}] Таблица {key} сохранена");
+            Debug.Log($"[{gameObject.name}] РўР°Р±Р»РёС†Р° {key} СЃРѕС…СЂР°РЅРµРЅР°");
         }
-        Debug.Log($"[{gameObject.name}] Таблицы сохранены");
+        Debug.Log($"[{gameObject.name}] РўР°Р±Р»РёС†С‹ СЃРѕС…СЂР°РЅРµРЅС‹");
     }
 
     public void LoadTables()
@@ -93,7 +93,7 @@ public class LocalizationManager : MonoBehaviour
         var files = Directory.GetFiles(Application.persistentDataPath, "Table_*.json", SearchOption.TopDirectoryOnly);
         if (files.Length == 0)
         {
-            Debug.Log($"[{gameObject.name}] Таблицы не сохранялись");
+            Debug.Log($"[{gameObject.name}] РўР°Р±Р»РёС†С‹ РЅРµ СЃРѕС…СЂР°РЅСЏР»РёСЃСЊ");
             return;
         }
 
@@ -107,12 +107,12 @@ public class LocalizationManager : MonoBehaviour
 
             LocalizationTable table = JsonUtility.FromJson<LocalizationTable>(json);
             tables.Add(table);
-            Debug.Log($"[{gameObject.name}] Таблица {file.Split("/").Last()} загружена");
+            Debug.Log($"[{gameObject.name}] РўР°Р±Р»РёС†Р° {file.Split("/").Last()} Р·Р°РіСЂСѓР¶РµРЅР°");
         }
 
         _tables = tables;
 
-        Debug.Log($"[{gameObject.name}] Таблицы загружены");
+        Debug.Log($"[{gameObject.name}] РўР°Р±Р»РёС†С‹ Р·Р°РіСЂСѓР¶РµРЅС‹");
         LoadLanguage();
     }
 
