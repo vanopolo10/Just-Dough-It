@@ -2254,10 +2254,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2c4c4750ebd1948b05c0aab8d93cda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tray
-  _prefabs:
-  - {fileID: 7653521093468450077, guid: f6d89d3ffe939d6458deedd4ec1fd8bf, type: 3}
-  - {fileID: 4993133098036237582, guid: 6b59beabbbf5aa14195cbf0ede84ae76, type: 3}
-  - {fileID: 511452855757409243, guid: b92e4af39dd8fa3459b12b14f875bd57, type: 3}
+  _traySpace: 3
+  _localBakePositions:
+  - {x: -0.15, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0.15, y: 0, z: 0}
+  _scaleMultiplier: 0.6
 --- !u!1 &1837133091
 GameObject:
   m_ObjectHideFlags: 0
@@ -2969,6 +2971,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OvenSender
   _finalStates: 050000000900000007000000
   _image: {fileID: 287265563}
+  _tray: {fileID: 0}
 --- !u!65 &8625022099129326476
 BoxCollider:
   m_ObjectHideFlags: 0
