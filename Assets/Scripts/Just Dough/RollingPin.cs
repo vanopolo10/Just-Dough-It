@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CapsuleCollider))]
 public class RollingPin : MonoBehaviour
@@ -15,7 +16,7 @@ public class RollingPin : MonoBehaviour
     private float _baseY;
     private float _desiredY;
     private bool _isDragging;
-    [SerializeField] private bool _isRolling; //Debug
+    private bool _isRolling;
 
     private Quaternion _targetRotation;
 
@@ -28,7 +29,21 @@ public class RollingPin : MonoBehaviour
         _targetRotation = transform.rotation;
         _lastWorldPos = transform.position;
     }
+    private void StartRolling() {
+        _isRolling = true;
 
+        Cursor.visible = false;
+    }
+    private void StopRolling()
+    {
+        _isRolling = false;
+
+        Vector3 targetMousePos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+        Mouse.current.WarpCursorPosition(new Vector2(targetMousePos.x, targetMousePos.y));
+        _lastWorldPos = transform.position;
+
+        Cursor.visible = true;
+    }
     private void OnMouseDown()
     {
         _zCord = Camera.main!.WorldToScreenPoint(transform.position).z;
@@ -42,13 +57,16 @@ public class RollingPin : MonoBehaviour
 
     private void OnMouseDrag()
     {
+        if (Input.GetMouseButton(1) && !_isRolling)
+            StartRolling();
+        else if (!Input.GetMouseButton(1) && _isRolling)
+            StopRolling();
+        _desiredY = _isRolling ? _baseY : _baseY + _raiseBy;
+
         Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
         targetPos.y = transform.position.y;
 
         Vector3 move = targetPos - _lastWorldPos;
-
-        _isRolling = Input.GetMouseButton(1);
-        _desiredY = _isRolling ? _baseY : _baseY + _raiseBy;
 
         if (_isRolling == false && move.sqrMagnitude > 0.0001f)
         {
@@ -71,7 +89,10 @@ public class RollingPin : MonoBehaviour
                 _targetRotation = Quaternion.LookRotation(_lookDir, Vector3.up);
             }
         }
-        else if (_isRolling == true && move.sqrMagnitude > 0.001f) 
+
+        
+
+        if (_isRolling == true && move.sqrMagnitude > 0.001f) 
         {
             targetPos = _lastWorldPos + Vector3.Project(move, _lookDir);
         }

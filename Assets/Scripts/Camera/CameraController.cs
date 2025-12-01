@@ -68,7 +68,7 @@ public class CameraController : MonoBehaviour
         if (_views.Count == 0)
             return;
 
-        _viewID = (_viewID + 2) % _views.Count;
+        ViewID = (ViewID + 2) % _views.Count;
         BeginTransition();
     }
 
