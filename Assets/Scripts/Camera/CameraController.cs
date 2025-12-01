@@ -9,9 +9,6 @@ public class CameraController : MonoBehaviour
     [SerializeField] private List<CameraView> _views;
     [SerializeField] private float _transitionDuration = 0.7f;
 
-    private PlayerInput _playerInput;
-    private int _viewID;
-
     private Vector3 _startPosition;
     private Quaternion _startRotation;
     private Vector3 _targetPosition;
@@ -19,14 +16,11 @@ public class CameraController : MonoBehaviour
     private float _transitionTime;
     private bool _isTransition;
 
-    private void Awake()
-    {
-        _playerInput = GetComponent<PlayerInput>();
-    }
+    public int ViewID { get; private set; }
 
     private void Start()
     {
-        _viewID = Mathf.Clamp(_viewID, 0, _views.Count - 1);
+        ViewID = Mathf.Clamp(ViewID, 0, _views.Count - 1);
         SnapToCurrentView();
     }
 
@@ -57,7 +51,7 @@ public class CameraController : MonoBehaviour
         if (_views.Count == 0)
             return;
 
-        _viewID = _viewID == 0 ? _views.Count - 1 : _viewID - 1;
+        ViewID = ViewID == 0 ? _views.Count - 1 : ViewID - 1;
         BeginTransition();
     }
 
@@ -66,7 +60,7 @@ public class CameraController : MonoBehaviour
         if (_views.Count == 0)
             return;
 
-        _viewID = (_viewID + 1) % _views.Count;
+        ViewID = (ViewID + 1) % _views.Count;
         BeginTransition();
     }
     private void OnBack()
@@ -83,8 +77,8 @@ public class CameraController : MonoBehaviour
         _startPosition = transform.position;
         _startRotation = transform.rotation;
 
-        _targetPosition = _views[_viewID].Position;
-        _targetRotation = _views[_viewID].Rotation;
+        _targetPosition = _views[ViewID].Position;
+        _targetRotation = _views[ViewID].Rotation;
 
         _transitionTime = 0f;
         _isTransition = true;
@@ -95,8 +89,8 @@ public class CameraController : MonoBehaviour
         if (_views.Count == 0)
             return;
 
-        transform.position = _views[_viewID].Position;
-        transform.rotation = _views[_viewID].Rotation;
+        transform.position = _views[ViewID].Position;
+        transform.rotation = _views[ViewID].Rotation;
     }
 
     [Serializable]

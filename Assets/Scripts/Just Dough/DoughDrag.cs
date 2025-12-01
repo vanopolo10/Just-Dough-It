@@ -8,6 +8,8 @@ public class DoughDrag : MonoBehaviour
     private bool _bothHeld;
     private bool _isDragging;
 
+    public bool IsDragging => _isDragging;
+
     public event Action DragStarted;
     public event Action DragEnded;
 

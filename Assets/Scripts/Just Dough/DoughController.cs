@@ -24,19 +24,17 @@ public class DoughController : MonoBehaviour
 
     public event Action StateChanged;
 
-    private DoughState _oldState;
-    private DoughState _currentState;
+    public DoughState OldState { get; private set; }
 
-    public DoughState OldState => _oldState;
-    public DoughState CurrentState => _currentState;
-    
+    public DoughState State { get; private set; }
+
     private void Awake()
     {
         if (_doughVisualSwitcher == null)
             _doughVisualSwitcher = GetComponent<DoughVisualSwitcher>();
 
-        _currentState = _startState;
-        _oldState = _currentState;
+        State = _startState;
+        OldState = State;
     }
 
     private void Start()
@@ -125,22 +123,22 @@ public class DoughController : MonoBehaviour
                 return false;
         }
 
-        if (DoughCraftTree.TryGetNext(_currentState, action, out var next) == false)
+        if (DoughCraftTree.TryGetNext(State, action, out var next) == false)
         {
-            Debug.Log($"[DoughCraftController] Для состояния {_currentState} нет перехода по действию {action}");
+            Debug.Log($"[DoughCraftController] Для состояния {State} нет перехода по действию {action}");
             return false;
         }
         
-        if (next.Equals(_currentState))
+        if (next.Equals(State))
             return false;
         
-        _oldState = _currentState;
-        _currentState = next;
+        OldState = State;
+        State = next;
 
-        if (_currentState == DoughState.Flat || _currentState == DoughState.LongFlat)
+        if (State == DoughState.Flat || State == DoughState.LongFlat)
             transform.rotation = _rollRotation;
 
-        Debug.Log($"[DoughCraftController] {_oldState} --{action}--> {next}");
+        Debug.Log($"[DoughCraftController] {OldState} --{action}--> {next}");
 
         ResetBunCombo();
         StateChanged?.Invoke();
@@ -150,8 +148,8 @@ public class DoughController : MonoBehaviour
 
     public void SetState(DoughState doughState)
     {
-        _oldState = _currentState;
-        _currentState = doughState;
+        OldState = State;
+        State = doughState;
         ResetBunCombo();
         StateChanged?.Invoke();
     }
@@ -163,7 +161,7 @@ public class DoughController : MonoBehaviour
         if (_doughVisualSwitcher == null)
             return;
 
-        if (_doughVisualSwitcher.Map.TryGetValue(_currentState, out GameObject go) == false || go == null)
+        if (_doughVisualSwitcher.Map.TryGetValue(State, out GameObject go) == false || go == null)
             return;
 
         foreach (CraftZone zone in go.GetComponentsInChildren<CraftZone>())

@@ -70,7 +70,7 @@ public class DoughVisualSwitcher : MonoBehaviour
             if (kvp.Value == null)
                 continue;
 
-            kvp.Value.SetActive(kvp.Key == _controller.CurrentState);
+            kvp.Value.SetActive(kvp.Key == _controller.State);
         }
     }
 }

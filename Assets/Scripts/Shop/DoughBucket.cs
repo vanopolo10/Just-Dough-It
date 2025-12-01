@@ -12,6 +12,6 @@ public class DoughBucket : MonoBehaviour
         
         DoughController doughController = Instantiate(_doughPrefab);
         doughController.SetState(DoughState.Raw);
-        Cafe.Instance.CurrentDough = doughController;
+        Cafe.Instance.SetDough(doughController);
     }
 }
