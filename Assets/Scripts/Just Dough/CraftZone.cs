@@ -102,6 +102,9 @@ public class CraftZone : MonoBehaviour,
         if (_rightClickAction == DoughCraftAction.None)
             return;
 
+        if (eventData.button != PointerEventData.InputButton.Right)
+            return;
+        
         bool applied = _controller.ApplyAction(_rightClickAction, this);
     }
     

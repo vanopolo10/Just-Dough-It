@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CapsuleCollider))]
 public class RollingPin : MonoBehaviour
@@ -6,11 +7,11 @@ public class RollingPin : MonoBehaviour
     [SerializeField] private float _raiseBy = 3f;
     [SerializeField] private float _rotationSmooth = 5f;
     [SerializeField] private float _heightSmooth = 10f;
-    [SerializeField] private float _rollingThreshold = 0.0001f;
 
     private Vector3 _offset;
     private float _zCord;
     private Vector3 _lastWorldPos;
+    private Vector3 _lookDir;
 
     private float _baseY;
     private float _desiredY;
@@ -20,7 +21,7 @@ public class RollingPin : MonoBehaviour
     private Quaternion _targetRotation;
 
     public bool IsRolling => _isRolling;
-    
+
     private void Awake()
     {
         _baseY = transform.position.y;
@@ -28,7 +29,21 @@ public class RollingPin : MonoBehaviour
         _targetRotation = transform.rotation;
         _lastWorldPos = transform.position;
     }
+    private void StartRolling() {
+        _isRolling = true;
 
+        Cursor.visible = false;
+    }
+    private void StopRolling()
+    {
+        _isRolling = false;
+
+        Vector3 targetMousePos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+        Mouse.current.WarpCursorPosition(new Vector2(targetMousePos.x, targetMousePos.y));
+        _lastWorldPos = transform.position;
+
+        Cursor.visible = true;
+    }
     private void OnMouseDown()
     {
         _zCord = Camera.main!.WorldToScreenPoint(transform.position).z;
@@ -42,22 +57,23 @@ public class RollingPin : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        Vector3 targetPos = Utils.GetMouseWorldPos(_zCord) + _offset;
+        if (Input.GetMouseButton(1) && !_isRolling)
+            StartRolling();
+        else if (!Input.GetMouseButton(1) && _isRolling)
+            StopRolling();
+        _desiredY = _isRolling ? _baseY : _baseY + _raiseBy;
+
+        Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
         targetPos.y = transform.position.y;
 
         Vector3 move = targetPos - _lastWorldPos;
 
-        bool rightHeld = Input.GetMouseButton(1);
-        _isRolling = _isDragging && rightHeld && move.sqrMagnitude > _rollingThreshold;
-        _desiredY = rightHeld ? _baseY : _baseY + _raiseBy;
-        
         if (_isRolling == false && move.sqrMagnitude > 0.0001f)
         {
-            Vector3 lookDir = new Vector3(move.x, 0f, move.z);
-
-            if (lookDir.sqrMagnitude > 0.0001f)
+            _lookDir = new Vector3(move.x, 0f, move.z);
+            if (_lookDir.sqrMagnitude > 0.0001f)
             {
-                lookDir.Normalize();
+                _lookDir.Normalize();
 
                 Vector3 currentForward = transform.forward;
                 currentForward.y = 0f;
@@ -67,11 +83,18 @@ public class RollingPin : MonoBehaviour
                 else
                     currentForward.Normalize();
 
-                if (Vector3.Dot(lookDir, currentForward) < 0f)
-                    lookDir = -lookDir;
+                if (Vector3.Dot(_lookDir, currentForward) < 0f)
+                    _lookDir = -_lookDir;
 
-                _targetRotation = Quaternion.LookRotation(lookDir, Vector3.up);
+                _targetRotation = Quaternion.LookRotation(_lookDir, Vector3.up);
             }
+        }
+
+        
+
+        if (_isRolling == true && move.sqrMagnitude > 0.001f) 
+        {
+            targetPos = _lastWorldPos + Vector3.Project(move, _lookDir);
         }
 
         transform.position = targetPos;
@@ -81,7 +104,6 @@ public class RollingPin : MonoBehaviour
     private void OnMouseUp()
     {
         _isDragging = false;
-        _isRolling = false;
         _desiredY = _baseY;
     }
 
