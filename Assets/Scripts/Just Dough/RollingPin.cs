@@ -10,16 +10,17 @@ public class RollingPin : MonoBehaviour
     private Vector3 _offset;
     private float _zCord;
     private Vector3 _lastWorldPos;
+    private Vector3 _lookDir;
 
     private float _baseY;
     private float _desiredY;
     private bool _isDragging;
-    private bool _isRolling;
+    [SerializeField] private bool _isRolling; //Debug
 
     private Quaternion _targetRotation;
 
     public bool IsRolling => _isRolling;
-    
+
     private void Awake()
     {
         _baseY = transform.position.y;
@@ -41,21 +42,20 @@ public class RollingPin : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        Vector3 targetPos = Utils.GetMouseWorldPos(_zCord) + _offset;
+        Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
         targetPos.y = transform.position.y;
 
         Vector3 move = targetPos - _lastWorldPos;
 
         _isRolling = Input.GetMouseButton(1);
         _desiredY = _isRolling ? _baseY : _baseY + _raiseBy;
-        
+
         if (_isRolling == false && move.sqrMagnitude > 0.0001f)
         {
-            Vector3 lookDir = new Vector3(move.x, 0f, move.z);
-
-            if (lookDir.sqrMagnitude > 0.0001f)
+            _lookDir = new Vector3(move.x, 0f, move.z);
+            if (_lookDir.sqrMagnitude > 0.0001f)
             {
-                lookDir.Normalize();
+                _lookDir.Normalize();
 
                 Vector3 currentForward = transform.forward;
                 currentForward.y = 0f;
@@ -65,11 +65,15 @@ public class RollingPin : MonoBehaviour
                 else
                     currentForward.Normalize();
 
-                if (Vector3.Dot(lookDir, currentForward) < 0f)
-                    lookDir = -lookDir;
+                if (Vector3.Dot(_lookDir, currentForward) < 0f)
+                    _lookDir = -_lookDir;
 
-                _targetRotation = Quaternion.LookRotation(lookDir, Vector3.up);
+                _targetRotation = Quaternion.LookRotation(_lookDir, Vector3.up);
             }
+        }
+        else if (_isRolling == true && move.sqrMagnitude > 0.001f) 
+        {
+            targetPos = _lastWorldPos + Vector3.Project(move, _lookDir);
         }
 
         transform.position = targetPos;

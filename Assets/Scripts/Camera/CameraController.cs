@@ -69,6 +69,14 @@ public class CameraController : MonoBehaviour
         _viewID = (_viewID + 1) % _views.Count;
         BeginTransition();
     }
+    private void OnBack()
+    {
+        if (_views.Count == 0)
+            return;
+
+        _viewID = (_viewID + 2) % _views.Count;
+        BeginTransition();
+    }
 
     private void BeginTransition()
     {
