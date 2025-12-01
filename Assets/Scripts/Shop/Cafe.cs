@@ -2,16 +2,19 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(-1000)]
 public class Cafe : MonoBehaviour
 {
     public static Cafe Instance = null;
     
     [SerializeField] private Button _resetButton;
     
-    public DoughController CurrentDough {get; set;}
-
-    public event Action DoughChanged; 
+    public event Action DoughChanged;
+    public event Action<DoughState> DoughStateChanged;
     
+    public DoughController CurrentDough {get; private set;}
+    public int VibeLevel { get; private set; } 
+
     private void Awake()
     {
         if (Instance == null)
@@ -23,14 +26,20 @@ public class Cafe : MonoBehaviour
         _resetButton.onClick.AddListener(delegate {SetDoughState(DoughState.Raw);});
     }
 
-    private void SetDoughState(DoughState doughState)
+    public void SetDoughState(DoughState doughState)
     {
         CurrentDough.SetState(doughState);
     }
-    
-    public void SetDough(DoughController doughState)
+
+    public void SetDough(DoughController doughController)
     {
-        CurrentDough = doughState;
+        CurrentDough = doughController;
+        CurrentDough.StateChanged += OnDoughStateChanged;
         DoughChanged?.Invoke();
+    }
+
+    private void OnDoughStateChanged()
+    {
+        DoughStateChanged?.Invoke(CurrentDough.State);
     }
 }

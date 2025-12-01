@@ -6,6 +6,7 @@ public class RollingPin : MonoBehaviour
     [SerializeField] private float _raiseBy = 3f;
     [SerializeField] private float _rotationSmooth = 5f;
     [SerializeField] private float _heightSmooth = 10f;
+    [SerializeField] private float _rollingThreshold = 0.0001f;
 
     private Vector3 _offset;
     private float _zCord;
@@ -46,8 +47,9 @@ public class RollingPin : MonoBehaviour
 
         Vector3 move = targetPos - _lastWorldPos;
 
-        _isRolling = Input.GetMouseButton(1);
-        _desiredY = _isRolling ? _baseY : _baseY + _raiseBy;
+        bool rightHeld = Input.GetMouseButton(1);
+        _isRolling = _isDragging && rightHeld && move.sqrMagnitude > _rollingThreshold;
+        _desiredY = rightHeld ? _baseY : _baseY + _raiseBy;
         
         if (_isRolling == false && move.sqrMagnitude > 0.0001f)
         {
@@ -79,6 +81,7 @@ public class RollingPin : MonoBehaviour
     private void OnMouseUp()
     {
         _isDragging = false;
+        _isRolling = false;
         _desiredY = _baseY;
     }
 
