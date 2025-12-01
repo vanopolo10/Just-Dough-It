@@ -10,7 +10,7 @@ public class DoughBucket : MonoBehaviour
         if (Cafe.Instance.CurrentDough != null) 
             return;
         
-        DoughController doughController = Instantiate(_doughPrefab);
+        DoughController doughController = Instantiate(_doughPrefab, _doughSpawnPosition, new Quaternion());
         doughController.SetState(DoughState.Raw);
         Cafe.Instance.SetDough(doughController);
     }

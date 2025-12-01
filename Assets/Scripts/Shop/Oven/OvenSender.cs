@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Image), typeof(BoxCollider))]
+[RequireComponent(typeof(BoxCollider))]
 public class OvenSender : MonoBehaviour
 {
     [SerializeField] private List<DoughState> _finalStates = new()
@@ -12,17 +13,23 @@ public class OvenSender : MonoBehaviour
         DoughState.HotDog
     };
 
-    private Image _image;
+    [SerializeField] private Image _image;
+    [SerializeField] private Tray _tray;
+    
     private BoxCollider _collider;
     private DoughController _currentDough;
     private DoughDrag _currentDoughDrag;
 
+    public event Action DoughSent;
+
     private void Awake()
     {
-        _image = GetComponent<Image>();
+        if (_image == null)
+            _image = GetComponentInChildren<Image>();
+        
         _collider = GetComponent<BoxCollider>();
         _collider.isTrigger = true;
-        _image.enabled = false;
+        _image.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -47,7 +54,7 @@ public class OvenSender : MonoBehaviour
 
         if (Cafe.Instance == null || Cafe.Instance.CurrentDough == null)
         {
-            _image.enabled = false;
+            _image.gameObject.SetActive(false);
             return;
         }
 
@@ -75,7 +82,7 @@ public class OvenSender : MonoBehaviour
             _currentDoughDrag = null;
         }
 
-        _image.enabled = false;
+        _image.gameObject.SetActive(false);
     }
 
     private void OnDoughStateChanged()
@@ -87,16 +94,25 @@ public class OvenSender : MonoBehaviour
     {
         if (_currentDough == null)
         {
-            _image.enabled = false;
+            _image.gameObject.SetActive(false);
             return;
         }
 
-        _image.enabled = _finalStates.Contains(_currentDough.State);
+        if (_tray != null && _tray.IsFull)
+        {
+            _image.gameObject.SetActive(false);
+            return;
+        }
+
+        _image.gameObject.SetActive(_finalStates.Contains(_currentDough.State));
     }
 
     private void OnDoughDragEnded()
     {
         if (_currentDough == null)
+            return;
+
+        if (_tray != null && _tray.IsFull)
             return;
 
         if (_finalStates.Contains(_currentDough.State) == false)
@@ -105,6 +121,6 @@ public class OvenSender : MonoBehaviour
         if (_collider.bounds.Contains(_currentDough.transform.position) == false)
             return;
 
-        Debug.Log("[OvenSender] Dough sent to oven");
+        DoughSent?.Invoke();
     }
 }
