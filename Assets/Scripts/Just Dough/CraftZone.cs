@@ -179,4 +179,6 @@ public class CraftZone : MonoBehaviour,
 
         Debug.Log($"[CraftZone] No drag rule for {fromZone.name} -> {name}");
     }
+
+    
 }

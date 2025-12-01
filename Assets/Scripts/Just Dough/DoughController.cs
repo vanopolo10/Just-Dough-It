@@ -21,6 +21,9 @@ public class DoughController : MonoBehaviour
     private Quaternion _rollRotation;
     private bool _isRollingInside;
     private bool _rollFromAlongSide;
+    private FillingType filling = FillingType.None;
+
+    public FillingType Filling => filling;
 
     public event Action StateChanged;
 
@@ -169,5 +172,10 @@ public class DoughController : MonoBehaviour
             if (zone.IsComboZone)
                 _comboZones.Add(zone, false);
         }
+    }
+
+    public void SetGlobalFilling(FillingType toSet) 
+    { 
+        filling = toSet;
     }
 }
