@@ -9920,6 +9920,7 @@ GameObject:
   - component: {fileID: 3702307190733441800}
   - component: {fileID: 3234884315905784887}
   - component: {fileID: 5851999579402795385}
+  - component: {fileID: 8480645037499288264}
   m_Layer: 0
   m_Name: Cool Pie
   m_TagString: Untagged
@@ -9998,6 +9999,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8480645037499288264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3743830383059453761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6c4a81d8cf4694c940fe18eec78f3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoughBakeManager
 --- !u!1 &3920006915611996932
 GameObject:
   m_ObjectHideFlags: 0
@@ -10157,6 +10170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DoughCraftController
   _startState: 0
   _doughVisualSwitcher: {fileID: 5741732981613016047}
+  filling: 2
 --- !u!114 &5741732981613016047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20957,6 +20971,7 @@ GameObject:
   - component: {fileID: 8266029878585588574}
   - component: {fileID: 5890569011933023115}
   - component: {fileID: 5616201020619735801}
+  - component: {fileID: 3986658866840350974}
   m_Layer: 0
   m_Name: Simple Pie
   m_TagString: Untagged
@@ -21035,6 +21050,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3986658866840350974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8698652866831185444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6c4a81d8cf4694c940fe18eec78f3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoughBakeManager
 --- !u!1001 &1186646848233355033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22312,13 +22339,28 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2876024537080083981, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6356402952981078606}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1530826148038005649, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 181403484474736876}
   m_SourcePrefab: {fileID: 100100000, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
 --- !u!1 &6871561353247286903 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1530826148038005649, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
   m_PrefabInstance: {fileID: 5359889256853812710}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &181403484474736876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6871561353247286903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6c4a81d8cf4694c940fe18eec78f3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoughBakeManager
 --- !u!4 &7893569853502718955 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2876024537080083981, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
