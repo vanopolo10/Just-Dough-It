@@ -44,6 +44,7 @@ public class Tray : MonoBehaviour
         t.position = slotWorldPos;
 
         Renderer renderer = instance.GetComponentInChildren<Renderer>();
+        
         if (renderer != null)
         {
             float bottomY = renderer.bounds.min.y;

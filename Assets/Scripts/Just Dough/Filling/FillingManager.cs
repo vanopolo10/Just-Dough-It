@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FillingManager : MonoBehaviour
 {
-    [SerializeField] private List<FillingDisplay> displays;
+    [SerializeField] private List<FillingDisplay> _displays;
     private DoughController _controller;
     
     private void Awake()
@@ -26,7 +26,10 @@ public class FillingManager : MonoBehaviour
     
     private void DisplayFilling() 
     {
-        foreach (FillingDisplay display in displays)
+        if(_controller == null)
+            return;
+        
+        foreach (FillingDisplay display in _displays)
         {
             display.Display.SetActive(display.Type == _controller.Filling);
         }
