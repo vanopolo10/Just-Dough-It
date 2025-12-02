@@ -33,15 +33,12 @@ public class FillingManager : MonoBehaviour
     }
     
     [Serializable]
-    private struct FillingDisplay 
+    private struct FillingDisplay
     {
-        public FillingDisplay(GameObject display, FillingType type)
-        {
-            Display = display;
-            Type = type;
-        }
+        [SerializeField] private FillingType _type;
+        [SerializeField] private GameObject _display;
 
-        public FillingType Type { get; }
-        public GameObject Display { get; }
+        public FillingType Type => _type;
+        public GameObject Display => _display;
     }
 }

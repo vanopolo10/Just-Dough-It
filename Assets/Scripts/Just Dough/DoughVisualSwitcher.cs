@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -65,12 +66,7 @@ public class DoughVisualSwitcher : MonoBehaviour
 
     private void OnStateChanged()
     {
-        foreach (var kvp in Map)
-        {
-            if (kvp.Value == null)
-                continue;
-
+        foreach (var kvp in Map.Where(kvp => kvp.Value != null))
             kvp.Value.SetActive(kvp.Key == _controller.State);
-        }
     }
 }
