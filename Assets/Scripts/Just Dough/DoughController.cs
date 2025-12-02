@@ -21,7 +21,7 @@ public class DoughController : MonoBehaviour
     private Quaternion _rollRotation;
     private bool _isRollingInside;
     private bool _rollFromAlongSide;
-    private FillingType filling = FillingType.None;
+    [SerializeField] private FillingType filling = FillingType.None;
 
     public FillingType Filling => filling;
 

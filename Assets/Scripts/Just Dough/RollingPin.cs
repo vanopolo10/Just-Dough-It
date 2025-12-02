@@ -32,7 +32,6 @@ public class RollingPin : MonoBehaviour
     private void OnMouseDown()
     {
         _zCord = Camera.main!.WorldToScreenPoint(transform.position).z;
-        _offset = transform.position - Utils.GetMouseWorldPos(_zCord);
         _lastWorldPos = transform.position;
 
         _isDragging = true;

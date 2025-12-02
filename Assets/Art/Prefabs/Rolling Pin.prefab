@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7991174920108793155}
   - component: {fileID: 2154383563711086304}
   - component: {fileID: 905227809290691953}
-  - component: {fileID: 5730720834995354706}
+  - component: {fileID: 1548911221623960882}
   - component: {fileID: 1175521993765211216}
   - component: {fileID: 260601923142391132}
   m_Layer: 0
@@ -31,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 2357598187031629943}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.705, y: 1.14, z: -8.036}
-  m_LocalScale: {x: 2.4, y: 2.4, z: 2.4}
+  m_LocalPosition: {x: 0.164, y: 1.012, z: 5.708}
+  m_LocalScale: {x: 1.82, y: 1.35, z: 1.35}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -70,7 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2004128517469236554, guid: 65082e6890978b24491f8240f85e8903, type: 3}
+  - {fileID: -8007840781062502621, guid: b6557a069e6966345adedb7706ba6b2f, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,7 +116,7 @@ CapsuleCollider:
   m_Height: 0.4624483
   m_Direction: 0
   m_Center: {x: 0.00008419156, y: -0.0021687523, z: 0.0009855006}
---- !u!114 &5730720834995354706
+--- !u!114 &1548911221623960882
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,12 +125,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2357598187031629943}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7193eaa807712a94c8687117d83463db, type: 3}
+  m_Script: {fileID: 11500000, guid: 99e602686bcfcbd48a1849090c1f55c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RollingPin
   _raiseBy: 0.2
-  _rotationSmooth: 10
+  _rotationSmooth: 20
   _heightSmooth: 10
+  _isRolling: 0
 --- !u!136 &1175521993765211216
 CapsuleCollider:
   m_ObjectHideFlags: 0

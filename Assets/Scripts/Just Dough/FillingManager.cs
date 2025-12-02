@@ -19,6 +19,9 @@ public class FillingManager : MonoBehaviour
     {
         if (_controller == null)
             _controller = GetComponentInParent<DoughController>();
+    }
+    private void OnEnable()
+    {
         DisplayFilling();
     }
     public void DisplayFilling() 

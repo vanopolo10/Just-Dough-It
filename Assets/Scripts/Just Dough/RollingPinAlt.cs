@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider))]
-public class RollingPin : MonoBehaviour
+public class RollingPinAlt : MonoBehaviour
 {
     [SerializeField] private float _raiseBy = 3f;
     [SerializeField] private float _rotationSmooth = 5f;
@@ -54,7 +54,6 @@ public class RollingPin : MonoBehaviour
             return;
 
         _zCord = Camera.main.WorldToScreenPoint(transform.position).z;
-        _offset = transform.position - Utils.GetMouseWorldPos(_zCord);
         _lastWorldPos = transform.position;
 
         _isDragging = true;
@@ -67,7 +66,7 @@ public class RollingPin : MonoBehaviour
         if (_isDragging == false || Camera.main == null)
             return;
 
-        Vector3 rawTargetPos = Utils.GetMouseWorldPos(_zCord) + _offset;
+        Vector3 rawTargetPos = Utils.GetMouseWorldPos(_zCord);
         rawTargetPos.y = transform.position.y;
 
         Vector3 move = rawTargetPos - _lastWorldPos;
