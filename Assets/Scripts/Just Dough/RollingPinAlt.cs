@@ -20,9 +20,7 @@ public class RollingPinAlt : MonoBehaviour
     private bool _cursorHidden;
 
     private Quaternion _targetRotation;
-
-    public bool IsRolling => _isRolling;
-
+    
     private void Awake()
     {
         _baseY = transform.position.y;
