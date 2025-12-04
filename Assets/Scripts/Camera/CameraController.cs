@@ -12,6 +12,8 @@ public class CameraController : MonoBehaviour
     private PlayerInput _playerInput;
     private int _viewID;
 
+    public int ViewID => _viewID;
+
     private Vector3 _startPosition;
     private Quaternion _startRotation;
     private Vector3 _targetPosition;

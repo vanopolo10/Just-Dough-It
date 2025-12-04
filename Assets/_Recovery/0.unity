@@ -801,7 +801,6 @@ GameObject:
   - component: {fileID: 330102996}
   - component: {fileID: 330102998}
   - component: {fileID: 330102997}
-  - component: {fileID: 330102999}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -927,19 +926,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330102995}
   m_CullTransparentMesh: 1
---- !u!114 &330102999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330102995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69d664d11d357194dabdda50c9515691, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedString
-  _key: game.button.crumple
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1872,7 +1858,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1902379b4c5ec454ea4a7e9f40c1d5bc, type: 3}
   m_PrefabInstance: {fileID: 1994472528}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1062463923
+--- !u!1 &1071917236
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1880,40 +1866,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1062463925}
-  - component: {fileID: 1062463924}
+  - component: {fileID: 1071917238}
+  - component: {fileID: 1071917237}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: SaveManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1062463924
+--- !u!114 &1071917237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1062463923}
+  m_GameObject: {fileID: 1071917236}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23ae51ede7b277042bb9ebdec404f507, type: 3}
+  m_Script: {fileID: 11500000, guid: c3531abbd16d37845ad1b1df5bee41cb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Test
-  _saveFileFolder: Save5
-  _key: DoughState
-  _state: 7
---- !u!4 &1062463925
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
+--- !u!4 &1071917238
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1062463923}
+  m_GameObject: {fileID: 1071917236}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.07952, y: 0, z: 12.78758}
+  m_LocalPosition: {x: -3.36319, y: -0.34561, z: -15.99207}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3838,4 +3821,4 @@ SceneRoots:
   - {fileID: 213630755}
   - {fileID: 1676581084}
   - {fileID: 1282763756}
-  - {fileID: 1062463925}
+  - {fileID: 1071917238}

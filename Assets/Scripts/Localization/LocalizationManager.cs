@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,12 +15,16 @@ public class LocalizationManager : MonoBehaviour
     
     [SerializeField] private List<LocalizationTable> _tables;
     private LocalizationTable _selectedTable;
-    
 
+    private JsonSerializerSettings _settings = new()
+    {
+        TypeNameHandling = TypeNameHandling.Auto,
+        Formatting = Formatting.Indented
+    };
     private void Awake()
     {
         if (Instance == null) Instance = this;
-        else if (Instance == this) Destroy(gameObject);
+        else if (Instance == this || Instance != null) Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
 
         _selectedTable = _tables.FirstOrDefault();
@@ -38,13 +43,11 @@ public class LocalizationManager : MonoBehaviour
     private void SaveLanguage()
     {
         if (_selectedTable == null) return;
-        string json = JsonUtility.ToJson(new SelectedLanguage(_selectedTable.Code));
+        string json = JsonConvert.SerializeObject(new SelectedLanguage(_selectedTable.Code));
         string key = "Language.json";
         string path = Path.Combine(Application.persistentDataPath, key);
 
-        using StreamWriter sw = new(path);
-        sw.Write(json);
-        sw.Close();
+        File.WriteAllText(path, json);
 
         Debug.Log($"[{gameObject.name}] Язык {_selectedTable.Code} сохранён");
     }
@@ -60,11 +63,9 @@ public class LocalizationManager : MonoBehaviour
             return;
         }
 
-        using StreamReader sr = new(path);
-        string json = sr.ReadToEnd();
-        sr.Close();
+        string json = File.ReadAllText(path);
 
-        SelectedLanguage selectedLanguage = JsonUtility.FromJson<SelectedLanguage>(json);
+        SelectedLanguage selectedLanguage = JsonConvert.DeserializeObject<SelectedLanguage>(json, _settings);
         ChangeLanguage(selectedLanguage.LanguageCode);
 
         Debug.Log($"[{gameObject.name}] Язык {_selectedTable.Code} загружен");
@@ -75,13 +76,11 @@ public class LocalizationManager : MonoBehaviour
         if (_tables == null) return;
         foreach (LocalizationTable table in _tables)
         {
-            string json = JsonUtility.ToJson(table);
+            string json = JsonConvert.SerializeObject(table, _settings);
             string key = $"Table_{table.Code}.json";
             string path = Path.Combine(Application.persistentDataPath, key);
 
-            using StreamWriter sw = new(path);
-            sw.Write(json);
-            sw.Close();
+            File.WriteAllText(path, json);
 
             Debug.Log($"[{gameObject.name}] Таблица {key} сохранена");
         }
@@ -101,11 +100,9 @@ public class LocalizationManager : MonoBehaviour
 
         foreach (string file in files)
         {
-            using StreamReader sr = new(file);
-            string json = sr.ReadToEnd();
-            sr.Close();
+            string json = File.ReadAllText(file);
 
-            LocalizationTable table = JsonUtility.FromJson<LocalizationTable>(json);
+            LocalizationTable table = JsonConvert.DeserializeObject<LocalizationTable>(json, _settings);
             tables.Add(table);
             Debug.Log($"[{gameObject.name}] Таблица {file.Split("/").Last()} загружена");
         }
@@ -120,7 +117,7 @@ public class LocalizationManager : MonoBehaviour
     {
         if (Application.isPlaying) return;
 
-        string json = JsonUtility.ToJson(new SerializedTables(_tables));
+        string json = JsonConvert.SerializeObject(_tables, _settings);
         string path = "Assets/Tables.json";
 
         File.WriteAllText(path, json);
@@ -138,7 +135,7 @@ public class LocalizationManager : MonoBehaviour
         }
         string json = File.ReadAllText(path);
 
-        _tables = JsonUtility.FromJson<SerializedTables>(json).Tables;
+        _tables = JsonConvert.DeserializeObject<List<LocalizationTable>>(json, _settings);
     }
 }
 
