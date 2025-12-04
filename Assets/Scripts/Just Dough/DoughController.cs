@@ -12,6 +12,7 @@ public class DoughController : MonoBehaviour
     [Header("Состояния теста")]
     [SerializeField] private DoughState _startState = DoughState.Raw;
     [SerializeField] private DoughVisualSwitcher _doughVisualSwitcher;
+    [SerializeField] private FillingType filling = FillingType.None;
 
     private readonly Dictionary<CraftZone, bool> _comboZones = new();
 
@@ -21,7 +22,6 @@ public class DoughController : MonoBehaviour
     private Quaternion _rollRotation;
     private bool _isRollingInside;
     private bool _rollFromAlongSide;
-    [SerializeField] private FillingType filling = FillingType.None;
 
     public FillingType Filling => filling;
 

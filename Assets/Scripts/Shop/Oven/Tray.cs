@@ -40,7 +40,7 @@ public class Tray : MonoBehaviour
         );
 
         t.localScale = localScale;
-        t.rotation = Quaternion.identity;
+        t.rotation = Quaternion.LookRotation(transform.right);
         t.position = slotWorldPos;
 
         Renderer renderer = instance.GetComponentInChildren<Renderer>();

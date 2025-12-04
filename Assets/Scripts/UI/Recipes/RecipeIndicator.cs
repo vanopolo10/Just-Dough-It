@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,12 +11,9 @@ public class RecipeIndicator : MonoBehaviour
         public List<GameObject> indicators;
     }
 
-
-
     [SerializeField] private List<IndicatorGroup> _indicatorGroups;
     private RecipeManager _manager;
- 
-
+    
     private void OnEnable()
     {
         if (_manager == null)
@@ -28,13 +24,11 @@ public class RecipeIndicator : MonoBehaviour
         UpdateVisibility();
     }
 
-    public void UpdateVisibility() 
+    private void UpdateVisibility() 
     {
         foreach (IndicatorGroup group in _indicatorGroups)
         { 
-            bool groupVisibility = false;
-            if(group.type == _manager.CurrentRecipeType)
-                groupVisibility = true;
+            bool groupVisibility = group.type == _manager.CurrentRecipeType;
 
             foreach (GameObject indicator in group.indicators)
                 indicator.SetActive(groupVisibility);

@@ -6,16 +6,17 @@ using UnityEngine.UI;
 public class Cafe : MonoBehaviour
 {
     public static Cafe Instance = null;
-    
+
     [SerializeField] private Button _resetButton;
     [SerializeField] private OvenSender _ovenSender;
     [SerializeField] private Tray _tray;
-    
+    [SerializeField] private DoughBucket _doughBucket;
+
     public event Action DoughChanged;
     public event Action<DoughState> DoughStateChanged;
-    
-    public DoughController CurrentDough { get; private set; }
-    public int VibeLevel { get; private set; } 
+
+    public DoughController CurrentDough => _doughBucket != null ? _doughBucket.CurrentDough : null;
+    public int VibeLevel { get; private set; }
 
     private void Awake()
     {
@@ -27,12 +28,24 @@ public class Cafe : MonoBehaviour
     {
         if (_ovenSender != null)
             _ovenSender.DoughSent += OnDoughSent;
+
+        if (_doughBucket != null)
+        {
+            _doughBucket.CurrentDoughChanged += OnBucketDoughChanged;
+            _doughBucket.DoughStateChanged += OnBucketDoughStateChanged;
+        }
     }
 
     private void OnDisable()
     {
         if (_ovenSender != null)
             _ovenSender.DoughSent -= OnDoughSent;
+
+        if (_doughBucket != null)
+        {
+            _doughBucket.CurrentDoughChanged -= OnBucketDoughChanged;
+            _doughBucket.DoughStateChanged -= OnBucketDoughStateChanged;
+        }
     }
 
     private void Start()
@@ -44,70 +57,64 @@ public class Cafe : MonoBehaviour
     {
         if (CurrentDough == null)
             return;
-        
+
         CurrentDough.SetState(doughState);
-        DoughStateChanged?.Invoke(doughState);
     }
 
     public void SetDough(DoughController doughController)
     {
-        if (CurrentDough != null)
-            CurrentDough.StateChanged -= OnDoughStateChanged;
-        
-        CurrentDough = doughController;
-        
-        if (CurrentDough != null)
-            CurrentDough.StateChanged += OnDoughStateChanged;
-        
-        DoughChanged?.Invoke();
+        if (_doughBucket == null)
+            return;
+
+        _doughBucket.SetDough(doughController);
     }
 
     private void OnDoughSent()
     {
-        if (CurrentDough == null)
+        DoughController dough = CurrentDough;
+        if (dough == null)
             return;
 
-        var visualSwitcher = CurrentDough.GetComponent<DoughVisualSwitcher>();
+        DoughVisualSwitcher visualSwitcher = dough.GetComponent<DoughVisualSwitcher>();
         if (visualSwitcher == null)
         {
-            Debug.LogWarning("[Cafe] CurrentDough has no DoughVisualSwitcher", CurrentDough);
+            Debug.LogWarning("[Cafe] CurrentDough has no DoughVisualSwitcher", dough);
             return;
         }
 
-        if (visualSwitcher.Map.TryGetValue(CurrentDough.State, out var stateVisual) == false || stateVisual == null)
+        if (visualSwitcher.Map.TryGetValue(dough.State, out GameObject stateVisual) == false || stateVisual == null)
         {
-            Debug.LogWarning($"[Cafe] No visual for state {CurrentDough.State}", CurrentDough);
+            Debug.LogWarning($"[Cafe] No visual for state {dough.State}", dough);
             return;
         }
 
-        var bakeManagerPrefab = stateVisual.GetComponentInChildren<DoughBakeManager>(true);
+        DoughBakeManager bakeManagerPrefab = stateVisual.GetComponentInChildren<DoughBakeManager>(true);
         if (bakeManagerPrefab == null)
         {
             Debug.LogWarning("[Cafe] No DoughBakeManager on current state visual", stateVisual);
             return;
         }
 
-        var bakedInstance = _tray.AddDough(bakeManagerPrefab);
-        
+        DoughBakeManager bakedInstance = _tray.AddDough(bakeManagerPrefab);
         if (bakedInstance == null)
         {
             Debug.Log("[Cafe] Tray is full, dough not sent");
             return;
         }
 
-        CurrentDough.StateChanged -= OnDoughStateChanged;
-        Destroy(CurrentDough.gameObject);
-        CurrentDough = null;
+        if (_doughBucket != null)
+            _doughBucket.SetDough(null);
 
+        Destroy(dough.gameObject);
+    }
+
+    private void OnBucketDoughChanged()
+    {
         DoughChanged?.Invoke();
     }
 
-    
-    private void OnDoughStateChanged()
+    private void OnBucketDoughStateChanged(DoughState state)
     {
-        if (CurrentDough == null)
-            return;
-        
-        DoughStateChanged?.Invoke(CurrentDough.State);
+        DoughStateChanged?.Invoke(state);
     }
 }
