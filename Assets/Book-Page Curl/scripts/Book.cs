@@ -363,11 +363,18 @@ public class Book : MonoBehaviour {
                 TweenForward();
         }
     }
+
+    public void CustomRefreshSprites() 
+    {
+        LeftNext.sprite = (currentPage > 0 && currentPage <= bookPages.Length) ? bookPages[currentPage - 1] : background;
+        RightNext.sprite = (currentPage >= 0 && currentPage < bookPages.Length) ? bookPages[currentPage] : background;
+    }
+
     Coroutine currentCoroutine;
     void UpdateSprites()
     {
-        LeftNext.sprite= (currentPage > 0 && currentPage <= bookPages.Length) ? bookPages[currentPage-1] : background;
-        RightNext.sprite=(currentPage>=0 &&currentPage<bookPages.Length) ? bookPages[currentPage] : background;
+        LeftNext.sprite = (currentPage > 0 && currentPage <= bookPages.Length) ? bookPages[currentPage-1] : background;
+        RightNext.sprite = (currentPage>=0 &&currentPage<bookPages.Length) ? bookPages[currentPage] : background;
     }
     public void TweenForward()
     {
