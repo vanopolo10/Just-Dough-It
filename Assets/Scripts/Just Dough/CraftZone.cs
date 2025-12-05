@@ -10,7 +10,8 @@ public class CraftZone : MonoBehaviour,
     IPointerClickHandler,
     IPointerDownHandler,
     IPointerEnterHandler,
-    IPointerUpHandler
+    IPointerUpHandler,
+    IDragHandler
 {
     [Serializable]
     private class DragRule
@@ -21,20 +22,20 @@ public class CraftZone : MonoBehaviour,
         public CraftZone FromCraftZone => _fromCraftZone;
         public DoughCraftAction Action => _action;
     }
-    
+
     [Header("Контроллер крафта")]
     [SerializeField] private DoughController _controller;
 
-    [Header("Действия по клику")]
+    [Header("Действия по клику (ПКМ)")]
     [SerializeField] private DoughCraftAction _rightClickAction = DoughCraftAction.None;
 
     [Header("Роль в драг-жесте")]
     [SerializeField] private bool _isDragStartZone = false;
     [SerializeField] private bool _isDragEndZone = false;
-    
+
     [Header("Действия по ДРАГУ (когда завершаем драг НА ЭТОЙ зоне)")]
     [SerializeField] private List<DragRule> _dragRules = new();
-    
+
     [Header("Комбо")]
     [SerializeField] private bool _isComboZone = false;
 
@@ -44,15 +45,20 @@ public class CraftZone : MonoBehaviour,
     [SerializeField] private Color _pressedColor;
     [SerializeField] private Color _hoverColor = new(1f, 0.9f, 0.4f, 0.4f);
 
+    [Header("Идеальные зоны")]
+    [SerializeField] private RectTransform _perfectClickArea;
+    [SerializeField] private RectTransform _perfectDragArea;
+
     private static CraftZone _dragStartZone;
     private static bool _dragActive;
-    
+    private static bool _dragPerfect;
+
     private RectTransform _rectTransform;
     private bool _isPointerOver;
     private bool _isPressed;
 
     public bool IsComboZone => _isComboZone;
-    
+
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
@@ -98,16 +104,19 @@ public class CraftZone : MonoBehaviour,
 
         if (_dragStartZone != null)
             return;
-        
+
         if (_rightClickAction == DoughCraftAction.None)
             return;
 
         if (eventData.button != PointerEventData.InputButton.Right)
             return;
-        
-        bool applied = _controller.ApplyAction(_rightClickAction, this);
+
+        bool isPerfect = IsInPerfectClickArea(eventData);
+
+        bool applied = _controller.ApplyAction(_rightClickAction, this, isPerfect);
+        Debug.Log($"[CraftZone] RightClick {name}, action={_rightClickAction}, perfect={isPerfect}, applied={applied}");
     }
-    
+
     public void OnPointerDown(PointerEventData eventData)
     {
         _isPressed = true;
@@ -115,24 +124,27 @@ public class CraftZone : MonoBehaviour,
         if (_isDragStartZone == false)
             return;
 
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            _dragStartZone = this;
-            _dragActive = true;
-        }
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+        
+        _dragStartZone = this;
+        _dragActive = true;
+        _dragPerfect = IsInPerfectDragArea(eventData);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         _isPointerOver = true;
-        
+
         if (_isDragEndZone == false)
             return;
-        
+
         if (_dragActive == false || _dragStartZone == null || _dragStartZone == this || !Input.GetMouseButton(0))
             return;
 
-        HandleDragFrom(_dragStartZone);
+        bool isPerfect = _dragPerfect;
+
+        HandleDragFrom(_dragStartZone, isPerfect);
         ClearDrag();
     }
 
@@ -140,45 +152,94 @@ public class CraftZone : MonoBehaviour,
     {
         _isPointerOver = false;
     }
-    
+
     public void OnPointerUp(PointerEventData eventData)
     {
         _isPressed = false;
-        
+
         if (_dragActive && eventData.button == PointerEventData.InputButton.Left)
             ClearDrag();
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (_dragActive == false)
+            return;
+
+        if (_dragStartZone != this)
+            return;
+
+        if (_dragPerfect == false)
+            return;
+
+        if (Input.GetMouseButton(0) == false)
+            return;
+
+        if (IsInPerfectDragArea(eventData))
+            return;
+
+        _dragPerfect = false;
     }
 
     private static void ClearDrag()
     {
         _dragStartZone = null;
         _dragActive = false;
+        _dragPerfect = false;
     }
 
-    private void HandleDragFrom(CraftZone fromZone)
+    private void HandleDragFrom(CraftZone fromZone, bool isPerfect)
     {
         if (fromZone == null || _controller == null)
             return;
-        
+
         foreach (DragRule rule in _dragRules)
         {
             if (rule == null)
                 continue;
 
-            if (rule.FromCraftZone == fromZone)
-            {
-                DoughCraftAction action = rule.Action;
-                if (action == DoughCraftAction.None)
-                    continue;
+            if (rule.FromCraftZone != fromZone) 
+                continue;
+            
+            DoughCraftAction action = rule.Action;
+            
+            if (action == DoughCraftAction.None)
+                continue;
 
-                bool applied = _controller.ApplyAction(action, this);
-                Debug.Log($"[CraftZone] Drag {fromZone.name} -> {name}, action={action}, applied={applied}");
-                return;
-            }
+            bool applied = _controller.ApplyAction(action, this, isPerfect);
+            Debug.Log($"[CraftZone] Drag {fromZone.name} -> {name}, action={action}, perfect={isPerfect}, applied={applied}");
+            
+            return;
         }
 
         Debug.Log($"[CraftZone] No drag rule for {fromZone.name} -> {name}");
     }
 
-    
+    private bool IsInPerfectClickArea(PointerEventData eventData)
+    {
+        if (_perfectClickArea == null)
+            return false;
+
+        Camera cam = eventData.pressEventCamera ?? eventData.enterEventCamera ?? Camera.main;
+
+        return RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _perfectClickArea,
+            eventData.position,
+            cam,
+            out Vector2 local) && _perfectClickArea.rect.Contains(local);
+    }
+
+    private bool IsInPerfectDragArea(PointerEventData eventData)
+    {
+        if (_perfectDragArea == null)
+            return false;
+
+        Camera cam = eventData.pressEventCamera ?? eventData.enterEventCamera ?? Camera.main;
+
+        return RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _perfectDragArea,
+            eventData.position,
+            cam,
+            out Vector2 local) && _perfectDragArea.rect.Contains(local);
+    }
 }

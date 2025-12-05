@@ -79,11 +79,14 @@ public class Cafe : MonoBehaviour
             return;
         }
 
+        bakedInstance.SetPerfectActionCount(dough.PerfectActionCount);
+
         if (_doughBucket != null)
             _doughBucket.SetDough(null);
 
         Destroy(dough.gameObject);
     }
+
 
     private void OnBucketDoughChanged()
     {

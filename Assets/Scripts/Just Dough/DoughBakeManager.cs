@@ -33,11 +33,14 @@ public class DoughBakeManager : MonoBehaviour
     private float _dragZ;
     private Vector3 _dragOffset;
 
+    private int _perfectActionCount;
+
     public event Action Rare;
     public event Action Done;
     public event Action Burn;
 
     public BakeState BakeState { get; private set; } = BakeState.Raw;
+    public int PerfectActionCount => _perfectActionCount;
 
     private void Awake()
     {
@@ -55,6 +58,72 @@ public class DoughBakeManager : MonoBehaviour
     private void OnDisable()
     {
         DragCancelService.CancelRequested -= OnCancelRequested;
+    }
+    
+    private void OnMouseDown()
+    {
+        if (_dragBlocked)
+            return;
+
+        if (_isOnShelf)
+        {
+            StartShelfDrag();
+            return;
+        }
+
+        if (_tray == null || _shelf == null)
+            return;
+
+        if (_tray.IsInOven || _tray.IsMoving)
+            return;
+
+        if (BakeState == BakeState.Raw)
+            return;
+
+        if (_tray.TryTakeBun(this, out DoughBakeManager taken) == false)
+            return;
+
+        taken.StopBake();
+        _shelf.Place(taken);
+        print(_perfectActionCount);
+    }
+
+    private void OnMouseDrag()
+    {
+        if (_isOnShelf == false || _isDragging == false)
+            return;
+
+        if (_dragBlocked)
+        {
+            if (Input.GetMouseButton(0) == false)
+                _dragBlocked = false;
+
+            return;
+        }
+
+        Vector3 worldPos = GetMouseWorldPos();
+        transform.position = worldPos + _dragOffset;
+    }
+
+    private void OnMouseUp()
+    {
+        if (_isOnShelf == false)
+        {
+            _dragBlocked = false;
+            return;
+        }
+
+        if (_isDragging == false)
+        {
+            _dragBlocked = false;
+            return;
+        }
+
+        _isDragging = false;
+        _dragBlocked = false;
+
+        if (_shelfAnchor != null)
+            StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
     }
 
     public void Setup(Tray tray, Shelf shelf)
@@ -75,6 +144,11 @@ public class DoughBakeManager : MonoBehaviour
     {
         _isOnShelf = false;
         _shelfAnchor = null;
+    }
+
+    public void SetPerfectActionCount(int count)
+    {
+        _perfectActionCount = Mathf.Max(0, count);
     }
 
     private void OnCancelRequested()
@@ -159,71 +233,6 @@ public class DoughBakeManager : MonoBehaviour
                     m.color = color;
             }
         }
-    }
-
-    private void OnMouseDown()
-    {
-        if (_dragBlocked)
-            return;
-
-        if (_isOnShelf)
-        {
-            StartShelfDrag();
-            return;
-        }
-
-        if (_tray == null || _shelf == null)
-            return;
-
-        if (_tray.IsInOven || _tray.IsMoving)
-            return;
-
-        if (BakeState == BakeState.Raw)
-            return;
-
-        if (_tray.TryTakeBun(this, out DoughBakeManager taken) == false)
-            return;
-
-        taken.StopBake();
-        _shelf.Place(taken);
-    }
-
-    private void OnMouseDrag()
-    {
-        if (_isOnShelf == false || _isDragging == false)
-            return;
-
-        if (_dragBlocked)
-        {
-            if (Input.GetMouseButton(0) == false)
-                _dragBlocked = false;
-
-            return;
-        }
-
-        Vector3 worldPos = GetMouseWorldPos();
-        transform.position = worldPos + _dragOffset;
-    }
-
-    private void OnMouseUp()
-    {
-        if (_isOnShelf == false)
-        {
-            _dragBlocked = false;
-            return;
-        }
-
-        if (_isDragging == false)
-        {
-            _dragBlocked = false;
-            return;
-        }
-
-        _isDragging = false;
-        _dragBlocked = false;
-
-        if (_shelfAnchor != null)
-            StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
     }
 
     private void StartShelfDrag()
