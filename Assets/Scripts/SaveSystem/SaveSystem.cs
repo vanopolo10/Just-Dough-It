@@ -62,7 +62,8 @@ public static class SaveSystem
         {
             string json = File.ReadAllText(path);
             GameSave gameState = JsonConvert.DeserializeObject<GameSave>(json, _settings);
-            if (gameState.SavedData.First(data => data.Key == key) != null) return true;
+            IEnumerable<SaveableValue> list = gameState.SavedData.Where(data => data.Key == key).ToList();
+            if (list.Count() > 0) return true;
         }
         return false;
     }
@@ -71,8 +72,12 @@ public static class SaveSystem
     {
         string directoryPath = Path.Combine(Application.persistentDataPath, "Saves", $"{saveFileName}\\");
         string path = Path.Combine(directoryPath, "thumbnail.png");
-        if (File.Exists(path))
+        if (Directory.Exists(directoryPath))
+        {
+            if (File.Exists(path))
+                File.Delete(path);
             ScreenCapture.CaptureScreenshot(path);
+        }
         else return;
     }
 

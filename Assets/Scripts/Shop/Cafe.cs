@@ -94,4 +94,9 @@ public class Cafe : MonoBehaviour
     {
         DoughStateChanged?.Invoke(state);
     }
+
+    public void SetVibeLevel(int level)
+    {
+        VibeLevel = Math.Clamp(level, 0, 100_000);
+    }
 }

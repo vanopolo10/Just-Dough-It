@@ -93,6 +93,12 @@ public class CameraController : MonoBehaviour
         transform.rotation = _views[ViewID].Rotation;
     }
 
+    public void SetViewID(int id)
+    {
+        ViewID = Mathf.Clamp(id, 0, _views.Count - 1);
+        SnapToCurrentView();
+    }
+
     [Serializable]
     private struct CameraView
     {
