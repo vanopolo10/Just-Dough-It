@@ -1,23 +1,18 @@
 using UnityEngine;
 
-public class SaceManager : MonoBehaviour
+public class SaveManager : MonoBehaviour
 {
     [SerializeField] private CameraController _cameraController;
 
     private void Start()
     {
-        Debug.Log(SaveSystem.SelectedSave);
-
         int id = SaveSystem.LoadData<int>(SaveSystem.SelectedSave, "CameraViewID");
-        Debug.Log(id);
         _cameraController.SetViewID(id);
 
         int vibe = SaveSystem.LoadData<int>(SaveSystem.SelectedSave, "VibeLevel");
-        Debug.Log(vibe);
         Cafe.Instance.SetVibeLevel(vibe);
     }
 
-    [ContextMenu("Force Save")]
     public void SaveGame()
     {
         SaveSystem.SaveImage(SaveSystem.SelectedSave);
