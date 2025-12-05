@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public static class SaveSystem
 {
@@ -49,9 +50,7 @@ public static class SaveSystem
         string json = File.ReadAllText(path);
         GameSave gameState = JsonConvert.DeserializeObject<GameSave>(json, _settings);
         var value = gameState.SavedData.First(data => data.Key == key).Value;
-        if (value is T typedValue)
-            return typedValue;
-        return default;
+        return (T)Convert.ChangeType(value, typeof(T));
     }
 
     public static bool DataExist(string saveFileName, string key)
