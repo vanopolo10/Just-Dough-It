@@ -38,6 +38,9 @@ public class Tray : MonoBehaviour
     [Header("Слоты для булочек")]
     [SerializeField] private List<TraySlot> _slots = new();
 
+    [Header("Полка для булочек")]
+    [SerializeField] private Shelf _shelf;
+
     private bool _isInOven;
     private bool _isMoving;
     private Coroutine _moveRoutine;
@@ -74,7 +77,6 @@ public class Tray : MonoBehaviour
                     b.StopBake();
             });
     }
-
 
     private void TogglePosition()
     {
@@ -116,6 +118,8 @@ public class Tray : MonoBehaviour
 
         freeSlot.SetBun(instance);
 
+        instance.Setup(this, _shelf);
+
         if (_isInOven)
             instance.BeginBake();
 
@@ -125,6 +129,25 @@ public class Tray : MonoBehaviour
     public IEnumerable<DoughBakeManager> TakeAll()
     {
         return from t in _slots where t.Bun != null select t.Clear();
+    }
+
+    public bool TryTakeBun(DoughBakeManager bun, out DoughBakeManager taken)
+    {
+        taken = null;
+
+        if (bun == null)
+            return false;
+
+        foreach (var t in _slots.Where(t => t.Bun == bun))
+        {
+            taken = t.Clear();
+            if (taken != null)
+                taken.transform.SetParent(null, true);
+
+            return taken != null;
+        }
+
+        return false;
     }
 
     private void MoveTo(Vector3 targetPosition, bool toOven)
