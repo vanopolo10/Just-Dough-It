@@ -7,14 +7,44 @@ public class DoughDrag : MonoBehaviour
     private float _zCord;
     private bool _bothHeld;
     private bool _isDragging;
+    private bool _dragBlocked;
 
     public bool IsDragging => _isDragging;
 
     public event Action DragStarted;
     public event Action DragEnded;
 
+    private void OnEnable()
+    {
+        DragCancelService.CancelRequested += OnCancelRequested;
+    }
+
+    private void OnDisable()
+    {
+        DragCancelService.CancelRequested -= OnCancelRequested;
+    }
+
+    private void OnCancelRequested()
+    {
+        if (_isDragging == false)
+            return;
+
+        _isDragging = false;
+        _bothHeld = false;
+        _dragBlocked = true;
+        DragEnded?.Invoke();
+    }
+
     private void OnMouseDrag()
     {
+        if (_dragBlocked)
+        {
+            if (Input.GetMouseButton(0) == false && Input.GetMouseButton(1) == false)
+                _dragBlocked = false;
+
+            return;
+        }
+
         bool isBothNow = Input.GetMouseButton(0) && Input.GetMouseButton(1);
 
         if (isBothNow == false)
@@ -56,5 +86,6 @@ public class DoughDrag : MonoBehaviour
         }
 
         _bothHeld = false;
+        _dragBlocked = false;
     }
 }
