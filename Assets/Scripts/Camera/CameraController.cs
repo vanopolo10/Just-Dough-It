@@ -46,10 +46,18 @@ public class CameraController : MonoBehaviour
             _isTransition = false;
     }
 
+    public void SetViewID(int id)
+    {
+        ViewID = Mathf.Clamp(id, 0, _views.Count - 1);
+        SnapToCurrentView();
+    }
+    
     private void OnLeft()
     {
         if (_views.Count == 0)
             return;
+
+        DragCancelService.RequestCancel();
 
         ViewID = ViewID == 0 ? _views.Count - 1 : ViewID - 1;
         BeginTransition();
@@ -60,18 +68,23 @@ public class CameraController : MonoBehaviour
         if (_views.Count == 0)
             return;
 
+        DragCancelService.RequestCancel();
+
         ViewID = (ViewID + 1) % _views.Count;
         BeginTransition();
     }
+
     private void OnBack()
     {
         if (_views.Count == 0)
             return;
 
+        DragCancelService.RequestCancel();
+
         ViewID = (ViewID + 2) % _views.Count;
         BeginTransition();
     }
-
+    
     private void BeginTransition()
     {
         _startPosition = transform.position;
@@ -91,12 +104,6 @@ public class CameraController : MonoBehaviour
 
         transform.position = _views[ViewID].Position;
         transform.rotation = _views[ViewID].Rotation;
-    }
-
-    public void SetViewID(int id)
-    {
-        ViewID = Mathf.Clamp(id, 0, _views.Count - 1);
-        SnapToCurrentView();
     }
 
     [Serializable]

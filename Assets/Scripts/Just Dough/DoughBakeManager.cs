@@ -29,6 +29,7 @@ public class DoughBakeManager : MonoBehaviour
     private Transform _shelfAnchor;
 
     private bool _isDragging;
+    private bool _dragBlocked;
     private float _dragZ;
     private Vector3 _dragOffset;
 
@@ -44,6 +45,16 @@ public class DoughBakeManager : MonoBehaviour
 
         if (_meshRenderers == null || _meshRenderers.Length == 0)
             Debug.LogWarning("[DoughBakeManager] No MeshRenderers found on bun", this);
+    }
+
+    private void OnEnable()
+    {
+        DragCancelService.CancelRequested += OnCancelRequested;
+    }
+
+    private void OnDisable()
+    {
+        DragCancelService.CancelRequested -= OnCancelRequested;
     }
 
     public void Setup(Tray tray, Shelf shelf)
@@ -64,6 +75,18 @@ public class DoughBakeManager : MonoBehaviour
     {
         _isOnShelf = false;
         _shelfAnchor = null;
+    }
+
+    private void OnCancelRequested()
+    {
+        if (_isOnShelf == false || _isDragging == false)
+            return;
+
+        _isDragging = false;
+        _dragBlocked = true;
+
+        if (_shelfAnchor != null)
+            StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
     }
 
     public void BeginBake()
@@ -140,6 +163,9 @@ public class DoughBakeManager : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (_dragBlocked)
+            return;
+
         if (_isOnShelf)
         {
             StartShelfDrag();
@@ -167,16 +193,34 @@ public class DoughBakeManager : MonoBehaviour
         if (_isOnShelf == false || _isDragging == false)
             return;
 
+        if (_dragBlocked)
+        {
+            if (Input.GetMouseButton(0) == false)
+                _dragBlocked = false;
+
+            return;
+        }
+
         Vector3 worldPos = GetMouseWorldPos();
         transform.position = worldPos + _dragOffset;
     }
 
     private void OnMouseUp()
     {
-        if (_isOnShelf == false || _isDragging == false)
+        if (_isOnShelf == false)
+        {
+            _dragBlocked = false;
             return;
+        }
+
+        if (_isDragging == false)
+        {
+            _dragBlocked = false;
+            return;
+        }
 
         _isDragging = false;
+        _dragBlocked = false;
 
         if (_shelfAnchor != null)
             StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
