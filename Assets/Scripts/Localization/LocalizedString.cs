@@ -22,8 +22,6 @@ public class LocalizedString : MonoBehaviour
 
     private void Start()
     {
-        if (LocalizationManager.Instance == null) return;
-        LocalizationManager.Instance.OnLanguageChange += UpdateText;
         UpdateText();
     }
 
