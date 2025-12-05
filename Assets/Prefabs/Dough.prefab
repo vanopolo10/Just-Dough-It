@@ -10413,13 +10413,14 @@ GameObject:
   - component: {fileID: 3234884315905784887}
   - component: {fileID: 5851999579402795385}
   - component: {fileID: 8480645037499288264}
+  - component: {fileID: 1151415356282743025}
   m_Layer: 0
   m_Name: Cool Pie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3702307190733441800
 Transform:
   m_ObjectHideFlags: 0
@@ -10503,6 +10504,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6c4a81d8cf4694c940fe18eec78f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoughBakeManager
+--- !u!64 &1151415356282743025
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3743830383059453761}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8663802791670341782, guid: caefc8c349968494eaa82e974e51e8bd, type: 3}
 --- !u!1 &3920006915611996932
 GameObject:
   m_ObjectHideFlags: 0
@@ -16662,13 +16685,14 @@ GameObject:
   m_Component:
   - component: {fileID: 5330431471112023252}
   - component: {fileID: 4604237382043720982}
+  - component: {fileID: 6788419875641340486}
   m_Layer: 0
   m_Name: Sosiska
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5330431471112023252
 Transform:
   m_ObjectHideFlags: 0
@@ -16697,6 +16721,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6c4a81d8cf4694c940fe18eec78f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoughBakeManager
+--- !u!136 &6788419875641340486
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435017854399402132}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.12395643
+  m_Height: 0.8588016
+  m_Direction: 0
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6785753512715795416
 GameObject:
   m_ObjectHideFlags: 0
@@ -22637,6 +22684,7 @@ GameObject:
   - component: {fileID: 5890569011933023115}
   - component: {fileID: 5616201020619735801}
   - component: {fileID: 3986658866840350974}
+  - component: {fileID: 7985317212980941536}
   m_Layer: 0
   m_Name: Simple Pie
   m_TagString: Untagged
@@ -22727,6 +22775,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6c4a81d8cf4694c940fe18eec78f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoughBakeManager
+--- !u!64 &7985317212980941536
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8698652866831185444}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -567259905036692206, guid: caefc8c349968494eaa82e974e51e8bd, type: 3}
 --- !u!1 &8797669855445132882
 GameObject:
   m_ObjectHideFlags: 0

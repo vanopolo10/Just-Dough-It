@@ -1,13 +1,11 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
-[DefaultExecutionOrder(-1000)]
+[DisallowMultipleComponent] [DefaultExecutionOrder(-1000)]
 public class Cafe : MonoBehaviour
 {
     public static Cafe Instance = null;
 
-    [SerializeField] private Button _resetButton;
     [SerializeField] private OvenSender _ovenSender;
     [SerializeField] private Tray _tray;
     [SerializeField] private DoughBucket _doughBucket;
@@ -46,27 +44,6 @@ public class Cafe : MonoBehaviour
             _doughBucket.CurrentDoughChanged -= OnBucketDoughChanged;
             _doughBucket.DoughStateChanged -= OnBucketDoughStateChanged;
         }
-    }
-
-    private void Start()
-    {
-        _resetButton.onClick.AddListener(delegate { SetDoughState(DoughState.Raw); });
-    }
-
-    public void SetDoughState(DoughState doughState)
-    {
-        if (CurrentDough == null)
-            return;
-
-        CurrentDough.SetState(doughState);
-    }
-
-    public void SetDough(DoughController doughController)
-    {
-        if (_doughBucket == null)
-            return;
-
-        _doughBucket.SetDough(doughController);
     }
 
     private void OnDoughSent()

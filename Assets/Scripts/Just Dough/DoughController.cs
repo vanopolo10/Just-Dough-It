@@ -5,14 +5,14 @@ using UnityEngine;
 using JustDough;
 
 [DisallowMultipleComponent]
-[RequireComponent(typeof(DoughVisualSwitcher),typeof(DoughDrag), typeof(DoughBakeManager))]
+[RequireComponent(typeof(DoughVisualSwitcher),typeof(DoughDrag))]
 [RequireComponent(typeof(Collider))]
 public class DoughController : MonoBehaviour
 {
     [Header("Состояния теста")]
     [SerializeField] private DoughState _startState = DoughState.Raw;
     [SerializeField] private DoughVisualSwitcher _doughVisualSwitcher;
-    [SerializeField] private FillingType filling = FillingType.None;
+    [SerializeField] private FillingType _filling = FillingType.None;
 
     private readonly Dictionary<CraftZone, bool> _comboZones = new();
 
@@ -23,7 +23,7 @@ public class DoughController : MonoBehaviour
     private bool _isRollingInside;
     private bool _rollFromAlongSide;
 
-    public FillingType Filling => filling;
+    public FillingType Filling => _filling;
 
     public event Action StateChanged;
 
@@ -138,7 +138,7 @@ public class DoughController : MonoBehaviour
         OldState = State;
         State = next;
 
-        if (State == DoughState.Flat || State == DoughState.LongFlat)
+        if (State is DoughState.Flat or DoughState.LongFlat)
             transform.rotation = _rollRotation;
 
         Debug.Log($"[DoughCraftController] {OldState} --{action}--> {next}");
@@ -176,6 +176,6 @@ public class DoughController : MonoBehaviour
 
     public void SetGlobalFilling(FillingType toSet) 
     { 
-        filling = toSet;
+        _filling = toSet;
     }
 }
