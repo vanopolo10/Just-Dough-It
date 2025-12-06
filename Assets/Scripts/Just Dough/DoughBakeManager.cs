@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(Collider))]
 public class DoughBakeManager : MonoBehaviour
@@ -30,10 +31,14 @@ public class DoughBakeManager : MonoBehaviour
 
     private bool _isDragging;
     private bool _dragBlocked;
+    private bool _isInReceptionArea;
     private float _dragZ;
     private Vector3 _dragOffset;
 
     private int _perfectActionCount;
+    private Product _product;
+
+    private ProductComparator _productComparator;
 
     public event Action Rare;
     public event Action Done;
@@ -107,6 +112,15 @@ public class DoughBakeManager : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (_isInReceptionArea == true)
+        {
+            if(AttemptDeposit())
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
+
         if (_isOnShelf == false)
         {
             _dragBlocked = false;
@@ -124,6 +138,26 @@ public class DoughBakeManager : MonoBehaviour
 
         if (_shelfAnchor != null)
             StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
+    }
+
+    private bool AttemptDeposit()
+    {
+        return _productComparator.OfferCurrentProduct();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Product Reception Field"))
+        { 
+            _productComparator = other.GetComponentInParent<ProductComparator>();
+            _productComparator.SetProduct(_product);
+            _isInReceptionArea = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Product Reception Field"))
+            _isInReceptionArea = false;
     }
 
     public void Setup(Tray tray, Shelf shelf)
@@ -149,6 +183,28 @@ public class DoughBakeManager : MonoBehaviour
     public void SetPerfectActionCount(int count)
     {
         _perfectActionCount = Mathf.Max(0, count);
+    }
+    public void SetproductFromDoughController(DoughController dough)
+    {
+        Product product;
+        product.filling = dough.Filling;
+
+        ProductType productType;
+        try
+        {
+            productType = (ProductType)Enum.Parse(typeof(ProductType), dough.State.ToString());
+        }
+        catch (Exception)
+        {
+            productType = ProductType.None; //на случай если тип не совпадёт
+        }
+        product.type = productType;
+
+        SetProduct(product);
+    }
+    public void SetProduct(Product product)
+    { 
+        _product = product;
     }
 
     private void OnCancelRequested()

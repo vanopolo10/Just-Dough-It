@@ -36,9 +36,11 @@ public class ProductComparator : MonoBehaviour
     { 
         _query = query;
     }
-    public void Offer()
+    public bool OfferCurrentProduct()
     {
         bool result = _query.Check(_product);
         (result ? OnAccept : OnDecline).Invoke();
+
+        return result;
     }
 }
