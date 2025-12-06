@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class CustomerModelSpawner : MonoBehaviour
 {
-    public List<GameObject> models;
-    public CustomerModel current;
-    public Animator door;
-    public ProductComparator comparator;
-    public float respawnDelay;
-    public GameObject speechBubble;
+    [SerializeField] private List<GameObject> models;
+    [SerializeField] private float respawnDelay;
+    [SerializeField] private GameObject speechBubble;
+    private CustomerModel current;
+    private ProductComparator comparator;
+    
+    //public Animator door;
 
     public void Start()
     {
