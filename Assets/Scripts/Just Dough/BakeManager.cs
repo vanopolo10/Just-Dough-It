@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
@@ -34,6 +33,9 @@ public class BakeManager : MonoBehaviour
     private Vector3 _dragOffset;
 
     private int _perfectActionCount;
+    private int _imperfectActionCount;
+    private DoughState _doughState;
+    private FillingType _filling;
 
     public event Action Rare;
     public event Action Done;
@@ -43,6 +45,9 @@ public class BakeManager : MonoBehaviour
 
     public BakeState BakeState { get; private set; } = BakeState.Raw;
     public int PerfectActionCount => _perfectActionCount;
+    public int ImperfectActionCount => _imperfectActionCount;
+    public DoughState DoughState => _doughState;
+    public FillingType Filling => _filling;
 
     public float CurrentBakeBlend { get; private set; }
     public float CurrentBurnAmount { get; private set; }
@@ -159,6 +164,17 @@ public class BakeManager : MonoBehaviour
         _perfectActionCount = Mathf.Max(0, count);
     }
 
+    public void SetImperfectActionCount(int count)
+    {
+        _imperfectActionCount = Mathf.Max(0, count);
+    }
+
+    public void SetDoughInfo(DoughState doughState, FillingType filling)
+    {
+        _doughState = doughState;
+        _filling = filling;
+    }
+
     public void BeginBake()
     {
         _isBaking = true;
@@ -194,7 +210,11 @@ public class BakeManager : MonoBehaviour
 
         taken.StopBake();
         _shelf.Place(taken);
-        Debug.Log(_perfectActionCount);
+
+        Debug.Log(
+            $"[BakeManager] perfect={_perfectActionCount}, imperfect={_imperfectActionCount}, " +
+            $"doughState={_doughState}, filling={_filling}, bakeState={BakeState}"
+        );
     }
 
     private void OnMouseDrag()

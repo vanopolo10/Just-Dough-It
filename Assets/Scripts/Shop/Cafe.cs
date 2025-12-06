@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
 
-[DisallowMultipleComponent] [DefaultExecutionOrder(-1000)]
+[DisallowMultipleComponent]
+[DefaultExecutionOrder(-1000)]
 public class Cafe : MonoBehaviour
 {
     public static Cafe Instance = null;
@@ -80,13 +81,14 @@ public class Cafe : MonoBehaviour
         }
 
         bakedInstance.SetPerfectActionCount(dough.PerfectActionCount);
+        bakedInstance.SetImperfectActionCount(dough.ImperfectActionCount);
+        bakedInstance.SetDoughInfo(dough.State, dough.Filling);
 
         if (_doughBucket != null)
             _doughBucket.SetDough(null);
 
         Destroy(dough.gameObject);
     }
-
 
     private void OnBucketDoughChanged()
     {

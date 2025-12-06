@@ -15,7 +15,7 @@ public class OvenSender : MonoBehaviour
 
     [SerializeField] private Image _image;
     [SerializeField] private Tray _tray;
-    
+
     private BoxCollider _collider;
     private DoughController _currentDough;
     private DoughDrag _currentDoughDrag;
@@ -26,7 +26,7 @@ public class OvenSender : MonoBehaviour
     {
         if (_image == null)
             _image = GetComponentInChildren<Image>();
-        
+
         _collider = GetComponent<BoxCollider>();
         _collider.isTrigger = true;
         _image.gameObject.SetActive(false);

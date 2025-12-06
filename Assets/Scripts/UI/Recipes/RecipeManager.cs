@@ -1,39 +1,10 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-
-
 public class RecipeManager : MonoBehaviour
 {
-    [Serializable]
-    protected struct RecipeState
-    {
-        public ProductType product;
-        public bool active;
-        public RecipeState(ProductType product, bool active)
-        {
-            this.product = product;
-            this.active = active;
-        }
-        public void SetActive(bool newAct) { active = newAct; }
-    }
-    [Serializable]
-    protected struct PageSprite
-    {
-        [SerializeField] private Sprite active, inactive;
-        public Sprite GetSprite(bool isActive)
-        {
-            if (isActive)
-                return active;
-            return inactive;
-        }
-    }
-
-
-
     [SerializeField] private int _firstPageIndex = 1;
     [SerializeField] private List<RecipeState> _recipeStates;
     [SerializeField] private List<PageSprite> _pageSprites;
@@ -96,6 +67,30 @@ public class RecipeManager : MonoBehaviour
             Debug.Log("removed active recipe");
             _currentRecipeType = ProductType.None;
             OnActiveRecipeChanged.Invoke();
+        }
+    }
+    
+    [Serializable]
+    protected struct RecipeState
+    {
+        public ProductType product;
+        public bool active;
+        public RecipeState(ProductType product, bool active)
+        {
+            this.product = product;
+            this.active = active;
+        }
+        public void SetActive(bool newAct) { active = newAct; }
+    }
+    [Serializable]
+    protected struct PageSprite
+    {
+        [SerializeField] private Sprite active, inactive;
+        public Sprite GetSprite(bool isActive)
+        {
+            if (isActive)
+                return active;
+            return inactive;
         }
     }
 }

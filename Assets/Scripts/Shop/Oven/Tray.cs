@@ -6,29 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Tray : MonoBehaviour
 {
-    [System.Serializable]
-    private class TraySlot
-    {
-        [SerializeField] private Transform _anchor;
-        private BakeManager _bun;
-
-        public Transform Anchor => _anchor;
-        public BakeManager Bun => _bun;
-        public bool IsEmpty => _bun == null;
-
-        public void SetBun(BakeManager bun)
-        {
-            _bun = bun;
-        }
-
-        public BakeManager Clear()
-        {
-            BakeManager result = _bun;
-            _bun = null;
-            return result;
-        }
-    }
-
     [Header("Движение подноса")]
     [SerializeField] private Vector3 _outsidePoint;
     [SerializeField] private Vector3 _insidePoint;
@@ -180,5 +157,28 @@ public class Tray : MonoBehaviour
         _isInOven = toOven;
         _isMoving = false;
         _moveRoutine = null;
+    }
+    
+    [System.Serializable]
+    private class TraySlot
+    {
+        [SerializeField] private Transform _anchor;
+        private BakeManager _bun;
+
+        public Transform Anchor => _anchor;
+        public BakeManager Bun => _bun;
+        public bool IsEmpty => _bun == null;
+
+        public void SetBun(BakeManager bun)
+        {
+            _bun = bun;
+        }
+
+        public BakeManager Clear()
+        {
+            BakeManager result = _bun;
+            _bun = null;
+            return result;
+        }
     }
 }
