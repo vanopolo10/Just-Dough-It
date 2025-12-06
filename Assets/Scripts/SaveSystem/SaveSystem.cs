@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public static class SaveSystem
 {
@@ -49,9 +50,7 @@ public static class SaveSystem
         string json = File.ReadAllText(path);
         GameSave gameState = JsonConvert.DeserializeObject<GameSave>(json, _settings);
         var value = gameState.SavedData.First(data => data.Key == key).Value;
-        if (value is T typedValue)
-            return typedValue;
-        return default;
+        return (T)Convert.ChangeType(value, typeof(T));
     }
 
     public static bool DataExist(string saveFileName, string key)
@@ -62,7 +61,8 @@ public static class SaveSystem
         {
             string json = File.ReadAllText(path);
             GameSave gameState = JsonConvert.DeserializeObject<GameSave>(json, _settings);
-            if (gameState.SavedData.First(data => data.Key == key) != null) return true;
+            IEnumerable<SaveableValue> list = gameState.SavedData.Where(data => data.Key == key).ToList();
+            if (list.Count() > 0) return true;
         }
         return false;
     }
@@ -71,8 +71,12 @@ public static class SaveSystem
     {
         string directoryPath = Path.Combine(Application.persistentDataPath, "Saves", $"{saveFileName}\\");
         string path = Path.Combine(directoryPath, "thumbnail.png");
-        if (File.Exists(path))
+        if (Directory.Exists(directoryPath))
+        {
+            if (File.Exists(path))
+                File.Delete(path);
             ScreenCapture.CaptureScreenshot(path);
+        }
         else return;
     }
 

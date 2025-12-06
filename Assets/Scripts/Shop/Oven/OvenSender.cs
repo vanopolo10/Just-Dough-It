@@ -8,8 +8,8 @@ public class OvenSender : MonoBehaviour
 {
     [SerializeField] private List<DoughState> _finalStates = new()
     {
-        DoughState.Pirozhok,
-        DoughState.CoolPirozhok,
+        DoughState.SimplePie,
+        DoughState.CoolPie,
         DoughState.HotDog
     };
 

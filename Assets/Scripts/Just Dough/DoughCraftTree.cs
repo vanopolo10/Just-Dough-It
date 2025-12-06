@@ -31,7 +31,7 @@ public static class DoughCraftTree
         Add(DoughState.Flat, DoughCraftAction.RollSheer, DoughState.RoundFlat);
         
         // Сложенное один раз -> ПИРОЖОК (ПКМ)
-        Add(DoughState.FlatFolded, DoughCraftAction.Click, DoughState.Pirozhok);
+        Add(DoughState.FlatFolded, DoughCraftAction.Click, DoughState.SimplePie);
         
         // Сложенное один раз -> Основа для сосиски (ЛКМ)
         Add(DoughState.FlatFolded, DoughCraftAction.Drag, DoughState.HotDogBase);
@@ -40,10 +40,10 @@ public static class DoughCraftTree
         Add(DoughState.HotDogBase, DoughCraftAction.ComboClick, DoughState.HotDog);
         
         // Сложенное один раз -> База для крутого пирожка (ЛКМ против)
-        Add(DoughState.FlatFolded, DoughCraftAction.DragAgainst, DoughState.CoolPirozhokBase);
+        Add(DoughState.FlatFolded, DoughCraftAction.DragAgainst, DoughState.CoolPieBase);
         
         // База для конверта -> КРУТОЙ ПИРОЖОК (ЛКМ против)
-        Add(DoughState.CoolPirozhokBase, DoughCraftAction.ComboClick, DoughState.CoolPirozhok);
+        Add(DoughState.CoolPieBase, DoughCraftAction.ComboClick, DoughState.CoolPie);
     }
 
     public static bool TryGetNext(DoughState current, DoughCraftAction action, out DoughState next)

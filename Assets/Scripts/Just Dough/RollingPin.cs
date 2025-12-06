@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CapsuleCollider))]
 public class RollingPin : MonoBehaviour
@@ -8,15 +7,14 @@ public class RollingPin : MonoBehaviour
     [SerializeField] private float _rotationSmooth = 5f;
     [SerializeField] private float _heightSmooth = 10f;
 
-    private Vector3 _offset;
     private float _zCord;
-    private Vector3 _lastWorldPos;
     private Vector3 _lookDir;
 
     private float _baseY;
     private float _desiredY;
     private bool _isDragging;
-    [SerializeField] private bool _isRolling; //Debug
+    [SerializeField] private bool _isRolling;
+    private bool _dragBlocked;
 
     private Quaternion _targetRotation;
 
@@ -27,31 +25,64 @@ public class RollingPin : MonoBehaviour
         _baseY = transform.position.y;
         _desiredY = _baseY;
         _targetRotation = transform.rotation;
-        _lastWorldPos = transform.position;
     }
+
+    private void OnEnable()
+    {
+        DragCancelService.CancelRequested += OnCancelRequested;
+    }
+
+    private void OnDisable()
+    {
+        DragCancelService.CancelRequested -= OnCancelRequested;
+    }
+
+    private void OnCancelRequested()
+    {
+        if (_isDragging == false && _isRolling == false)
+            return;
+
+        _isDragging = false;
+        _isRolling = false;
+        _desiredY = _baseY;
+        _dragBlocked = true;
+    }
+
     private void OnMouseDown()
     {
+        if (_dragBlocked)
+            return;
+
         _zCord = Camera.main!.WorldToScreenPoint(transform.position).z;
-        _lastWorldPos = transform.position;
 
         _isDragging = true;
-
         _desiredY = _baseY + _raiseBy;
     }
 
     private void OnMouseDrag()
     {
-        _isRolling = Input.GetMouseButton(1);
+        if (_dragBlocked)
+        {
+            if (Input.GetMouseButton(0) == false)
+                _dragBlocked = false;
+
+            return;
+        }
+
+        Vector3 currentPos = transform.position;
+        Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
+        targetPos.y = currentPos.y;
+
+        Vector3 move = targetPos - currentPos;
+
+        bool rightHeld = Input.GetMouseButton(1);
+        _isRolling = _isDragging && rightHeld;
         _desiredY = _isRolling ? _baseY : _baseY + _raiseBy;
 
-        Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
-        targetPos.y = transform.position.y;
-
-        Vector3 move = targetPos - _lastWorldPos;
-
-        if (_isRolling == true && move.sqrMagnitude > 0.00001f)
+        if (_isRolling && move.sqrMagnitude > 0.00001f)
         {
             _lookDir = new Vector3(move.x, 0f, move.z);
+
             if (_lookDir.sqrMagnitude > 0.0001f)
             {
                 _lookDir.Normalize();
@@ -71,14 +102,15 @@ public class RollingPin : MonoBehaviour
             }
         }
 
-        _lastWorldPos = transform.position;
         transform.position = targetPos;
     }
 
     private void OnMouseUp()
     {
         _isDragging = false;
+        _isRolling = false;
         _desiredY = _baseY;
+        _dragBlocked = false;
     }
 
     private void Update()
@@ -87,7 +119,7 @@ public class RollingPin : MonoBehaviour
         float newY = Mathf.Lerp(pos.y, _desiredY, Time.deltaTime * _heightSmooth);
         pos.y = newY;
         transform.position = pos;
-        
+
         if (_isDragging && _isRolling)
         {
             transform.rotation = Quaternion.Slerp(

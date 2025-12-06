@@ -12,22 +12,24 @@ public class InGameUIController : MonoBehaviour
         _cameraController.enabled = true;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Switch();
-        }
-    }
-
     private void Switch()
     {
         _ui.SetActive(!_ui.activeSelf);
         _cameraController.enabled = !_cameraController.enabled;
     }
 
+    private void OnEscape()
+    {
+        Switch();
+    }
+
     public void ExitButton()
     {
-        SceneManager.LoadScene("SampleUI", LoadSceneMode.Single);
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+    }
+
+    public void ChangeLanguage(string code)
+    {
+        LocalizationManager.Instance.ChangeLanguage(code);
     }
 }
