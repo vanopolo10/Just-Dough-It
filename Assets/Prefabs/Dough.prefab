@@ -131,7 +131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6050629272924962633
 Transform:
   m_ObjectHideFlags: 0
@@ -10553,6 +10553,7 @@ GameObject:
   - component: {fileID: 5851999579402795385}
   - component: {fileID: 8480645037499288264}
   - component: {fileID: 1151415356282743025}
+  - component: {fileID: 9058530895685774856}
   m_Layer: 0
   m_Name: Cool Pie
   m_TagString: Untagged
@@ -10608,7 +10609,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 686980241851c5f4fa38ea766b0dbf75, type: 2}
+  - {fileID: 2100000, guid: 2360ef3ddff64ec4586b2dd376ac9727, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10643,12 +10644,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6c4a81d8cf4694c940fe18eec78f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoughBakeManager
-  _rareInSeconds: 3
-  _doneInSeconds: 6
-  _burnInSeconds: 9
-  _rareColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _doneColor: {r: 0.8, g: 0.5, b: 0.2, a: 1}
-  _burnColor: {r: 0, g: 0, b: 0, a: 1}
+  _rareInSeconds: 5
+  _doneInSeconds: 10
+  _burnStartInSeconds: 15
+  _burnFullInSeconds: 20
   _returnDuration: 0.25
 --- !u!64 &1151415356282743025
 MeshCollider:
@@ -10672,6 +10671,23 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -8663802791670341782, guid: caefc8c349968494eaa82e974e51e8bd, type: 3}
+--- !u!114 &9058530895685774856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3743830383059453761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81fb87db6fccb1c4c86c8ffd976828bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BakeVisual
+  _materialIndex: 0
+  _bakeProperty: _bakeBlend
+  _burnProperty: _burnAmount
+  _renderer: {fileID: 5851999579402795385}
+  _bakeManager: {fileID: 8480645037499288264}
 --- !u!1 &3920006915611996932
 GameObject:
   m_ObjectHideFlags: 0
@@ -16819,6 +16835,7 @@ GameObject:
   - component: {fileID: 5330431471112023252}
   - component: {fileID: 4604237382043720982}
   - component: {fileID: 6788419875641340486}
+  - component: {fileID: 8864602513236261472}
   m_Layer: 0
   m_Name: Sosiska
   m_TagString: Untagged
@@ -16854,12 +16871,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6c4a81d8cf4694c940fe18eec78f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoughBakeManager
-  _rareInSeconds: 3
-  _doneInSeconds: 6
-  _burnInSeconds: 9
-  _rareColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _doneColor: {r: 0.8, g: 0.5, b: 0.2, a: 1}
-  _burnColor: {r: 0, g: 0, b: 0, a: 1}
+  _rareInSeconds: 5
+  _doneInSeconds: 10
+  _burnStartInSeconds: 15
+  _burnFullInSeconds: 20
   _returnDuration: 0.25
 --- !u!136 &6788419875641340486
 CapsuleCollider:
@@ -16884,6 +16899,23 @@ CapsuleCollider:
   m_Height: 0.8588016
   m_Direction: 0
   m_Center: {x: 0, y: 0.12, z: 0}
+--- !u!114 &8864602513236261472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435017854399402132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81fb87db6fccb1c4c86c8ffd976828bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BakeVisual
+  _materialIndex: 0
+  _bakeProperty: _bakeBlend
+  _burnProperty: _burnAmount
+  _renderer: {fileID: 4964298179839107424}
+  _bakeManager: {fileID: 4604237382043720982}
 --- !u!1 &6785753512715795416
 GameObject:
   m_ObjectHideFlags: 0
@@ -17398,7 +17430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4133820355778655629
 Transform:
   m_ObjectHideFlags: 0
@@ -17447,7 +17479,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 409af520b4fcfcc4aa83e6aa3e81cb42, type: 2}
+  - {fileID: 2100000, guid: 842275bd59e006442b721ade0ba55041, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22824,6 +22856,7 @@ GameObject:
   - component: {fileID: 5890569011933023115}
   - component: {fileID: 5616201020619735801}
   - component: {fileID: 3986658866840350974}
+  - component: {fileID: 2567585117612482723}
   - component: {fileID: 7985317212980941536}
   m_Layer: 0
   m_Name: Simple Pie
@@ -22841,7 +22874,7 @@ Transform:
   m_GameObject: {fileID: 8698652866831185444}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0664, z: 0}
+  m_LocalPosition: {x: 0, y: 0.0664, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22880,7 +22913,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 686980241851c5f4fa38ea766b0dbf75, type: 2}
+  - {fileID: 2100000, guid: 2360ef3ddff64ec4586b2dd376ac9727, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22915,13 +22948,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6c4a81d8cf4694c940fe18eec78f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoughBakeManager
-  _rareInSeconds: 3
-  _doneInSeconds: 6
-  _burnInSeconds: 9
-  _rareColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _doneColor: {r: 0.8, g: 0.5, b: 0.2, a: 1}
-  _burnColor: {r: 0, g: 0, b: 0, a: 1}
+  _rareInSeconds: 5
+  _doneInSeconds: 10
+  _burnStartInSeconds: 15
+  _burnFullInSeconds: 20
   _returnDuration: 0.25
+--- !u!114 &2567585117612482723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8698652866831185444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81fb87db6fccb1c4c86c8ffd976828bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BakeVisual
+  _materialIndex: 0
+  _bakeProperty: _bakeBlend
+  _burnProperty: _burnAmount
+  _renderer: {fileID: 5616201020619735801}
+  _bakeManager: {fileID: 3986658866840350974}
 --- !u!64 &7985317212980941536
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23847,7 +23895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4002566394627270462, guid: dd6466b7789425141854cce7773bb114, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4720717080918184033, guid: dd6466b7789425141854cce7773bb114, type: 3}
       propertyPath: m_LocalScale.x
@@ -24252,7 +24300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6795827721696767644, guid: 715550f24c157174d8396287bd1b9ef2, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8169332533262233614, guid: 715550f24c157174d8396287bd1b9ef2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -24308,7 +24356,7 @@ PrefabInstance:
     - target: {fileID: 1046695509073958022, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 686980241851c5f4fa38ea766b0dbf75, type: 2}
+      objectReference: {fileID: 2100000, guid: 2360ef3ddff64ec4586b2dd376ac9727, type: 2}
     - target: {fileID: 1530826148038005649, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
       propertyPath: m_Name
       value: Sosiska
@@ -24384,6 +24432,11 @@ PrefabInstance:
       addedObject: {fileID: 6356402952981078606}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
+--- !u!23 &4964298179839107424 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1046695509073958022, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
+  m_PrefabInstance: {fileID: 5359889256853812710}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7893569853502718955 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2876024537080083981, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
@@ -25003,7 +25056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8306852512442829939, guid: be41ce768d1134a4698a6f9d50f3add5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -25108,7 +25161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5194918119980237695, guid: 56042505dd3a6bd4fbb2a72c6eb2e29c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

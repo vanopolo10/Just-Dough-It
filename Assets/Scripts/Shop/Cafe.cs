@@ -65,14 +65,14 @@ public class Cafe : MonoBehaviour
             return;
         }
 
-        DoughBakeManager bakeManagerPrefab = stateVisual.GetComponentInChildren<DoughBakeManager>(true);
+        BakeManager bakeManagerPrefab = stateVisual.GetComponentInChildren<BakeManager>(true);
         if (bakeManagerPrefab == null)
         {
             Debug.LogWarning("[Cafe] No DoughBakeManager on current state visual", stateVisual);
             return;
         }
 
-        DoughBakeManager bakedInstance = _tray.AddDough(bakeManagerPrefab);
+        BakeManager bakedInstance = _tray.AddDough(bakeManagerPrefab);
         if (bakedInstance == null)
         {
             Debug.Log("[Cafe] Tray is full, dough not sent");
