@@ -16,7 +16,7 @@ public class CustomerModel : MonoBehaviour
     private Animator animator;
     public CustomerQuery currentQuery;
     [SerializeField] private List<CustomerQuery> queries;
-    public float initDelay = 2f, finishDelay = 1f, refreshDelay = 3f;
+    [SerializeField] private float initDelay = 2f, finishDelay = 1f, refreshDelay = 3f;
     public TextMeshProUGUI textField;
     public GameObject textBubble;
 

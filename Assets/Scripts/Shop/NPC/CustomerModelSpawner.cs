@@ -33,7 +33,7 @@ public class CustomerModelSpawner : MonoBehaviour
         current = Instantiate(models[index], transform).GetComponent<CustomerModel>();
         current.textBubble = speechBubble;
         current.Begin();
-        comparator.query = current.currentQuery.query;
+        comparator.SetQuery(current.currentQuery.query);
     }
 
 }

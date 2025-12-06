@@ -24,14 +24,21 @@ public struct Query
 }
 public class ProductComparator : MonoBehaviour
 {
-    public Query query;
-    public Product product;
-    public UnityEvent OnAccept = null, OnDecline = null; // кодстайл пускай подождёт
+    [SerializeField] private Query _query;
+    [SerializeField] private Product _product;
+    public UnityEvent OnAccept = null, OnDecline = null;
 
+    public void SetProduct(Product product)
+    {
+        _product = product;
+    }
+    public void SetQuery(Query query)
+    { 
+        _query = query;
+    }
     public void Offer()
     {
-        bool result = query.Check(product);
+        bool result = _query.Check(_product);
         (result ? OnAccept : OnDecline).Invoke();
-        //return result;
     }
 }
