@@ -122,7 +122,7 @@ public static class SaveSystem
         string path = Path.Combine(directoryPath, "save.json");
 
         if (Directory.Exists(directoryPath) == true)
-            DeleteSave(saveFileName);
+            return;
 
         Directory.CreateDirectory(directoryPath);
         GameSave gameState = new(saveFileName);

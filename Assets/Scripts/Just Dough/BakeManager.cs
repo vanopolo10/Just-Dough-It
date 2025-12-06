@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(Collider))]
 public class BakeManager : MonoBehaviour
@@ -29,6 +30,7 @@ public class BakeManager : MonoBehaviour
 
     private bool _isDragging;
     private bool _dragBlocked;
+    private bool _isInReceptionArea;
     private float _dragZ;
     private Vector3 _dragOffset;
 
@@ -36,6 +38,9 @@ public class BakeManager : MonoBehaviour
     private int _imperfectActionCount;
     private DoughState _doughState;
     private FillingType _filling;
+    private Product _product;
+
+    private ProductComparator _productComparator;
 
     public event Action Rare;
     public event Action Done;
@@ -236,6 +241,15 @@ public class BakeManager : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (_isInReceptionArea == true)
+        {
+            if(AttemptDeposit())
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
+
         if (_isOnShelf == false)
         {
             _dragBlocked = false;
@@ -253,6 +267,158 @@ public class BakeManager : MonoBehaviour
 
         if (_shelfAnchor != null)
             StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
+    }
+
+    private bool AttemptDeposit()
+    {
+        return _productComparator.OfferCurrentProduct();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Product Reception Field"))
+        { 
+            _productComparator = other.GetComponentInParent<ProductComparator>();
+            _productComparator.SetProduct(_product);
+            _isInReceptionArea = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Product Reception Field"))
+            _isInReceptionArea = false;
+    }
+
+    public void Setup(Tray tray, Shelf shelf)
+    {
+        _tray = tray;
+        _shelf = shelf;
+        _isOnShelf = false;
+        _shelfAnchor = null;
+    }
+
+    public void OnPlacedOnShelf(Transform anchor)
+    {
+        _isOnShelf = true;
+        _shelfAnchor = anchor;
+    }
+
+    public void OnPlacedOnTray()
+    {
+        _isOnShelf = false;
+        _shelfAnchor = null;
+    }
+
+    public void SetPerfectActionCount(int count)
+    {
+        _perfectActionCount = Mathf.Max(0, count);
+    }
+    
+    public void SetproductFromDoughController(DoughController dough)
+    {
+        Product product;
+        product.filling = dough.Filling;
+
+        ProductType productType;
+        try
+        {
+            productType = (ProductType)Enum.Parse(typeof(ProductType), dough.State.ToString());
+        }
+        catch (Exception)
+        {
+            productType = ProductType.None; //на случай если тип не совпадёт
+        }
+        product.type = productType;
+
+        SetProduct(product);
+    }
+    public void SetProduct(Product product)
+    { 
+        _product = product;
+    }
+
+    private void OnCancelRequested()
+    {
+        if (_isOnShelf == false || _isDragging == false)
+            return;
+
+        _isDragging = false;
+        _dragBlocked = true;
+
+        if (_shelfAnchor != null)
+            StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
+    }
+
+    public void BeginBake()
+    {
+        if (_bakeRoutine != null)
+            return;
+
+        _bakeRoutine = StartCoroutine(BakeRoutine());
+    }
+
+    public void StopBake()
+    {
+        if (_bakeRoutine == null)
+            return;
+
+        StopCoroutine(_bakeRoutine);
+        _bakeRoutine = null;
+    }
+
+    private IEnumerator BakeRoutine()
+    {
+        _secondsInOven = 0;
+        BakeState = BakeState.Raw;
+
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            _secondsInOven++;
+            CheckState();
+        }
+    }
+
+    private void CheckState()
+    {
+        if (_secondsInOven == _rareInSeconds)
+        {
+            BakeState = BakeState.Rare;
+            ApplyColor(_rareColor);
+            Rare?.Invoke();
+        }
+        else if (_secondsInOven == _doneInSeconds)
+        {
+            BakeState = BakeState.Done;
+            ApplyColor(_doneColor);
+            Done?.Invoke();
+        }
+        else if (_secondsInOven == _burnInSeconds)
+        {
+            BakeState = BakeState.Burn;
+            ApplyColor(_burnColor);
+            Burn?.Invoke();
+        }
+    }
+
+    private void ApplyColor(Color color)
+    {
+        if (_meshRenderers == null)
+            return;
+
+        foreach (MeshRenderer r in _meshRenderers)
+        {
+            if (!r)
+                continue;
+
+            Material[] mats = r.materials;
+
+            foreach (Material m in mats)
+            {
+                if (m)
+                    m.color = color;
+            }
+        }
     }
 
     private void StartShelfDrag()

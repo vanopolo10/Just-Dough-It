@@ -13,10 +13,21 @@ public class SaveManager : MonoBehaviour
         Cafe.Instance.SetVibeLevel(vibe);
     }
 
-    public void SaveGame()
+    public void Autosave()
     {
-        SaveSystem.SaveImage(SaveSystem.SelectedSave);
-        SaveSystem.SaveData(SaveSystem.SelectedSave, "CameraViewID", _cameraController.ViewID);
-        SaveSystem.SaveData(SaveSystem.SelectedSave, "VibeLevel", Cafe.Instance.VibeLevel);
+        Save("Autosave");
+    }
+
+    public void SaveGame(string saveName)
+    {
+        Save(saveName);
+    }
+
+    private void Save(string saveName)
+    {
+        SaveSystem.CreateSave(saveName);
+        SaveSystem.SaveImage(saveName);
+        SaveSystem.SaveData(saveName, "CameraViewID", _cameraController.ViewID);
+        SaveSystem.SaveData(saveName, "VibeLevel", Cafe.Instance.VibeLevel);
     }
 }
