@@ -4,7 +4,5 @@ public enum FillingType
     Meat,
 
     //нет начинки
-    None,
-    //любая начинка (для запросов)
-    Any
+    None
 }
