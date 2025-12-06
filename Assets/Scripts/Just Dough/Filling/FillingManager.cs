@@ -30,9 +30,7 @@ public class FillingManager : MonoBehaviour
             return;
         
         foreach (FillingDisplay display in _displays)
-        {
             display.Display.SetActive(display.Type == _controller.Filling);
-        }
     }
     
     [Serializable]

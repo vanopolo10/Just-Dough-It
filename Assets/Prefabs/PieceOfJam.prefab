@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8992341886903829017
+--- !u!1 &7629829647160393101
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7110192894586386818}
-  - component: {fileID: 254404291195706681}
-  - component: {fileID: 6878446227123555299}
-  - component: {fileID: 255067069634736612}
-  - component: {fileID: 4468573181641803232}
+  - component: {fileID: 6277286926112633019}
+  - component: {fileID: 1582755362496841211}
+  - component: {fileID: 8638123200334860647}
+  - component: {fileID: -5928775330738310672}
+  - component: {fileID: 5237403070069521052}
   m_Layer: 0
-  m_Name: MeatFilling
+  m_Name: PieceOfJam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7110192894586386818
+--- !u!4 &6277286926112633019
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8992341886903829017}
+  m_GameObject: {fileID: 7629829647160393101}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.33949327, y: 2.55, z: 6.0571976}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
-  m_ConstrainProportionsScale: 1
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &254404291195706681
+--- !u!33 &1582755362496841211
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8992341886903829017}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &6878446227123555299
+  m_GameObject: {fileID: 7629829647160393101}
+  m_Mesh: {fileID: -809343831378959908, guid: b14da1d74ecb34848a8f360314a61205, type: 3}
+--- !u!23 &8638123200334860647
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8992341886903829017}
+  m_GameObject: {fileID: 7629829647160393101}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 99f1f09426985a04d83dd0fe53e85d20, type: 2}
+  - {fileID: 2100000, guid: 20ed670434289db4583faee316a197c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,26 +91,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &255067069634736612
-MonoBehaviour:
+--- !u!64 &-5928775330738310672
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8992341886903829017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4023212c33c9e9b4abb3772a635aa46e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Filling
-  _type: 1
---- !u!136 &4468573181641803232
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8992341886903829017}
+  m_GameObject: {fileID: 7629829647160393101}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -122,8 +109,20 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -809343831378959908, guid: b14da1d74ecb34848a8f360314a61205, type: 3}
+--- !u!114 &5237403070069521052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7629829647160393101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4023212c33c9e9b4abb3772a635aa46e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Filling
+  _type: 0

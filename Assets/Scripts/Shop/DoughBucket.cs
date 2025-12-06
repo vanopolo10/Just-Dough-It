@@ -101,7 +101,7 @@ public class DoughBucket : MonoBehaviour
         if (inside == false)
             return;
 
-        SetDough(null);
         Destroy(_currentDough.gameObject);
+        SetDough(null);
     }
 }

@@ -3,52 +3,63 @@ using UnityEngine;
 
 public class Filling : MonoBehaviour
 {
+    [SerializeField] private FillingType _type;
+
     private Vector3 _offset;
     private float _zCord;
     private bool _mouseHeld;
     private bool _isDragging;
-
-    [SerializeField] private FillingType _type;
-    [SerializeField] private GameObject splatter;
-
-    public FillingType Type => _type;
-    public bool IsDragging => _isDragging;
-
-    public event Action DragStarted;
-    public event Action DragEnded;
-
-    private FillingManager _manager = null;
-    private Vector3 _homePosition;
+    private bool _dragBlocked;
+    
+    private FillingManager _manager;
     private MeshRenderer _renderer;
+
+    public event Action Destroyed;
 
     private void Start()
     {
-        _homePosition = transform.position;
         _renderer = GetComponent<MeshRenderer>();
     }
+    
+    private void OnEnable()
+    {
+        DragCancelService.CancelRequested += OnCancelRequested;
+    }
+
+    private void OnDisable()
+    {
+        DragCancelService.CancelRequested -= OnCancelRequested;
+    }
+    
     public void OnTriggerEnter(Collider other)
     {
         Debug.Log("Filling entered trigger");
-        if (other.gameObject.TryGetComponent<FillingManager>(out _manager))
+        
+        if (other.gameObject.TryGetComponent(out _manager))
             Debug.Log("Filling area entered");
     }
+    
     public void OnTriggerExit(Collider other)
     {
         _manager = null;
     }
+    
     private void OnMouseDrag()
     {
+        if (_dragBlocked)
+        {
+            if (Input.GetMouseButton(0) == false && Input.GetMouseButton(1) == false)
+                _dragBlocked = false;
+
+            return;
+        }
+        
         bool isHeldNow = Input.GetMouseButton(0);
 
         if (isHeldNow == false)
         {
-            if (_isDragging)
-            {
-                _isDragging = false;
-                DragEnded?.Invoke();
-            }
-
             _mouseHeld = false;
+            _isDragging = false;
             return;
         }
 
@@ -57,26 +68,37 @@ public class Filling : MonoBehaviour
             _zCord = Camera.main!.WorldToScreenPoint(transform.position).z;
             _offset = transform.position - Utils.GetMouseWorldPos(_zCord);
             _mouseHeld = true;
-        }
-
-        if (_isDragging == false)
-        {
             _isDragging = true;
-            DragStarted?.Invoke();
         }
 
         Vector3 targetPos = Utils.GetMouseWorldPos(_zCord) + _offset;
         targetPos.y = transform.position.y;
         transform.position = targetPos;
-        _renderer.enabled = true;
+
+        if (_renderer != null)
+            _renderer.enabled = true;
     }
 
     private void OnMouseUp()
     {
-        if(_manager != null) 
-            _manager.SetFilling(_type);
+        _mouseHeld = false;
+        _isDragging = false;
 
-        _renderer.enabled = false;
-        transform.position = _homePosition;
+        if (_manager == null)
+            return;
+        
+        _manager.SetFilling(_type);
+        Destroyed?.Invoke();
+        Destroy(gameObject);
+    }
+    
+    private void OnCancelRequested()
+    {
+        if (_isDragging == false)
+            return;
+
+        _isDragging = false;
+        _mouseHeld = false;
+        _dragBlocked = true;
     }
 }

@@ -36,12 +36,6 @@ public class CraftZone : MonoBehaviour,
     [Header("Комбо")]
     [SerializeField] private bool _isComboZone = false;
 
-    [Header("Визуал")]
-    [SerializeField] private Image _image;
-    [SerializeField] private Color _defaultColor = new(1f, 1f, 1f, 0.1f);
-    [SerializeField] private Color _pressedColor;
-    [SerializeField] private Color _hoverColor = new(1f, 0.9f, 0.4f, 0.4f);
-
     [Header("Идеальные зоны")]
     [SerializeField] private RectTransform _perfectClickArea;
     [SerializeField] private RectTransform _perfectDragArea;
@@ -61,38 +55,8 @@ public class CraftZone : MonoBehaviour,
     {
         _rectTransform = GetComponent<RectTransform>();
 
-        if (_image == null)
-            _image = GetComponent<Image>();
-
-        if (_image != null)
-        {
-            _image.raycastTarget = true;
-            _image.color = _defaultColor;
-        }
-
         if (_controller == null)
             _controller = GetComponentInParent<DoughController>();
-    }
-
-    private void OnValidate()
-    {
-        if (_image == null)
-            _image = GetComponent<Image>();
-
-        if (_image != null)
-            _image.color = _defaultColor;
-    }
-
-    public void SetColor(Color color)
-    {
-        if (_image != null)
-            _image.color = color;
-    }
-
-    public void SetVisible(bool value)
-    {
-        if (_image != null)
-            _image.enabled = value;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -125,11 +89,7 @@ public class CraftZone : MonoBehaviour,
     {
         _comboUsed = true;
 
-        if (_image != null)
-        {
-            _image.raycastTarget = false;
-            _image.enabled = false;
-        }
+        gameObject.SetActive(false);
     }
 
     public void OnPointerDown(PointerEventData eventData)

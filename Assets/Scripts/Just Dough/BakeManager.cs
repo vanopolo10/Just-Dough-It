@@ -56,6 +56,18 @@ public class BakeManager : MonoBehaviour
     public float CurrentBakeBlend { get; private set; }
     public float CurrentBurnAmount { get; private set; }
 
+    private void Awake()
+    {
+        _timeInOven = 0f;
+        BakeState = BakeState.Raw;
+        CurrentBakeBlend = 0f;
+        CurrentBurnAmount = 0f;
+
+        _invokedRare = false;
+        _invokedDone = false;
+        _invokedBurn = false;
+    }
+
     private void OnEnable()
     {
         DragCancelService.CancelRequested += OnCancelRequested;
@@ -71,97 +83,9 @@ public class BakeManager : MonoBehaviour
             _bakeRoutine = null;
         }
     }
-    
-    private void OnMouseDown()
-    {
-        if (_dragBlocked)
-            return;
-
-        if (_isOnShelf)
-        {
-            StartShelfDrag();
-            return;
-        }
-
-        if (_tray == null || _shelf == null)
-            return;
-
-        if (_tray.IsInOven || _tray.IsMoving)
-            return;
-
-        if (BakeState == BakeState.Raw)
-            return;
-
-        if (_tray.TryTakeBun(this, out BakeManager taken) == false)
-            return;
-
-        taken.StopBake();
-        _shelf.Place(taken);
-
-        Debug.Log(
-            $"[BakeManager] perfect={_perfectActionCount}, imperfect={_imperfectActionCount}, " +
-            $"doughState={_doughState}, filling={_filling}, bakeState={BakeState}"
-        );
-    }
-
-    private void OnMouseDrag()
-    {
-        if (_isOnShelf == false || _isDragging == false)
-            return;
-
-        if (_dragBlocked)
-        {
-            if (Input.GetMouseButton(0) == false)
-                _dragBlocked = false;
-
-            return;
-        }
-
-        Vector3 worldPos = GetMouseWorldPos();
-        transform.position = worldPos + _dragOffset;
-    }
-
-    private void OnMouseUp()
-    {
-        if (_isInReceptionArea)
-        {
-            if (AttemptDeposit())
-            {
-                Destroy(gameObject);
-                return;
-            }
-        }
-
-        if (_isOnShelf == false)
-        {
-            _dragBlocked = false;
-            return;
-        }
-
-        if (_isDragging == false)
-        {
-            _dragBlocked = false;
-            return;
-        }
-
-        _isDragging = false;
-        _dragBlocked = false;
-
-        if (_shelfAnchor != null)
-            StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
-    }
-
 
     private IEnumerator BakeRoutine()
     {
-        _timeInOven = 0f;
-        _invokedRare = false;
-        _invokedDone = false;
-        _invokedBurn = false;
-        BakeState = BakeState.Raw;
-        CurrentBakeBlend = 0f;
-        CurrentBurnAmount = 0f;
-
         while (true)
         {
             _timeInOven += Time.deltaTime;
@@ -279,7 +203,7 @@ public class BakeManager : MonoBehaviour
         _filling = filling;
     }
 
-    public void SetproductFromDoughController(DoughController dough)
+    public void SetProductFromDoughController(DoughController dough)
     {
         Product product;
         product.filling = dough.Filling;
@@ -304,6 +228,85 @@ public class BakeManager : MonoBehaviour
         _product = product;
     }
     
+    private void OnMouseDown()
+    {
+        if (_dragBlocked)
+            return;
+
+        if (_isOnShelf)
+        {
+            StartShelfDrag();
+            return;
+        }
+
+        if (_tray == null || _shelf == null)
+            return;
+
+        if (_tray.IsInOven || _tray.IsMoving)
+            return;
+
+        if (BakeState == BakeState.Raw)
+            return;
+
+        if (_tray.TryTakeBun(this, out BakeManager taken) == false)
+            return;
+
+        taken.StopBake();
+        _shelf.Place(taken);
+
+        Debug.Log(
+            $"[BakeManager] perfect={_perfectActionCount}, imperfect={_imperfectActionCount}, " +
+            $"doughState={_doughState}, filling={_filling}, bakeState={BakeState}"
+        );
+    }
+
+    private void OnMouseDrag()
+    {
+        if (_isOnShelf == false || _isDragging == false)
+            return;
+
+        if (_dragBlocked)
+        {
+            if (Input.GetMouseButton(0) == false)
+                _dragBlocked = false;
+
+            return;
+        }
+
+        Vector3 worldPos = GetMouseWorldPos();
+        transform.position = worldPos + _dragOffset;
+    }
+
+    private void OnMouseUp()
+    {
+        if (_isInReceptionArea)
+        {
+            if (AttemptDeposit())
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
+
+        if (_isOnShelf == false)
+        {
+            _dragBlocked = false;
+            return;
+        }
+
+        if (_isDragging == false)
+        {
+            _dragBlocked = false;
+            return;
+        }
+
+        _isDragging = false;
+        _dragBlocked = false;
+
+        if (_shelfAnchor != null)
+            StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
+    }
+
     private bool AttemptDeposit()
     {
         if (_productComparator == null)

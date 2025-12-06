@@ -2,17 +2,25 @@ using UnityEngine;
 
 public class Dispenser : MonoBehaviour
 {
-    [SerializeField] private GameObject _dispensedPrefab;
+    [SerializeField] private Filling _dispensedPrefab;
+    [SerializeField] private Vector3 _spawnPoint;
+
+    private bool _canSpawn = true;
+    private Filling _filling;
     
     private void OnMouseDown()
     {
+        if (_canSpawn == false)
+            return;
         
-        GameObject spawnedPrefab = Instantiate(_dispensedPrefab, transform.position, transform.rotation);
-        
-        float zCord = Camera.main!.WorldToScreenPoint(transform.position).z;
-        Vector3 targetPos = Utils.GetMouseWorldPos(zCord);
-        
-        targetPos.y = transform.position.y + 0.5f;
-        spawnedPrefab.transform.position = targetPos;
+        _filling = Instantiate(_dispensedPrefab, _spawnPoint, transform.rotation);
+        _filling.Destroyed += OnFillingDestroyed;
+        _canSpawn = false;
+    }
+
+    private void OnFillingDestroyed()
+    {
+        _filling.Destroyed -= OnFillingDestroyed;
+        _canSpawn = true;
     }
 }
