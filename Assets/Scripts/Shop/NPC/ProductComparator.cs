@@ -41,6 +41,10 @@ public class ProductComparator : MonoBehaviour
         bool result = _query.Check(_product);
         (result ? OnAccept : OnDecline).Invoke();
 
+        // костыль потому что ивент не принимает enum
+        if (result)
+            QuestSystem.Instance.InvokeQuest(QuestInvokeType.SaleMade);
+
         return result;
     }
 }
