@@ -80,6 +80,7 @@ public class Cafe : MonoBehaviour
         }
 
         bakedInstance.SetPerfectActionCount(dough.PerfectActionCount);
+        bakedInstance.SetproductFromDoughController(dough);
 
         if (_doughBucket != null)
             _doughBucket.SetDough(null);
