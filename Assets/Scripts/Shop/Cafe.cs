@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
 
-[DisallowMultipleComponent] [DefaultExecutionOrder(-1000)]
+[DisallowMultipleComponent]
+[DefaultExecutionOrder(-1000)]
 public class Cafe : MonoBehaviour
 {
     public static Cafe Instance = null;
@@ -65,14 +66,14 @@ public class Cafe : MonoBehaviour
             return;
         }
 
-        DoughBakeManager bakeManagerPrefab = stateVisual.GetComponentInChildren<DoughBakeManager>(true);
+        BakeManager bakeManagerPrefab = stateVisual.GetComponentInChildren<BakeManager>(true);
         if (bakeManagerPrefab == null)
         {
             Debug.LogWarning("[Cafe] No DoughBakeManager on current state visual", stateVisual);
             return;
         }
 
-        DoughBakeManager bakedInstance = _tray.AddDough(bakeManagerPrefab);
+        BakeManager bakedInstance = _tray.AddDough(bakeManagerPrefab);
         if (bakedInstance == null)
         {
             Debug.Log("[Cafe] Tray is full, dough not sent");
@@ -80,6 +81,9 @@ public class Cafe : MonoBehaviour
         }
 
         bakedInstance.SetPerfectActionCount(dough.PerfectActionCount);
+        bakedInstance.SetImperfectActionCount(dough.ImperfectActionCount);
+        bakedInstance.SetDoughInfo(dough.State, dough.Filling);
+        bakedInstance.SetproductFromDoughController(dough);
 
         if (_doughBucket != null)
             _doughBucket.SetDough(null);

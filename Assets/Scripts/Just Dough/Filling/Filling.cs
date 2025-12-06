@@ -9,6 +9,7 @@ public class Filling : MonoBehaviour
     private bool _isDragging;
 
     [SerializeField] private FillingType _type;
+    [SerializeField] private GameObject splatter;
 
     public FillingType Type => _type;
     public bool IsDragging => _isDragging;
@@ -17,7 +18,14 @@ public class Filling : MonoBehaviour
     public event Action DragEnded;
 
     private FillingManager _manager = null;
+    private Vector3 _homePosition;
+    private MeshRenderer _renderer;
 
+    private void Start()
+    {
+        _homePosition = transform.position;
+        _renderer = GetComponent<MeshRenderer>();
+    }
     public void OnTriggerEnter(Collider other)
     {
         Debug.Log("Filling entered trigger");
@@ -60,6 +68,7 @@ public class Filling : MonoBehaviour
         Vector3 targetPos = Utils.GetMouseWorldPos(_zCord) + _offset;
         targetPos.y = transform.position.y;
         transform.position = targetPos;
+        _renderer.enabled = true;
     }
 
     private void OnMouseUp()
@@ -67,6 +76,7 @@ public class Filling : MonoBehaviour
         if(_manager != null) 
             _manager.SetFilling(_type);
 
-        Destroy(gameObject);
+        _renderer.enabled = false;
+        transform.position = _homePosition;
     }
 }

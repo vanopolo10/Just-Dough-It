@@ -23,17 +23,18 @@ public class DoughController : MonoBehaviour
     private bool _rollFromAlongSide;
     private bool _lastActionPerfect;
     private int _perfectActionCount;
+    private int _imperfectActionCount;
 
     public FillingType Filling => _filling;
 
     public event Action StateChanged;
-    public event Action<DoughCraftAction, bool> ActionApplied;
 
     public DoughState OldState { get; private set; }
     public DoughState State { get; private set; }
 
     public bool LastActionPerfect => _lastActionPerfect;
     public int PerfectActionCount => _perfectActionCount;
+    public int ImperfectActionCount => _imperfectActionCount;
 
     private void Awake()
     {
@@ -43,6 +44,7 @@ public class DoughController : MonoBehaviour
         State = _startState;
         OldState = State;
         _perfectActionCount = 0;
+        _imperfectActionCount = 0;
     }
 
     private void Start()
@@ -122,15 +124,33 @@ public class DoughController : MonoBehaviour
 
     public bool ApplyAction(DoughCraftAction action, CraftZone craftZone = null, bool isPerfect = false)
     {
-        if (craftZone != null && craftZone.IsComboZone)
+        bool isComboZoneAction = craftZone != null && craftZone.IsComboZone;
+
+        if (isComboZoneAction)
         {
             action = DoughCraftAction.ComboClick;
-            _comboZones[craftZone] = true;
 
-            if (_comboZones.Values.Any(b => b == false))
-                return false;
+            if (_comboZones.ContainsKey(craftZone))
+                _comboZones[craftZone] = true;
 
-            isPerfect = false;
+            _lastActionPerfect = isPerfect;
+
+            if (isPerfect)
+                _perfectActionCount++;
+            else
+                _imperfectActionCount++;
+
+            bool comboComplete = _comboZones.Values.All(b => b);
+
+            Debug.Log(
+                $"[DoughController] ComboClick zone={craftZone.name}, " +
+                $"perfect={isPerfect}, perfectTotal={_perfectActionCount}, " +
+                $"imperfectTotal={_imperfectActionCount}, comboComplete={comboComplete}, " +
+                $"state={State}, filling={_filling}"
+            );
+            
+            if (comboComplete == false)
+                return true;
         }
 
         if (DoughCraftTree.TryGetNext(State, action, out var next) == false)
@@ -146,17 +166,31 @@ public class DoughController : MonoBehaviour
         State = next;
         _lastActionPerfect = isPerfect;
 
-        if (isPerfect)
-            _perfectActionCount++;
+        bool isRollingAction = action == DoughCraftAction.Roll || action == DoughCraftAction.RollSheer;
+
+        if (!isComboZoneAction)
+        {
+            if (isPerfect)
+            {
+                _perfectActionCount++;
+            }
+            else if (!isRollingAction)
+            {
+                _imperfectActionCount++;
+            }
+        }
 
         if (State is DoughState.Flat or DoughState.LongFlat)
             transform.rotation = _rollRotation;
 
-        Debug.Log($"[DoughController] {OldState} --{action}--> {next}, perfect={isPerfect}, totalPerfect={_perfectActionCount}");
+        Debug.Log(
+            $"[DoughController] {OldState} --{action}--> {next}, " +
+            $"perfectTotal={_perfectActionCount}, imperfectTotal={_imperfectActionCount}, " +
+            $"state={State}, filling={_filling}"
+        );
 
         ResetBunCombo();
         StateChanged?.Invoke();
-        ActionApplied?.Invoke(action, isPerfect);
 
         return true;
     }
@@ -168,7 +202,10 @@ public class DoughController : MonoBehaviour
         _lastActionPerfect = false;
 
         if (doughState == DoughState.Raw)
+        {
             _perfectActionCount = 0;
+            _imperfectActionCount = 0;
+        }
 
         ResetBunCombo();
         StateChanged?.Invoke();

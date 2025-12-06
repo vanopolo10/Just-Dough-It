@@ -6,29 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Tray : MonoBehaviour
 {
-    [System.Serializable]
-    private class TraySlot
-    {
-        [SerializeField] private Transform _anchor;
-        private DoughBakeManager _bun;
-
-        public Transform Anchor => _anchor;
-        public DoughBakeManager Bun => _bun;
-        public bool IsEmpty => _bun == null;
-
-        public void SetBun(DoughBakeManager bun)
-        {
-            _bun = bun;
-        }
-
-        public DoughBakeManager Clear()
-        {
-            DoughBakeManager result = _bun;
-            _bun = null;
-            return result;
-        }
-    }
-
     [Header("Движение подноса")]
     [SerializeField] private Vector3 _outsidePoint;
     [SerializeField] private Vector3 _insidePoint;
@@ -86,7 +63,7 @@ public class Tray : MonoBehaviour
             MoveTo(_insidePoint, true);
     }
 
-    public DoughBakeManager AddDough(DoughBakeManager prefab)
+    public BakeManager AddDough(BakeManager prefab)
     {
         if (prefab == null)
             return null;
@@ -96,7 +73,7 @@ public class Tray : MonoBehaviour
         if (freeSlot == null)
             return null;
 
-        DoughBakeManager instance = Instantiate(
+        BakeManager instance = Instantiate(
             prefab,
             freeSlot.Anchor.position,
             freeSlot.Anchor.rotation,
@@ -126,12 +103,12 @@ public class Tray : MonoBehaviour
         return instance;
     }
 
-    public IEnumerable<DoughBakeManager> TakeAll()
+    public IEnumerable<BakeManager> TakeAll()
     {
         return from t in _slots where t.Bun != null select t.Clear();
     }
 
-    public bool TryTakeBun(DoughBakeManager bun, out DoughBakeManager taken)
+    public bool TryTakeBun(BakeManager bun, out BakeManager taken)
     {
         taken = null;
 
@@ -180,5 +157,28 @@ public class Tray : MonoBehaviour
         _isInOven = toOven;
         _isMoving = false;
         _moveRoutine = null;
+    }
+    
+    [System.Serializable]
+    private class TraySlot
+    {
+        [SerializeField] private Transform _anchor;
+        private BakeManager _bun;
+
+        public Transform Anchor => _anchor;
+        public BakeManager Bun => _bun;
+        public bool IsEmpty => _bun == null;
+
+        public void SetBun(BakeManager bun)
+        {
+            _bun = bun;
+        }
+
+        public BakeManager Clear()
+        {
+            BakeManager result = _bun;
+            _bun = null;
+            return result;
+        }
     }
 }

@@ -14,13 +14,10 @@ public class CraftZone : MonoBehaviour,
     IDragHandler
 {
     [Serializable]
-    private class DragRule
+    private struct DragRule
     {
-        [SerializeField] private CraftZone _fromCraftZone;
-        [SerializeField] private DoughCraftAction _action;
-
-        public CraftZone FromCraftZone => _fromCraftZone;
-        public DoughCraftAction Action => _action;
+        public CraftZone EndZone;
+        public DoughCraftAction Action;
     }
 
     [Header("Контроллер крафта")]
@@ -56,6 +53,7 @@ public class CraftZone : MonoBehaviour,
     private RectTransform _rectTransform;
     private bool _isPointerOver;
     private bool _isPressed;
+    private bool _comboUsed;
 
     public bool IsComboZone => _isComboZone;
 
@@ -111,10 +109,27 @@ public class CraftZone : MonoBehaviour,
         if (eventData.button != PointerEventData.InputButton.Right)
             return;
 
+        if (_isComboZone && _comboUsed)
+            return;
+
         bool isPerfect = IsInPerfectClickArea(eventData);
 
         bool applied = _controller.ApplyAction(_rightClickAction, this, isPerfect);
         Debug.Log($"[CraftZone] RightClick {name}, action={_rightClickAction}, perfect={isPerfect}, applied={applied}");
+
+        if (_isComboZone && applied)
+            DisableComboZone();
+    }
+
+    private void DisableComboZone()
+    {
+        _comboUsed = true;
+
+        if (_image != null)
+        {
+            _image.raycastTarget = false;
+            _image.enabled = false;
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -126,7 +141,7 @@ public class CraftZone : MonoBehaviour,
 
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
-        
+
         _dragStartZone = this;
         _dragActive = true;
         _dragPerfect = IsInPerfectDragArea(eventData);
@@ -142,23 +157,33 @@ public class CraftZone : MonoBehaviour,
         if (_dragActive == false || _dragStartZone == null || _dragStartZone == this || !Input.GetMouseButton(0))
             return;
 
+        DoughCraftAction action = DoughCraftAction.None;
+
+        foreach (DragRule rule in _dragRules)
+        {
+            if (rule.EndZone == _dragStartZone)
+            {
+                action = rule.Action;
+                break;
+            }
+        }
+
+        if (action == DoughCraftAction.None)
+            return;
+
         bool isPerfect = _dragPerfect;
+        bool applied = _controller.ApplyAction(action, this, isPerfect);
+        Debug.Log($"[CraftZone] Drag {name}, action={action}, perfect={isPerfect}, applied={applied}");
 
-        HandleDragFrom(_dragStartZone, isPerfect);
-        ClearDrag();
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        _isPointerOver = false;
+        _dragActive = false;
+        _dragStartZone = null;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         _isPressed = false;
-
-        if (_dragActive && eventData.button == PointerEventData.InputButton.Left)
-            ClearDrag();
+        _dragActive = false;
+        _dragStartZone = null;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -172,47 +197,10 @@ public class CraftZone : MonoBehaviour,
         if (_dragPerfect == false)
             return;
 
-        if (Input.GetMouseButton(0) == false)
-            return;
-
         if (IsInPerfectDragArea(eventData))
             return;
 
         _dragPerfect = false;
-    }
-
-    private static void ClearDrag()
-    {
-        _dragStartZone = null;
-        _dragActive = false;
-        _dragPerfect = false;
-    }
-
-    private void HandleDragFrom(CraftZone fromZone, bool isPerfect)
-    {
-        if (fromZone == null || _controller == null)
-            return;
-
-        foreach (DragRule rule in _dragRules)
-        {
-            if (rule == null)
-                continue;
-
-            if (rule.FromCraftZone != fromZone) 
-                continue;
-            
-            DoughCraftAction action = rule.Action;
-            
-            if (action == DoughCraftAction.None)
-                continue;
-
-            bool applied = _controller.ApplyAction(action, this, isPerfect);
-            Debug.Log($"[CraftZone] Drag {fromZone.name} -> {name}, action={action}, perfect={isPerfect}, applied={applied}");
-            
-            return;
-        }
-
-        Debug.Log($"[CraftZone] No drag rule for {fromZone.name} -> {name}");
     }
 
     private bool IsInPerfectClickArea(PointerEventData eventData)

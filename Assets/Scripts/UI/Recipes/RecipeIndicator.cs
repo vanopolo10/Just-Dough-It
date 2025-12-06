@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RecipeIndicator : MonoBehaviour
@@ -7,8 +8,8 @@ public class RecipeIndicator : MonoBehaviour
     [Serializable]
     protected struct IndicatorGroup 
     {
-        public ProductType type;
-        public List<GameObject> indicators;
+        public ProductType Type;
+        public List<GameObject> Indicators;
     }
 
     [SerializeField] private List<IndicatorGroup> _indicatorGroups;
@@ -21,19 +22,27 @@ public class RecipeIndicator : MonoBehaviour
             _manager = FindFirstObjectByType<RecipeManager>();
             _manager.OnActiveRecipeChanged.AddListener(UpdateVisibility);
         }
+        
         UpdateVisibility();
     }
 
     private void UpdateVisibility() 
     {
+        var allIndicators = new HashSet<GameObject>();
+        var indicatorsToShow = new HashSet<GameObject>();
+
         foreach (IndicatorGroup group in _indicatorGroups)
-        { 
-            bool groupVisibility = group.type == _manager.CurrentRecipeType;
+        {
+            foreach (var indicator in group.Indicators.Where(indicator => indicator != null))
+            {
+                allIndicators.Add(indicator);
 
-            foreach (GameObject indicator in group.indicators)
-                indicator.SetActive(groupVisibility);
-
-            Debug.Log("visibility of type " + group.type + " updated to " + groupVisibility);
+                if (group.Type == _manager.CurrentRecipeType)
+                    indicatorsToShow.Add(indicator);
+            }
         }
+
+        foreach (var indicator in allIndicators.Where(indicator => indicator != null))
+            indicator.SetActive(indicatorsToShow.Contains(indicator));
     }
 }

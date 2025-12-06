@@ -5,15 +5,15 @@ public class Shelf : MonoBehaviour
 {
     [SerializeField] private List<Transform> _places = new();
 
-    private readonly Queue<DoughBakeManager> _queue = new();
-    private DoughBakeManager[] _occupied;
+    private readonly Queue<BakeManager> _queue = new();
+    private BakeManager[] _occupied;
 
     private void Awake()
     {
-        _occupied = new DoughBakeManager[_places.Count];
+        _occupied = new BakeManager[_places.Count];
     }
 
-    public void Place(DoughBakeManager bun)
+    public void Place(BakeManager bun)
     {
         if (bun == null)
             return;
@@ -31,7 +31,7 @@ public class Shelf : MonoBehaviour
         }
     }
 
-    public void Remove(DoughBakeManager bun)
+    public void Remove(BakeManager bun)
     {
         if (bun == null)
             return;
@@ -61,7 +61,7 @@ public class Shelf : MonoBehaviour
         return -1;
     }
 
-    private void PutToSlot(int index, DoughBakeManager bun)
+    private void PutToSlot(int index, BakeManager bun)
     {
         _occupied[index] = bun;
 
@@ -82,7 +82,7 @@ public class Shelf : MonoBehaviour
     {
         while (_queue.Count > 0)
         {
-            DoughBakeManager next = _queue.Dequeue();
+            BakeManager next = _queue.Dequeue();
             if (next == null)
                 continue;
 
