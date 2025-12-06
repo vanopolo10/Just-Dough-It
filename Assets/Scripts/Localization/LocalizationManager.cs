@@ -21,6 +21,7 @@ public class LocalizationManager : MonoBehaviour
         TypeNameHandling = TypeNameHandling.Auto,
         Formatting = Formatting.Indented
     };
+    
     private void Awake()
     {
         if (Instance == null) Instance = this;

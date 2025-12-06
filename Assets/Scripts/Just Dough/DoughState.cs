@@ -11,13 +11,13 @@ public enum DoughState
     // Ветка Flat
     FlatFolded,
     
-    Pirozhok,
+    SimplePie,
     
     HotDogBase,
     HotDog,
     
-    CoolPirozhokBase,
-    CoolPirozhok
+    CoolPieBase,
+    CoolPie
     
     //Дальше ветки...
 }

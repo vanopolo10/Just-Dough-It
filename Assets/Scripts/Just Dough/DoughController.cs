@@ -5,31 +5,35 @@ using UnityEngine;
 using JustDough;
 
 [DisallowMultipleComponent]
-[RequireComponent(typeof(DoughVisualSwitcher),typeof(DoughDrag), typeof(DoughBakeManager))]
+[RequireComponent(typeof(DoughVisualSwitcher), typeof(DoughDrag))]
 [RequireComponent(typeof(Collider))]
 public class DoughController : MonoBehaviour
 {
     [Header("Состояния теста")]
     [SerializeField] private DoughState _startState = DoughState.Raw;
     [SerializeField] private DoughVisualSwitcher _doughVisualSwitcher;
-    [SerializeField] private FillingType filling = FillingType.None;
+    [SerializeField] private FillingType _filling = FillingType.None;
 
     private readonly Dictionary<CraftZone, bool> _comboZones = new();
 
     private bool _canRoll = true;
-    
     private Vector3 _rollEnterLocalPos;
     private Quaternion _rollRotation;
     private bool _isRollingInside;
     private bool _rollFromAlongSide;
+    private bool _lastActionPerfect;
+    private int _perfectActionCount;
 
-    public FillingType Filling => filling;
+    public FillingType Filling => _filling;
 
     public event Action StateChanged;
+    public event Action<DoughCraftAction, bool> ActionApplied;
 
     public DoughState OldState { get; private set; }
-
     public DoughState State { get; private set; }
+
+    public bool LastActionPerfect => _lastActionPerfect;
+    public int PerfectActionCount => _perfectActionCount;
 
     private void Awake()
     {
@@ -38,6 +42,7 @@ public class DoughController : MonoBehaviour
 
         State = _startState;
         OldState = State;
+        _perfectActionCount = 0;
     }
 
     private void Start()
@@ -59,9 +64,9 @@ public class DoughController : MonoBehaviour
 
         _canRoll = false;
         _isRollingInside = true;
-        
+
         _rollEnterLocalPos = transform.InverseTransformPoint(other.transform.position);
-        
+
         float absEnterX = Mathf.Abs(_rollEnterLocalPos.x);
         float absEnterZ = Mathf.Abs(_rollEnterLocalPos.z);
         _rollFromAlongSide = absEnterZ >= absEnterX;
@@ -91,7 +96,7 @@ public class DoughController : MonoBehaviour
         {
             float enterSignZ = Mathf.Sign(_rollEnterLocalPos.z);
             float exitSignZ = Mathf.Sign(exitLocalPos.z);
-            
+
             if (Mathf.Approximately(enterSignZ, 0f) || Mathf.Approximately(exitSignZ, 0f))
                 return;
 
@@ -115,7 +120,7 @@ public class DoughController : MonoBehaviour
         }
     }
 
-    public bool ApplyAction(DoughCraftAction action, CraftZone craftZone = null)
+    public bool ApplyAction(DoughCraftAction action, CraftZone craftZone = null, bool isPerfect = false)
     {
         if (craftZone != null && craftZone.IsComboZone)
         {
@@ -124,28 +129,35 @@ public class DoughController : MonoBehaviour
 
             if (_comboZones.Values.Any(b => b == false))
                 return false;
+
+            isPerfect = false;
         }
 
         if (DoughCraftTree.TryGetNext(State, action, out var next) == false)
         {
-            Debug.Log($"[DoughCraftController] Для состояния {State} нет перехода по действию {action}");
+            Debug.Log($"[DoughController] Для состояния {State} нет перехода по действию {action}");
             return false;
         }
-        
+
         if (next.Equals(State))
             return false;
-        
+
         OldState = State;
         State = next;
+        _lastActionPerfect = isPerfect;
 
-        if (State == DoughState.Flat || State == DoughState.LongFlat)
+        if (isPerfect)
+            _perfectActionCount++;
+
+        if (State is DoughState.Flat or DoughState.LongFlat)
             transform.rotation = _rollRotation;
 
-        Debug.Log($"[DoughCraftController] {OldState} --{action}--> {next}");
+        Debug.Log($"[DoughController] {OldState} --{action}--> {next}, perfect={isPerfect}, totalPerfect={_perfectActionCount}");
 
         ResetBunCombo();
         StateChanged?.Invoke();
-        
+        ActionApplied?.Invoke(action, isPerfect);
+
         return true;
     }
 
@@ -153,6 +165,11 @@ public class DoughController : MonoBehaviour
     {
         OldState = State;
         State = doughState;
+        _lastActionPerfect = false;
+
+        if (doughState == DoughState.Raw)
+            _perfectActionCount = 0;
+
         ResetBunCombo();
         StateChanged?.Invoke();
     }
@@ -174,8 +191,8 @@ public class DoughController : MonoBehaviour
         }
     }
 
-    public void SetGlobalFilling(FillingType toSet) 
-    { 
-        filling = toSet;
+    public void SetGlobalFilling(FillingType toSet)
+    {
+        _filling = toSet;
     }
 }
