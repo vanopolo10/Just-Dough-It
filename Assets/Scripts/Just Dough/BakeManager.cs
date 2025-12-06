@@ -319,6 +319,7 @@ public class BakeManager : MonoBehaviour
     {
         if (other.CompareTag("Product Reception Field"))
         {
+            Debug.Log("Enering reception field");
             _productComparator = other.GetComponentInParent<ProductComparator>();
             if (_productComparator != null)
             {

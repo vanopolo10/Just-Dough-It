@@ -39,4 +39,11 @@ public class LocalizedString : MonoBehaviour
         if (LocalizationManager.Instance == null) return;
         LocalizationManager.Instance.OnLanguageChange -= UpdateText;
     }
+
+    public void SetKey(string key)
+    {
+        _key = key;
+        UpdateText();
+    }
+
 }

@@ -5,7 +5,6 @@ public class Filling : MonoBehaviour
 {
     [SerializeField] private FillingType _type;
 
-    private Vector3 _offset;
     private float _zCord;
     private bool _mouseHeld;
     private bool _isDragging;
@@ -13,12 +12,14 @@ public class Filling : MonoBehaviour
     
     private FillingManager _manager;
     private MeshRenderer _renderer;
+    private Vector3 _homePosition;
 
     public event Action Destroyed;
 
     private void Start()
     {
         _renderer = GetComponent<MeshRenderer>();
+        _homePosition = transform.position;
     }
     
     private void OnEnable()
@@ -66,12 +67,11 @@ public class Filling : MonoBehaviour
         if (_mouseHeld == false)
         {
             _zCord = Camera.main!.WorldToScreenPoint(transform.position).z;
-            _offset = transform.position - Utils.GetMouseWorldPos(_zCord);
             _mouseHeld = true;
             _isDragging = true;
         }
 
-        Vector3 targetPos = Utils.GetMouseWorldPos(_zCord) + _offset;
+        Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
         targetPos.y = transform.position.y;
         transform.position = targetPos;
 
@@ -84,12 +84,12 @@ public class Filling : MonoBehaviour
         _mouseHeld = false;
         _isDragging = false;
 
-        if (_manager == null)
-            return;
-        
-        _manager.SetFilling(_type);
+        if (_manager!=null)
+            _manager.SetFilling(_type);
+
         Destroyed?.Invoke();
-        Destroy(gameObject);
+        _renderer.enabled = false;
+        transform.position = _homePosition;
     }
     
     private void OnCancelRequested()
