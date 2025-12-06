@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(Collider))]
 public class BakeManager : MonoBehaviour
@@ -16,7 +15,7 @@ public class BakeManager : MonoBehaviour
     [SerializeField] private float _returnDuration = 0.25f;
 
     private float _timeInOven;
-    private bool _isBaking;
+    private Coroutine _bakeRoutine;
 
     private bool _invokedRare;
     private bool _invokedDone;
@@ -65,15 +64,110 @@ public class BakeManager : MonoBehaviour
     private void OnDisable()
     {
         DragCancelService.CancelRequested -= OnCancelRequested;
-    }
 
-    private void Update()
+        if (_bakeRoutine != null)
+        {
+            StopCoroutine(_bakeRoutine);
+            _bakeRoutine = null;
+        }
+    }
+    
+    private void OnMouseDown()
     {
-        if (_isBaking == false)
+        if (_dragBlocked)
             return;
 
-        _timeInOven += Time.deltaTime;
-        UpdateBakeLogic();
+        if (_isOnShelf)
+        {
+            StartShelfDrag();
+            return;
+        }
+
+        if (_tray == null || _shelf == null)
+            return;
+
+        if (_tray.IsInOven || _tray.IsMoving)
+            return;
+
+        if (BakeState == BakeState.Raw)
+            return;
+
+        if (_tray.TryTakeBun(this, out BakeManager taken) == false)
+            return;
+
+        taken.StopBake();
+        _shelf.Place(taken);
+
+        Debug.Log(
+            $"[BakeManager] perfect={_perfectActionCount}, imperfect={_imperfectActionCount}, " +
+            $"doughState={_doughState}, filling={_filling}, bakeState={BakeState}"
+        );
+    }
+
+    private void OnMouseDrag()
+    {
+        if (_isOnShelf == false || _isDragging == false)
+            return;
+
+        if (_dragBlocked)
+        {
+            if (Input.GetMouseButton(0) == false)
+                _dragBlocked = false;
+
+            return;
+        }
+
+        Vector3 worldPos = GetMouseWorldPos();
+        transform.position = worldPos + _dragOffset;
+    }
+
+    private void OnMouseUp()
+    {
+        if (_isInReceptionArea)
+        {
+            if (AttemptDeposit())
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
+
+        if (_isOnShelf == false)
+        {
+            _dragBlocked = false;
+            return;
+        }
+
+        if (_isDragging == false)
+        {
+            _dragBlocked = false;
+            return;
+        }
+
+        _isDragging = false;
+        _dragBlocked = false;
+
+        if (_shelfAnchor != null)
+            StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
+    }
+
+
+    private IEnumerator BakeRoutine()
+    {
+        _timeInOven = 0f;
+        _invokedRare = false;
+        _invokedDone = false;
+        _invokedBurn = false;
+        BakeState = BakeState.Raw;
+        CurrentBakeBlend = 0f;
+        CurrentBurnAmount = 0f;
+
+        while (true)
+        {
+            _timeInOven += Time.deltaTime;
+            UpdateBakeLogic();
+            yield return null;
+        }
     }
 
     private void UpdateBakeLogic()
@@ -132,16 +226,21 @@ public class BakeManager : MonoBehaviour
         }
     }
 
-    private void OnCancelRequested()
+    public void BeginBake()
     {
-        if (_isOnShelf == false || _isDragging == false)
+        if (_bakeRoutine != null)
             return;
 
-        _isDragging = false;
-        _dragBlocked = true;
+        _bakeRoutine = StartCoroutine(BakeRoutine());
+    }
 
-        if (_shelfAnchor != null)
-            StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
+    public void StopBake()
+    {
+        if (_bakeRoutine == null)
+            return;
+
+        StopCoroutine(_bakeRoutine);
+        _bakeRoutine = null;
     }
 
     public void Setup(Tray tray, Shelf shelf)
@@ -180,140 +279,6 @@ public class BakeManager : MonoBehaviour
         _filling = filling;
     }
 
-    public void BeginBake()
-    {
-        _isBaking = true;
-    }
-
-    public void StopBake()
-    {
-        _isBaking = false;
-    }
-
-    private void OnMouseDown()
-    {
-        if (_dragBlocked)
-            return;
-
-        if (_isOnShelf)
-        {
-            StartShelfDrag();
-            return;
-        }
-
-        if (_tray == null || _shelf == null)
-            return;
-
-        if (_tray.IsInOven || _tray.IsMoving)
-            return;
-
-        if (BakeState == BakeState.Raw)
-            return;
-
-        if (_tray.TryTakeBun(this, out BakeManager taken) == false)
-            return;
-
-        taken.StopBake();
-        _shelf.Place(taken);
-
-        Debug.Log(
-            $"[BakeManager] perfect={_perfectActionCount}, imperfect={_imperfectActionCount}, " +
-            $"doughState={_doughState}, filling={_filling}, bakeState={BakeState}"
-        );
-    }
-
-    private void OnMouseDrag()
-    {
-        if (_isOnShelf == false || _isDragging == false)
-            return;
-
-        if (_dragBlocked)
-        {
-            if (Input.GetMouseButton(0) == false)
-                _dragBlocked = false;
-
-            return;
-        }
-
-        Vector3 worldPos = GetMouseWorldPos();
-        transform.position = worldPos + _dragOffset;
-    }
-
-    private void OnMouseUp()
-    {
-        if (_isInReceptionArea == true)
-        {
-            if(AttemptDeposit())
-            {
-                Destroy(gameObject);
-                return;
-            }
-        }
-
-        if (_isOnShelf == false)
-        {
-            _dragBlocked = false;
-            return;
-        }
-
-        if (_isDragging == false)
-        {
-            _dragBlocked = false;
-            return;
-        }
-
-        _isDragging = false;
-        _dragBlocked = false;
-
-        if (_shelfAnchor != null)
-            StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
-    }
-
-    private bool AttemptDeposit()
-    {
-        return _productComparator.OfferCurrentProduct();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Product Reception Field"))
-        { 
-            _productComparator = other.GetComponentInParent<ProductComparator>();
-            _productComparator.SetProduct(_product);
-            _isInReceptionArea = true;
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Product Reception Field"))
-            _isInReceptionArea = false;
-    }
-
-    public void Setup(Tray tray, Shelf shelf)
-    {
-        _tray = tray;
-        _shelf = shelf;
-        _isOnShelf = false;
-        _shelfAnchor = null;
-    }
-
-    public void OnPlacedOnShelf(Transform anchor)
-    {
-        _isOnShelf = true;
-        _shelfAnchor = anchor;
-    }
-
-    public void OnPlacedOnTray()
-    {
-        _isOnShelf = false;
-        _shelfAnchor = null;
-    }
-
-    public void SetPerfectActionCount(int count)
-    {
-        _perfectActionCount = Mathf.Max(0, count);
-    }
-    
     public void SetproductFromDoughController(DoughController dough)
     {
         Product product;
@@ -326,15 +291,46 @@ public class BakeManager : MonoBehaviour
         }
         catch (Exception)
         {
-            productType = ProductType.None; //на случай если тип не совпадёт
+            productType = ProductType.None;
         }
+
         product.type = productType;
 
         SetProduct(product);
     }
+
     public void SetProduct(Product product)
-    { 
+    {
         _product = product;
+    }
+    
+    private bool AttemptDeposit()
+    {
+        if (_productComparator == null)
+            return false;
+
+        return _productComparator.OfferCurrentProduct();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Product Reception Field"))
+        {
+            _productComparator = other.GetComponentInParent<ProductComparator>();
+            if (_productComparator != null)
+            {
+                _productComparator.SetProduct(_product);
+                _isInReceptionArea = true;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Product Reception Field"))
+        {
+            _isInReceptionArea = false;
+        }
     }
 
     private void OnCancelRequested()
@@ -347,78 +343,6 @@ public class BakeManager : MonoBehaviour
 
         if (_shelfAnchor != null)
             StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
-    }
-
-    public void BeginBake()
-    {
-        if (_bakeRoutine != null)
-            return;
-
-        _bakeRoutine = StartCoroutine(BakeRoutine());
-    }
-
-    public void StopBake()
-    {
-        if (_bakeRoutine == null)
-            return;
-
-        StopCoroutine(_bakeRoutine);
-        _bakeRoutine = null;
-    }
-
-    private IEnumerator BakeRoutine()
-    {
-        _secondsInOven = 0;
-        BakeState = BakeState.Raw;
-
-        while (true)
-        {
-            yield return new WaitForSeconds(1f);
-            _secondsInOven++;
-            CheckState();
-        }
-    }
-
-    private void CheckState()
-    {
-        if (_secondsInOven == _rareInSeconds)
-        {
-            BakeState = BakeState.Rare;
-            ApplyColor(_rareColor);
-            Rare?.Invoke();
-        }
-        else if (_secondsInOven == _doneInSeconds)
-        {
-            BakeState = BakeState.Done;
-            ApplyColor(_doneColor);
-            Done?.Invoke();
-        }
-        else if (_secondsInOven == _burnInSeconds)
-        {
-            BakeState = BakeState.Burn;
-            ApplyColor(_burnColor);
-            Burn?.Invoke();
-        }
-    }
-
-    private void ApplyColor(Color color)
-    {
-        if (_meshRenderers == null)
-            return;
-
-        foreach (MeshRenderer r in _meshRenderers)
-        {
-            if (!r)
-                continue;
-
-            Material[] mats = r.materials;
-
-            foreach (Material m in mats)
-            {
-                if (m)
-                    m.color = color;
-            }
-        }
     }
 
     private void StartShelfDrag()
