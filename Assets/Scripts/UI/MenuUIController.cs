@@ -1,5 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuUIController : MonoBehaviour
 {
@@ -10,6 +14,8 @@ public class MenuUIController : MonoBehaviour
     [SerializeField] private GameObject _savePrefab;
 
     [SerializeField] private MenuCameraController _cameraController;
+
+    private List<GameSave> _saves;
 
     private void Awake()
     {
@@ -24,17 +30,21 @@ public class MenuUIController : MonoBehaviour
 
     public void NewGame()
     {
-        if (_saveNameInputField.text == "" || SaveSystem.SaveExist(_saveNameInputField.text)) return;
-        SaveSystem.CreateSave(_saveNameInputField.text);
-        _saveNameInputField.text = "";
-        UpdateSavesList();
-        _cameraController.SetPosition(2);
+        SceneManager.LoadScene("Cafe", LoadSceneMode.Single);
+    }
+
+    public void LoadLastGame()
+    {
+        if (_saves.Count == 0) return;
+        SaveSystem.SelectedSave = _saves[0].Name;
+        SceneManager.LoadScene("Cafe", LoadSceneMode.Single);
     }
 
     public void UpdateSavesList()
     {
         for (int i = 0; i < _viewportContent.childCount; i++) Destroy(_viewportContent.GetChild(i).gameObject);
-        foreach (GameSave save in SaveSystem.GetSavedGames())
+        _saves = SaveSystem.GetSavedGames().OrderByDescending(s => DateTime.Parse(s.ChangeTime)).ToList();
+        foreach (GameSave save in _saves)
         {
             GameObject saveUIElement = Instantiate(_savePrefab, _viewportContent);
             saveUIElement.GetComponent<SaveUI>().ChangeInfo(save.Name, save.ChangeTime, SaveSystem.LoadSprite(save.Name));

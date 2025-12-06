@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(TMP_Text))]
 public class LocalizedString : MonoBehaviour
 {
-    private TMP_Text _text;
+    [SerializeField, HideInInspector] private TMP_Text _text;
     [SerializeField] private string _key;
 
     private void OnValidate()
