@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.AssetDatabase;
 
 public class LocalizationManager : MonoBehaviour
 {
@@ -126,7 +125,6 @@ public class LocalizationManager : MonoBehaviour
         string path = "Assets/Tables.json";
 
         File.WriteAllText(path, json);
-        Refresh();
     }
 
     public void LoadTablesFromFiles()
