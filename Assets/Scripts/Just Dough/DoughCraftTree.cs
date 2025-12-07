@@ -3,16 +3,16 @@ using JustDough;
 
 public static class DoughCraftTree
 {
-    private static readonly Dictionary<DoughState, Dictionary<DoughCraftAction, DoughState>> _graph = new();
+    private static readonly Dictionary<DoughState, Dictionary<DoughCraftAction, DoughState>> s_graph = new();
 
     static DoughCraftTree()
     {
         void Add(DoughState from, DoughCraftAction action, DoughState to)
         {
-            if (_graph.TryGetValue(from, out var byAction) == false)
+            if (s_graph.TryGetValue(from, out var byAction) == false)
             {
                 byAction = new Dictionary<DoughCraftAction, DoughState>();
-                _graph[from] = byAction;
+                s_graph[from] = byAction;
             }
 
             byAction[action] = to;
@@ -30,33 +30,36 @@ public static class DoughCraftTree
         // Продолговатое тесто -> Плоское круглое тесто (ЛКМ)
         Add(DoughState.Flat, DoughCraftAction.RollSheer, DoughState.RoundFlat);
         
-        // Сложенное один раз -> ПИРОЖОК (ПКМ)
+        // Ветка норм теста
+        // Пирожок
         Add(DoughState.FlatFolded, DoughCraftAction.Click, DoughState.SimplePie);
         
-        // Сложенное один раз -> Основа для сосиски (ЛКМ)
+        // Сосиска в тесте
         Add(DoughState.FlatFolded, DoughCraftAction.Drag, DoughState.HotDogBase);
-        
-        // Основа для сосиски -> СОСИСКА В ТЕСТЕ (Комбо)
         Add(DoughState.HotDogBase, DoughCraftAction.ComboClick, DoughState.HotDog);
         
-        // Сложенное один раз -> База для крутого пирожка (ЛКМ против)
+        // Крутой пирожок
         Add(DoughState.FlatFolded, DoughCraftAction.DragAgainst, DoughState.CoolPieBase);
-        
-        // База для конверта -> КРУТОЙ ПИРОЖОК (ЛКМ против)
         Add(DoughState.CoolPieBase, DoughCraftAction.ComboClick, DoughState.CoolPie);
+        
+        // Ветка долгого теста (синабонов)
+        Add(DoughState.LongFlat, DoughCraftAction.Drag, DoughState.LongFlatFolded);
+        Add(DoughState.LongFlatFolded, DoughCraftAction.Drag, DoughState.CinnabonBase);
+        Add(DoughState.LongFlatFolded, DoughCraftAction.DragAgainst, DoughState.DoubleCinnabonBase);
+        
+        Add(DoughState.CinnabonBase, DoughCraftAction.ComboClick, DoughState.Cinnabon);
+        Add(DoughState.DoubleCinnabonBase, DoughCraftAction.ComboClick, DoughState.DoubleCinnabon);
     }
 
     public static bool TryGetNext(DoughState current, DoughCraftAction action, out DoughState next)
     {
         next = current;
 
-        if (_graph.TryGetValue(current, out var byAction) &&
-            byAction.TryGetValue(action, out var to))
-        {
-            next = to;
-            return true;
-        }
-
-        return false;
+        if (s_graph.TryGetValue(current, out var byAction) == false ||
+            byAction.TryGetValue(action, out var to) == false) 
+            return false;
+        
+        next = to;
+        return true;
     }
 }

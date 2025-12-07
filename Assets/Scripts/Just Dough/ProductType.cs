@@ -5,6 +5,8 @@ public enum ProductType
     SimplePie,
     CoolPie,
     HotDog,
+    Cinnabon,
+    DoubleCinnabon,
 
     Any
 }

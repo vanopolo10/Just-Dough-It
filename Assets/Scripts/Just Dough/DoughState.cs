@@ -17,7 +17,15 @@ public enum DoughState
     HotDog,
     
     CoolPieBase,
-    CoolPie
+    CoolPie,
     
-    //Дальше ветки...
+    // Long flat branch
+    
+    LongFlatFolded, 
+    
+    CinnabonBase,
+    Cinnabon,
+    
+    DoubleCinnabonBase,
+    DoubleCinnabon
 }

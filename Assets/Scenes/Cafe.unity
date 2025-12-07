@@ -10584,6 +10584,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7896632741278551579, guid: 13d9c732fe07a144da3b17f132ca7036, type: 3}
+      propertyPath: _recipeStates.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7896632741278551579, guid: 13d9c732fe07a144da3b17f132ca7036, type: 3}
+      propertyPath: _recipeStates.Array.data[3].product
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7896632741278551579, guid: 13d9c732fe07a144da3b17f132ca7036, type: 3}
+      propertyPath: _recipeStates.Array.data[4].product
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8907593657123649560, guid: 13d9c732fe07a144da3b17f132ca7036, type: 3}
@@ -23527,7 +23539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0724fac8a87445148872c4d30f953e30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OvenSender
-  _finalStates: 050000000900000007000000
+  _finalStates: 0500000009000000070000000c0000000e000000
   _image: {fileID: 229016769}
   _tray: {fileID: 4821043576278458728}
 --- !u!65 &1471361163

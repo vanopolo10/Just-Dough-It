@@ -48,7 +48,7 @@ public class BakeManager : MonoBehaviour
     public event Action<BakeManager> Sold;
 
     public BakeState BakeState { get; private set; } = BakeState.Raw;
-    
+
     public int PerfectActionCount => _perfectActionCount;
     public int ImperfectActionCount => _imperfectActionCount;
     public Product DoughState => _product;
@@ -119,11 +119,17 @@ public class BakeManager : MonoBehaviour
             burnT = 0f;
             BakeState = BakeState.Done;
         }
-        else
+        else if (t <= _burnFullInSeconds)
         {
             bakeT = 1f;
             burnT = Mathf.Clamp01(Mathf.InverseLerp(_burnStartInSeconds, _burnFullInSeconds, t));
             BakeState = BakeState.Burn;
+        }
+        else
+        {
+            bakeT = 1f;
+            burnT = 1f;
+            BakeState = BakeState.FullBurn;
         }
 
         CurrentBakeBlend = bakeT;
@@ -225,7 +231,7 @@ public class BakeManager : MonoBehaviour
     {
         _product = product;
     }
-    
+
     private void OnMouseDown()
     {
         if (_dragBlocked)
@@ -254,7 +260,7 @@ public class BakeManager : MonoBehaviour
 
         Debug.Log(
             $"[BakeManager] perfect={_perfectActionCount}, imperfect={_imperfectActionCount}, " +
-            $"doughState={_product.Type}, filling={_product.Type}, bakeState={BakeState}"
+            $"productType={_product.Type}, filling={_product.Filling}, bakeState={BakeState}"
         );
     }
 
