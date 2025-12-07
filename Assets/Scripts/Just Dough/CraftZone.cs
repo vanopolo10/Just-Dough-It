@@ -43,18 +43,12 @@ public class CraftZone : MonoBehaviour,
     private static CraftZone _dragStartZone;
     private static bool _dragActive;
     private static bool _dragPerfect;
-
-    private RectTransform _rectTransform;
-    private bool _isPointerOver;
-    private bool _isPressed;
     private bool _comboUsed;
 
     public bool IsComboZone => _isComboZone;
 
     private void Awake()
     {
-        _rectTransform = GetComponent<RectTransform>();
-
         if (_controller == null)
             _controller = GetComponentInParent<DoughController>();
     }
@@ -94,8 +88,6 @@ public class CraftZone : MonoBehaviour,
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        _isPressed = true;
-
         if (_isDragStartZone == false)
             return;
 
@@ -109,8 +101,6 @@ public class CraftZone : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _isPointerOver = true;
-
         if (_isDragEndZone == false)
             return;
 
@@ -141,7 +131,6 @@ public class CraftZone : MonoBehaviour,
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        _isPressed = false;
         _dragActive = false;
         _dragStartZone = null;
     }

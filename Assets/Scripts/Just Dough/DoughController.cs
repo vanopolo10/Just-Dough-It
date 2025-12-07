@@ -28,6 +28,7 @@ public class DoughController : MonoBehaviour
     public FillingType Filling => _filling;
 
     public event Action StateChanged;
+    public event Action ActionPerfected;
 
     public DoughState OldState { get; private set; }
     public DoughState State { get; private set; }
@@ -166,18 +167,17 @@ public class DoughController : MonoBehaviour
         State = next;
         _lastActionPerfect = isPerfect;
 
-        bool isRollingAction = action == DoughCraftAction.Roll || action == DoughCraftAction.RollSheer;
+        if (_lastActionPerfect)
+            ActionPerfected?.Invoke();
+        
+        bool isRollingAction = action is DoughCraftAction.Roll or DoughCraftAction.RollSheer;
 
-        if (!isComboZoneAction)
+        if (isComboZoneAction == false)
         {
             if (isPerfect)
-            {
                 _perfectActionCount++;
-            }
-            else if (!isRollingAction)
-            {
+            else if (isRollingAction == false)
                 _imperfectActionCount++;
-            }
         }
 
         if (State is DoughState.Flat or DoughState.LongFlat)
@@ -188,7 +188,7 @@ public class DoughController : MonoBehaviour
             $"perfectTotal={_perfectActionCount}, imperfectTotal={_imperfectActionCount}, " +
             $"state={State}, filling={_filling}"
         );
-
+        
         ResetBunCombo();
         StateChanged?.Invoke();
 

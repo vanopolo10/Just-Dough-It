@@ -1,40 +1,25 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Rendering;
 
-public enum QuestInvokeType 
-{ 
+public enum QuestInvokeType
+{
     SaleMade,
     PerfectAction
 }
+
 public class QuestSystem : MonoBehaviour
 {
-    [Serializable]
-    struct QuestDisplay 
-    {
-        public string description;
-        public QuestInvokeType type;
-        public int maxScore;
-        [SerializeField] private int _score;
-        public int Score => _score;
-        public QuestDisplay(QuestDisplay old, int score)
-        { 
-            description = old.description;
-            type = old.type;
-            maxScore = old.maxScore;
-            _score = score;
-        }
-    }
+    [SerializeField] private DoughBucket _doughBucket;
+    [SerializeField] private string _completionText = "(Завершено!)";
+    [SerializeField] private List<QuestDisplay> _quests;
+    [SerializeField] private TMP_Text _text;
+    
+    private DoughController _doughController;
 
-    [SerializeField] private string completionText = " (Завершено!)";
-    [SerializeField] private List<QuestDisplay> quests;
-    public TextMeshProUGUI text;
-    public UnityEvent OnFullCompletion;
-
+    public event Action Completed;
     public static QuestSystem Instance;
 
     private void Awake()
@@ -42,44 +27,90 @@ public class QuestSystem : MonoBehaviour
         if (Instance == null)
             Instance = this;
     }
-    void Start()
+
+    private void OnEnable()
     {
         UpdateText();
+        _doughBucket.CurrentDoughChanged += OnDoughChanged;
+        OnDoughChanged();
     }
 
-    public void UpdateText()
+    private void OnDisable()
     {
-        string s = "";
-        foreach (QuestDisplay quest in quests)
-        { 
-            s += quest.description;
-            s += 
-                quest.Score < quest.maxScore ?
-                " (" + quest.Score + "/" + quest.maxScore + ")"
-                :
-                completionText;
-            ;
-            s += "" + '\n' + '\n';
-        }
+        _doughBucket.CurrentDoughChanged -= OnDoughChanged;
 
-        text.text = s;
+        if (_doughController != null)
+            _doughController.ActionPerfected -= OnPerfectAction;
+    }
+
+    private void OnDoughChanged()
+    {
+        if (_doughController != null)
+            _doughController.ActionPerfected -= OnPerfectAction;
+
+        _doughController = _doughBucket.CurrentDough;
+
+        if (_doughController != null)
+            _doughController.ActionPerfected += OnPerfectAction;
+    }
+
+    private void OnPerfectAction()
+    {
+        InvokeQuest(QuestInvokeType.PerfectAction);
     }
 
     public void InvokeQuest(QuestInvokeType type)
     {
-        int completed = 0;
-        for (int i = 0; i < quests.Count; i++)  
-        {
-            QuestDisplay quest = quests[i];
-            if (quest.type == type)
-                quests[i] = new QuestDisplay(quest, quest.Score + 1);
-            if(quest.Score >= quest.maxScore)
-                completed++;
-        }
+        _quests = _quests
+            .Select(q => 
+            {
+                int newScore = q.Score + (q.Type == type ? 1 : 0);
+                return new QuestDisplay(q, newScore);
+            })
+            .ToList();
 
-        if(completed >= quests.Count)
-            OnFullCompletion.Invoke();
+        int completed = _quests.Count(q => q.Score >= q.MaxScore);
+
+        if (completed >= _quests.Count && _quests.Count > 0)
+            Completed?.Invoke();
 
         UpdateText();
+    }
+
+    private void UpdateText()
+    {
+        if (_text == null)
+            return;
+
+        string text = "";
+
+        foreach (QuestDisplay quest in _quests)
+        {
+            text += quest.Description;
+            text += quest.Score < quest.MaxScore
+                ? " (" + quest.Score + "/" + quest.MaxScore + ")"
+                : " " + _completionText;
+
+            text += "\n\n";
+        }
+
+        _text.text = text;
+    }
+
+    [Serializable]
+    struct QuestDisplay
+    {
+        public string Description;
+        public QuestInvokeType Type;
+        public int MaxScore;
+        public int Score;
+
+        public QuestDisplay(QuestDisplay old, int score)
+        {
+            Description = old.Description;
+            Type = old.Type;
+            MaxScore = old.MaxScore;
+            Score = score;
+        }
     }
 }
