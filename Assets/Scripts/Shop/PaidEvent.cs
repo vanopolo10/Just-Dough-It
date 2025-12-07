@@ -3,20 +3,20 @@ using UnityEngine.Events;
 
 public class PaidEvent : MonoBehaviour
 {
-    [SerializeField] private int price;
+    [SerializeField] private int _price;
     [SerializeField] private UnityEvent _successEvent;
     [SerializeField] private UnityEvent _failureEvent;
-    [SerializeField] private MoneyManager moneyManager;
+    [SerializeField] private MoneyManager _moneyManager;
 
     private void Awake()
     {
-        if(moneyManager == null) 
-            moneyManager = FindFirstObjectByType<MoneyManager>();
+        if(_moneyManager == null) 
+            _moneyManager = FindFirstObjectByType<MoneyManager>();
     }
 
     public void TryEvent() 
     {
-        if (moneyManager.TrySpendMoney(price))
+        if (_moneyManager.TrySpendMoney(_price))
             _successEvent?.Invoke();
         else 
             _failureEvent?.Invoke();

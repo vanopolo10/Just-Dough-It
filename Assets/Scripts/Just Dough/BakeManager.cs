@@ -35,8 +35,7 @@ public class BakeManager : MonoBehaviour
 
     private int _perfectActionCount;
     private int _imperfectActionCount;
-    private DoughState _doughState;
-    private FillingType _filling;
+
     private Product _product;
 
     private ProductComparator _productComparator;
@@ -46,12 +45,13 @@ public class BakeManager : MonoBehaviour
     public event Action Burned;
 
     public event Action<float, float> VisualChanged;
+    public event Action<BakeManager> Sold;
 
     public BakeState BakeState { get; private set; } = BakeState.Raw;
+    
     public int PerfectActionCount => _perfectActionCount;
     public int ImperfectActionCount => _imperfectActionCount;
-    public DoughState DoughState => _doughState;
-    public FillingType Filling => _filling;
+    public Product DoughState => _product;
 
     public float CurrentBakeBlend { get; private set; }
     public float CurrentBurnAmount { get; private set; }
@@ -197,16 +197,14 @@ public class BakeManager : MonoBehaviour
         _imperfectActionCount = Mathf.Max(0, count);
     }
 
-    public void SetDoughInfo(DoughState doughState, FillingType filling)
+    public void SetDoughInfo(Product product)
     {
-        _doughState = doughState;
-        _filling = filling;
+        _product = product;
     }
 
     public void SetProductFromDoughController(DoughController dough)
     {
-        Product product;
-        product.Filling = dough.Filling;
+        Product product = new Product { Filling = dough.Filling };
 
         ProductType productType;
         try
@@ -256,7 +254,7 @@ public class BakeManager : MonoBehaviour
 
         Debug.Log(
             $"[BakeManager] perfect={_perfectActionCount}, imperfect={_imperfectActionCount}, " +
-            $"doughState={_doughState}, filling={_filling}, bakeState={BakeState}"
+            $"doughState={_product.Type}, filling={_product.Type}, bakeState={BakeState}"
         );
     }
 
@@ -283,7 +281,7 @@ public class BakeManager : MonoBehaviour
         {
             if (AttemptDeposit())
             {
-                Destroy(gameObject);
+                Sold?.Invoke(this);
                 return;
             }
         }

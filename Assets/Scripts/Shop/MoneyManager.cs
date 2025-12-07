@@ -5,17 +5,12 @@ public class MoneyManager : MonoBehaviour
 {
     [SerializeField] private int _money;
     [SerializeField] private TextMeshProUGUI _display;
-    
+
     public int Money => _money;
 
     private void Start()
     {
         UpdDisplay();
-    }
-    
-    private void UpdDisplay()
-    { 
-        _display.text = _money.ToString() + "ð";
     }
     
     public void AddMoney(int amount)
@@ -32,5 +27,10 @@ public class MoneyManager : MonoBehaviour
         _money -= amount;
         UpdDisplay();
         return true;
+    }
+    
+    private void UpdDisplay()
+    { 
+        _display.text = _money + "ð";
     }
 }

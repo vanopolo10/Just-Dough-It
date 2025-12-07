@@ -3,8 +3,13 @@ using UnityEngine;
 
 public class Shelf : MonoBehaviour
 {
+    [Header("Money")]
+    [SerializeField] private MoneyManager _moneyManager;
+    [SerializeField] private int _basePrice = 30;
+    [SerializeField] private int _qualityMultiplayer = 20;
+    
     [SerializeField] private List<Transform> _places = new();
-
+    
     private readonly Queue<BakeManager> _queue = new();
     private BakeManager[] _occupied;
 
@@ -23,6 +28,7 @@ public class Shelf : MonoBehaviour
         if (index >= 0)
         {
             PutToSlot(index, bun);
+            bun.Sold += OnBunSold;
         }
         else
         {
@@ -30,8 +36,15 @@ public class Shelf : MonoBehaviour
             bun.gameObject.SetActive(false);
         }
     }
-
-    public void Remove(BakeManager bun)
+    
+    private void OnBunSold(BakeManager bun)
+    {
+        Remove(bun);
+        _moneyManager.AddMoney(_basePrice + bun.PerfectActionCount / (bun.ImperfectActionCount + bun.PerfectActionCount) * _qualityMultiplayer);
+        Destroy(bun.gameObject);
+    }
+    
+    private void Remove(BakeManager bun)
     {
         if (bun == null)
             return;
@@ -43,7 +56,7 @@ public class Shelf : MonoBehaviour
 
             _occupied[i] = null;
 
-            bun.transform.SetParent(null, true);
+            bun.Sold -= OnBunSold;
 
             TryFillSlot(i);
             break;

@@ -14,7 +14,7 @@ public struct CustomerQuery
 
 public class CustomerModel : MonoBehaviour
 {
-    private static readonly int StartID = Animator.StringToHash("Start");
+    //private static readonly int StartID = Animator.StringToHash("Start");
     private static readonly int DeclineID = Animator.StringToHash("Decline");
     private static readonly int FinishID = Animator.StringToHash("Finish");
     
@@ -25,16 +25,16 @@ public class CustomerModel : MonoBehaviour
     [SerializeField] private float _refreshDelay = 3f;
     
     private GameObject _textBubble;
-    private TextMeshProUGUI _textField; 
+    private TMP_Text _textField; 
     private CustomerQuery _currentQuery;
     
     public CustomerQuery CurrentQuery => _currentQuery;
     
     public void Begin()
     {
-        _textField = _textBubble.GetComponentInChildren<TextMeshProUGUI>();
+        _textField = _textBubble.GetComponentInChildren<TMP_Text>();
         _animator = GetComponent<Animator>();
-        _animator.SetTrigger(StartID);
+        //_animator.SetTrigger(StartID);
         _currentQuery = _queries[UnityEngine.Random.Range(0, _queries.Count)];
         Invoke(nameof(ShowQuery), _initDelay);
     }

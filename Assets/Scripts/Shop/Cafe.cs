@@ -82,7 +82,7 @@ public class Cafe : MonoBehaviour
 
         bakedInstance.SetPerfectActionCount(dough.PerfectActionCount);
         bakedInstance.SetImperfectActionCount(dough.ImperfectActionCount);
-        bakedInstance.SetDoughInfo(dough.State, dough.Filling);
+        bakedInstance.SetDoughInfo(new Product((ProductType)Enum.Parse(typeof(ProductType), dough.State.ToString()), dough.Filling));
         bakedInstance.SetProductFromDoughController(dough);
 
         if (_doughBucket != null)

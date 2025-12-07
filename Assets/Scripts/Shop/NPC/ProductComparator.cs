@@ -5,8 +5,14 @@ using UnityEngine.Events;
 [Serializable]
 public struct Product
 {
-    public ProductType Type;
-    public FillingType Filling;
+    public Product(ProductType type, FillingType filling)
+    {
+        Type = type;
+        Filling = filling;
+    }
+    
+    public ProductType Type { get; set; }
+    public FillingType Filling { get; set; }
 }
 
 [Serializable]
