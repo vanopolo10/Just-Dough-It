@@ -14,9 +14,8 @@ public struct CustomerQuery
 
 public class CustomerModel : MonoBehaviour
 {
-    //private static readonly int StartID = Animator.StringToHash("Start");
     private static readonly int DeclineID = Animator.StringToHash("Decline");
-    private static readonly int FinishID = Animator.StringToHash("Finish");
+    private static readonly int AcceptID = Animator.StringToHash("Accept");
     
     [SerializeField] private Animator _animator;
     [SerializeField] private List<CustomerQuery> _queries;
@@ -34,8 +33,7 @@ public class CustomerModel : MonoBehaviour
     {
         _textField = _textBubble.GetComponentInChildren<TMP_Text>();
         _animator = GetComponent<Animator>();
-        //_animator.SetTrigger(StartID);
-        _currentQuery = _queries[UnityEngine.Random.Range(0, _queries.Count)];
+//        _currentQuery = _queries[UnityEngine.Random.Range(0, _queries.Count)];
         Invoke(nameof(ShowQuery), _initDelay);
     }
     
@@ -54,7 +52,7 @@ public class CustomerModel : MonoBehaviour
     
     public void Finish()
     {
-        _animator.SetTrigger(FinishID);
+        _animator.SetTrigger(AcceptID);
         _textField.text = _currentQuery.AcceptText;
         Invoke(nameof(HideBubble), _finishDelay);
     }

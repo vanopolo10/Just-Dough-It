@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8648045259599491029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3867571426880494333}
+  - component: {fileID: 7660470370877762732}
+  m_Layer: 0
+  m_Name: NPC spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3867571426880494333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8648045259599491029}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.81476, y: 0, z: 1.06668}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7660470370877762732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8648045259599491029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e50b7e1f5ec9e72408f61459a9c24108, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerModelSpawner
+  _speechBubble: {fileID: 5673424948372023087, guid: ec82dfc986f0eed4c9c92aabc0fce82d, type: 3}
+  _models:
+  - {fileID: 6610489028163603980, guid: 6caee515a2ba541458ee8313ace52dfd, type: 3}
+  - {fileID: 2426629168279545122, guid: 7a5bf41080de726489322d05ef78ce05, type: 3}
+  - {fileID: 2426629168279545122, guid: 88ba19ac1a44d19479ccb4e03e2a8417, type: 3}
+  - {fileID: 2426629168279545122, guid: 56e6c43dee42dbe418d421e9d791d19f, type: 3}
+  - {fileID: 3354852208342377103, guid: 1417f8c050211d446ba9ddfd457864aa, type: 3}
+  - {fileID: 3354852208342377103, guid: 5ec436d9e2d79c746992708dafd0e427, type: 3}
+  - {fileID: 3354852208342377103, guid: ae3e2f68947d0294183e84e7331a2312, type: 3}
+  - {fileID: 5544586737167162486, guid: 297b6d8a83a6c6a41bb5778113abad13, type: 3}
+  _faceMats:
+  - {fileID: 2100000, guid: 7546c42e31f7ddd4781bdf6eaa5cbe01, type: 2}
+  - {fileID: 2100000, guid: 8dd63355ece9b5644960b01dc8bcdd3c, type: 2}
+  - {fileID: 2100000, guid: 3d86ba1aa26b23446a1e42f353285712, type: 2}
+  - {fileID: 2100000, guid: 23a8db6bfc215a249902e89a0122ea2e, type: 2}
+  _clothMats:
+  - {fileID: 2100000, guid: ef84a9b4e25f6b545a6959932b9cfa64, type: 2}
+  - {fileID: 2100000, guid: 16791c301b0d7c047ba6c40359fd35f2, type: 2}
+  - {fileID: 2100000, guid: 4c8d0fd2030ac7e49845e2ae61d92400, type: 2}
+  - {fileID: 2100000, guid: 39cd90e2a9eed8240a6c6e60ff5d6db7, type: 2}
+  _respawnDelayMin: 5
+  _respawnDelayMax: 15

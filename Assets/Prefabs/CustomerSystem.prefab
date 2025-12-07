@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1666595820988951882}
   - component: {fileID: 8868366775396072521}
-  - component: {fileID: 7632241321038988097}
+  - component: {fileID: 8292294702939780340}
   m_Layer: 0
   m_Name: CustomerSystem
   m_TagString: Untagged
@@ -49,15 +49,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   _query:
-    type: 0
-    filling: 0
-  _product:
-    type: 0
-    filling: 0
+    Type: 0
+    Filling: 0
   OnAccept:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7632241321038988097}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CustomerModelSpawner, Assembly-CSharp
         m_MethodName: Finish
         m_Mode: 1
@@ -72,7 +69,7 @@ MonoBehaviour:
   OnDecline:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7632241321038988097}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CustomerModelSpawner, Assembly-CSharp
         m_MethodName: Decline
         m_Mode: 1
@@ -84,7 +81,7 @@ MonoBehaviour:
           m_StringArgument: Decline
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7632241321038988097
+--- !u!114 &8292294702939780340
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,13 +92,29 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e50b7e1f5ec9e72408f61459a9c24108, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
-  models:
-  - {fileID: 6207268144424018502, guid: 8c998023c6d99264a8f396ed08dfc8aa, type: 3}
-  - {fileID: 6207268144424018502, guid: 40bc3a21a712bf247934a5803676ca4d, type: 3}
-  - {fileID: 6207268144424018502, guid: 02cf74432950ae14ebbc23e284a8872c, type: 3}
-  respawnDelay: 4
-  speechBubble: {fileID: 1352188934141955031}
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerModelSpawner
+  _speechBubble: {fileID: 5673424948372023087, guid: ec82dfc986f0eed4c9c92aabc0fce82d, type: 3}
+  _models:
+  - {fileID: 6610489028163603980, guid: 6caee515a2ba541458ee8313ace52dfd, type: 3}
+  - {fileID: 2426629168279545122, guid: 7a5bf41080de726489322d05ef78ce05, type: 3}
+  - {fileID: 2426629168279545122, guid: 88ba19ac1a44d19479ccb4e03e2a8417, type: 3}
+  - {fileID: 2426629168279545122, guid: 56e6c43dee42dbe418d421e9d791d19f, type: 3}
+  - {fileID: 3354852208342377103, guid: 1417f8c050211d446ba9ddfd457864aa, type: 3}
+  - {fileID: 3354852208342377103, guid: 5ec436d9e2d79c746992708dafd0e427, type: 3}
+  - {fileID: 3354852208342377103, guid: ae3e2f68947d0294183e84e7331a2312, type: 3}
+  - {fileID: 5544586737167162486, guid: 297b6d8a83a6c6a41bb5778113abad13, type: 3}
+  _faceMats:
+  - {fileID: 2100000, guid: 7546c42e31f7ddd4781bdf6eaa5cbe01, type: 2}
+  - {fileID: 2100000, guid: 8dd63355ece9b5644960b01dc8bcdd3c, type: 2}
+  - {fileID: 2100000, guid: 3d86ba1aa26b23446a1e42f353285712, type: 2}
+  - {fileID: 2100000, guid: 23a8db6bfc215a249902e89a0122ea2e, type: 2}
+  _clothMats:
+  - {fileID: 2100000, guid: ef84a9b4e25f6b545a6959932b9cfa64, type: 2}
+  - {fileID: 2100000, guid: 16791c301b0d7c047ba6c40359fd35f2, type: 2}
+  - {fileID: 2100000, guid: 4c8d0fd2030ac7e49845e2ae61d92400, type: 2}
+  - {fileID: 2100000, guid: 39cd90e2a9eed8240a6c6e60ff5d6db7, type: 2}
+  _respawnDelayMin: 5
+  _respawnDelayMax: 15
 --- !u!1 &2781805841045640161
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,11 +637,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec82dfc986f0eed4c9c92aabc0fce82d, type: 3}
---- !u!1 &1352188934141955031 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5673424948372023087, guid: ec82dfc986f0eed4c9c92aabc0fce82d, type: 3}
-  m_PrefabInstance: {fileID: 6665324448795815160}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1874811827427868794 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5078747739181378690, guid: ec82dfc986f0eed4c9c92aabc0fce82d, type: 3}

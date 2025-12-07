@@ -52,6 +52,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 3d86ba1aa26b23446a1e42f353285712, type: 2}
+    - target: {fileID: -6761622327238888443, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
+      propertyPath: m_Name
+      value: Gloves
+      objectReference: {fileID: 0}
+    - target: {fileID: -1864839159014325878, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
+      propertyPath: m_Name
+      value: Coat
+      objectReference: {fileID: 0}
     - target: {fileID: -441233060710250149, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -60,10 +68,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fatman
       objectReference: {fileID: 0}
+    - target: {fileID: 1085571707268960028, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
+      propertyPath: m_Name
+      value: Face
+      objectReference: {fileID: 0}
     - target: {fileID: 1446040844563049329, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: ef84a9b4e25f6b545a6959932b9cfa64, type: 2}
+    - target: {fileID: 2287730240957383084, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
+      propertyPath: m_Name
+      value: Pants
+      objectReference: {fileID: 0}
     - target: {fileID: 3421046725710618997, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -71,7 +87,15 @@ PrefabInstance:
     - target: {fileID: 7023856369918690929, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: ef84a9b4e25f6b545a6959932b9cfa64, type: 2}
+      objectReference: {fileID: 2100000, guid: 16791c301b0d7c047ba6c40359fd35f2, type: 2}
+    - target: {fileID: 7591988267693069937, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
+      propertyPath: m_Name
+      value: Scarf
+      objectReference: {fileID: 0}
+    - target: {fileID: 8567434563818200627, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
+      propertyPath: m_Name
+      value: Hat
+      objectReference: {fileID: 0}
     - target: {fileID: 9032977903811840459, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -83,6 +107,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1962521062473943276}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -2420500022676285320}
   m_SourcePrefab: {fileID: 100100000, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
 --- !u!1 &6610489028163603980 stripped
 GameObject:
@@ -111,3 +138,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-2420500022676285320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6610489028163603980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada6965214902bf449492800d3845343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
