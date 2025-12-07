@@ -913,6 +913,7 @@ GameObject:
   - component: {fileID: 2116414998436867577}
   - component: {fileID: 5389146858004646193}
   - component: {fileID: -8494220010517393101}
+  - component: {fileID: -8949914725936916595}
   m_Layer: 0
   m_Name: Fatman_TupayaShapka
   m_TagString: Untagged
@@ -975,6 +976,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada6965214902bf449492800d3845343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  _acceptTrigger: Accept
+  _declineTrigger: Decline
+  _reachedTrigger: Reached
+--- !u!114 &-8949914725936916595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2426629168279545122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83820d42bc38ed74eb0f989065736356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerModel
+  _animator: {fileID: 0}
+  _queries:
+  - Query:
+      Type: 6
+      Filling: 2
+    QueryKey: npc.bored.query
+    DeclineKey: npc.bored.decline
+    AcceptKey: npc.bored.accept
+  - Query:
+      Type: 2
+      Filling: 3
+    QueryKey: npc.cool.query
+    DeclineKey: npc.cool.decline
+    AcceptKey: npc.cool.accept
+  - Query:
+      Type: 6
+      Filling: 1
+    QueryKey: npc.fat.query
+    DeclineKey: npc.fat.decline
+    AcceptKey: npc.fat.accept
+  - Query:
+      Type: 3
+      Filling: 3
+    QueryKey: npc.long.query
+    DeclineKey: npc.long.decline
+    AcceptKey: npc.long.accept
+  - Query:
+      Type: 4
+      Filling: 0
+    QueryKey: cinnabon.query
+    DeclineKey: cinnabon.decline
+    AcceptKey: cinnabon.accept
+  - Query:
+      Type: 5
+      Filling: 3
+    QueryKey: cinnalong.query
+    DeclineKey: cinnabon.decline
+    AcceptKey: cinnabon.accept
+  _initDelay: 2
+  _finishDelay: 1
+  _refreshDelay: 3
 --- !u!1 &2460265569941815690
 GameObject:
   m_ObjectHideFlags: 0

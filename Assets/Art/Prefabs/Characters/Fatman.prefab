@@ -110,6 +110,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
       insertIndex: -1
       addedObject: {fileID: -2420500022676285320}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1977158034000501909}
   m_SourcePrefab: {fileID: 100100000, guid: 6f5f512c5dd264d47a6155e17921b822, type: 3}
 --- !u!1 &6610489028163603980 stripped
 GameObject:
@@ -150,3 +153,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ada6965214902bf449492800d3845343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  _acceptTrigger: Accept
+  _declineTrigger: Decline
+  _reachedTrigger: Reached
+--- !u!114 &1977158034000501909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6610489028163603980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83820d42bc38ed74eb0f989065736356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerModel
+  _animator: {fileID: 0}
+  _queries:
+  - Query:
+      Type: 6
+      Filling: 2
+    QueryKey: npc.bored.query
+    DeclineKey: npc.bored.decline
+    AcceptKey: npc.bored.accept
+  - Query:
+      Type: 2
+      Filling: 3
+    QueryKey: npc.cool.query
+    DeclineKey: npc.cool.decline
+    AcceptKey: npc.cool.accept
+  - Query:
+      Type: 6
+      Filling: 1
+    QueryKey: npc.fat.query
+    DeclineKey: npc.fat.decline
+    AcceptKey: npc.fat.accept
+  - Query:
+      Type: 3
+      Filling: 3
+    QueryKey: npc.long.query
+    DeclineKey: npc.long.decline
+    AcceptKey: npc.long.accept
+  - Query:
+      Type: 4
+      Filling: 0
+    QueryKey: cinnabon.query
+    DeclineKey: cinnabon.decline
+    AcceptKey: cinnabon.accept
+  - Query:
+      Type: 5
+      Filling: 3
+    QueryKey: cinnalong.query
+    DeclineKey: cinnabon.decline
+    AcceptKey: cinnabon.accept
+  _initDelay: 2
+  _finishDelay: 1
+  _refreshDelay: 3
