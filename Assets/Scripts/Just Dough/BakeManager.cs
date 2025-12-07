@@ -206,7 +206,7 @@ public class BakeManager : MonoBehaviour
     public void SetProductFromDoughController(DoughController dough)
     {
         Product product;
-        product.filling = dough.Filling;
+        product.Filling = dough.Filling;
 
         ProductType productType;
         try
@@ -218,7 +218,7 @@ public class BakeManager : MonoBehaviour
             productType = ProductType.None;
         }
 
-        product.type = productType;
+        product.Type = productType;
 
         SetProduct(product);
     }

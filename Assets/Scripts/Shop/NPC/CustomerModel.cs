@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -7,50 +6,68 @@ using UnityEngine;
 [Serializable]
 public struct CustomerQuery
 {
-    public Query query;
-    public string queryText, DeclineText, AcceptText;
+    public Query Query;
+    public string QueryText, DeclineText, AcceptText;
 }
 
 public class CustomerModel : MonoBehaviour
 {
-    private Animator animator;
-    public CustomerQuery currentQuery;
-    [SerializeField] private List<CustomerQuery> queries;
-    [SerializeField] private float initDelay = 2f, finishDelay = 1f, refreshDelay = 3f;
-    public TextMeshProUGUI textField;
-    public GameObject textBubble;
+    private static readonly int StartID = Animator.StringToHash("Start");
+    private static readonly int DeclineID = Animator.StringToHash("Decline");
+    private static readonly int FinishID = Animator.StringToHash("Finish");
+    
+    [SerializeField] private Animator _animator;
+    [SerializeField] private CustomerQuery _currentQuery;
+    [SerializeField] private List<CustomerQuery> _queries;
+    [SerializeField] private float _initDelay = 2f;
+    [SerializeField] private float _finishDelay = 1f;
+    [SerializeField] private float _refreshDelay = 3f;
+    [SerializeField] private TextMeshProUGUI _textField; 
+    [SerializeField] private GameObject _textBubble;
 
+    public CustomerQuery CurrentQuery => _currentQuery;
+    
     public void Begin()
     {
-        textField = textBubble.GetComponentInChildren<TextMeshProUGUI>();
-        animator = GetComponent<Animator>();
-        animator.SetTrigger("Start");
-        currentQuery = queries[UnityEngine.Random.Range(0, queries.Count)];
-        Invoke("ShowQuery", initDelay);
+        _textField = _textBubble.GetComponentInChildren<TextMeshProUGUI>();
+        _animator = GetComponent<Animator>();
+        _animator.SetTrigger(StartID);
+        _currentQuery = _queries[UnityEngine.Random.Range(0, _queries.Count)];
+        Invoke(nameof(ShowQuery), _initDelay);
     }
+    
     public void ShowQuery() 
     { 
-        textField.text = currentQuery.queryText;
-        textBubble.SetActive(true);
+        _textField.text = _currentQuery.QueryText;
+        _textBubble.SetActive(true);
     }
+    
     public void Decline()
     {
-        animator.SetTrigger("Decline");
-        textField.text = currentQuery.DeclineText;
-        Invoke("ShowQuery", refreshDelay);
+        _animator.SetTrigger(DeclineID);
+        _textField.text = _currentQuery.DeclineText;
+        Invoke(nameof(ShowQuery), _refreshDelay);
     }
+    
     public void Finish()
     {
-        animator.SetTrigger("Finish");
-        textField.text = currentQuery.AcceptText;
-        Invoke("HideBubble", finishDelay);
+        _animator.SetTrigger(FinishID);
+        _textField.text = _currentQuery.AcceptText;
+        Invoke(nameof(HideBubble), _finishDelay);
     }
+    
     public void HideBubble()
     {
-        textBubble.SetActive(false);
+        _textBubble.SetActive(false);
     }
+    
     public void Despawn()
     {
         Destroy(gameObject);
+    }
+
+    public void SetTextBubble(GameObject speechBubble)
+    {
+        _textBubble = speechBubble;
     }
 }

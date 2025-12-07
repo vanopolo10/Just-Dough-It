@@ -102,6 +102,6 @@ public class DoughBucket : MonoBehaviour
             return;
 
         Destroy(_currentDough.gameObject);
-        SetDough(null);
+        ClearDough();
     }
 }

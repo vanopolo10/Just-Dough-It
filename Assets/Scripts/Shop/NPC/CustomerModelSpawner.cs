@@ -3,38 +3,39 @@ using UnityEngine;
 
 public class CustomerModelSpawner : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> models;
-    [SerializeField] private float respawnDelay;
-    [SerializeField] private GameObject speechBubble;
-    private CustomerModel current;
-    private ProductComparator comparator;
+    [SerializeField] private List<GameObject> _models;
+    [SerializeField] private float _respawnDelay;
+    [SerializeField] private GameObject _speechBubble;
     
-    //public Animator door;
+    private CustomerModel _customerModel;
+    private ProductComparator _comparator;
 
     public void Start()
     {
-        comparator = GetComponent<ProductComparator>();
+        _comparator = GetComponent<ProductComparator>();
         Respawn();
     }
+    
     public void Finish()
     {
-        current?.Finish();
-        Invoke("Respawn", respawnDelay);
+        _customerModel?.Finish();
+        Invoke("Respawn", _respawnDelay);
     }
+    
     public void Decline()
     {
-        current?.Decline();
+        _customerModel?.Decline();
     }
+    
     public void Respawn()
     {
-        current?.Despawn();
+        _customerModel?.Despawn();
         //door.ResetTrigger("open");
         //door.SetTrigger("open");
-        int index = UnityEngine.Random.Range(0, models.Count);
-        current = Instantiate(models[index], transform).GetComponent<CustomerModel>();
-        current.textBubble = speechBubble;
-        current.Begin();
-        comparator.SetQuery(current.currentQuery.query);
+        int index = Random.Range(0, _models.Count);
+        _customerModel = Instantiate(_models[index], transform).GetComponent<CustomerModel>();
+        _customerModel.SetTextBubble(_speechBubble);
+        _customerModel.Begin();
+        _comparator.SetQuery(_customerModel.CurrentQuery.Query);
     }
-
 }
