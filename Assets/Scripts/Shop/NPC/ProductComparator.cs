@@ -17,11 +17,8 @@ public struct Query
     
     public bool Check(Product product)
     {
-        return (
-        (product.Type == Type || Type == ProductType.Any)
-        &&
-        (product.Filling == Filling || Filling == FillingType.Any)
-        );
+        return (product.Type == Type || Type == ProductType.Any)
+               && (product.Filling == Filling || Filling == FillingType.Any);
     }
 }
 
