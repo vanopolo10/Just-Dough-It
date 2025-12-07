@@ -45,9 +45,10 @@ public class LocalizationManager : MonoBehaviour
 
     private void SaveLanguage()
     {
+        const string key = "Language.json";
+        
         if (SelectedTable == null) return;
         string json = JsonConvert.SerializeObject(new SelectedLanguage(SelectedTable.Code));
-        string key = "Language.json";
         string path = Path.Combine(Application.persistentDataPath, key);
 
         File.WriteAllText(path, json);
@@ -57,7 +58,8 @@ public class LocalizationManager : MonoBehaviour
 
     private void LoadLanguage()
     {
-        string key = "Language.json";
+        const string key = "Language.json";
+        
         string path = Path.Combine(Application.persistentDataPath, key);
 
         if (File.Exists(path) == false)
@@ -94,13 +96,14 @@ public class LocalizationManager : MonoBehaviour
     public void LoadTables()
     {
         var files = Directory.GetFiles(Application.persistentDataPath, "Table_*.json", SearchOption.TopDirectoryOnly);
+        
         if (files.Length == 0)
         {
             Debug.Log($"[{gameObject.name}] Таблицы не сохранялись");
             return;
         }
 
-        List<LocalizationTable> tables = new() { };
+        List<LocalizationTable> tables = new();
 
         foreach (string file in files)
         {
@@ -119,10 +122,11 @@ public class LocalizationManager : MonoBehaviour
 
     public void SaveTablesIntoFiles()
     {
+        const string path = "Assets/Tables.json";
+
         if (Application.isPlaying) return;
 
         string json = JsonConvert.SerializeObject(_tables, _settings);
-        string path = "Assets/Tables.json";
 
         File.WriteAllText(path, json);
         Refresh();
@@ -130,9 +134,10 @@ public class LocalizationManager : MonoBehaviour
 
     public void LoadTablesFromFiles()
     {
-        if (Application.isPlaying) return;
+        const string path = "Assets/Tables.json";
 
-        string path = "Assets/Tables.json";
+        if (Application.isPlaying) return;
+        
         if (File.Exists(path) == false)
         {
             return;
@@ -147,8 +152,14 @@ public class LocalizationManager : MonoBehaviour
 [Serializable]
 public class KeyPair
 {
-    public string Key;
-    public string Value;
+    public KeyPair(string key, string value)
+    {
+        Key = key;
+        Value = value;
+    }
+    
+    public string Key { get; set; }
+    public string Value { get; set; }
 }
 
 [Serializable]
@@ -177,10 +188,10 @@ public class SelectedLanguage
 [Serializable]
 public class SerializedTables
 {
-    public List<LocalizationTable> Tables;
-
     public SerializedTables(List<LocalizationTable> tables)
     {
         Tables = tables;
     }
+    
+    public IReadOnlyList<LocalizationTable> Tables { get; }
 }

@@ -62,11 +62,7 @@ public class LocalizationEditor : Editor
 
             foreach (var table in _manager.Tables)
             {
-                table.Keys.Add(new KeyPair()
-                {
-                    Key = "new_key",
-                    Value = ""
-                });
+                table.Keys.Add(new KeyPair("new_key", ""));
             }
 
             EditorUtility.SetDirty(_manager);
@@ -162,17 +158,15 @@ public class LocalizationEditor : Editor
             {
                 Undo.RecordObject(_manager, "Rename Key");
 
-                foreach (var table in _manager.Tables)
-                {
-                    if (row < table.Keys.Count) table.Keys[row].Key = newKey;
-                }
+                foreach (var table in _manager.Tables.Where(table => row < table.Keys.Count))
+                    table.Keys[row].Key = newKey;
 
                 EditorUtility.SetDirty(_manager);
             }
 
             foreach (var table in _manager.Tables)
             {
-                if (row >= table.Keys.Count) table.Keys.Add(new KeyPair() { Key = newKey, Value = "" });
+                if (row >= table.Keys.Count) table.Keys.Add(new KeyPair(newKey, ""));
 
                 table.Keys[row].Value = EditorGUILayout.TextField(table.Keys[row].Value, GUILayout.Width(200));
             }
