@@ -8,12 +8,12 @@ public struct CustomerQuery
 {
     public Query Query;
     
-    [TextArea(3, 10)]
-    public string QueryText, DeclineText, AcceptText;
+    public string QueryKey, DeclineKey, AcceptKey;
 }
 
 public class CustomerModel : MonoBehaviour
 {
+    //private static readonly int StartID = Animator.StringToHash("Start");
     private static readonly int DeclineID = Animator.StringToHash("Decline");
     private static readonly int AcceptID = Animator.StringToHash("Accept");
     
@@ -35,25 +35,32 @@ public class CustomerModel : MonoBehaviour
         _animator = GetComponent<Animator>();
 //        _currentQuery = _queries[UnityEngine.Random.Range(0, _queries.Count)];
         Invoke(nameof(ShowQuery), _initDelay);
+
+        LocalizationManager.Instance.OnLanguageChange += UpdateQueryText;
     }
     
+    private void UpdateQueryText()
+    {
+        _textField.text = LocalizationManager.Instance.SelectedTable.GetPair(_currentQuery.QueryKey);
+    }
+
     public void ShowQuery() 
-    { 
-        _textField.text = _currentQuery.QueryText;
+    {
+        UpdateQueryText();
         _textBubble.SetActive(true);
     }
     
     public void Decline()
     {
         _animator.SetTrigger(DeclineID);
-        _textField.text = _currentQuery.DeclineText;
+        _textField.text = LocalizationManager.Instance.SelectedTable.GetPair(_currentQuery.DeclineKey);
         Invoke(nameof(ShowQuery), _refreshDelay);
     }
     
     public void Finish()
     {
         _animator.SetTrigger(AcceptID);
-        _textField.text = _currentQuery.AcceptText;
+        _textField.text = LocalizationManager.Instance.SelectedTable.GetPair(_currentQuery.AcceptKey);
         Invoke(nameof(HideBubble), _finishDelay);
     }
     

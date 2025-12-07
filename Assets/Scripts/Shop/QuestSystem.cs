@@ -13,7 +13,7 @@ public enum QuestInvokeType
 public class QuestSystem : MonoBehaviour
 {
     [SerializeField] private DoughBucket _doughBucket;
-    [SerializeField] private string _completionText = "(Завершено!)";
+    [SerializeField] private string _completionTextKey = "quest.completed";
     [SerializeField] private List<QuestDisplay> _quests;
     [SerializeField] private TMP_Text _text;
     
@@ -33,6 +33,7 @@ public class QuestSystem : MonoBehaviour
         UpdateText();
         _doughBucket.CurrentDoughChanged += OnDoughChanged;
         OnDoughChanged();
+        LocalizationManager.Instance.OnLanguageChange += UpdateText;
     }
 
     private void OnDisable()
@@ -41,6 +42,7 @@ public class QuestSystem : MonoBehaviour
 
         if (_doughController != null)
             _doughController.ActionPerfected -= OnPerfectAction;
+        LocalizationManager.Instance.OnLanguageChange -= UpdateText;
     }
 
     private void OnDoughChanged()
@@ -86,10 +88,10 @@ public class QuestSystem : MonoBehaviour
 
         foreach (QuestDisplay quest in _quests)
         {
-            text += quest.Description;
+            text += LocalizationManager.Instance.SelectedTable.GetPair(quest.DescriptionKey);
             text += quest.Score < quest.MaxScore
                 ? " (" + quest.Score + "/" + quest.MaxScore + ")"
-                : " " + _completionText;
+                : " " + LocalizationManager.Instance.SelectedTable.GetPair(_completionTextKey);
 
             text += "\n\n";
         }
@@ -100,14 +102,14 @@ public class QuestSystem : MonoBehaviour
     [Serializable]
     struct QuestDisplay
     {
-        public string Description;
+        public string DescriptionKey;
         public QuestInvokeType Type;
         public int MaxScore;
         public int Score;
 
         public QuestDisplay(QuestDisplay old, int score)
         {
-            Description = old.Description;
+            DescriptionKey = old.DescriptionKey;
             Type = old.Type;
             MaxScore = old.MaxScore;
             Score = score;

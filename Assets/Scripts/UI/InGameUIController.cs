@@ -12,6 +12,7 @@ public class InGameUIController : MonoBehaviour
 
     [SerializeField] private SaveManager _saveManager;
     [SerializeField] private TMP_InputField _inputField;
+    [SerializeField] private AudioSource _audioSource;
 
     private void Start()
     {
@@ -45,6 +46,7 @@ public class InGameUIController : MonoBehaviour
         {
             _saveManager.SaveGame(_inputField.text);
             _inputField.text = "";
+            _audioSource.Play();
             SwitchSaveMenu();
         }
     }
@@ -52,6 +54,12 @@ public class InGameUIController : MonoBehaviour
     public void ExitButton()
     {
         _saveManager.Autosave();
+        _audioSource.Play();
+        Invoke("Exit", 1);
+    }
+
+    public void Exit()
+    {
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
