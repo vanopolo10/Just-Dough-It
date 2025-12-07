@@ -68,36 +68,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83820d42bc38ed74eb0f989065736356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerModel
-  currentQuery:
-    query:
-      type: 0
-      filling: 0
-    queryText: 
-    DeclineText: 
-    AcceptText: 
-  queries:
-  - query:
-      type: 4
-      filling: 1
-    queryText: "\u041C\u042F\u0421\u0410."
-    DeclineText: "\u041D\u0415 \u041C\u042F\u0421\u041E."
-    AcceptText: "\u041C\u041C\u041C\u041C\u041C\u041C..."
-  - query:
-      type: 4
-      filling: 3
-    queryText: "\u042F - \u0412\u0430\u0441\u0438\u043B\u0438\u0439 \u0427\u0440\u0435\u0432\u043E\u0443\u0433\u043E\u0434\u043D\u0438\u043A.
-      \u0414\u0430\u0439 \u043C\u043D\u0435 \u0447\u0435\u0433\u043E-\u043D\u0438\u0431\u0443\u0434\u044C
-      \u043F\u043E\u0435\u0441\u0442\u044C, \u0438 \u043C\u043E\u0436\u043D\u043E
-      \u043F\u043E\u0431\u043E\u043B\u044C\u0448\u0435."
-    DeclineText: "\u0411\u0440\u043E, \u043A\u0430\u043A \u0442\u044B \u0443\u043C\u0443\u0434\u0440\u0438\u043B\u0441\u044F
-      \u0434\u0430\u0442\u044C \u0435\u043C\u0443 \u043D\u0435\u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u044B\u0439
-      \u0442\u043E\u0432\u0430\u0440?"
-    AcceptText: "\u041F\u043E\u0439\u0434\u0451\u0442. \u0421\u043F\u0430\u0441\u0438\u0431\u043E."
-  initDelay: 1
-  finishDelay: 0.7
-  refreshDelay: 2
-  textField: {fileID: 0}
-  textBubble: {fileID: 0}
+  _animator: {fileID: 2190165910189258258}
+  _queries:
+  - Query:
+      Type: 4
+      Filling: 1
+    QueryText: "\u041C\u042F\u0421\u0410"
+    DeclineText: "\u0411\u0435..."
+    AcceptText: "\u041C\u041C\u041C\u041C"
+  _initDelay: 2
+  _finishDelay: 1
+  _refreshDelay: 3
 --- !u!1001 &2731457531695479147
 PrefabInstance:
   m_ObjectHideFlags: 0

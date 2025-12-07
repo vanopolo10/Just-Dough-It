@@ -7,6 +7,8 @@ using UnityEngine;
 public struct CustomerQuery
 {
     public Query Query;
+    
+    [TextArea(3, 10)]
     public string QueryText, DeclineText, AcceptText;
 }
 
@@ -17,14 +19,15 @@ public class CustomerModel : MonoBehaviour
     private static readonly int FinishID = Animator.StringToHash("Finish");
     
     [SerializeField] private Animator _animator;
-    [SerializeField] private CustomerQuery _currentQuery;
     [SerializeField] private List<CustomerQuery> _queries;
     [SerializeField] private float _initDelay = 2f;
     [SerializeField] private float _finishDelay = 1f;
     [SerializeField] private float _refreshDelay = 3f;
-    [SerializeField] private TextMeshProUGUI _textField; 
-    [SerializeField] private GameObject _textBubble;
-
+    
+    private GameObject _textBubble;
+    private TextMeshProUGUI _textField; 
+    private CustomerQuery _currentQuery;
+    
     public CustomerQuery CurrentQuery => _currentQuery;
     
     public void Begin()

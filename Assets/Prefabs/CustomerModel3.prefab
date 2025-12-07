@@ -68,39 +68,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83820d42bc38ed74eb0f989065736356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerModel
-  currentQuery:
-    query:
-      type: 0
-      filling: 0
-    queryText: 
-    DeclineText: 
-    AcceptText: 
-  queries:
-  - query:
-      type: 3
-      filling: 3
-    queryText: "\u042F - \u0414\u043B\u0438\u043D\u043D\u044B\u0439 \u0412\u0430\u0441\u0438\u043B\u0438\u0439.
-      \u0414\u0430\u0439 \u043C\u043D\u0435 \u043A\u0430\u043A\u043E\u0439-\u043D\u0438\u0431\u0443\u0434\u044C
-      \u0414\u043B\u0438\u043D\u043D\u043E\u0439 \u0435\u0434\u044B \u0447\u0442\u043E\u0431\u044B
-      \u044F \u043C\u043E\u0433 \u0441\u0442\u0430\u0442\u044C \u0414\u043B\u0438\u043D\u043D\u0435\u0435."
-    DeclineText: "\u042D\u0442\u0430 \u0435\u0434\u0430 \u043D\u0435\u0434\u043E\u0441\u0442\u0430\u0442\u043E\u0447\u043D\u043E
-      \u0414\u043B\u0438\u043D\u043D\u0430\u044F."
-    AcceptText: "\u041F\u0440\u0435\u0432\u043E\u0441\u0445\u043E\u0434\u043D\u043E."
-  - query:
-      type: 4
-      filling: 2
-    queryText: "\u042F - \u0421\u043A\u0443\u0447\u043D\u044B\u0439 \u0412\u0430\u0441\u0438\u043B\u0438\u0439.
-      \u0414\u0430\u0439 \u043C\u043D\u0435 \u0441\u043A\u0443\u0447\u043D\u043E\u0439
-      \u0435\u0434\u044B."
-    DeclineText: "\u0420\u0430\u0437\u0432\u0435 \u044D\u0442\u043E \u0441\u043A\u0443\u0447\u043D\u043E?
-      \u0422\u0430\u043C \u0435\u0441\u0442\u044C \u043D\u0430\u0447\u0438\u043D\u043A\u0430!"
-    AcceptText: "\u0423\u0440\u0430, \u043F\u043E\u0439\u0434\u0443 \u0434\u0430\u043B\u044C\u0448\u0435
-      \u0441\u043A\u0443\u0447\u0430\u0442\u044C"
-  initDelay: 1
-  finishDelay: 0.7
-  refreshDelay: 2
-  textField: {fileID: 0}
-  textBubble: {fileID: 0}
+  _animator: {fileID: 2190165910189258258}
+  _queries:
+  - Query:
+      Type: 3
+      Filling: 3
+    QueryText: "\u0414\u0430\u0439\u0442\u0435 \u043C\u043D\u0435 \u0434\u043B\u0438\u043D\u043D\u043E\u0439
+      \u0435\u0434\u044B, \u0447\u0442\u043E\u0431\u044B \u044F \u0441\u0442\u0430\u043B
+      \u0435\u0449\u0435 \u0434\u043B\u0438\u043D\u043D\u0435\u0435"
+    DeclineText: "\u042D\u0442\u0430 \u0435\u0434\u0430 \u0441\u043B\u0438\u0448\u043A\u043E\u043C
+      \u043A\u043E\u0440\u043E\u0442\u043A\u0430\u044F"
+    AcceptText: "\u041A\u0430\u043A\u0430\u044F \u0434\u043B\u0438\u043D\u043D\u0430\u044F!"
+  _initDelay: 2
+  _finishDelay: 1
+  _refreshDelay: 3
 --- !u!1001 &2731457531695479147
 PrefabInstance:
   m_ObjectHideFlags: 0

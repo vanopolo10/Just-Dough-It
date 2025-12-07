@@ -19,7 +19,7 @@ public class CustomerModelSpawner : MonoBehaviour
     public void Finish()
     {
         _customerModel?.Finish();
-        Invoke("Respawn", _respawnDelay);
+        Invoke(nameof(Respawn), _respawnDelay);
     }
     
     public void Decline()
