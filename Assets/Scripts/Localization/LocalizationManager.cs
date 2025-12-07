@@ -3,39 +3,41 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+using static UnityEditor.AssetDatabase;
 
 public class LocalizationManager : MonoBehaviour
 {
     public static LocalizationManager Instance = null;
-    public Action OnLanguageChange;
-    public LocalizationTable SelectedTable => _selectedTable;
-    public List<LocalizationTable> Tables => _tables;
-    
-    [SerializeField] private List<LocalizationTable> _tables;
-    private LocalizationTable _selectedTable;
 
-    private JsonSerializerSettings _settings = new()
+    [SerializeField] private List<LocalizationTable> _tables;
+
+    public event Action OnLanguageChange;
+
+    public LocalizationTable SelectedTable { get; private set; }
+
+    public List<LocalizationTable> Tables => _tables;
+
+    private readonly JsonSerializerSettings _settings = new()
     {
         TypeNameHandling = TypeNameHandling.Auto,
         Formatting = Formatting.Indented
     };
-    
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else if (Instance == this || Instance != null) Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
 
-        _selectedTable = _tables.FirstOrDefault();
+        SelectedTable = _tables.FirstOrDefault();
         LoadLanguage();
         LoadTables();
     }
 
     public void ChangeLanguage(string code)
     {
-        _selectedTable = _tables.Where(table => table.Code == code).FirstOrDefault();
+        SelectedTable = _tables.FirstOrDefault(table => table.Code == code);
         OnLanguageChange?.Invoke();
 
         SaveLanguage();
@@ -43,14 +45,14 @@ public class LocalizationManager : MonoBehaviour
 
     private void SaveLanguage()
     {
-        if (_selectedTable == null) return;
-        string json = JsonConvert.SerializeObject(new SelectedLanguage(_selectedTable.Code));
+        if (SelectedTable == null) return;
+        string json = JsonConvert.SerializeObject(new SelectedLanguage(SelectedTable.Code));
         string key = "Language.json";
         string path = Path.Combine(Application.persistentDataPath, key);
 
         File.WriteAllText(path, json);
 
-        Debug.Log($"[{gameObject.name}] Язык {_selectedTable.Code} сохранён");
+        Debug.Log($"[{gameObject.name}] Язык {SelectedTable.Code} сохранён");
     }
 
     private void LoadLanguage()
@@ -69,7 +71,7 @@ public class LocalizationManager : MonoBehaviour
         SelectedLanguage selectedLanguage = JsonConvert.DeserializeObject<SelectedLanguage>(json, _settings);
         ChangeLanguage(selectedLanguage.LanguageCode);
 
-        Debug.Log($"[{gameObject.name}] Язык {_selectedTable.Code} загружен");
+        Debug.Log($"[{gameObject.name}] Язык {SelectedTable.Code} загружен");
     }
 
     public void SaveTables()
@@ -85,6 +87,7 @@ public class LocalizationManager : MonoBehaviour
 
             Debug.Log($"[{gameObject.name}] Таблица {key} сохранена");
         }
+
         Debug.Log($"[{gameObject.name}] Таблицы сохранены");
     }
 
@@ -122,7 +125,7 @@ public class LocalizationManager : MonoBehaviour
         string path = "Assets/Tables.json";
 
         File.WriteAllText(path, json);
-        AssetDatabase.Refresh();
+        Refresh();
     }
 
     public void LoadTablesFromFiles()
@@ -134,6 +137,7 @@ public class LocalizationManager : MonoBehaviour
         {
             return;
         }
+
         string json = File.ReadAllText(path);
 
         _tables = JsonConvert.DeserializeObject<List<LocalizationTable>>(json, _settings);
@@ -144,36 +148,37 @@ public class LocalizationManager : MonoBehaviour
 public class KeyPair
 {
     public string Key;
-    public string Value; 
+    public string Value;
 }
 
 [Serializable]
 public class LocalizationTable
 {
-    public string Code;
-    public List<KeyPair> Keys;
-
     public string GetPair(string key)
     {
-        return Keys.Where(pair => pair.Key == key).FirstOrDefault().Value;
+        return Keys.FirstOrDefault(pair => pair.Key == key)?.Value;
     }
+
+    public string Code { get; set; }
+    public List<KeyPair> Keys { get; set; }
 }
 
 [Serializable]
 public class SelectedLanguage
 {
-    public string LanguageCode;
-
     public SelectedLanguage(string code)
     {
         LanguageCode = code;
     }
+
+    public string LanguageCode { get; }
 }
 
 [Serializable]
 public class SerializedTables
 {
     public List<LocalizationTable> Tables;
+
     public SerializedTables(List<LocalizationTable> tables)
     {
         Tables = tables;

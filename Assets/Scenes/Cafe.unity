@@ -290,7 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 580b078436a1ff447a1e435a02b31a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PaidEvent
-  price: 500
+  _price: 500
   _successEvent:
     m_PersistentCalls:
       m_Calls:
@@ -333,7 +333,7 @@ MonoBehaviour:
   _failureEvent:
     m_PersistentCalls:
       m_Calls: []
-  moneyManager: {fileID: 0}
+  _moneyManager: {fileID: 1638504442}
 --- !u!114 &44474134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -656,6 +656,34 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7632241321038988097, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: _respawnDelay
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7632241321038988097, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: _speechBubble
+      value: 
+      objectReference: {fileID: 1268339099}
+    - target: {fileID: 7632241321038988097, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: _models.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7632241321038988097, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: '_models.Array.data[0]'
+      value: 
+      objectReference: {fileID: 6207268144424018502, guid: 8c998023c6d99264a8f396ed08dfc8aa, type: 3}
+    - target: {fileID: 7632241321038988097, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: '_models.Array.data[1]'
+      value: 
+      objectReference: {fileID: 6207268144424018502, guid: 40bc3a21a712bf247934a5803676ca4d, type: 3}
+    - target: {fileID: 7632241321038988097, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: '_models.Array.data[2]'
+      value: 
+      objectReference: {fileID: 6207268144424018502, guid: 02cf74432950ae14ebbc23e284a8872c, type: 3}
+    - target: {fileID: 7632241321038988097, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: '_models.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1331907458245399647, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -9588,7 +9616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 580b078436a1ff447a1e435a02b31a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PaidEvent
-  price: 300
+  _price: 300
   _successEvent:
     m_PersistentCalls:
       m_Calls:
@@ -9631,7 +9659,7 @@ MonoBehaviour:
   _failureEvent:
     m_PersistentCalls:
       m_Calls: []
-  moneyManager: {fileID: 0}
+  _moneyManager: {fileID: 1638504442}
 --- !u!114 &685766496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10577,6 +10605,15 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1098958225032842420, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: m_text
+      value: 'New Text - lorem ipsum (0/10)
+
+
+        GISDHSKDW - (3/3)
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1098958225032842420, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -10584,6 +10621,66 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+    - target: {fileID: 1098958225032842420, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _text
+      value: 
+      objectReference: {fileID: 1061726825}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _doughBucket
+      value: 
+      objectReference: {fileID: 1543892526}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _quests.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _quests.Array.data[1].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _quests.Array.data[1]._type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _quests.Array.data[0].MaxScore
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _quests.Array.data[1].MaxScore
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _quests.Array.data[0]._maxScore
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _quests.Array.data[1]._maxScore
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _quests.Array.data[0].Description
+      value: "\u041E\u0431\u0441\u043B\u0443\u0436\u0438\u0432\u0430\u0439\u0442\u0435
+        \u043A\u043B\u0438\u0435\u043D\u0442\u043E\u0432"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _quests.Array.data[1].Description
+      value: "\u0421\u043E\u0432\u0435\u0440\u0448\u0430\u0439\u0442\u0435 \u0438\u0434\u0435\u0430\u043B\u044C\u043D\u044B\u0435
+        \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _quests.Array.data[0]._description
+      value: "\u041E\u0431\u0441\u043B\u0443\u0436\u0438\u0432\u0430\u0439\u0442\u0435
+        \u043F\u043E\u043A\u0443\u043F\u0430\u0442\u0435\u043B\u0435\u0439"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: _quests.Array.data[1]._description
+      value: "\u0421\u043E\u0432\u0435\u0440\u0448\u0430\u0439\u0442\u0435 \u0438\u0434\u0435\u0430\u043B\u044C\u043D\u044B\u0435
+        \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F"
+      objectReference: {fileID: 0}
     - target: {fileID: 1682546210348642621, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
       propertyPath: m_Name
       value: ProgressionSystem
@@ -16585,6 +16682,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f1d13778f386f499822db39dcbd734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shelf
+  _moneyManager: {fileID: 1638504442}
+  _basePrice: 30
+  _qualityMultiplayer: 20
   _places:
   - {fileID: 1629731879}
   - {fileID: 1707014621}
@@ -16594,6 +16694,17 @@ MonoBehaviour:
   - {fileID: 1606651904}
   - {fileID: 691907139}
   - {fileID: 553259653}
+--- !u!114 &1061726825 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1098958225032842420, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+  m_PrefabInstance: {fileID: 926123346}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1067776319
 GameObject:
   m_ObjectHideFlags: 0
@@ -17727,6 +17838,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1261744897}
   m_CullTransparentMesh: 1
+--- !u!1 &1268339099 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1352188934141955031, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+  m_PrefabInstance: {fileID: 63782452}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1268631172
 GameObject:
   m_ObjectHideFlags: 0
@@ -24243,6 +24359,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5840420231118800679, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
   m_PrefabInstance: {fileID: 1785999268}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1638504442 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8730457476020987041, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
+  m_PrefabInstance: {fileID: 2878564066554776694}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5d65b58f06a180469d7ff66862268a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoneyManager
 --- !u!1001 &1651714244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36974,7 +37101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8730457476020987041, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: _money
-      value: 100000
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8842245647505490411, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: m_Color.b
@@ -42972,7 +43099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 580b078436a1ff447a1e435a02b31a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PaidEvent
-  price: 200
+  _price: 200
   _successEvent:
     m_PersistentCalls:
       m_Calls:
@@ -43015,7 +43142,7 @@ MonoBehaviour:
   _failureEvent:
     m_PersistentCalls:
       m_Calls: []
-  moneyManager: {fileID: 0}
+  _moneyManager: {fileID: 1638504442}
 --- !u!114 &9003330971662954663
 MonoBehaviour:
   m_ObjectHideFlags: 0

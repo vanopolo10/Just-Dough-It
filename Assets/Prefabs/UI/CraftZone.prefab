@@ -92,16 +92,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 991840e387ac42948a4858e3a0e625df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CraftZoneCanvas
-  _zoneId: 0
   _controller: {fileID: 0}
-  _leftClickAction: 0
   _rightClickAction: 0
-  _isBunComboZone: 0
-  _isBunCenter: 0
-  _bunRingIndex: -1
-  _image: {fileID: 4551856624686275876}
-  _defaultColor: {r: 1, g: 1, b: 1, a: 0.1}
-  _hoverColor: {r: 1, g: 0.9, b: 0.4, a: 0.4}
+  _isDragStartZone: 0
+  _isDragEndZone: 0
+  _dragRules: []
+  _isComboZone: 0
+  _perfectClickArea: {fileID: 0}
+  _perfectDragArea: {fileID: 0}
 --- !u!222 &8625022098918262877
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -130,8 +128,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0910dfc9803f9934c9b38cd08813bb75, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

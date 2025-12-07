@@ -22,15 +22,15 @@ public class LocalizationEditor : Editor
         {
             EditorGUILayout.HelpBox("Нет таблиц локализации", MessageType.Info);
 
-            if (GUILayout.Button("Добавить таблицу"))
+            if (!GUILayout.Button("Добавить таблицу")) return;
+
+            _manager.Tables?.Add(new LocalizationTable
             {
-                _manager.Tables.Add(new LocalizationTable()
-                {
-                    Code = "new",
-                    Keys = new List<KeyPair>()
-                });
-                EditorUtility.SetDirty(_manager);
-            }
+                Code = "new",
+                Keys = new List<KeyPair>()
+            });
+
+            EditorUtility.SetDirty(_manager);
 
             return;
         }
