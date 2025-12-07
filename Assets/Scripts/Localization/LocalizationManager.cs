@@ -14,7 +14,8 @@ public class LocalizationManager : MonoBehaviour
 
     public event Action OnLanguageChange;
 
-    public LocalizationTable SelectedTable { get; private set; }
+    private LocalizationTable _selectedTable;
+    public LocalizationTable SelectedTable => _selectedTable;
 
     public List<LocalizationTable> Tables => _tables;
 
@@ -30,14 +31,14 @@ public class LocalizationManager : MonoBehaviour
         else if (Instance == this || Instance != null) Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
 
-        SelectedTable = _tables.FirstOrDefault();
+        _selectedTable = _tables.FirstOrDefault();
         LoadLanguage();
         LoadTables();
     }
 
     public void ChangeLanguage(string code)
     {
-        SelectedTable = _tables.FirstOrDefault(table => table.Code == code);
+        _selectedTable = _tables.FirstOrDefault(table => table.Code == code);
         OnLanguageChange?.Invoke();
 
         SaveLanguage();
@@ -45,14 +46,14 @@ public class LocalizationManager : MonoBehaviour
 
     private void SaveLanguage()
     {
-        if (SelectedTable == null) return;
-        string json = JsonConvert.SerializeObject(new SelectedLanguage(SelectedTable.Code));
+        if (_selectedTable == null) return;
+        string json = JsonConvert.SerializeObject(new SelectedLanguage(_selectedTable.Code));
         string key = "Language.json";
         string path = Path.Combine(Application.persistentDataPath, key);
 
         File.WriteAllText(path, json);
 
-        Debug.Log($"[{gameObject.name}] Язык {SelectedTable.Code} сохранён");
+        Debug.Log($"[{gameObject.name}] Язык {_selectedTable.Code} сохранён");
     }
 
     private void LoadLanguage()
@@ -71,7 +72,7 @@ public class LocalizationManager : MonoBehaviour
         SelectedLanguage selectedLanguage = JsonConvert.DeserializeObject<SelectedLanguage>(json, _settings);
         ChangeLanguage(selectedLanguage.LanguageCode);
 
-        Debug.Log($"[{gameObject.name}] Язык {SelectedTable.Code} загружен");
+        Debug.Log($"[{gameObject.name}] Язык {_selectedTable.Code} загружен");
     }
 
     public void SaveTables()
@@ -159,8 +160,8 @@ public class LocalizationTable
         return Keys.FirstOrDefault(pair => pair.Key == key)?.Value;
     }
 
-    public string Code { get; set; }
-    public List<KeyPair> Keys { get; set; }
+    public string Code;
+    public List<KeyPair> Keys;
 }
 
 [Serializable]
@@ -171,7 +172,7 @@ public class SelectedLanguage
         LanguageCode = code;
     }
 
-    public string LanguageCode { get; }
+    public string LanguageCode;
 }
 
 [Serializable]

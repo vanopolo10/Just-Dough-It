@@ -1365,6 +1365,40 @@ MonoBehaviour:
       Value: "\u0412\u044B \u0443\u0432\u0435\u0440\u0435\u043D\u044B?"
     - Key: main.button.load
       Value: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C"
+    - Key: npc.bored.query
+      Value: "\u042F \u0441\u043A\u0443\u0447\u043D\u044B\u0439 \u0412\u0430\u0441\u0438\u043B\u0438\u0439,
+        \u0434\u0430\u0439\u0442\u0435 \u043C\u043D\u0435 \u0441\u043A\u0443\u0447\u043D\u043E\u0439
+        \u0435\u0434\u044B"
+    - Key: npc.bored.decline
+      Value: "\u0421\u043B\u0438\u0448\u043A\u043E\u043C \u0438\u043D\u0442\u0435\u0440\u0435\u0441\u043D\u0430\u044F!"
+    - Key: npc.bored.accept
+      Value: "\u041A\u0430\u043A\u0430\u044F \u0441\u043A\u0443\u0447\u043D\u0430\u044F,
+        \u043F\u043E\u0439\u0434\u0443 \u0441\u043A\u0443\u0447\u0430\u0442\u044C
+        \u0434\u0430\u043B\u044C\u0448\u0435!"
+    - Key: npc.cool.query
+      Value: "\u042F \u043F\u0440\u0438\u0434\u0438\u0440\u0447\u0438\u0432\u044B\u0439
+        \u0412\u0430\u0441\u0438\u043B\u0438\u0439, \u0434\u0430\u0439\u0442\u0435
+        \u043C\u043D\u0435 \u043A\u0440\u0443\u0442\u043E\u0439 \u043F\u0438\u0440\u043E\u0436\u043E\u043A!"
+    - Key: npc.cool.decline
+      Value: "\u041A\u0430\u043A\u043E\u0439-\u0442\u043E \u043E\u043D \u043D\u0435
+        \u043A\u0440\u0443\u0442\u043E\u0439"
+    - Key: npc.cool.accept
+      Value: "\u0419\u043E\u0443, \u043A\u0440\u0443\u0442\u043E!"
+    - Key: npc.fat.query
+      Value: "\u041C\u042F\u0421\u0410"
+    - Key: npc.fat.decline
+      Value: "\u0411\u0415..."
+    - Key: npc.fat.accept
+      Value: "\u041C\u041C\u041C\u041C"
+    - Key: npc.long.query
+      Value: "\u0414\u0430\u0439\u0442\u0435 \u043C\u043D\u0435 \u0434\u043B\u0438\u043D\u043D\u043E\u0439
+        \u0435\u0434\u044B, \u0447\u0442\u043E\u0431\u044B \u044F \u0441\u0442\u0430\u043B
+        \u0435\u0449\u0435 \u0434\u043B\u0438\u043D\u043D\u0435\u0435"
+    - Key: npc.long.decline
+      Value: "\u042D\u0442\u0430 \u0435\u0434\u0430 \u0441\u043B\u0438\u0448\u043A\u043E\u043C
+        \u043A\u043E\u0440\u043E\u0442\u043A\u0430\u044F"
+    - Key: npc.long.accept
+      Value: "\u041A\u0430\u043A\u0430\u044F \u0434\u043B\u0438\u043D\u043D\u0430\u044F!"
   - Code: en
     Keys:
     - Key: main.button.play
@@ -1389,6 +1423,30 @@ MonoBehaviour:
       Value: Are you sure?
     - Key: main.button.load
       Value: Load
+    - Key: npc.bored.query
+      Value: I'm boring Vasily, give me boring food.
+    - Key: npc.bored.decline
+      Value: Too interesting!
+    - Key: npc.bored.accept
+      Value: How boring, I'm going to go be bored some more!
+    - Key: npc.cool.query
+      Value: I'm picky Vasily, give me a cool pie!
+    - Key: npc.cool.decline
+      Value: It's not very cool.
+    - Key: npc.cool.accept
+      Value: Wow, that's awesome!
+    - Key: npc.fat.query
+      Value: MEAT
+    - Key: npc.fat.decline
+      Value: BE...
+    - Key: npc.fat.accept
+      Value: MMMM
+    - Key: npc.long.query
+      Value: Give me long food so I can become even longer.
+    - Key: npc.long.decline
+      Value: This meal is too short.
+    - Key: npc.long.accept
+      Value: How long it is!
 --- !u!4 &958378486
 Transform:
   m_ObjectHideFlags: 0
