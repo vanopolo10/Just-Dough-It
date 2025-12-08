@@ -28,6 +28,11 @@ public class DoughBucket : MonoBehaviour
 
     private void OnMouseDown()
     {
+        SpawnDough();
+    }
+
+    public void SpawnDough()
+    {
         if (_currentDough != null)
             return;
 
@@ -40,6 +45,27 @@ public class DoughBucket : MonoBehaviour
         Vector3 spawnPos = _spawnPoint;
 
         DoughController instance = Instantiate(_doughPrefab, spawnPos, new Quaternion());
+        SetDough(instance);
+    }
+
+    public void SpawnDough(DoughState state, FillingType filling)
+    {
+        if (_currentDough != null)
+            return;
+
+        if (_doughPrefab == null)
+        {
+            Debug.LogWarning("[DoughBucket] Dough prefab is not assigned", this);
+            return;
+        }
+
+        Vector3 spawnPos = _spawnPoint;
+
+        DoughController instance = Instantiate(_doughPrefab, spawnPos, new Quaternion());
+        instance.SetState(state);
+        FillingManager fillingManager = instance.transform.GetComponentInChildren<FillingManager>();
+        if (fillingManager != null)
+            fillingManager.SetFilling(filling);
         SetDough(instance);
     }
 

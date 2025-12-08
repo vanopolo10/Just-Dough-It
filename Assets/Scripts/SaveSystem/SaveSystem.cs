@@ -9,9 +9,9 @@ public static class SaveSystem
 {
     public static string SelectedSave = "None";
 
-    private static JsonSerializerSettings _settings = new()
+    private static readonly JsonSerializerSettings _settings = new()
     {
-        TypeNameHandling = TypeNameHandling.Auto,
+        TypeNameHandling = TypeNameHandling.All,
         Formatting = Formatting.Indented
     };
 

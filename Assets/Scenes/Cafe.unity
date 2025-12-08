@@ -869,6 +869,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 103773851}
+  - component: {fileID: 103773852}
   m_Layer: 0
   m_Name: BuyTables
   m_TagString: Untagged
@@ -898,6 +899,21 @@ RectTransform:
   m_AnchoredPosition: {x: 7.999, y: -0.784}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &103773852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103773850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 774f8f7441c762f4b8f1cad06e3aed80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BuyButtonContent
+  Key: Tables
+  BuyableThing: {fileID: 1465170702}
+  Back: {fileID: 44474130}
 --- !u!1 &108583928
 GameObject:
   m_ObjectHideFlags: 0
@@ -8479,6 +8495,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 564618477}
+  - component: {fileID: 564618478}
   m_Layer: 0
   m_Name: BuyBasket
   m_TagString: Untagged
@@ -8508,6 +8525,21 @@ RectTransform:
   m_AnchoredPosition: {x: 7.999, y: -0.784}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &564618478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564618476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 774f8f7441c762f4b8f1cad06e3aed80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BuyButtonContent
+  Key: Basket
+  BuyableThing: {fileID: 1179846003}
+  Back: {fileID: 685766492}
 --- !u!1001 &576499958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10268,6 +10300,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LocalizedString
   _text: {fileID: 926123348}
   _key: game.quest
+--- !u!114 &926123350 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+  m_PrefabInstance: {fileID: 926123346}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46ab8d289e4a66947b479302eaf71788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1001 &930288406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17304,6 +17347,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InitLoader
   _cameraController: {fileID: 330585548}
+  _moneyManager: {fileID: 1638504442}
+  _questSystem: {fileID: 926123350}
+  _doughBucket: {fileID: 1543892526}
+  _shopTransfotm: {fileID: 465268021}
 --- !u!4 &1359870276
 Transform:
   m_ObjectHideFlags: 0
@@ -41008,6 +41055,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4173399668301003446}
+  - component: {fileID: 4173399668301003447}
   m_Layer: 0
   m_Name: BuyMoreLamps
   m_TagString: Untagged
@@ -41055,6 +41103,21 @@ RectTransform:
   m_AnchoredPosition: {x: 7.999, y: -0.784}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4173399668301003447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3652713821423405698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 774f8f7441c762f4b8f1cad06e3aed80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  Key: Lamps
+  BuyableThing: {fileID: 464245580}
+  Back: {fileID: 1266605711900970940}
 --- !u!114 &4301405468986224819
 MonoBehaviour:
   m_ObjectHideFlags: 0

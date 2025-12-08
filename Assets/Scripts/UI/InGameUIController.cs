@@ -55,10 +55,10 @@ public class InGameUIController : MonoBehaviour
     {
         _saveManager.Autosave();
         _audioSource.Play();
-        Invoke("Exit", 1);
+        Invoke(nameof(Exit), 1);
     }
 
-    public void Exit()
+    private void Exit()
     {
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }

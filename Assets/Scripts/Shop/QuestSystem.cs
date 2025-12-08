@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
+[Serializable]
 public enum QuestInvokeType
 {
     SaleMade,
@@ -16,6 +17,8 @@ public class QuestSystem : MonoBehaviour
     [SerializeField] private string _completionTextKey = "quest.completed";
     [SerializeField] private List<QuestDisplay> _quests;
     [SerializeField] private TMP_Text _text;
+
+    public List<QuestDisplay> Quests => _quests;
     
     private DoughController _doughController;
 
@@ -100,8 +103,13 @@ public class QuestSystem : MonoBehaviour
         _text.text = text;
     }
 
+    public void SetQuests(List<QuestDisplay> newQuests)
+    {
+        _quests = newQuests;
+    }
+
     [Serializable]
-    struct QuestDisplay
+    public struct QuestDisplay
     {
         public string DescriptionKey;
         public QuestInvokeType Type;
