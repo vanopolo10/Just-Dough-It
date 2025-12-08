@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -23,6 +24,9 @@ public struct Query
     
     public bool Check(Product product)
     {
+        Debug.Log($"{product.Type}, {product.Filling}");
+        Debug.Log($"{Type}, {Filling}");
+        
         return (product.Type == Type || Type == ProductType.Any)
                && (product.Filling == Filling || Filling == FillingType.Any);
     }
@@ -48,9 +52,9 @@ public class ProductComparator : MonoBehaviour
     public bool OfferCurrentProduct()
     {
         bool result = _query.Check(_product);
+        
         (result ? OnAccept : OnDecline).Invoke();
 
-        // костыль потому что ивент не принимает enum
         if (result)
             QuestSystem.Instance.InvokeQuest(QuestInvokeType.SaleMade);
 

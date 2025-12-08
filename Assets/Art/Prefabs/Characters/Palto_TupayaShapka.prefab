@@ -1057,8 +1057,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8204236299117746913}
   - component: {fileID: 1734346724543036919}
-  - component: {fileID: 4588660654549340596}
   - component: {fileID: 7952898067703229955}
+  - component: {fileID: -8790622200987596682}
   m_Layer: 0
   m_Name: Palto_TupayaShapka
   m_TagString: Untagged
@@ -1074,19 +1074,18 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3354852208342377103}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.178, y: 0, z: -2.482}
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7910945771830257505}
   - {fileID: 4102601793365842742}
   - {fileID: 499166172535139663}
   - {fileID: 4732897431298663748}
   - {fileID: 5476372169805020466}
   - {fileID: 5681352485467388065}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!95 &1734346724543036919
 Animator:
   serializedVersion: 7
@@ -1109,21 +1108,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4588660654549340596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3354852208342377103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ada6965214902bf449492800d3845343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  _acceptTrigger: Accept
-  _declineTrigger: Decline
-  _reachedTrigger: Reached
 --- !u!114 &7952898067703229955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1136,7 +1120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83820d42bc38ed74eb0f989065736356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerModel
-  _animator: {fileID: 0}
+  _animator: {fileID: 1734346724543036919}
   _queries:
   - Query:
       Type: 6
@@ -1168,15 +1152,35 @@ MonoBehaviour:
     QueryKey: cinnabon.query
     DeclineKey: cinnabon.decline
     AcceptKey: cinnabon.accept
-  - Query:
-      Type: 5
-      Filling: 3
-    QueryKey: cinnalong.query
-    DeclineKey: cinnabon.decline
-    AcceptKey: cinnabon.accept
   _initDelay: 2
   _finishDelay: 1
   _refreshDelay: 3
+--- !u!114 &-8790622200987596682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3354852208342377103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1e1b47ee95441d41b3cc40a754ed036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerRouteMover
+  _moveSpeed: 1.6
+  _rotateSpeed: 8
+  _stopDistance: 0.05
+  _entryPoints:
+  - {x: 4.83, y: 0, z: -2.73}
+  - {x: 0.03, y: 0, z: -2.73}
+  - {x: 0.046, y: 0, z: 1.477}
+  _exitPoints:
+  - {x: 0.07, y: 0, z: 1.28}
+  - {x: 0.07, y: 0, z: -4.19}
+  - {x: -6.2, y: 0, z: -4.19}
+  _isWalkingParam: IsWalking
+  _reachedParam: Reached
+  _forwardRotationOffsetY: 180
 --- !u!1 &3419862549028991992
 GameObject:
   m_ObjectHideFlags: 0
@@ -1589,6 +1593,7 @@ Transform:
   - {fileID: 7093228838075401073}
   - {fileID: 4131774370685124822}
   - {fileID: 5617134732647006165}
+  - {fileID: 7910945771830257505}
   m_Father: {fileID: 5161889516444425371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4189296798929185943
@@ -1842,12 +1847,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6484982811284198490}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.49877733, y: 0.4987772, z: -0.5012196, w: 0.50122005}
-  m_LocalPosition: {x: 0.0054911436, y: 1.5804881, z: -0.028971909}
-  m_LocalScale: {x: 1.0361799, y: 0.91788995, z: 0.94758993}
+  m_LocalRotation: {x: 0.51555145, y: -0.4904064, z: 0.48394892, w: 0.5094132}
+  m_LocalPosition: {x: -0.000080000165, y: 0.008729994, z: 0.0010099973}
+  m_LocalScale: {x: 0.026758797, y: 0.023704022, z: 0.024471011}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8204236299117746913}
+  m_Father: {fileID: 7336814612819959137}
   m_LocalEulerAnglesHint: {x: 90.72101, y: 2.9019928, z: 90.001}
 --- !u!33 &6107676385280291990
 MeshFilter:

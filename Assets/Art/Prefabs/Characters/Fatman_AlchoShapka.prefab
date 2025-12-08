@@ -912,8 +912,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2116414998436867577}
   - component: {fileID: -1082504546416149600}
-  - component: {fileID: 6396047742270806218}
   - component: {fileID: 3712701942969204337}
+  - component: {fileID: -3413597558116953647}
   m_Layer: 0
   m_Name: Fatman_AlchoShapka
   m_TagString: Untagged
@@ -929,8 +929,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2426629168279545122}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.818, y: -1.379, z: -9.313}
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -941,7 +941,7 @@ Transform:
   - {fileID: 8047637345663085321}
   - {fileID: 3622892402250248877}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!95 &-1082504546416149600
 Animator:
   serializedVersion: 7
@@ -964,21 +964,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6396047742270806218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2426629168279545122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ada6965214902bf449492800d3845343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  _acceptTrigger: Accept
-  _declineTrigger: Decline
-  _reachedTrigger: Reached
 --- !u!114 &3712701942969204337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -991,7 +976,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83820d42bc38ed74eb0f989065736356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerModel
-  _animator: {fileID: 0}
+  _animator: {fileID: -1082504546416149600}
   _queries:
   - Query:
       Type: 6
@@ -1023,15 +1008,35 @@ MonoBehaviour:
     QueryKey: cinnabon.query
     DeclineKey: cinnabon.decline
     AcceptKey: cinnabon.accept
-  - Query:
-      Type: 5
-      Filling: 3
-    QueryKey: cinnalong.query
-    DeclineKey: cinnabon.decline
-    AcceptKey: cinnabon.accept
   _initDelay: 2
   _finishDelay: 1
   _refreshDelay: 3
+--- !u!114 &-3413597558116953647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2426629168279545122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1e1b47ee95441d41b3cc40a754ed036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerRouteMover
+  _moveSpeed: 1.6
+  _rotateSpeed: 8
+  _stopDistance: 0.05
+  _entryPoints:
+  - {x: 4.83, y: 0, z: -2.73}
+  - {x: 0.03, y: 0, z: -2.73}
+  - {x: 0.046, y: 0, z: 1.477}
+  _exitPoints:
+  - {x: 0.07, y: 0, z: 1.28}
+  - {x: 0.07, y: 0, z: -4.19}
+  - {x: -6.2, y: 0, z: -4.19}
+  _isWalkingParam: IsWalking
+  _reachedParam: Reached
+  _forwardRotationOffsetY: 180
 --- !u!1 &2460265569941815690
 GameObject:
   m_ObjectHideFlags: 0

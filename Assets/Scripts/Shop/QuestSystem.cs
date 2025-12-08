@@ -42,6 +42,7 @@ public class QuestSystem : MonoBehaviour
 
         if (_doughController != null)
             _doughController.ActionPerfected -= OnPerfectAction;
+        
         LocalizationManager.Instance.OnLanguageChange -= UpdateText;
     }
 
