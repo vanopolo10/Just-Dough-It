@@ -55,4 +55,9 @@ public class MenuUIController : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void LoadLanguage(string code)
+    {
+        LocalizationManager.Instance.SetLanguage(code);
+    }
 }
