@@ -65,6 +65,6 @@ public class InGameUIController : MonoBehaviour
 
     public void ChangeLanguage(string code)
     {
-        LocalizationManager.Instance.ChangeLanguage(code);
+        LocalizationManager.Instance.SetLanguage(code);
     }
 }

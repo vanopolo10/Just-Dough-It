@@ -1,151 +1,12 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Text;
 using UnityEngine;
 
-public class LocalizationManager : MonoBehaviour
-{
-    public static LocalizationManager Instance = null;
-
-    [SerializeField] private List<LocalizationTable> _tables;
-
-    public event Action OnLanguageChange;
-
-    private LocalizationTable _selectedTable;
-    public LocalizationTable SelectedTable => _selectedTable;
-
-    public List<LocalizationTable> Tables
-    {
-        get => _tables;
-        set => _tables = value;
-    }
-
-    private readonly JsonSerializerSettings _settings = new()
-    {
-        TypeNameHandling = TypeNameHandling.Auto,
-        Formatting = Formatting.Indented
-    };
-
-    private void Awake()
-    {
-        if (Instance == null) Instance = this;
-        else if (Instance == this || Instance != null) Destroy(gameObject);
-        DontDestroyOnLoad(gameObject);
-
-        _selectedTable = _tables.FirstOrDefault();
-        LoadLanguage();
-        LoadTables();
-    }
-
-    public void ChangeLanguage(string code)
-    {
-        _selectedTable = _tables.FirstOrDefault(table => table.Code == code);
-        OnLanguageChange?.Invoke();
-
-        SaveLanguage();
-    }
-
-    private void SaveLanguage()
-    {
-        if (_selectedTable == null) return;
-        string json = JsonConvert.SerializeObject(new SelectedLanguage(_selectedTable.Code));
-        string key = "Language.json";
-        string path = Path.Combine(Application.persistentDataPath, key);
-
-        File.WriteAllText(path, json);
-
-        Debug.Log($"[{gameObject.name}] Язык {_selectedTable.Code} сохранён");
-    }
-
-    private void LoadLanguage()
-    {
-        string key = "Language.json";
-        string path = Path.Combine(Application.persistentDataPath, key);
-
-        if (File.Exists(path) == false)
-        {
-            Debug.Log($"[{gameObject.name}] Язык не сохранялся");
-            return;
-        }
-
-        string json = File.ReadAllText(path);
-
-        SelectedLanguage selectedLanguage = JsonConvert.DeserializeObject<SelectedLanguage>(json, _settings);
-        ChangeLanguage(selectedLanguage.LanguageCode);
-
-        Debug.Log($"[{gameObject.name}] Язык {_selectedTable.Code} загружен");
-    }
-
-    public void SaveTables()
-    {
-        if (_tables == null) return;
-        foreach (LocalizationTable table in _tables)
-        {
-            string json = JsonConvert.SerializeObject(table, _settings);
-            string key = $"Table_{table.Code}.json";
-            string path = Path.Combine(Application.persistentDataPath, key);
-
-            File.WriteAllText(path, json);
-
-            Debug.Log($"[{gameObject.name}] Таблица {key} сохранена");
-        }
-
-        Debug.Log($"[{gameObject.name}] Таблицы сохранены");
-    }
-
-    public void LoadTables()
-    {
-        var files = Directory.GetFiles(Application.persistentDataPath, "Table_*.json", SearchOption.TopDirectoryOnly);
-        if (files.Length == 0)
-        {
-            Debug.Log($"[{gameObject.name}] Таблицы не сохранялись");
-            return;
-        }
-
-        List<LocalizationTable> tables = new() { };
-
-        foreach (string file in files)
-        {
-            string json = File.ReadAllText(file);
-
-            LocalizationTable table = JsonConvert.DeserializeObject<LocalizationTable>(json, _settings);
-            tables.Add(table);
-            Debug.Log($"[{gameObject.name}] Таблица {file.Split("/").Last()} загружена");
-        }
-
-        _tables = tables;
-
-        Debug.Log($"[{gameObject.name}] Таблицы загружены");
-        LoadLanguage();
-    }
-
-    public void SaveTablesIntoFiles()
-    {
-        if (Application.isPlaying) return;
-
-        string json = JsonConvert.SerializeObject(_tables, _settings);
-        string path = "Assets/Tables.json";
-
-        File.WriteAllText(path, json);
-    }
-
-    public void LoadTablesFromFiles()
-    {
-        if (Application.isPlaying) return;
-
-        string path = "Assets/Tables.json";
-        if (File.Exists(path) == false)
-        {
-            return;
-        }
-
-        string json = File.ReadAllText(path);
-
-        _tables = JsonConvert.DeserializeObject<List<LocalizationTable>>(json, _settings);
-    }
-}
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [Serializable]
 public class KeyPair
@@ -157,33 +18,222 @@ public class KeyPair
 [Serializable]
 public class LocalizationTable
 {
+    public string Code; // "ru", "en"
+    public List<KeyPair> Keys = new List<KeyPair>();
+
     public string GetPair(string key)
     {
-        return Keys.FirstOrDefault(pair => pair.Key == key)?.Value;
-    }
+        if (Keys == null || Keys.Count == 0 || string.IsNullOrEmpty(key))
+            return key;
 
+        for (int i = 0; i < Keys.Count; i++)
+        {
+            if (Keys[i].Key == key)
+                return Keys[i].Value;
+        }
+
+        return key;
+    }
+}
+
+[Serializable]
+public class LocalizationTableFile
+{
     public string Code;
-    public List<KeyPair> Keys;
+    public List<KeyPair> Keys = new List<KeyPair>();
 }
 
-[Serializable]
-public class SelectedLanguage
+public class LocalizationManager : MonoBehaviour
 {
-    public SelectedLanguage(string code)
+    public static LocalizationManager Instance { get; private set; }
+
+    private void Awake()
     {
-        LanguageCode = code;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    public string LanguageCode;
-}
+    // ---------- ДАННЫЕ ЛОКАЛИЗАЦИИ В РЕДАКТОРЕ И РАНТАЙМЕ ----------
 
-[Serializable]
-public class SerializedTables
-{
-    public List<LocalizationTable> Tables;
+    [Tooltip("Все языковые таблицы. В ЭДИТОРЕ всё сохраняется только сюда.")]
+    public List<LocalizationTable> Tables = new List<LocalizationTable>();
 
-    public SerializedTables(List<LocalizationTable> tables)
+    [Tooltip("Текущая активная таблица (выбранный язык).")]
+    public LocalizationTable SelectedTable;
+
+    public event Action OnLanguageChange;
+
+    public string GetLocalized(string key)
     {
-        Tables = tables;
+        if (SelectedTable == null)
+            return key;
+
+        return SelectedTable.GetPair(key);
+    }
+
+    public void SetLanguage(string code)
+    {
+        if (string.IsNullOrEmpty(code))
+        {
+            Debug.LogWarning("[Localization] Empty language code.");
+            return;
+        }
+
+        if (Tables == null || Tables.Count == 0)
+        {
+            Debug.LogWarning("[Localization] Tables list is empty, cannot set language: " + code);
+            return;
+        }
+
+        LocalizationTable table = null;
+
+        for (int i = 0; i < Tables.Count; i++)
+        {
+            if (Tables[i].Code == code)
+            {
+                table = Tables[i];
+                break;
+            }
+        }
+
+        if (table == null)
+        {
+            Debug.LogWarning("[Localization] Table not found for code: " + code);
+            return;
+        }
+
+        SelectedTable = table;
+        OnLanguageChange?.Invoke();
+        Debug.Log("[Localization] Language set to: " + code);
+    }
+
+    public void ChangeLanguage(string code)
+    {
+        SetLanguage(code);
+    }
+
+    // ---------- РАБОТА С JSON ФАЙЛАМИ В ПРОЕКТЕ (Только редактор) ----------
+
+#if UNITY_EDITOR
+    private static string ProjectLocalizationFolder =>
+        Path.Combine(Application.dataPath, "StreamingAssets/Localization");
+
+    [ContextMenu("Save Tables Into Files (JSON)")]
+    public void SaveTablesIntoFiles()
+    {
+        if (Tables == null || Tables.Count == 0)
+        {
+            Debug.LogWarning("[Localization] No tables to save.");
+            return;
+        }
+
+        Directory.CreateDirectory(ProjectLocalizationFolder);
+
+        foreach (var table in Tables)
+        {
+            if (table == null || string.IsNullOrEmpty(table.Code))
+            {
+                Debug.LogWarning("[Localization] Table with empty or null code skipped.");
+                continue;
+            }
+
+            var fileData = new LocalizationTableFile
+            {
+                Code = table.Code,
+                Keys = new List<KeyPair>(table.Keys ?? new List<KeyPair>())
+            };
+
+            string json = JsonUtility.ToJson(fileData, true);
+            string filePath = Path.Combine(ProjectLocalizationFolder, table.Code + ".json");
+
+            File.WriteAllText(filePath, json, Encoding.UTF8);
+            Debug.Log("[Localization] Saved: " + filePath);
+        }
+
+        AssetDatabase.Refresh();
+    }
+
+    [ContextMenu("Load Tables From Files (JSON)")]
+    public void LoadTablesFromFiles()
+    {
+        if (!Directory.Exists(ProjectLocalizationFolder))
+        {
+            Debug.LogWarning("[Localization] Folder not found: " + ProjectLocalizationFolder);
+            return;
+        }
+
+        Tables ??= new List<LocalizationTable>();
+        Tables.Clear();
+
+        foreach (var filePath in Directory.GetFiles(ProjectLocalizationFolder, "*.json"))
+        {
+            try
+            {
+                string json = File.ReadAllText(filePath, Encoding.UTF8);
+                var fileData = JsonUtility.FromJson<LocalizationTableFile>(json);
+
+                var table = new LocalizationTable
+                {
+                    Code = fileData.Code,
+                    Keys = new List<KeyPair>(fileData.Keys ?? new List<KeyPair>())
+                };
+
+                Tables.Add(table);
+
+                Debug.Log("[Localization] Loaded: " + filePath);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("[Localization] Error reading " + filePath + ":\n" + e);
+            }
+        }
+
+        EditorUtility.SetDirty(this);
+    }
+#endif
+
+    // ---------- ЧТЕНИЕ JSON В БИЛДЕ (StreamingAssets) ----------
+
+    public void LoadTablesFromStreamingAssets()
+    {
+        Tables ??= new List<LocalizationTable>();
+        Tables.Clear();
+
+        string folder = Path.Combine(Application.streamingAssetsPath, "Localization");
+
+        if (!Directory.Exists(folder))
+        {
+            Debug.LogWarning("[Localization] StreamingAssets folder not found: " + folder);
+            return;
+        }
+
+        foreach (var filePath in Directory.GetFiles(folder, "*.json"))
+        {
+            try
+            {
+                string json = File.ReadAllText(filePath, Encoding.UTF8);
+                var fileData = JsonUtility.FromJson<LocalizationTableFile>(json);
+
+                var table = new LocalizationTable
+                {
+                    Code = fileData.Code,
+                    Keys = new List<KeyPair>(fileData.Keys ?? new List<KeyPair>())
+                };
+
+                Tables.Add(table);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("[Localization] Error reading " + filePath + ":\n" + e);
+            }
+        }
+
+        Debug.Log("[Localization] Loaded " + Tables.Count + " tables from StreamingAssets.");
     }
 }

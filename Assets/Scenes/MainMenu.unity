@@ -925,7 +925,7 @@ MonoBehaviour:
   m_text: Button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -990,7 +990,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &432586804
@@ -1670,24 +1670,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 493503502686769853, guid: 841ee2bd23134e0419922c45a60f640f, type: 3}
   m_PrefabInstance: {fileID: 929632021}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &958378484
+--- !u!1 &958378484 stripped
 GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 9030202151763050953, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+  m_PrefabInstance: {fileID: 2045512451497616912}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 958378486}
-  - component: {fileID: 958378485}
-  m_Layer: 0
-  m_Name: LocalizationManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &958378485
+--- !u!114 &958378485 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+  m_PrefabInstance: {fileID: 2045512451497616912}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958378484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44fd68a01784e264db44b328db3b4d9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizationManager
+--- !u!114 &958378487
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1696,227 +1695,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 958378484}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44fd68a01784e264db44b328db3b4d9e, type: 3}
+  m_Script: {fileID: 11500000, guid: 78714a72b32927949958795c7bda72f9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizationManager
-  _tables:
-  - Code: ru
-    Keys:
-    - Key: main.button.play
-      Value: "\u0418\u0433\u0440\u0430\u0442\u044C"
-    - Key: main.button.settings
-      Value: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438"
-    - Key: main.button.return
-      Value: "\u041D\u0430\u0437\u0430\u0434"
-    - Key: main.button.exit
-      Value: "\u0412\u044B\u0439\u0442\u0438"
-    - Key: settings.language
-      Value: "\u042F\u0437\u044B\u043A"
-    - Key: main.button.new_game
-      Value: "\u041D\u043E\u0432\u0430\u044F \u0418\u0433\u0440\u0430"
-    - Key: game.button.exit
-      Value: "\u0412\u044B\u0439\u0442\u0438"
-    - Key: game.button.save
-      Value: "\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C"
-    - Key: main.button.load_last
-      Value: "\u041F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u044C"
-    - Key: save.text.on_delete
-      Value: "\u0412\u044B \u0443\u0432\u0435\u0440\u0435\u043D\u044B?"
-    - Key: main.button.load
-      Value: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C"
-    - Key: npc.bored.query
-      Value: "\u042F \u0441\u043A\u0443\u0447\u043D\u044B\u0439 \u0412\u0430\u0441\u0438\u043B\u0438\u0439,
-        \u0434\u0430\u0439\u0442\u0435 \u043C\u043D\u0435 \u0441\u043A\u0443\u0447\u043D\u043E\u0439
-        \u0435\u0434\u044B"
-    - Key: npc.bored.decline
-      Value: "\u0421\u043B\u0438\u0448\u043A\u043E\u043C \u0438\u043D\u0442\u0435\u0440\u0435\u0441\u043D\u0430\u044F!"
-    - Key: npc.bored.accept
-      Value: "\u041A\u0430\u043A\u0430\u044F \u0441\u043A\u0443\u0447\u043D\u0430\u044F,
-        \u043F\u043E\u0439\u0434\u0443 \u0441\u043A\u0443\u0447\u0430\u0442\u044C
-        \u0434\u0430\u043B\u044C\u0448\u0435!"
-    - Key: npc.cool.query
-      Value: "\u042F \u043F\u0440\u0438\u0434\u0438\u0440\u0447\u0438\u0432\u044B\u0439
-        \u0412\u0430\u0441\u0438\u043B\u0438\u0439, \u0434\u0430\u0439\u0442\u0435
-        \u043C\u043D\u0435 \u043A\u0440\u0443\u0442\u043E\u0439 \u043F\u0438\u0440\u043E\u0436\u043E\u043A!"
-    - Key: npc.cool.decline
-      Value: "\u041A\u0430\u043A\u043E\u0439-\u0442\u043E \u043E\u043D \u043D\u0435
-        \u043A\u0440\u0443\u0442\u043E\u0439"
-    - Key: npc.cool.accept
-      Value: "\u0419\u043E\u0443, \u043A\u0440\u0443\u0442\u043E!"
-    - Key: npc.fat.query
-      Value: "\u041C\u042F\u0421\u0410"
-    - Key: npc.fat.decline
-      Value: "\u0411\u0415..."
-    - Key: npc.fat.accept
-      Value: "\u041C\u041C\u041C\u041C"
-    - Key: npc.long.query
-      Value: "\u0414\u0430\u0439\u0442\u0435 \u043C\u043D\u0435 \u0434\u043B\u0438\u043D\u043D\u043E\u0439
-        \u0435\u0434\u044B, \u0447\u0442\u043E\u0431\u044B \u044F \u0441\u0442\u0430\u043B
-        \u0435\u0449\u0435 \u0434\u043B\u0438\u043D\u043D\u0435\u0435"
-    - Key: npc.long.decline
-      Value: "\u042D\u0442\u0430 \u0435\u0434\u0430 \u0441\u043B\u0438\u0448\u043A\u043E\u043C
-        \u043A\u043E\u0440\u043E\u0442\u043A\u0430\u044F"
-    - Key: npc.long.accept
-      Value: "\u041A\u0430\u043A\u0430\u044F \u0434\u043B\u0438\u043D\u043D\u0430\u044F!"
-    - Key: quest.serve_customers
-      Value: "\u041E\u0431\u0441\u043B\u0443\u0436\u0438\u0432\u0430\u0439\u0442\u0435
-        \u043A\u043B\u0438\u0435\u043D\u0442\u043E\u0432"
-    - Key: quest.perfect_actions
-      Value: "\u0421\u043E\u0432\u0435\u0440\u0448\u0430\u0439\u0442\u0435 \u0438\u0434\u0435\u0430\u043B\u044C\u043D\u044B\u0435
-        \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F"
-    - Key: quest.completed
-      Value: "(\u0417\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u043E!)"
-    - Key: game.quest
-      Value: "\u0417\u0430\u0434\u0430\u0447\u0438"
-    - Key: magazine.buy_more_lamps
-      Value: "\u041A\u0443\u043F\u0438\u0442\u044C \u0431\u043E\u043B\u044C\u0448\u0435
-        \u043B\u0430\u043C\u043F"
-    - Key: magazine.buy_bucket
-      Value: "\u041A\u0443\u043F\u0438\u0442\u044C \u043A\u043E\u0440\u0437\u0438\u043D\u0443"
-    - Key: magazine_buy_more_tables
-      Value: "\u041A\u0443\u043F\u0438\u0442\u044C \u0431\u043E\u043B\u044C\u0448\u0435
-        \u0441\u0442\u043E\u043B\u043E\u0432"
-    - Key: game.to_oven
-      Value: "\u0412 \u043F\u0435\u0447\u044C"
-    - Key: cinnabon.query
-      Value: "\u0414\u0430\u0439\u0442\u0435-\u043A\u0430 \u043C\u043D\u0435 \u0440\u0443\u043B\u0435\u0442-\u0441\u0438\u043D\u043D\u0430\u0431\u043E\u043D
-        \u0441 \u0434\u0436\u0435\u043C\u043E\u043C! \u0423 \u043C\u0435\u043D\u044F
-        \u043E\u0447\u0435\u043D\u044C \u0442\u043E\u043D\u043A\u0438\u0439 \u0432\u043A\u0443\u0441"
-    - Key: cinnabon.decline
-      Value: "\u041C\u043E\u044F \u0436\u0430\u0436\u0434\u0430 \u0441\u0438\u043D\u043D\u0430\u0431\u043E\u043D\u043E\u0432
-        \u043D\u0435 \u0443\u0434\u0430\u043B\u0435\u043D\u0430"
-    - Key: cinnabon.accept
-      Value: "\u0421\u043F\u0430\u0441\u0438\u0431\u043E, \u044F \u0437\u0430\u043F\u043E\u043C\u043D\u044E
-        \u044D\u0442\u043E\u0442 \u0441\u0438\u043D\u043D\u0430\u0431\u043E\u043D
-        \u043D\u0430\u0432\u0441\u0435\u0433\u0434\u0430!"
-    - Key: main.button.tutorial
-      Value: "\u041E\u0431\u0443\u0447\u0435\u043D\u0438\u0435"
-    - Key: tutorial
-      Value: "\u041E\u0431\u0443\u0447\u0435\u043D\u0438\u0435:   \r\n\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435
-        \u0441\u043A\u0430\u043B\u043A\u043E\u0439: \u041B\u041A\u041C - \u0442\u0430\u0449\u0438\u0442\u044C,
-        \u041F\u041A\u041C - \u0440\u0430\u0441\u043A\u0430\u0442\u044B\u0432\u0430\u0442\u044C.
-        \u0412\u0441\u0435 \u0440\u0435\u0446\u0435\u043F\u0442\u044B \u043D\u0430\u0447\u0438\u043D\u0430\u044E\u0442\u0441\u044F
-        \u0441 \u0440\u0430\u0441\u043A\u0430\u0442\u0430\u043D\u043D\u043E\u0433\u043E
-        \u0442\u0435\u0441\u0442\u0430.  \r\n\r\n\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435
-        \u0442\u0435\u0441\u0442\u043E\u043C: \u041B\u041A\u041C - \u043F\u0440\u043E\u0442\u044F\u043D\u0443\u0442\u044C
-        (\u0441\u0442\u0440\u0435\u043B\u043E\u0447\u043A\u0430 \u0432 \u0440\u0435\u0446\u0435\u043F\u0442\u0435),
-        \u041F\u041A\u041C - \u043D\u0430\u0436\u0430\u0442\u044C (\u043A\u0440\u0443\u0436\u043E\u043A
-        \u0432 \u0440\u0435\u0446\u0435\u043F\u0442\u0435), \u041B\u041A\u041C +
-        \u041F\u041A\u041C - \u043F\u0435\u0440\u0435\u0442\u0430\u0449\u0438\u0442\u044C
-        \u0447\u0442\u043E\u0431\u044B \u043F\u043E\u043B\u043E\u0436\u0438\u0442\u044C
-        \u0432 \u043F\u0435\u0447\u044C.   \r\n\r\n\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435
-        \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0435\u043C: \u041B\u041A\u041C
-        \u043F\u043E \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u044E - \u0437\u0430\u0434\u0432\u0438\u043D\u0443\u0442\u044C/\u0432\u044B\u0442\u0430\u0449\u0438\u0438\u0442\u044C
-        \u0438\u0437 \u043F\u0435\u0447\u0438, \u041B\u041A\u041C \u043F\u043E \u043F\u0438\u0440\u043E\u0436\u043A\u0443
-        \u043A\u043E\u0433\u0434\u0430 \u043F\u0440\u043E\u0442\u0438\u0432\u0435\u043D\u044C
-        \u0441\u043D\u0430\u0440\u0443\u0436\u0438 - \u043F\u043E\u043B\u043E\u0436\u0438\u0442\u044C
-        \u043F\u0438\u0440\u043E\u0436\u043E\u043A \u043D\u0430 \u043F\u043E\u043B\u043A\u0443
-        \r\n\r\n\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043F\u043E\u043B\u043A\u043E\u0439:
-        \u0422\u0430\u0449\u0438\u0442\u044C \u041B\u041A\u041C \u0441 \u043F\u0438\u0440\u043E\u0436\u043A\u043E\u043C
-        \u043D\u0430 \u043F\u043E\u043A\u0443\u043F\u0430\u0442\u0435\u043B\u044F
-        - \u043F\u0440\u043E\u0434\u0430\u0442\u044C \r\n\r\n\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435
-        \u043A\u043D\u0438\u0433\u043E\u0439 \u0440\u0435\u0446\u0435\u043F\u0442\u043E\u0432:
-        \u0422\u0430\u0449\u0438\u0442\u044C \u041B\u041A\u041C \u0441 \u0443\u0433\u043B\u0430
-        \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u044B - \u043F\u0435\u0440\u0435\u043B\u0438\u0441\u0442\u043D\u0443\u0442\u044C.
-        \u041D\u0430\u0436\u0430\u0442\u044C \u041B\u041A\u041C \u043D\u0430 \u043A\u043D\u043E\u043F\u043A\u0443
-        \u043F\u043E\u0434 \u0440\u0435\u0446\u0435\u043F\u0442\u043E\u043C - \u0432\u044B\u0431\u0440\u0430\u0442\u044C
-        \u0440\u0435\u0446\u0435\u043F\u0442"
-  - Code: en
-    Keys:
-    - Key: main.button.play
-      Value: Play
-    - Key: main.button.settings
-      Value: Settings
-    - Key: main.button.return
-      Value: Return
-    - Key: main.button.exit
-      Value: Exit
-    - Key: settings.language
-      Value: Language
-    - Key: main.button.new_game
-      Value: New Game
-    - Key: game.button.exit
-      Value: Exit
-    - Key: game.button.save
-      Value: Save
-    - Key: main.button.load_last
-      Value: Continue
-    - Key: save.text.on_delete
-      Value: Are you sure?
-    - Key: main.button.load
-      Value: Load
-    - Key: npc.bored.query
-      Value: I'm boring Vasily, give me boring food.
-    - Key: npc.bored.decline
-      Value: Too interesting!
-    - Key: npc.bored.accept
-      Value: How boring, I'm going to go be bored some more!
-    - Key: npc.cool.query
-      Value: I'm picky Vasily, give me a cool pie!
-    - Key: npc.cool.decline
-      Value: It's not very cool.
-    - Key: npc.cool.accept
-      Value: Wow, that's awesome!
-    - Key: npc.fat.query
-      Value: MEAT
-    - Key: npc.fat.decline
-      Value: BE...
-    - Key: npc.fat.accept
-      Value: MMMM
-    - Key: npc.long.query
-      Value: Give me long food so I can become even longer.
-    - Key: npc.long.decline
-      Value: This meal is too short.
-    - Key: npc.long.accept
-      Value: How long it is!
-    - Key: quest.serve_customers
-      Value: Serve customers
-    - Key: quest.perfect_actions
-      Value: Commit perfect actions
-    - Key: quest.completed
-      Value: (Completed!)
-    - Key: game.quest
-      Value: Quests
-    - Key: magazine.buy_more_lamps
-      Value: Buy more lamps
-    - Key: magazine.buy_bucket
-      Value: Buy basket
-    - Key: magazine_buy_more_tables
-      Value: Buy more tables
-    - Key: game.to_oven
-      Value: To oven
-    - Key: cinnabon.query
-      Value: Give me a cinnabon roll with jam. I have very specific tastes!
-    - Key: cinnabon.decline
-      Value: My thirst for cinnabons is not fulfilled...
-    - Key: cinnabon.accept
-      Value: Thanks! That's one cinnabon for me to remember!
-    - Key: main.button.tutorial
-      Value: Tutorial
-    - Key: tutorial
-      Value: "Tutorial:   \r\nRolling pin control: LMB - drag, RMB - roll. All recipes
-        start with rolled out dough.  \r\n\r\nDough control: LMB - drag (arrow in
-        the recipe), RMB - press (circle in the recipe), LMB + RMB - drag to put
-        in the oven.   \r\n\r\nTray control: LMB on the baking sheet - push/pull
-        out of the oven,\r\nLMB on the pie when the baking sheet is outside - put
-        the pie on the shelf \r\n\r\nShelf management: Drag LMB with a pie to the
-        buyer - sell \r\n\r\nRecipe book management: Drag LMB from the corner of
-        the page - flip. Click LMB on the button under the recipe - select a recipe"
---- !u!4 &958378486
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958378484}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_EditorClassIdentifier: '::'
+  _manager: {fileID: 958378485}
 --- !u!1 &1030489833
 GameObject:
   m_ObjectHideFlags: 0
@@ -4217,6 +3999,716 @@ Transform:
   m_Children: []
   m_Father: {fileID: 543450651928026669}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2045512451497616912
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Code
+      value: en
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Code
+      value: ru
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.size
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.size
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[0].Key
+      value: main.button.play
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[1].Key
+      value: main.button.settings
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[2].Key
+      value: main.button.return
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[3].Key
+      value: main.button.exit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[4].Key
+      value: settings.language
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[5].Key
+      value: main.button.new_game
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[6].Key
+      value: game.button.exit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[7].Key
+      value: game.button.save
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[8].Key
+      value: main.button.load_last
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[9].Key
+      value: save.text.on_delete
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[0].Key
+      value: main.button.play
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[1].Key
+      value: main.button.settings
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[2].Key
+      value: main.button.return
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[3].Key
+      value: main.button.exit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[4].Key
+      value: settings.language
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[5].Key
+      value: main.button.new_game
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[6].Key
+      value: game.button.exit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[7].Key
+      value: game.button.save
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[8].Key
+      value: main.button.load_last
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[9].Key
+      value: save.text.on_delete
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[10].Key
+      value: main.button.load
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[11].Key
+      value: npc.bored.query
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[12].Key
+      value: npc.bored.decline
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[13].Key
+      value: npc.bored.accept
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[14].Key
+      value: npc.cool.query
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[15].Key
+      value: npc.cool.decline
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[16].Key
+      value: npc.cool.accept
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[17].Key
+      value: npc.fat.query
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[18].Key
+      value: npc.fat.decline
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[19].Key
+      value: npc.fat.accept
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[20].Key
+      value: npc.long.query
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[21].Key
+      value: npc.long.decline
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[22].Key
+      value: npc.long.accept
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[23].Key
+      value: quest.serve_customers
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[24].Key
+      value: quest.perfect_actions
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[25].Key
+      value: quest.completed
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[26].Key
+      value: game.quest
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[27].Key
+      value: magazine.buy_more_lamps
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[28].Key
+      value: magazine.buy_bucket
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[29].Key
+      value: magazine_buy_more_tables
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[30].Key
+      value: game.to_oven
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[31].Key
+      value: cinnabon.query
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[32].Key
+      value: cinnabon.decline
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[33].Key
+      value: cinnabon.accept
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[34].Key
+      value: main.button.tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[35].Key
+      value: tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[10].Key
+      value: main.button.load
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[11].Key
+      value: npc.bored.query
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[12].Key
+      value: npc.bored.decline
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[13].Key
+      value: npc.bored.accept
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[14].Key
+      value: npc.cool.query
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[15].Key
+      value: npc.cool.decline
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[16].Key
+      value: npc.cool.accept
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[17].Key
+      value: npc.fat.query
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[18].Key
+      value: npc.fat.decline
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[19].Key
+      value: npc.fat.accept
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[20].Key
+      value: npc.long.query
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[21].Key
+      value: npc.long.decline
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[22].Key
+      value: npc.long.accept
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[23].Key
+      value: quest.serve_customers
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[24].Key
+      value: quest.perfect_actions
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[25].Key
+      value: quest.completed
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[26].Key
+      value: game.quest
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[27].Key
+      value: magazine.buy_more_lamps
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[28].Key
+      value: magazine.buy_bucket
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[29].Key
+      value: magazine_buy_more_tables
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[30].Key
+      value: game.to_oven
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[31].Key
+      value: cinnabon.query
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[32].Key
+      value: cinnabon.decline
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[33].Key
+      value: cinnabon.accept
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[34].Key
+      value: main.button.tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[35].Key
+      value: tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[0].Value
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[1].Value
+      value: Settings
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[2].Value
+      value: Return
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[3].Value
+      value: Exit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[4].Value
+      value: Language
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[5].Value
+      value: New Game
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[6].Value
+      value: Exit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[7].Value
+      value: Save
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[8].Value
+      value: Continue
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[9].Value
+      value: Are you sure?
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[0].Value
+      value: "\u0418\u0433\u0440\u0430\u0442\u044C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[1].Value
+      value: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[2].Value
+      value: "\u041D\u0430\u0437\u0430\u0434"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[3].Value
+      value: "\u0412\u044B\u0439\u0442\u0438"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[4].Value
+      value: "\u042F\u0437\u044B\u043A"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[5].Value
+      value: "\u041D\u043E\u0432\u0430\u044F \u0418\u0433\u0440\u0430"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[6].Value
+      value: "\u0412\u044B\u0439\u0442\u0438"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[7].Value
+      value: "\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[8].Value
+      value: "\u041F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u044C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[9].Value
+      value: "\u0412\u044B \u0443\u0432\u0435\u0440\u0435\u043D\u044B?"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[10].Value
+      value: Load
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[11].Value
+      value: I'm boring Vasily, give me boring food.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[12].Value
+      value: Too interesting!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[13].Value
+      value: How boring, I'm going to go be bored some more!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[14].Value
+      value: I'm picky Vasily, give me a cool pie!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[15].Value
+      value: It's not very cool.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[16].Value
+      value: Wow, that's awesome!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[17].Value
+      value: MEAT
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[18].Value
+      value: BE...
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[19].Value
+      value: MMMM
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[20].Value
+      value: Give me long food so I can become even longer.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[21].Value
+      value: This meal is too short.
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[22].Value
+      value: How long it is!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[23].Value
+      value: Serve customers
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[24].Value
+      value: Commit perfect actions
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[25].Value
+      value: (Completed!)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[26].Value
+      value: Quests
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[27].Value
+      value: Buy more lamps
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[28].Value
+      value: Buy basket
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[29].Value
+      value: Buy more tables
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[30].Value
+      value: To oven
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[31].Value
+      value: Give me a cinnabon roll with jam. I have very specific tastes!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[32].Value
+      value: My thirst for cinnabons is not fulfilled...
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[33].Value
+      value: Thanks! That's one cinnabon for me to remember!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[34].Value
+      value: Tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[0].Keys.Array.data[35].Value
+      value: "Tutorial:   \nRolling pin control: LMB - drag, RMB - roll. All recipes
+        start with rolled out dough.  \n\nDough control: LMB - drag (arrow in the
+        recipe), RMB - press (circle in the recipe), LMB + RMB - drag to put in the
+        oven.   \n\nTray control: LMB on the baking sheet - push/pull out of the
+        oven,\nLMB on the pie when the baking sheet is outside - put the pie on the
+        shelf \n\nShelf management: Drag LMB with a pie to the buyer - sell \n\nRecipe
+        book management: Drag LMB from the corner of the page - flip. Click LMB on
+        the button under the recipe - select a recipe\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[10].Value
+      value: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[11].Value
+      value: "\u042F \u0441\u043A\u0443\u0447\u043D\u044B\u0439 \u0412\u0430\u0441\u0438\u043B\u0438\u0439,
+        \u0434\u0430\u0439\u0442\u0435 \u043C\u043D\u0435 \u0441\u043A\u0443\u0447\u043D\u043E\u0439
+        \u0435\u0434\u044B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[12].Value
+      value: "\u0421\u043B\u0438\u0448\u043A\u043E\u043C \u0438\u043D\u0442\u0435\u0440\u0435\u0441\u043D\u0430\u044F!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[13].Value
+      value: "\u041A\u0430\u043A\u0430\u044F \u0441\u043A\u0443\u0447\u043D\u0430\u044F,
+        \u043F\u043E\u0439\u0434\u0443 \u0441\u043A\u0443\u0447\u0430\u0442\u044C
+        \u0434\u0430\u043B\u044C\u0448\u0435!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[14].Value
+      value: "\u042F \u043F\u0440\u0438\u0434\u0438\u0440\u0447\u0438\u0432\u044B\u0439
+        \u0412\u0430\u0441\u0438\u043B\u0438\u0439, \u0434\u0430\u0439\u0442\u0435
+        \u043C\u043D\u0435 \u043A\u0440\u0443\u0442\u043E\u0439 \u043F\u0438\u0440\u043E\u0436\u043E\u043A!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[15].Value
+      value: "\u041A\u0430\u043A\u043E\u0439-\u0442\u043E \u043E\u043D \u043D\u0435
+        \u043A\u0440\u0443\u0442\u043E\u0439"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[16].Value
+      value: "\u0419\u043E\u0443, \u043A\u0440\u0443\u0442\u043E!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[17].Value
+      value: "\u041C\u042F\u0421\u0410"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[18].Value
+      value: "\u0411\u0415..."
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[19].Value
+      value: "\u041C\u041C\u041C\u041C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[20].Value
+      value: "\u0414\u0430\u0439\u0442\u0435 \u043C\u043D\u0435 \u0434\u043B\u0438\u043D\u043D\u043E\u0439
+        \u0435\u0434\u044B, \u0447\u0442\u043E\u0431\u044B \u044F \u0441\u0442\u0430\u043B
+        \u0435\u0449\u0435 \u0434\u043B\u0438\u043D\u043D\u0435\u0435"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[21].Value
+      value: "\u042D\u0442\u0430 \u0435\u0434\u0430 \u0441\u043B\u0438\u0448\u043A\u043E\u043C
+        \u043A\u043E\u0440\u043E\u0442\u043A\u0430\u044F"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[22].Value
+      value: "\u041A\u0430\u043A\u0430\u044F \u0434\u043B\u0438\u043D\u043D\u0430\u044F!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[23].Value
+      value: "\u041E\u0431\u0441\u043B\u0443\u0436\u0438\u0432\u0430\u0439\u0442\u0435
+        \u043A\u043B\u0438\u0435\u043D\u0442\u043E\u0432"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[24].Value
+      value: "\u0421\u043E\u0432\u0435\u0440\u0448\u0430\u0439\u0442\u0435 \u0438\u0434\u0435\u0430\u043B\u044C\u043D\u044B\u0435
+        \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[25].Value
+      value: "(\u0417\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u043E!)"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[26].Value
+      value: "\u0417\u0430\u0434\u0430\u0447\u0438"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[27].Value
+      value: "\u041A\u0443\u043F\u0438\u0442\u044C \u0431\u043E\u043B\u044C\u0448\u0435
+        \u043B\u0430\u043C\u043F"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[28].Value
+      value: "\u041A\u0443\u043F\u0438\u0442\u044C \u043A\u043E\u0440\u0437\u0438\u043D\u0443"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[29].Value
+      value: "\u041A\u0443\u043F\u0438\u0442\u044C \u0431\u043E\u043B\u044C\u0448\u0435
+        \u0441\u0442\u043E\u043B\u043E\u0432"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[30].Value
+      value: "\u0412 \u043F\u0435\u0447\u044C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[31].Value
+      value: "\u0414\u0430\u0439\u0442\u0435-\u043A\u0430 \u043C\u043D\u0435 \u0440\u0443\u043B\u0435\u0442-\u0441\u0438\u043D\u043D\u0430\u0431\u043E\u043D
+        \u0441 \u0434\u0436\u0435\u043C\u043E\u043C! \u0423 \u043C\u0435\u043D\u044F
+        \u043E\u0447\u0435\u043D\u044C \u0442\u043E\u043D\u043A\u0438\u0439 \u0432\u043A\u0443\u0441"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[32].Value
+      value: "\u041C\u043E\u044F \u0436\u0430\u0436\u0434\u0430 \u0441\u0438\u043D\u043D\u0430\u0431\u043E\u043D\u043E\u0432
+        \u043D\u0435 \u0443\u0434\u0430\u043B\u0435\u043D\u0430"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[33].Value
+      value: "\u0421\u043F\u0430\u0441\u0438\u0431\u043E, \u044F \u0437\u0430\u043F\u043E\u043C\u043D\u044E
+        \u044D\u0442\u043E\u0442 \u0441\u0438\u043D\u043D\u0430\u0431\u043E\u043D
+        \u043D\u0430\u0432\u0441\u0435\u0433\u0434\u0430!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[34].Value
+      value: "\u041E\u0431\u0443\u0447\u0435\u043D\u0438\u0435"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3546224575976515536, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: Tables.Array.data[1].Keys.Array.data[35].Value
+      value: "\u041E\u0431\u0443\u0447\u0435\u043D\u0438\u0435:   \n\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435
+        \u0441\u043A\u0430\u043B\u043A\u043E\u0439: \u041B\u041A\u041C - \u0442\u0430\u0449\u0438\u0442\u044C,
+        \u041F\u041A\u041C - \u0440\u0430\u0441\u043A\u0430\u0442\u044B\u0432\u0430\u0442\u044C.
+        \u0412\u0441\u0435 \u0440\u0435\u0446\u0435\u043F\u0442\u044B \u043D\u0430\u0447\u0438\u043D\u0430\u044E\u0442\u0441\u044F
+        \u0441 \u0440\u0430\u0441\u043A\u0430\u0442\u0430\u043D\u043D\u043E\u0433\u043E
+        \u0442\u0435\u0441\u0442\u0430.  \n\n\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435
+        \u0442\u0435\u0441\u0442\u043E\u043C: \u041B\u041A\u041C - \u043F\u0440\u043E\u0442\u044F\u043D\u0443\u0442\u044C
+        (\u0441\u0442\u0440\u0435\u043B\u043E\u0447\u043A\u0430 \u0432 \u0440\u0435\u0446\u0435\u043F\u0442\u0435),
+        \u041F\u041A\u041C - \u043D\u0430\u0436\u0430\u0442\u044C (\u043A\u0440\u0443\u0436\u043E\u043A
+        \u0432 \u0440\u0435\u0446\u0435\u043F\u0442\u0435), \u041B\u041A\u041C +
+        \u041F\u041A\u041C - \u043F\u0435\u0440\u0435\u0442\u0430\u0449\u0438\u0442\u044C
+        \u0447\u0442\u043E\u0431\u044B \u043F\u043E\u043B\u043E\u0436\u0438\u0442\u044C
+        \u0432 \u043F\u0435\u0447\u044C.   \n\n\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435
+        \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0435\u043C: \u041B\u041A\u041C
+        \u043F\u043E \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u044E - \u0437\u0430\u0434\u0432\u0438\u043D\u0443\u0442\u044C/\u0432\u044B\u0442\u0430\u0449\u0438\u0438\u0442\u044C
+        \u0438\u0437 \u043F\u0435\u0447\u0438, \u041B\u041A\u041C \u043F\u043E \u043F\u0438\u0440\u043E\u0436\u043A\u0443
+        \u043A\u043E\u0433\u0434\u0430 \u043F\u0440\u043E\u0442\u0438\u0432\u0435\u043D\u044C
+        \u0441\u043D\u0430\u0440\u0443\u0436\u0438 - \u043F\u043E\u043B\u043E\u0436\u0438\u0442\u044C
+        \u043F\u0438\u0440\u043E\u0436\u043E\u043A \u043D\u0430 \u043F\u043E\u043B\u043A\u0443
+        \n\n\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043F\u043E\u043B\u043A\u043E\u0439:
+        \u0422\u0430\u0449\u0438\u0442\u044C \u041B\u041A\u041C \u0441 \u043F\u0438\u0440\u043E\u0436\u043A\u043E\u043C
+        \u043D\u0430 \u043F\u043E\u043A\u0443\u043F\u0430\u0442\u0435\u043B\u044F
+        - \u043F\u0440\u043E\u0434\u0430\u0442\u044C \n\n\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435
+        \u043A\u043D\u0438\u0433\u043E\u0439 \u0440\u0435\u0446\u0435\u043F\u0442\u043E\u0432:
+        \u0422\u0430\u0449\u0438\u0442\u044C \u041B\u041A\u041C \u0441 \u0443\u0433\u043B\u0430
+        \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u044B - \u043F\u0435\u0440\u0435\u043B\u0438\u0441\u0442\u043D\u0443\u0442\u044C.
+        \u041D\u0430\u0436\u0430\u0442\u044C \u041B\u041A\u041C \u043D\u0430 \u043A\u043D\u043E\u043F\u043A\u0443
+        \u043F\u043E\u0434 \u0440\u0435\u0446\u0435\u043F\u0442\u043E\u043C - \u0432\u044B\u0431\u0440\u0430\u0442\u044C
+        \u0440\u0435\u0446\u0435\u043F\u0442"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150900810489239791, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150900810489239791, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150900810489239791, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150900810489239791, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150900810489239791, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150900810489239791, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150900810489239791, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150900810489239791, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150900810489239791, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150900810489239791, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9030202151763050953, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      propertyPath: m_Name
+      value: LocalizationManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9030202151763050953, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 958378487}
+  m_SourcePrefab: {fileID: 100100000, guid: 41dfc2525173360428f88cc16320e87c, type: 3}
 --- !u!1001 &2150184892447201484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4727,7 +5219,7 @@ SceneRoots:
   - {fileID: 259640008}
   - {fileID: 10348615}
   - {fileID: 1070186144}
-  - {fileID: 958378486}
+  - {fileID: 2045512451497616912}
   - {fileID: 359601387}
   - {fileID: 878760720}
   - {fileID: 1422699595}

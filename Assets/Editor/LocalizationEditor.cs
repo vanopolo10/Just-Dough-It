@@ -15,17 +15,29 @@ public class LocalizationEditor : Editor
     private void OnEnable()
     {
         _manager = (LocalizationManager)target;
+    }
 
-        // создаЄм стиль один раз
-        _textAreaStyle = new GUIStyle(EditorStyles.textArea)
+    // лениво создаЄм стиль, когда он реально нужен
+    private void EnsureStyles()
+    {
+        if (_textAreaStyle != null)
+            return;
+
+        // EditorStyles.textArea иногда бывает null в самом начале,
+        // поэтому подстрахуемс€ и возьмЄм GUI.skin.textArea как запасной вариант.
+        var baseStyle = EditorStyles.textArea ?? GUI.skin.textArea;
+
+        _textAreaStyle = new GUIStyle(baseStyle)
         {
-            wordWrap = true // перенос слов, чтобы текст не вылезал за рамку
+            wordWrap = true
         };
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
+
+        EnsureStyles(); // гарантируем, что стиль создан к моменту рисовани€ GUI
 
         if (_manager.Tables == null || _manager.Tables.Count == 0)
         {
@@ -210,11 +222,11 @@ public class LocalizationEditor : Editor
 
                 string currentValue = table.Keys[row].Value ?? string.Empty;
 
-                // считаем высоту под текст, чтобы поле росло вместе с ним
                 float width = 200f;
                 float minHeight = 40f;
-                float maxHeight = 200f; // можно увеличить, если нужно ещЄ больше
+                float maxHeight = 200f; // можно увеличить, если надо
 
+                // считаем высоту под текст
                 float neededHeight = _textAreaStyle.CalcHeight(new GUIContent(currentValue), width);
                 float height = Mathf.Clamp(neededHeight, minHeight, maxHeight);
 
@@ -228,7 +240,7 @@ public class LocalizationEditor : Editor
                 if (newValue != currentValue)
                 {
                     Undo.RecordObject(_manager, "Edit Translation Value");
-                    table.Keys[row].Value = newValue; // переносы строк (\n) сохран€ютс€ как есть
+                    table.Keys[row].Value = newValue; // переносы строк сохран€ютс€
                     EditorUtility.SetDirty(_manager);
                 }
             }
