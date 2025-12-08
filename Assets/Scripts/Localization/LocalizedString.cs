@@ -15,9 +15,10 @@ public class LocalizedString : MonoBehaviour
 
     private void UpdateText()
     {
-        string Text = LocalizationManager.Instance.SelectedTable.GetPair(_key);
-        if (Text == null) return;
-        _text.text = Text;
+        string text = LocalizationManager.Instance.SelectedTable.GetPair(_key);
+        
+        if (text == null) return;
+        _text.text = text;
     }
 
     private void Start()

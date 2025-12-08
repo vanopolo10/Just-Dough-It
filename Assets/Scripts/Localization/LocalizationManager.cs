@@ -16,7 +16,11 @@ public class LocalizationManager : MonoBehaviour
     private LocalizationTable _selectedTable;
     public LocalizationTable SelectedTable => _selectedTable;
 
-    public List<LocalizationTable> Tables => _tables;
+    public List<LocalizationTable> Tables
+    {
+        get => _tables;
+        set => _tables = value;
+    }
 
     private readonly JsonSerializerSettings _settings = new()
     {
