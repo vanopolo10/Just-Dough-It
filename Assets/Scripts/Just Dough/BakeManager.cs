@@ -49,8 +49,18 @@ public class BakeManager : MonoBehaviour
 
     public BakeState BakeState { get; private set; } = BakeState.Raw;
 
-    public int PerfectActionCount => _perfectActionCount;
-    public int ImperfectActionCount => _imperfectActionCount;
+    public int PerfectActionCount
+    {
+        get => _perfectActionCount;
+        set => _perfectActionCount = value;
+    }
+
+    public int ImperfectActionCount
+    {
+        get => _imperfectActionCount;
+        set => _imperfectActionCount = value;
+    }
+
     public Product DoughState => _product;
 
     public float CurrentBakeBlend { get; private set; }
