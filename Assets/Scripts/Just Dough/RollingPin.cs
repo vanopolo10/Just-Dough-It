@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(CapsuleCollider))]
 public class RollingPin : MonoBehaviour
 {
+    [SerializeField] private CameraController _cameraController;
     [SerializeField] private float _raiseBy = 3f;
     [SerializeField] private float _rotationSmooth = 5f;
     [SerializeField] private float _heightSmooth = 10f;
@@ -50,7 +51,7 @@ public class RollingPin : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (_dragBlocked)
+        if (_dragBlocked || _cameraController.ViewID != 2)
             return;
 
         _zCord = Camera.main!.WorldToScreenPoint(transform.position).z;

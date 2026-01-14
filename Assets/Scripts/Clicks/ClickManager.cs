@@ -5,150 +5,205 @@ using UnityEngine.InputSystem;
 
 public class ClickManager : MonoBehaviour
 {
+    [Header("Click Settings")]
     [SerializeField] private bool _useLushClicks;
     [SerializeField] private ClickMaterial[] _clickMaterials;
-    [SerializeField] private string _defaultClickTag;
-    [SerializeField] private float _clickRayDistance;
+    [SerializeField] private string _defaultClickTag = "Default";
+    [SerializeField] private float _clickRayDistance = 100f;
     [SerializeField] private LayerMask _clickMask = ~0;
+
     [Header("Particles")]
     [SerializeField] private GameObject _particlesPrefab;
 
-    private Dictionary<string, ClickMaterialData> _materialsByTag;
+    private readonly Dictionary<string, ClickMaterialData> _materialsByTag =
+        new(StringComparer.OrdinalIgnoreCase);
+
     private Camera _cam;
     private ParticleSystem _particlesInstance;
 
+    private ParticleSystem.MainModule _main;
+    private ParticleSystem.EmissionModule _emission;
+    private ParticleSystem.TextureSheetAnimationModule _textureAnim;
+
     private InputAction _clickAction;
+
     public event Action<bool> ClicksToggled;
 
-    private void OnDisable()
+    private void Awake()
     {
-        ClicksToggled -= ToggleClicks;
+        _cam = Camera.main;
 
-        if (_clickAction != null)
-        {
-            _clickAction.performed -= OnClickPerformed;
-            _clickAction.Disable();
-        }
+        InitializeInput();
+        InitializeParticles();
+        InitializeMaterials();
     }
 
     private void OnEnable()
     {
         ClicksToggled += ToggleClicks;
-        _clickAction.performed += OnClickPerformed;
     }
 
-    private void Awake()
+    private void OnDisable()
     {
-        _cam = Camera.main;
-        _clickAction ??= new InputAction("LeftClick", binding: "<Mouse>/leftButton");
-        _clickAction.Enable();
+        ClicksToggled -= ToggleClicks;
 
-        _particlesInstance = Instantiate(_particlesPrefab, gameObject.transform).GetComponent<ParticleSystem>();
+        if (_clickAction == null) return;
 
-        if (_clickMaterials != null)
-            SetDicitonary();
+        _clickAction.performed -= OnClickPerformed;
+        _clickAction.Disable();
     }
-
-    private void SetDicitonary()
-    {
-        _materialsByTag = new Dictionary<string, ClickMaterialData>(StringComparer.OrdinalIgnoreCase);
-
-        foreach (var entry in _clickMaterials)
-        {
-            var tag = entry.Tag;
-            var data = entry.MaterialData;
-            _materialsByTag.Add(tag, data);
-        }
-    }    
-
-    private void OnClickPerformed(InputAction.CallbackContext ctx)
-    {
-
-        if (_useLushClicks == false) return;
-
-        Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
-        Color color = Color.white;
-
-        if (Physics.Raycast(ray, out RaycastHit hit, _clickRayDistance, _clickMask))
-        {
-            string objectTag = _defaultClickTag;
-
-            if (hit.transform.gameObject.TryGetComponent(out ClickableObject clickableObject))
-            {
-                objectTag = clickableObject.ReturnTag();
-                clickableObject.PlayReactiveAnimation();
-            }
-
-            Vector3 clickPosition = hit.point;
-            Vector3 normal = hit.normal;
-            ClickMaterialData data = null;
-
-            if (_materialsByTag.TryGetValue(objectTag, out data))
-            {
-                if (data.AudioClips != null)
-                    PlayClickSound(data, clickPosition);
-
-                if (data.UseFixedColor)
-                    color = data.ParticleColor;
-                else
-                    color = GetColorFromUV(hit, data.ColorDarkenFactor);
-
-                PlayClickParticles(data, clickPosition, normal, color);
-            }               
-        }
-    }
-
-    private void PlayClickSound(ClickMaterialData data, Vector3 pos)
-    {
-        
-        float pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-        AudioClip clip = data.AudioClips[UnityEngine.Random.Range(0, data.AudioClips.Length)];
-        SoundManager.AudioEvent.OnPlaySoundIn3D?.Invoke(clip, data.Volume, pitch, pos);
-    }
-    private void PlayClickParticles(ClickMaterialData data, Vector3 newPos, Vector3 normal, Color color)
-    {
-        var main = _particlesInstance.main;
-        main.startColor = color;
-        main.startSize = UnityEngine.Random.Range(data.MinParticleSize, data.MaxParticleSize);
-        _particlesInstance.emission.SetBurst(90, new ParticleSystem.Burst(0f, (short)UnityEngine.Random.Range(data.MinParticleCount, data.MaxParticleCount)));
-        _particlesInstance.textureSheetAnimation.SetSprite(0, data.ParticleSprites);
-        _particlesInstance.transform.position = newPos;
-        _particlesInstance.transform.rotation = Quaternion.LookRotation(normal, Vector3.up);
-        _particlesInstance.Play();
-    }
-
-    // Работает как надо только с мэшколайдерами, с другими типами колайдеров цвет получается неправильный :(
-    private Color GetColorFromUV(RaycastHit hit, float colorDarkenFactor)
-    {
-        Color color = Color.white;
-        var renderer = hit.collider.GetComponent<Renderer>();
-
-        if (renderer != null && renderer.material != null && renderer.material.mainTexture is Texture2D tex)
-        {
-            Vector2 uv = hit.textureCoord;
-
-            int x = Mathf.FloorToInt(uv.x * tex.width);
-            int y = Mathf.FloorToInt(uv.y * tex.height);
-
-            color = tex.GetPixel(x, y);
-            color = DarkenHSV(color, colorDarkenFactor);
-        }
-
-        return color;
-    }
-
-    Color DarkenHSV(Color color, float factor)
+    
+    private static Color DarkenHSV(Color color, float factor)
     {
         Color.RGBToHSV(color, out float h, out float s, out float v);
         v = Mathf.Clamp01(v - factor);
         return Color.HSVToRGB(h, s, v);
+    }
+    
+    private void InitializeInput()
+    {
+        _clickAction = new InputAction(
+            name: "LeftClick",
+            binding: "<Mouse>/leftButton"
+        );
+
+        _clickAction.performed += OnClickPerformed;
+        _clickAction.Enable();
+    }
+
+    private void InitializeParticles()
+    {
+        if (_particlesPrefab == null) return;
+
+        _particlesInstance = Instantiate(_particlesPrefab, transform)
+            .GetComponent<ParticleSystem>();
+
+        _main = _particlesInstance.main;
+        _emission = _particlesInstance.emission;
+        _textureAnim = _particlesInstance.textureSheetAnimation;
+    }
+
+    private void InitializeMaterials()
+    {
+        if (_clickMaterials == null || _clickMaterials.Length == 0)
+            return;
+
+        _materialsByTag.Clear();
+
+        foreach (var entry in _clickMaterials)
+        {
+            if (entry == null ||
+                string.IsNullOrEmpty(entry.Tag) ||
+                entry.MaterialData == null)
+                continue;
+
+            _materialsByTag[entry.Tag] = entry.MaterialData;
+        }
+    }
+
+    private void OnClickPerformed(InputAction.CallbackContext ctx)
+    {
+        if (_useLushClicks == false || _cam == null)
+            return;
+
+        Ray ray = _cam.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+        if (!Physics.Raycast(ray, out RaycastHit hit, _clickRayDistance, _clickMask))
+            return;
+
+        string objectTag = _defaultClickTag;
+
+        if (hit.transform.TryGetComponent(out ClickableObject clickable))
+        {
+            objectTag = clickable.ReturnTag();
+            clickable.PlayReactiveAnimation();
+        }
+
+        if (_materialsByTag.TryGetValue(objectTag, out ClickMaterialData data) == false)
+            return;
+
+        Vector3 pos = hit.point;
+        Vector3 normal = hit.normal;
+
+        if (data.AudioClips is { Length: > 0 })
+            PlayClickSound(data, pos);
+
+        Color color = data.UseFixedColor
+            ? data.ParticleColor
+            : GetColorFromUV(hit, data.ColorDarkenFactor);
+
+        PlayClickParticles(data, pos, normal, color);
+    }
+
+    private void PlayClickSound(ClickMaterialData data, Vector3 pos)
+    {
+        float pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+        AudioClip clip = data.AudioClips[
+            UnityEngine.Random.Range(0, data.AudioClips.Length)
+        ];
+
+        SoundManager.AudioEvent.OnPlaySoundIn3D?.Invoke(
+            clip,
+            data.Volume,
+            pitch,
+            pos
+        );
+    }
+
+    private void PlayClickParticles(
+        ClickMaterialData data,
+        Vector3 position,
+        Vector3 normal,
+        Color color)
+    {
+        if (_particlesInstance == null)
+            return;
+
+        _main.startColor = color;
+        _main.startSize = UnityEngine.Random.Range(
+            data.MinParticleSize,
+            data.MaxParticleSize
+        );
+
+        _emission.SetBurst(0, new ParticleSystem.Burst(
+            0f,
+            (short)UnityEngine.Random.Range(
+                data.MinParticleCount,
+                data.MaxParticleCount
+            )
+        ));
+
+        _textureAnim.SetSprite(0, data.ParticleSprites);
+
+        Transform t = _particlesInstance.transform;
+        t.position = position;
+        t.rotation = Quaternion.LookRotation(normal, Vector3.up);
+
+        _particlesInstance.Play();
+    }
+
+    // РљРѕСЂСЂРµРєС‚РЅРѕ СЂР°Р±РѕС‚Р°РµС‚ С‚РѕР»СЊРєРѕ СЃ MeshCollider Рё Read/Write С‚РµРєСЃС‚СѓСЂР°РјРё
+    private Color GetColorFromUV(RaycastHit hit, float darkenFactor)
+    {
+        if (hit.collider.TryGetComponent(out Renderer renderer) == false)
+            return Color.white;
+
+        Texture mainTex = renderer.material.mainTexture;
+
+        if (mainTex is not Texture2D tex)
+            return Color.white;
+
+        Vector2 uv = hit.textureCoord;
+
+        Color color = tex.GetPixelBilinear(uv.x, uv.y);
+        return DarkenHSV(color, darkenFactor);
     }
 
     private void ToggleClicks(bool state)
     {
         _useLushClicks = state;
     }
-
+    
     [Serializable]
     public class ClickMaterial
     {
