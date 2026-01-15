@@ -86,7 +86,10 @@ public class RollingAgent : MonoBehaviour
         _isRollingNow = false;
 
         if (_progress >= _completionThreshold) 
-            if(_controller.State == _initialState) 
+            if(_controller.State == _initialState)
+            {
+                _controller.SetRollRotation(_rollingPin.transform.rotation);
                 _controller.ApplyAction(_action);
+            } 
     }
 }

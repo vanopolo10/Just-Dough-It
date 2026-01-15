@@ -124,6 +124,9 @@ public class DoughController : MonoBehaviour
         }
     }
     */
+    public void SetRollRotation(Quaternion rollRotation) { 
+        _rollRotation = rollRotation;
+    }
 
     public bool ApplyAction(DoughCraftAction action, CraftZone craftZone = null, bool isPerfect = false)
     {
