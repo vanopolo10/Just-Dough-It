@@ -14,7 +14,9 @@ public class DoughController : MonoBehaviour
     [SerializeField] private DoughVisualSwitcher _doughVisualSwitcher;
     [SerializeField] private FillingType _filling = FillingType.None;
 
-    private readonly Dictionary<CraftZone, bool> _comboZones = new();
+    // private readonly Dictionary<CraftZone, bool> _comboZones = new();
+    [SerializeField] private float _comboClicksTotal;
+    [SerializeField] private float _comboClicksLeft;
 
     private Vector3 _rollEnterLocalPos;
     private Quaternion _rollRotation;
@@ -49,7 +51,7 @@ public class DoughController : MonoBehaviour
 
     private void Start()
     {
-        ResetBunCombo();
+        ResetCombo();
         StateChanged?.Invoke();
     }
 
@@ -141,9 +143,10 @@ public class DoughController : MonoBehaviour
         {
             action = DoughCraftAction.ComboClick;
 
+            /*
             if (_comboZones.ContainsKey(craftZone))
                 _comboZones[craftZone] = true;
-
+            */
             _lastActionPerfect = isPerfect;
 
             if (isPerfect)
@@ -151,7 +154,15 @@ public class DoughController : MonoBehaviour
             else
                 _imperfectActionCount++;
 
-            bool comboComplete = _comboZones.Values.All(b => b);
+            // bool comboComplete = _comboZones.Values.All(b => b);
+
+            if(isPerfect == true) 
+                _comboClicksLeft -= 2;
+            else
+                _comboClicksLeft -= 1;
+            UpdateComboAnimation();
+
+            bool comboComplete = (_comboClicksLeft <= 0);
 
             Debug.Log(
                 $"[DoughController] ComboClick zone={craftZone.name}, " +
@@ -199,7 +210,7 @@ public class DoughController : MonoBehaviour
             $"state={State}, filling={_filling}"
         );
         
-        ResetBunCombo();
+        ResetCombo();
         StateChanged?.Invoke();
 
         return true;
@@ -217,13 +228,25 @@ public class DoughController : MonoBehaviour
             _imperfectActionCount = 0;
         }
 
-        ResetBunCombo();
+        ResetCombo();
         StateChanged?.Invoke();
     }
 
-    private void ResetBunCombo()
+    private void UpdateComboAnimation() {
+        Debug.Log("tried updating combo animation");
+        if (_doughVisualSwitcher.Map[State].TryGetComponent<Animator>(out Animator animator) == false) return;
+
+        float progress = (_comboClicksTotal - _comboClicksLeft) / (_comboClicksTotal-1);
+        Debug.Log(animator.GetCurrentAnimatorClipInfo(0));
+        Debug.Log("Set animation progress to " + progress + " on layer " + animator.GetLayerName(0));
+        animator.Play("Completion", 0, progress);
+        //animator.SetFloat("Progress", progress);
+
+
+    }
+    private void ResetCombo()
     {
-        _comboZones.Clear();
+        //_comboZones.Clear();
 
         if (_doughVisualSwitcher == null)
             return;
@@ -231,10 +254,20 @@ public class DoughController : MonoBehaviour
         if (_doughVisualSwitcher.Map.TryGetValue(State, out GameObject go) == false || go == null)
             return;
 
+        /*
         foreach (CraftZone zone in go.GetComponentsInChildren<CraftZone>())
         {
             if (zone.IsComboZone)
                 _comboZones.Add(zone, false);
         }
+        */
+        foreach (PerfectComboZone zone in go.GetComponentsInChildren<PerfectComboZone>())
+        {
+            _comboClicksTotal+=2;
+        }
+        _comboClicksLeft = _comboClicksTotal;
+        UpdateComboAnimation();
+
+
     }
 }

@@ -37,13 +37,13 @@ public class CraftZone : MonoBehaviour,
     [SerializeField] private bool _isComboZone = false;
 
     [Header("Идеальные зоны")]
-    [SerializeField] private RectTransform _perfectClickArea;
+    //[SerializeField] private RectTransform _perfectClickArea;
     [SerializeField] private RectTransform _perfectDragArea;
 
     private static CraftZone _dragStartZone;
     private static bool _dragActive;
     private static bool _dragPerfect;
-    private bool _comboUsed;
+    //private bool _comboUsed;
 
     public bool IsComboZone => _isComboZone;
 
@@ -67,24 +67,31 @@ public class CraftZone : MonoBehaviour,
         if (eventData.button != PointerEventData.InputButton.Right)
             return;
 
-        if (_isComboZone && _comboUsed)
-            return;
+        //if (_isComboZone && _comboUsed)
+        //    return;
 
-        bool isPerfect = IsInPerfectClickArea(eventData);
+        //bool isPerfect = IsInPerfectClickArea(eventData);
 
-        bool applied = _controller.ApplyAction(_rightClickAction, this, isPerfect);
-        Debug.Log($"[CraftZone] RightClick {name}, action={_rightClickAction}, perfect={isPerfect}, applied={applied}");
+        AddComboClick(false);
+        //Debug.Log($"[CraftZone] RightClick {name}, action={_rightClickAction}, perfect={false}, applied={applied}");
 
-        if (_isComboZone && applied)
-            DisableComboZone();
+        //if (_isComboZone && applied)
+        //    DisableComboZone();
     }
 
+    public void AddComboClick(bool isperfect) 
+    {
+        bool applied = _controller.ApplyAction(_rightClickAction, this, isperfect);
+    }
+
+    /*
     private void DisableComboZone()
     {
         _comboUsed = true;
 
         gameObject.SetActive(false);
     }
+    */
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -152,6 +159,7 @@ public class CraftZone : MonoBehaviour,
         _dragPerfect = false;
     }
 
+    /*
     private bool IsInPerfectClickArea(PointerEventData eventData)
     {
         if (_perfectClickArea == null)
@@ -165,6 +173,7 @@ public class CraftZone : MonoBehaviour,
             cam,
             out Vector2 local) && _perfectClickArea.rect.Contains(local);
     }
+    */
 
     private bool IsInPerfectDragArea(PointerEventData eventData)
     {
