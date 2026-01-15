@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(CapsuleCollider))]
 public class RollingPin : MonoBehaviour
@@ -15,6 +16,10 @@ public class RollingPin : MonoBehaviour
     private bool _isDragging;
     [SerializeField] private bool _isRolling;
     private bool _dragBlocked;
+    public UnityEvent OnDoughEntered = new();
+    public UnityEvent OnDoughExited = new();
+    public UnityEvent OnRollStarted = new();
+    public UnityEvent OnRollEnded = new();
 
     private Quaternion _targetRotation;
 
@@ -37,13 +42,24 @@ public class RollingPin : MonoBehaviour
         DragCancelService.CancelRequested -= OnCancelRequested;
     }
 
+    private void StartRolling()
+    {
+        _isRolling = true;
+        OnRollStarted.Invoke(); 
+    }
+    private void StopRolling() 
+    { 
+        _isRolling = false; 
+        OnRollEnded.Invoke();
+    }
+
     private void OnCancelRequested()
     {
         if (_isDragging == false && _isRolling == false)
             return;
 
+        StopRolling();
         _isDragging = false;
-        _isRolling = false;
         _desiredY = _baseY;
         _dragBlocked = true;
     }
@@ -76,7 +92,15 @@ public class RollingPin : MonoBehaviour
         Vector3 move = targetPos - currentPos;
 
         bool rightHeld = Input.GetMouseButton(1);
-        _isRolling = _isDragging && rightHeld;
+        if (_isDragging && rightHeld)
+        {
+            if (!_isRolling) StartRolling();
+        }
+        else
+        {
+            if (_isRolling) StopRolling();
+        }
+
         _desiredY = _isRolling ? _baseY : _baseY + _raiseBy;
 
         if (_isRolling && move.sqrMagnitude > 0.00001f)
@@ -107,8 +131,8 @@ public class RollingPin : MonoBehaviour
 
     private void OnMouseUp()
     {
+        StopRolling();
         _isDragging = false;
-        _isRolling = false;
         _desiredY = _baseY;
         _dragBlocked = false;
     }

@@ -54,6 +54,7 @@ public class DoughController : MonoBehaviour
         StateChanged?.Invoke();
     }
 
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent(out RollingPin rollingPin) == false)
@@ -122,6 +123,7 @@ public class DoughController : MonoBehaviour
             ApplyAction(DoughCraftAction.RollSheer);
         }
     }
+    */
 
     public bool ApplyAction(DoughCraftAction action, CraftZone craftZone = null, bool isPerfect = false)
     {
