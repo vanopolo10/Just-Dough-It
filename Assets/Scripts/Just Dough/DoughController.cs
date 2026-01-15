@@ -16,7 +16,6 @@ public class DoughController : MonoBehaviour
 
     private readonly Dictionary<CraftZone, bool> _comboZones = new();
 
-    private bool _canRoll = true;
     private Vector3 _rollEnterLocalPos;
     private Quaternion _rollRotation;
     private bool _isRollingInside;
@@ -124,10 +123,16 @@ public class DoughController : MonoBehaviour
         }
     }
     */
+    
     public void SetRollRotation(Quaternion rollRotation) { 
         _rollRotation = rollRotation;
     }
 
+    public void SetGlobalFilling(FillingType toSet)
+    {
+        _filling = toSet;
+    }
+    
     public bool ApplyAction(DoughCraftAction action, CraftZone craftZone = null, bool isPerfect = false)
     {
         bool isComboZoneAction = craftZone != null && craftZone.IsComboZone;
@@ -231,10 +236,5 @@ public class DoughController : MonoBehaviour
             if (zone.IsComboZone)
                 _comboZones.Add(zone, false);
         }
-    }
-
-    public void SetGlobalFilling(FillingType toSet)
-    {
-        _filling = toSet;
     }
 }

@@ -9,22 +9,24 @@ public class RollingPin : MonoBehaviour
     [SerializeField] private float _rotationSmooth = 5f;
     [SerializeField] private float _heightSmooth = 10f;
 
+    [Header("Events")]
+    public UnityEvent DoughEntered = new();
+    public UnityEvent DoughExited = new();
+    public UnityEvent RollStarted = new();
+    public UnityEvent RollEnded = new();
+
     private float _zCord;
     private Vector3 _lookDir;
 
     private float _baseY;
     private float _desiredY;
+
+    private bool _dragAllowed;
     private bool _isDragging;
-    [SerializeField] private bool _isRolling;
-    private bool _dragBlocked;
-    public UnityEvent OnDoughEntered = new();
-    public UnityEvent OnDoughExited = new();
-    public UnityEvent OnRollStarted = new();
-    public UnityEvent OnRollEnded = new();
 
     private Quaternion _targetRotation;
 
-    public bool IsRolling => _isRolling;
+    public bool IsRolling { get; private set; }
 
     private void Awake()
     {
@@ -36,55 +38,42 @@ public class RollingPin : MonoBehaviour
     private void OnEnable()
     {
         DragCancelService.CancelRequested += OnCancelRequested;
+        _cameraController.DragAllowedChanged += OnDragAllowedChanged;
     }
 
     private void OnDisable()
     {
         DragCancelService.CancelRequested -= OnCancelRequested;
+        _cameraController.DragAllowedChanged -= OnDragAllowedChanged;
     }
 
-    private void StartRolling()
+    private void OnDragAllowedChanged(bool allowed)
     {
-        _isRolling = true;
-        OnRollStarted.Invoke(); 
-    }
-    private void StopRolling() 
-    { 
-        _isRolling = false; 
-        OnRollEnded.Invoke();
-    }
+        _dragAllowed = allowed;
 
-    private void OnCancelRequested()
-    {
-        if (_isDragging == false && _isRolling == false)
-            return;
-
-        StopRolling();
-        _isDragging = false;
-        _desiredY = _baseY;
-        _dragBlocked = true;
+        if (!allowed)
+            CancelDrag();
     }
 
     private void OnMouseDown()
     {
-        if (_dragBlocked || _cameraController.ViewID != 2)
+        if (!_dragAllowed)
             return;
 
         _zCord = Camera.main!.WorldToScreenPoint(transform.position).z;
-
         _isDragging = true;
         _desiredY = _baseY + _raiseBy;
     }
 
+    private void OnMouseUp()
+    {
+        CancelDrag();
+    }
+
     private void OnMouseDrag()
     {
-        if (_dragBlocked)
-        {
-            if (Input.GetMouseButton(0) == false)
-                _dragBlocked = false;
-
+        if (!_dragAllowed || !_isDragging)
             return;
-        }
 
         Vector3 currentPos = transform.position;
         Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
@@ -93,59 +82,50 @@ public class RollingPin : MonoBehaviour
         Vector3 move = targetPos - currentPos;
 
         bool rightHeld = Input.GetMouseButton(1);
-        if (_isDragging && rightHeld)
-        {
-            if (!_isRolling) StartRolling();
-        }
-        else
-        {
-            if (_isRolling) StopRolling();
-        }
 
-        _desiredY = _isRolling ? _baseY : _baseY + _raiseBy;
+        if (rightHeld && !IsRolling)
+            StartRolling();
+        else if (!rightHeld && IsRolling)
+            StopRolling();
 
-        if (_isRolling && move.sqrMagnitude > 0.00001f)
-        {
-            _lookDir = new Vector3(move.x, 0f, move.z);
+        _desiredY = IsRolling ? _baseY : _baseY + _raiseBy;
 
-            if (_lookDir.sqrMagnitude > 0.0001f)
-            {
-                _lookDir.Normalize();
-
-                Vector3 currentForward = transform.forward;
-                currentForward.y = 0f;
-
-                if (currentForward.sqrMagnitude < 0.0001f)
-                    currentForward = Vector3.forward;
-                else
-                    currentForward.Normalize();
-
-                if (Vector3.Dot(_lookDir, currentForward) < 0f)
-                    _lookDir = -_lookDir;
-
-                _targetRotation = Quaternion.LookRotation(_lookDir, Vector3.up);
-            }
-        }
+        if (IsRolling && move.sqrMagnitude > 0.00001f)
+            UpdateRotation(move);
 
         transform.position = targetPos;
     }
 
-    private void OnMouseUp()
+    private void UpdateRotation(Vector3 move)
     {
-        StopRolling();
-        _isDragging = false;
-        _desiredY = _baseY;
-        _dragBlocked = false;
+        _lookDir = new Vector3(move.x, 0f, move.z);
+
+        if (_lookDir.sqrMagnitude < 0.0001f)
+            return;
+
+        _lookDir.Normalize();
+
+        Vector3 currentForward = transform.forward;
+        currentForward.y = 0f;
+
+        if (currentForward.sqrMagnitude < 0.0001f)
+            currentForward = Vector3.forward;
+        else
+            currentForward.Normalize();
+
+        if (Vector3.Dot(_lookDir, currentForward) < 0f)
+            _lookDir = -_lookDir;
+
+        _targetRotation = Quaternion.LookRotation(_lookDir, Vector3.up);
     }
 
     private void Update()
     {
         Vector3 pos = transform.position;
-        float newY = Mathf.Lerp(pos.y, _desiredY, Time.deltaTime * _heightSmooth);
-        pos.y = newY;
+        pos.y = Mathf.Lerp(pos.y, _desiredY, Time.deltaTime * _heightSmooth);
         transform.position = pos;
 
-        if (_isDragging && _isRolling)
+        if (_isDragging && IsRolling)
         {
             transform.rotation = Quaternion.Slerp(
                 transform.rotation,
@@ -153,5 +133,32 @@ public class RollingPin : MonoBehaviour
                 Time.deltaTime * _rotationSmooth
             );
         }
+    }
+
+    private void StartRolling()
+    {
+        IsRolling = true;
+        RollStarted.Invoke();
+    }
+
+    private void StopRolling()
+    {
+        IsRolling = false;
+        RollEnded.Invoke();
+    }
+
+    private void CancelDrag()
+    {
+        if (!_isDragging && !IsRolling)
+            return;
+
+        StopRolling();
+        _isDragging = false;
+        _desiredY = _baseY;
+    }
+
+    private void OnCancelRequested()
+    {
+        CancelDrag();
     }
 }

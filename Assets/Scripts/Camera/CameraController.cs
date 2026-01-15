@@ -8,7 +8,8 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private List<CameraView> _views;
     [SerializeField] private float _transitionDuration = 0.7f;
-
+    [SerializeField] private int _tableCameraID;
+    
     private Vector3 _startPosition;
     private Quaternion _startRotation;
     private Vector3 _targetPosition;
@@ -16,7 +17,9 @@ public class CameraController : MonoBehaviour
     private float _transitionTime;
     private bool _isTransition;
 
-    public int ViewID { get; private set; }
+    public event Action<bool> DragAllowedChanged;
+
+    public int ViewID { get; private set; } = 0;
 
     private void Start()
     {
@@ -87,6 +90,8 @@ public class CameraController : MonoBehaviour
     
     private void BeginTransition()
     {
+        DragAllowedChanged?.Invoke(ViewID == _tableCameraID);
+        
         _startPosition = transform.position;
         _startRotation = transform.rotation;
 

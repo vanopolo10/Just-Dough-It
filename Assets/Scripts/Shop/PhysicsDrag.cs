@@ -1,57 +1,70 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PhysicsDrag : MonoBehaviour
 {
-    // public GameObject debug;
-    [SerializeField] private float _lerpSpeed = 10f, _targetY = 1.3f;
-    private bool _isDragging = false, _isOverriden = false, _freezeOnRelease = false;
-    private Vector3 _targetPosition = Vector3.zero;
-    private Quaternion _targetRotation = Quaternion.identity;
-    private Rigidbody rb;
-    public bool IsDragging { get { return _isDragging; } }
+    [Header("Drag Settings")]
+    [SerializeField] private float _lerpSpeed = 10f;
+    [SerializeField] private float _targetY = 1.3f;
+    [SerializeField] private bool _freezeOnRelease;
 
-    public void SetFreeze(bool b) {  _freezeOnRelease = b; }
-    public bool CompareOverride(Transform other) 
-    {
-        return true;
-        //DEPRECATED
-        //if (!_isOverriden || other.position != _targetPosition || other.rotation != _targetRotation)
-            //return false;
-        //else 
-            //return true;
-    }
-    public void Override(Transform target)
-    {
-        _isOverriden = true;
-        _targetPosition = target.position;
-        _targetRotation = target.rotation;
-    }
-    public void CancelOverride()
-    {
-        _isOverriden = false;
-    }
+    private bool _isOverridden;
+
+    private Vector3 _targetPosition;
+    private Quaternion _targetRotation;
+
+    private Rigidbody _rb;
+    private Camera _mainCamera;
+
+    public bool IsDragging { get; private set; }
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
+        _mainCamera = Camera.main;
     }
-    public void StartDragging() {
-        Debug.Log(name + "Started dragging");
-        rb.isKinematic = true;
 
-        _isDragging = true;
-    }
-    public void StopDragging() {
-        Debug.Log(name + "Stopped dragging");
-        if(!_freezeOnRelease) rb.isKinematic = false;
+    public void Override(Transform target)
+    {
+        if (target == null) return;
 
-        _isDragging = false;
+        _isOverridden = true;
+        _targetPosition = target.position;
+        _targetRotation = target.rotation;
     }
+
+    public void CancelOverride()
+    {
+        _isOverridden = false;
+    }
+
+    public void StartDragging()
+    {
+        if (IsDragging) return;
+
+        Debug.Log($"{name} started dragging");
+
+        _rb.isKinematic = true;
+        IsDragging = true;
+    }
+
+    private void StopDragging()
+    {
+        if (!IsDragging) return;
+
+        Debug.Log($"{name} stopped dragging");
+
+        if (!_freezeOnRelease)
+            _rb.isKinematic = false;
+
+        IsDragging = false;
+    }
+
     private void OnMouseDown()
     {
         StartDragging();
     }
+
     private void OnMouseUp()
     {
         StopDragging();
@@ -59,26 +72,41 @@ public class PhysicsDrag : MonoBehaviour
 
     private void Update()
     {
-        
-        if (_isDragging && !_isOverriden)
-        {
+        if (!IsDragging)
+            return;
 
-            _targetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.WorldToScreenPoint(transform.position).z));
-            _targetPosition.y = _targetY;
+        if (!_isOverridden)
+            UpdateTargetFromMouse();
 
-            Vector3 tmp = Vector3.zero;
-            tmp.y = transform.rotation.eulerAngles.y;
-            _targetRotation = Quaternion.Euler(tmp);
-            // debug.transform.position = _targetPosition;
-        }
-
-        if (_isDragging)
-        {
-            if (!Input.GetMouseButton(0)) StopDragging();
-            transform.position = Vector3.Lerp(transform.position, _targetPosition, Time.deltaTime * _lerpSpeed);
-            transform.rotation = Quaternion.Lerp(transform.rotation, _targetRotation, Time.deltaTime * _lerpSpeed);
-        }
+        ApplyTransform();
     }
 
-}
+    private void UpdateTargetFromMouse()
+    {
+        float depth = _mainCamera.WorldToScreenPoint(transform.position).z;
 
+        Vector3 mouseWorldPos = _mainCamera.ScreenToWorldPoint(
+            new Vector3(Input.mousePosition.x, Input.mousePosition.y, depth)
+        );
+
+        mouseWorldPos.y = _targetY;
+        _targetPosition = mouseWorldPos;
+
+        _targetRotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
+    }
+
+    private void ApplyTransform()
+    {
+        transform.position = Vector3.Lerp(
+            transform.position,
+            _targetPosition,
+            Time.deltaTime * _lerpSpeed
+        );
+
+        transform.rotation = Quaternion.Lerp(
+            transform.rotation,
+            _targetRotation,
+            Time.deltaTime * _lerpSpeed
+        );
+    }
+}
