@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 
 public class MenuUIController : MonoBehaviour
@@ -58,6 +60,6 @@ public class MenuUIController : MonoBehaviour
 
     public void LoadLanguage(string code)
     {
-        LocalizationManager.Instance.SetLanguage(code);
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.GetLocale(new LocaleIdentifier(code));
     }
 }
