@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -21,6 +22,8 @@ public class InGameUIController : MonoBehaviour
         _ui.SetActive(false);
         _saveUI.SetActive(false);
         _cameraController.enabled = true;
+        _dropdown.value = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale) + 1;
+        StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
     }
 
     private void Switch()
@@ -68,6 +71,13 @@ public class InGameUIController : MonoBehaviour
     public void ChangeLanguage()
     {
         string code = _dropdown.options[_dropdown.value].text.ToLower()[..2];
+        StartCoroutine(SetLanguage(code));
+    }
+
+    private IEnumerator SetLanguage(string code)
+    {
+        yield return LocalizationSettings.InitializationOperation;
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.GetLocale(new LocaleIdentifier(code));
+        SaveSystem.SaveCurrentLanguage();
     }
 }

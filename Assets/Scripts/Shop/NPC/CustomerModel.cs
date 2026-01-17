@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 [Serializable]
 public struct CustomerQuery
@@ -67,12 +69,16 @@ public class CustomerModel : MonoBehaviour
     {
         if (_textBubble != null)
             _textBubble.SetActive(true);
+
+        _textField.text = LocalizationSettings.StringDatabase.GetLocalizedString("CustomersTable", _currentQuery.QueryKey);
     }
 
     public void Decline()
     {
         if (_animator != null)
             _animator.SetTrigger(DeclineID);
+
+        _textField.text = LocalizationSettings.StringDatabase.GetLocalizedString("CustomersTable", _currentQuery.DeclineKey);
 
         Invoke(nameof(ShowQuery), _refreshDelay);
     }
@@ -81,6 +87,8 @@ public class CustomerModel : MonoBehaviour
     {
         if (_animator != null)
             _animator.SetTrigger(AcceptID);
+
+        _textField.text = LocalizationSettings.StringDatabase.GetLocalizedString("CustomersTable", _currentQuery.AcceptKey);
 
         Invoke(nameof(HideBubble), _finishDelay);
 
@@ -114,5 +122,20 @@ public class CustomerModel : MonoBehaviour
         _textField = _textBubble.GetComponentInChildren<TMP_Text>();
         if (_textField == null)
             Debug.LogError("CustomerModel: TMP_Text not found in speech bubble object.");
+    }
+
+    private void UpdateText(Locale locale = null)
+    {
+        _textField.text = LocalizationSettings.StringDatabase.GetLocalizedString("CustomersTable", _currentQuery.QueryKey);
+    }
+
+    private void OnEnable()
+    {
+        LocalizationSettings.SelectedLocaleChanged += UpdateText;
+    }
+
+    private void OnDisable()
+    {
+        LocalizationSettings.SelectedLocaleChanged -= UpdateText;
     }
 }
