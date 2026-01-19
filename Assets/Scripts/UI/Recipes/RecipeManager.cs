@@ -29,7 +29,7 @@ public class RecipeManager : MonoBehaviour
             _book.bookPages[i + _firstPageIndex] = _pageSprites[i].GetSprite( _recipeStates[i].active );
         }
 
-        _book.CustomRefreshSprites();
+        _book.UpdateSprites();
     }
 
     public void SetActiveRecipe(int index) 

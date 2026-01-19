@@ -261,6 +261,7 @@ public class DoughController : MonoBehaviour
                 _comboZones.Add(zone, false);
         }
         */
+        _comboClicksTotal = 0;
         foreach (PerfectComboZone zone in go.GetComponentsInChildren<PerfectComboZone>())
         {
             _comboClicksTotal+=2;

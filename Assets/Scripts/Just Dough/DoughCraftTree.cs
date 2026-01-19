@@ -32,7 +32,7 @@ public static class DoughCraftTree
         
         // Ветка норм теста
         // Пирожок
-        Add(DoughState.FlatFolded, DoughCraftAction.Click, DoughState.SimplePie);
+        Add(DoughState.FlatFolded, DoughCraftAction.ComboClick, DoughState.SimplePie);
         
         // Сосиска в тесте
         Add(DoughState.FlatFolded, DoughCraftAction.Drag, DoughState.HotDogBase);
