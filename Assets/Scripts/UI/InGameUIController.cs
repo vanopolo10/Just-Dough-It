@@ -22,7 +22,7 @@ public class InGameUIController : MonoBehaviour
         _ui.SetActive(false);
         _saveUI.SetActive(false);
         _cameraController.enabled = true;
-        _dropdown.value = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale) + 1;
+        _dropdown.value = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
         StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
     }
 
