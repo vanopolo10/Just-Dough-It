@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Localization;
-using UnityEngine.Localization.Settings;
 
 [Serializable]
 public struct CustomerQuery
@@ -41,6 +39,12 @@ public class CustomerModel : MonoBehaviour
         _routeMover = GetComponent<CustomerRouteMover>();
     }
 
+    private void OnDestroy()
+    {
+        if (LocalizationManager.Instance != null)
+            LocalizationManager.Instance.OnLanguageChange -= UpdateQueryText;
+    }
+
     public void Begin()
     {
         if (_textBubble == null)
@@ -61,16 +65,27 @@ public class CustomerModel : MonoBehaviour
             Debug.LogWarning("CustomerModel: queries list is empty.");
         }
 
+        if (LocalizationManager.Instance != null)
+            LocalizationManager.Instance.OnLanguageChange += UpdateQueryText;
+
         // первая реплика через задержку после подхода к стойке
         Invoke(nameof(ShowQuery), _initDelay);
     }
 
+    private void UpdateQueryText()
+    {
+        if (_textField == null || LocalizationManager.Instance == null)
+            return;
+
+        _textField.text = LocalizationManager.Instance.SelectedTable.GetPair(_currentQuery.QueryKey);
+    }
+
     public void ShowQuery()
     {
+        UpdateQueryText();
+
         if (_textBubble != null)
             _textBubble.SetActive(true);
-
-        _textField.text = LocalizationSettings.StringDatabase.GetLocalizedString("CustomersTable", _currentQuery.QueryKey);
     }
 
     public void Decline()
@@ -78,7 +93,8 @@ public class CustomerModel : MonoBehaviour
         if (_animator != null)
             _animator.SetTrigger(DeclineID);
 
-        _textField.text = LocalizationSettings.StringDatabase.GetLocalizedString("CustomersTable", _currentQuery.DeclineKey);
+        if (LocalizationManager.Instance != null && _textField != null)
+            _textField.text = LocalizationManager.Instance.SelectedTable.GetPair(_currentQuery.DeclineKey);
 
         Invoke(nameof(ShowQuery), _refreshDelay);
     }
@@ -88,7 +104,8 @@ public class CustomerModel : MonoBehaviour
         if (_animator != null)
             _animator.SetTrigger(AcceptID);
 
-        _textField.text = LocalizationSettings.StringDatabase.GetLocalizedString("CustomersTable", _currentQuery.AcceptKey);
+        if (LocalizationManager.Instance != null && _textField != null)
+            _textField.text = LocalizationManager.Instance.SelectedTable.GetPair(_currentQuery.AcceptKey);
 
         Invoke(nameof(HideBubble), _finishDelay);
 
@@ -122,20 +139,5 @@ public class CustomerModel : MonoBehaviour
         _textField = _textBubble.GetComponentInChildren<TMP_Text>();
         if (_textField == null)
             Debug.LogError("CustomerModel: TMP_Text not found in speech bubble object.");
-    }
-
-    private void UpdateText(Locale locale = null)
-    {
-        _textField.text = LocalizationSettings.StringDatabase.GetLocalizedString("CustomersTable", _currentQuery.QueryKey);
-    }
-
-    private void OnEnable()
-    {
-        LocalizationSettings.SelectedLocaleChanged += UpdateText;
-    }
-
-    private void OnDisable()
-    {
-        LocalizationSettings.SelectedLocaleChanged -= UpdateText;
     }
 }

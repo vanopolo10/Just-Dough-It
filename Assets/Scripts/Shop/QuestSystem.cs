@@ -2,11 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.Localization;
-using UnityEditor.Localization.Editor;
 using UnityEngine;
-using UnityEngine.Localization;
-using UnityEngine.Localization.Settings;
 
 [Serializable]
 public enum QuestInvokeType
@@ -40,7 +36,7 @@ public class QuestSystem : MonoBehaviour
         UpdateText();
         _doughBucket.CurrentDoughChanged += OnDoughChanged;
         OnDoughChanged();
-        LocalizationSettings.SelectedLocaleChanged += UpdateText;
+        LocalizationManager.Instance.OnLanguageChange += UpdateText;
     }
 
     private void OnDisable()
@@ -49,7 +45,8 @@ public class QuestSystem : MonoBehaviour
 
         if (_doughController != null)
             _doughController.ActionPerfected -= OnPerfectAction;
-        LocalizationSettings.SelectedLocaleChanged -= UpdateText;
+        
+        LocalizationManager.Instance.OnLanguageChange -= UpdateText;
     }
 
     private void OnDoughChanged()
@@ -86,7 +83,7 @@ public class QuestSystem : MonoBehaviour
         UpdateText();
     }
 
-    private void UpdateText(Locale locale = null)
+    private void UpdateText()
     {
         if (_text == null)
             return;
@@ -95,10 +92,10 @@ public class QuestSystem : MonoBehaviour
 
         foreach (QuestDisplay quest in _quests)
         {
-            text += LocalizationSettings.StringDatabase.GetLocalizedString("QuestsTable", quest.DescriptionKey);
+            text += LocalizationManager.Instance.SelectedTable.GetPair(quest.DescriptionKey);
             text += quest.Score < quest.MaxScore
                 ? " (" + quest.Score + "/" + quest.MaxScore + ")"
-                : " " + LocalizationSettings.StringDatabase.GetLocalizedString("QuestsTable", _completionTextKey);
+                : " " + LocalizationManager.Instance.SelectedTable.GetPair(_completionTextKey);
 
             text += "\n\n";
         }

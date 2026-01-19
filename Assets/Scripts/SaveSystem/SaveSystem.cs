@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Localization.Settings;
 
 public static class SaveSystem
 {
@@ -154,24 +152,6 @@ public static class SaveSystem
         if (File.Exists(path) && Directory.Exists(directoryPath)) return true;
         return false;
     }
-
-    public static void SaveCurrentLanguage()
-    {
-        string path = Path.Combine(Application.persistentDataPath, "language.json");
-        string json = JsonConvert.SerializeObject(new SelectedLanguage(LocalizationSettings.SelectedLocale.Identifier.Code), _settings);
-        File.WriteAllText(path, json);
-    }
-
-    public static string GetSaveLanguage()
-    {
-        string path = Path.Combine(Application.persistentDataPath, "language.json");
-
-        if (File.Exists(path) != true) return null;
-        string json = File.ReadAllText(path);
-        SelectedLanguage language = JsonConvert.DeserializeObject<SelectedLanguage>(json);
-
-        return language.Code;
-    }
 }
 
 [Serializable]
@@ -200,12 +180,4 @@ public class GameSave
         ChangeTime = DateTime.Now.ToString();
         SavedData = new();
     }
-}
-
-[Serializable]
-public class SelectedLanguage
-{
-    public string Code;
-
-    public SelectedLanguage(string code) => Code = code;
 }
