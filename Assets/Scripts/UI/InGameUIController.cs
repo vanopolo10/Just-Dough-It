@@ -22,7 +22,6 @@ public class InGameUIController : MonoBehaviour
         _ui.SetActive(false);
         _saveUI.SetActive(false);
         _cameraController.enabled = true;
-        _dropdown.value = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
         StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
     }
 
@@ -30,6 +29,7 @@ public class InGameUIController : MonoBehaviour
     {
         _ui.SetActive(!_ui.activeSelf);
         _cameraController.enabled = !_cameraController.enabled;
+        _dropdown.value = LocalizationSettings.SelectedLocale.Identifier.Code == "ru" ? 0 : 1; // Костыль костыльный
     }
 
     private void OnEscape()
