@@ -6,6 +6,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Tray : MonoBehaviour
 {
+    [Header("Печь")]
+    [SerializeField] private Oven _oven;
+
     [Header("Движение подноса")]
     [SerializeField] private Vector3 _outsidePoint;
     [SerializeField] private Vector3 _insidePoint;
@@ -22,10 +25,30 @@ public class Tray : MonoBehaviour
     private bool _isMoving;
     private Coroutine _moveRoutine;
 
+    private float _bakeSpeedMultiplier;
+
     public bool IsInOven => _isInOven;
     public bool IsMoving => _isMoving;
-
     public bool IsFull => _slots.All(t => !t.IsEmpty);
+
+    public float BakeSpeedMultiplier => _bakeSpeedMultiplier;
+
+    private void OnEnable()
+    {
+        if (_oven != null)
+            _oven.FirePowerChanged += OnFirePowerChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (_oven != null)
+            _oven.FirePowerChanged -= OnFirePowerChanged;
+    }
+
+    private void OnFirePowerChanged(int firePower)
+    {
+        _bakeSpeedMultiplier = Mathf.Clamp(firePower / 50f, 0f, 2f);
+    }
 
     private void Reset()
     {
@@ -42,17 +65,13 @@ public class Tray : MonoBehaviour
 
         TogglePosition();
 
-        _slots
-            .Select(s => s.Bun)
-            .Where(b => b != null)
-            .ToList()
-            .ForEach(b =>
-            {
-                if (toOven)
-                    b.BeginBake();
-                else
-                    b.StopBake();
-            });
+        foreach (var bun in _slots.Select(s => s.Bun).Where(b => b != null))
+        {
+            if (toOven)
+                bun.BeginBake();
+            else
+                bun.StopBake();
+        }
     }
 
     private void TogglePosition()
@@ -69,7 +88,6 @@ public class Tray : MonoBehaviour
             return null;
 
         TraySlot freeSlot = _slots.FirstOrDefault(t => t.IsEmpty);
-
         if (freeSlot == null)
             return null;
 
@@ -80,21 +98,10 @@ public class Tray : MonoBehaviour
             freeSlot.Anchor
         );
 
-        Vector3 parentScale = freeSlot.Anchor.lossyScale;
-        Vector3 worldScale = prefab.transform.lossyScale;
-
-        Vector3 localScale = new Vector3(
-            parentScale.x == 0f ? 1f : worldScale.x * parentScale.x,
-            parentScale.y == 0f ? 1f : worldScale.y * parentScale.y,
-            parentScale.z == 0f ? 1f : worldScale.z * parentScale.z
-        );
-
         instance.transform.localPosition = Vector3.zero;
         instance.transform.localRotation = Quaternion.LookRotation(transform.right);
-        instance.transform.localScale = localScale;
 
         freeSlot.SetBun(instance);
-
         instance.Setup(this, _shelf);
 
         if (_isInOven)
@@ -112,16 +119,13 @@ public class Tray : MonoBehaviour
     {
         taken = null;
 
-        if (bun == null)
-            return false;
-
-        foreach (var t in _slots.Where(t => t.Bun == bun))
+        foreach (var slot in _slots.Where(t => t.Bun == bun))
         {
-            taken = t.Clear();
+            taken = slot.Clear();
             if (taken != null)
                 taken.transform.SetParent(null, true);
 
-            return taken != null;
+            return true;
         }
 
         return false;
@@ -144,9 +148,7 @@ public class Tray : MonoBehaviour
 
         while (time < _moveDuration)
         {
-            float t = time / _moveDuration;
-            t = _moveCurve.Evaluate(t);
-
+            float t = _moveCurve.Evaluate(time / _moveDuration);
             transform.position = Vector3.Lerp(start, targetPosition, t);
 
             time += Time.deltaTime;
@@ -158,7 +160,7 @@ public class Tray : MonoBehaviour
         _isMoving = false;
         _moveRoutine = null;
     }
-    
+
     [System.Serializable]
     private class TraySlot
     {
@@ -169,10 +171,7 @@ public class Tray : MonoBehaviour
         public BakeManager Bun => _bun;
         public bool IsEmpty => _bun == null;
 
-        public void SetBun(BakeManager bun)
-        {
-            _bun = bun;
-        }
+        public void SetBun(BakeManager bun) => _bun = bun;
 
         public BakeManager Clear()
         {

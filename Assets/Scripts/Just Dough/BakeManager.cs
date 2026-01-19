@@ -5,14 +5,15 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class BakeManager : MonoBehaviour
 {
-    [Header("Время прожарки, сек")]
-    [SerializeField] private float _rareInSeconds = 3f;
+    [Header("Время прожарки, сек")] [SerializeField]
+    private float _rareInSeconds = 3f;
+
     [SerializeField] private float _doneInSeconds = 6f;
     [SerializeField] private float _burnStartInSeconds = 10f;
     [SerializeField] private float _burnFullInSeconds = 20f;
 
-    [Header("Возврат на полку")]
-    [SerializeField] private float _returnDuration = 0.25f;
+    [Header("Возврат на полку")] [SerializeField]
+    private float _returnDuration = 0.25f;
 
     private float _timeInOven;
     private Coroutine _bakeRoutine;
@@ -37,7 +38,6 @@ public class BakeManager : MonoBehaviour
     private int _imperfectActionCount;
 
     private Product _product;
-
     private ProductComparator _productComparator;
 
     public event Action Rare;
@@ -94,11 +94,75 @@ public class BakeManager : MonoBehaviour
         }
     }
 
+    private void OnMouseDown()
+    {
+        if (_dragBlocked) return;
+
+        if (_isOnShelf)
+        {
+            StartShelfDrag();
+            return;
+        }
+
+        if (_tray == null || _shelf == null) return;
+        if (_tray.IsInOven || _tray.IsMoving) return;
+        if (BakeState == BakeState.Raw) return;
+        if (_tray.TryTakeBun(this, out BakeManager taken) == false) return;
+
+        taken.StopBake();
+        _shelf.Place(taken);
+        Debug.Log($"[BakeManager] perfect={_perfectActionCount}, imperfect={_imperfectActionCount}, " +
+                  $"productType={_product.Type}, filling={_product.Filling}, bakeState={BakeState}");
+    }
+
+    private void OnMouseDrag()
+    {
+        if (_isOnShelf == false || _isDragging == false) return;
+        if (_dragBlocked)
+        {
+            if (Input.GetMouseButton(0) == false) _dragBlocked = false;
+            return;
+        }
+
+        Vector3 worldPos = GetMouseWorldPos();
+        transform.position = worldPos + _dragOffset;
+    }
+
+    private void OnMouseUp()
+    {
+        if (_isInReceptionArea)
+        {
+            if (AttemptDeposit())
+            {
+                Sold?.Invoke(this);
+                return;
+            }
+        }
+
+        if (_isOnShelf == false)
+        {
+            _dragBlocked = false;
+            return;
+        }
+
+        if (_isDragging == false)
+        {
+            _dragBlocked = false;
+            return;
+        }
+
+        _isDragging = false;
+        _dragBlocked = false;
+        if (_shelfAnchor != null) StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
+    }
+
     private IEnumerator BakeRoutine()
     {
         while (true)
         {
-            _timeInOven += Time.deltaTime;
+            float speed = _tray ? _tray.BakeSpeedMultiplier : 0f;
+            _timeInOven += Time.deltaTime * speed;
+
             UpdateBakeLogic();
             yield return null;
         }
@@ -132,7 +196,7 @@ public class BakeManager : MonoBehaviour
         else if (t <= _burnFullInSeconds)
         {
             bakeT = 1f;
-            burnT = Mathf.Clamp01(Mathf.InverseLerp(_burnStartInSeconds, _burnFullInSeconds, t));
+            burnT = Mathf.InverseLerp(_burnStartInSeconds, _burnFullInSeconds, t);
             BakeState = BakeState.Burn;
         }
         else
@@ -147,19 +211,19 @@ public class BakeManager : MonoBehaviour
 
         VisualChanged?.Invoke(bakeT, burnT);
 
-        if (_invokedRare == false && t >= _rareInSeconds)
+        if (!_invokedRare && t >= _rareInSeconds)
         {
             _invokedRare = true;
             Rare?.Invoke();
         }
 
-        if (_invokedDone == false && t >= _doneInSeconds)
+        if (!_invokedDone && t >= _doneInSeconds)
         {
             _invokedDone = true;
             Done?.Invoke();
         }
 
-        if (_invokedBurn == false && t >= _burnStartInSeconds)
+        if (!_invokedBurn && t >= _burnStartInSeconds)
         {
             _invokedBurn = true;
             Burned?.Invoke();
@@ -221,7 +285,6 @@ public class BakeManager : MonoBehaviour
     public void SetProductFromDoughController(DoughController dough)
     {
         Product product = new Product { Filling = dough.Filling };
-
         ProductType productType;
         try
         {
@@ -233,7 +296,6 @@ public class BakeManager : MonoBehaviour
         }
 
         product.Type = productType;
-
         SetProduct(product);
     }
 
@@ -242,90 +304,9 @@ public class BakeManager : MonoBehaviour
         _product = product;
     }
 
-    private void OnMouseDown()
-    {
-        if (_dragBlocked)
-            return;
-
-        if (_isOnShelf)
-        {
-            StartShelfDrag();
-            return;
-        }
-
-        if (_tray == null || _shelf == null)
-            return;
-
-        if (_tray.IsInOven || _tray.IsMoving)
-            return;
-
-        if (BakeState == BakeState.Raw)
-            return;
-
-        if (_tray.TryTakeBun(this, out BakeManager taken) == false)
-            return;
-
-        taken.StopBake();
-        _shelf.Place(taken);
-
-        Debug.Log(
-            $"[BakeManager] perfect={_perfectActionCount}, imperfect={_imperfectActionCount}, " +
-            $"productType={_product.Type}, filling={_product.Filling}, bakeState={BakeState}"
-        );
-    }
-
-    private void OnMouseDrag()
-    {
-        if (_isOnShelf == false || _isDragging == false)
-            return;
-
-        if (_dragBlocked)
-        {
-            if (Input.GetMouseButton(0) == false)
-                _dragBlocked = false;
-
-            return;
-        }
-
-        Vector3 worldPos = GetMouseWorldPos();
-        transform.position = worldPos + _dragOffset;
-    }
-
-    private void OnMouseUp()
-    {
-        if (_isInReceptionArea)
-        {
-            if (AttemptDeposit())
-            {
-                Sold?.Invoke(this);
-                return;
-            }
-        }
-
-        if (_isOnShelf == false)
-        {
-            _dragBlocked = false;
-            return;
-        }
-
-        if (_isDragging == false)
-        {
-            _dragBlocked = false;
-            return;
-        }
-
-        _isDragging = false;
-        _dragBlocked = false;
-
-        if (_shelfAnchor != null)
-            StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
-    }
-
     private bool AttemptDeposit()
     {
-        if (_productComparator == null)
-            return false;
-
+        if (_productComparator == null) return false;
         return _productComparator.OfferCurrentProduct();
     }
 
@@ -353,25 +334,18 @@ public class BakeManager : MonoBehaviour
 
     private void OnCancelRequested()
     {
-        if (_isOnShelf == false || _isDragging == false)
-            return;
-
+        if (_isOnShelf == false || _isDragging == false) return;
         _isDragging = false;
         _dragBlocked = true;
-
-        if (_shelfAnchor != null)
-            StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
+        if (_shelfAnchor != null) StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
     }
 
     private void StartShelfDrag()
     {
         Camera cam = Camera.main;
-        if (cam == null)
-            return;
-
+        if (cam == null) return;
         Vector3 screenPos = cam.WorldToScreenPoint(transform.position);
         _dragZ = screenPos.z;
-
         _dragOffset = transform.position - GetMouseWorldPos();
         _isDragging = true;
     }
@@ -379,9 +353,7 @@ public class BakeManager : MonoBehaviour
     private Vector3 GetMouseWorldPos()
     {
         Camera cam = Camera.main;
-        if (cam == null)
-            return transform.position;
-
+        if (cam == null) return transform.position;
         Vector3 mouse = Input.mousePosition;
         mouse.z = _dragZ;
         return cam.ScreenToWorldPoint(mouse);
@@ -391,15 +363,12 @@ public class BakeManager : MonoBehaviour
     {
         Vector3 startPos = transform.position;
         Quaternion startRot = transform.rotation;
-
         float time = 0f;
-
         while (time < _returnDuration)
         {
             float t = time / _returnDuration;
             transform.position = Vector3.Lerp(startPos, targetPos, t);
             transform.rotation = Quaternion.Slerp(startRot, targetRot, t);
-
             time += Time.deltaTime;
             yield return null;
         }

@@ -84,7 +84,11 @@ public class CameraController : MonoBehaviour
 
         DragCancelService.RequestCancel();
 
-        ViewID = (ViewID + 2) % _views.Count;
+        if (ViewID is 3 or 4)
+            ViewID = 1;
+        else
+            ViewID = (ViewID + 2) % _views.Count;
+        
         BeginTransition();
     }
     

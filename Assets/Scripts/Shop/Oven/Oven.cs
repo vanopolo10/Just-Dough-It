@@ -6,13 +6,16 @@ public class Oven : MonoBehaviour
 {
     private const int MaxFirePower = 100;
 
-    [SerializeField] private int _woodFullPowerTime = 20;
-    
+    [SerializeField, Tooltip("—колько силы дает одно бревно")] 
     private int _woodPower = 20;
+    [SerializeField, Tooltip("—колько длитс€ горение бревна на своем пике")] 
+    private int _woodFullPowerTime = 20;
+    [SerializeField, Tooltip("¬ сколько раз оно затухает медленнее, чем разгораетс€")] 
+    private float _fadeCoef = Math.Abs(2f);
     
     public event Action<int> FirePowerChanged;
-    
-    public int FirePower {get; private set;}
+
+    public int FirePower { get; private set; } = 0;
 
     public void AddWood()
     {
@@ -27,14 +30,9 @@ public class Oven : MonoBehaviour
             FirePowerChanged?.Invoke(FirePower);
             yield return new WaitForSeconds(1);
         }
-        
-        StartCoroutine(WaitFullPower());
-    }
-    
-    private IEnumerator WaitFullPower()
-    {
+
         yield return new WaitForSeconds(_woodFullPowerTime);
-        StartCoroutine(FadeWood());
+        yield return StartCoroutine(FadeWood());
     }
     
     private IEnumerator FadeWood()
@@ -43,7 +41,7 @@ public class Oven : MonoBehaviour
         {
             FirePower = Math.Clamp(FirePower - 1, 0, MaxFirePower);
             FirePowerChanged?.Invoke(FirePower);
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1 * _fadeCoef);
         }
     }
 }
