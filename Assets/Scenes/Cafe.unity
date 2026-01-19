@@ -602,7 +602,7 @@ RectTransform:
   m_Father: {fileID: 987594177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.479, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2709,6 +2709,7 @@ MonoBehaviour:
   - Position: {x: 1.8944864, y: 1.3212795, z: 4.144657}
     Rotation: {x: 0.23327807, y: 0.23078541, z: -0.05380869, w: 0.9430929}
   _transitionDuration: 0.7
+  _tableCameraID: 0
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2757,6 +2758,7 @@ MonoBehaviour:
   _saveManager: {fileID: 1359870275}
   _inputField: {fileID: 151053742}
   _audioSource: {fileID: 330585551}
+  _dropdown: {fileID: 633866323}
 --- !u!82 &330585551
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8737,8 +8739,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 979479853}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.479, y: 0}
-  m_AnchorMax: {x: 0.479, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 52.71, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9720,8 +9722,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1157396007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.479, y: 0}
-  m_AnchorMax: {x: 0.479, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 52.71, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10156,7 +10158,7 @@ MonoBehaviour:
       - m_Target: {fileID: 330585550}
         m_TargetAssemblyTypeName: InGameUIController, Assembly-CSharp
         m_MethodName: ChangeLanguage
-        m_Mode: 5
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10842,8 +10844,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1730920670}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.479, y: 0}
-  m_AnchorMax: {x: 0.479, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 52.71, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -12206,7 +12208,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8222219381915961137, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 926123349}
+      addedObject: {fileID: 926123353}
   m_SourcePrefab: {fileID: 100100000, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
 --- !u!1 &926123347 stripped
 GameObject:
@@ -12224,20 +12226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &926123349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 926123347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69d664d11d357194dabdda50c9515691, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedString
-  _text: {fileID: 926123348}
-  _key: game.quest
 --- !u!114 &926123350 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1478511993676130855, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
@@ -12249,6 +12237,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46ab8d289e4a66947b479302eaf71788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+--- !u!114 &926123353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 926123347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:e38d1f2c0fea6d1418242a0831712309
+    m_TableEntryReference:
+      m_KeyId: 806435962880
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 926123348}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &930288406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13493,7 +13521,7 @@ RectTransform:
   m_Father: {fileID: 1536113391}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.479, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -19839,11 +19867,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 1261744897}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69d664d11d357194dabdda50c9515691, type: 3}
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedString
-  _text: {fileID: 1261744899}
-  _key: game.to_oven
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:e38d1f2c0fea6d1418242a0831712309
+    m_TableEntryReference:
+      m_KeyId: 622251491328
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1261744899}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1268339099 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1352188934141955031, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
@@ -26492,11 +26546,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 1586927796}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69d664d11d357194dabdda50c9515691, type: 3}
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedString
-  _text: {fileID: 1586927798}
-  _key: magazine_buy_more_tables
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:207eb38838c318f44ae58b6cf69072d6
+    m_TableEntryReference:
+      m_KeyId: 15222456320
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1586927798}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1587370526
 GameObject:
   m_ObjectHideFlags: 0
@@ -32956,7 +33036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2873646497982486673, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3321694797005857020, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: m_IsActive
@@ -33296,7 +33376,7 @@ RectTransform:
   m_Father: {fileID: 653984364}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.479, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -33875,11 +33955,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 1899500307}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69d664d11d357194dabdda50c9515691, type: 3}
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedString
-  _text: {fileID: 1899500309}
-  _key: magazine.buy_bucket
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:207eb38838c318f44ae58b6cf69072d6
+    m_TableEntryReference:
+      m_KeyId: 13678952448
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1899500309}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1912071604
 GameObject:
   m_ObjectHideFlags: 0
@@ -45997,11 +46103,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 7877480216452775186}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69d664d11d357194dabdda50c9515691, type: 3}
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LocalizedString
-  _text: {fileID: 4301405468986224819}
-  _key: magazine.buy_more_lamps
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4301405468986224819}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &8413702114001440789
 PrefabInstance:
   m_ObjectHideFlags: 0

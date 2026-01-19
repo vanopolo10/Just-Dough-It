@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 
 public class MenuUIController : MonoBehaviour
@@ -26,6 +29,7 @@ public class MenuUIController : MonoBehaviour
     private void Start()
     {
         UpdateSavesList();
+        StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
     }
 
     public void NewGame()
@@ -58,6 +62,13 @@ public class MenuUIController : MonoBehaviour
 
     public void LoadLanguage(string code)
     {
-        LocalizationManager.Instance.SetLanguage(code);
+        StartCoroutine(SetLanguage(code));
+    }
+
+    private IEnumerator SetLanguage(string code)
+    {
+        yield return LocalizationSettings.InitializationOperation;
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.GetLocale(new LocaleIdentifier(code));
+        SaveSystem.SaveCurrentLanguage();
     }
 }

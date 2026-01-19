@@ -1,6 +1,8 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -13,12 +15,15 @@ public class InGameUIController : MonoBehaviour
     [SerializeField] private SaveManager _saveManager;
     [SerializeField] private TMP_InputField _inputField;
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private TMP_Dropdown _dropdown;
 
     private void Start()
     {
         _ui.SetActive(false);
         _saveUI.SetActive(false);
         _cameraController.enabled = true;
+        _dropdown.value = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale) + 1;
+        StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
     }
 
     private void Switch()
@@ -63,8 +68,16 @@ public class InGameUIController : MonoBehaviour
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
-    public void ChangeLanguage(string code)
+    public void ChangeLanguage()
     {
-        LocalizationManager.Instance.SetLanguage(code);
+        string code = _dropdown.options[_dropdown.value].text.ToLower()[..2];
+        StartCoroutine(SetLanguage(code));
+    }
+
+    private IEnumerator SetLanguage(string code)
+    {
+        yield return LocalizationSettings.InitializationOperation;
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.GetLocale(new LocaleIdentifier(code));
+        SaveSystem.SaveCurrentLanguage();
     }
 }
