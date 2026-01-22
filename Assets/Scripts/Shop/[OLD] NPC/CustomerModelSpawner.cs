@@ -19,7 +19,7 @@ public class CustomerModelSpawner : MonoBehaviour
 
     private CustomerModel _customerModel;
     private CustomerRouteMover _routeMover;
-    private ProductComparator _comparator;
+    //private ProductComparator _comparator;
 
     private SkinnedMeshRenderer _face;
     private SkinnedMeshRenderer _hat;
@@ -31,7 +31,7 @@ public class CustomerModelSpawner : MonoBehaviour
 
     private void Start()
     {
-        _comparator = GetComponent<ProductComparator>();
+        //_comparator = GetComponent<ProductComparator>();
         Respawn();
     }
 
@@ -113,10 +113,12 @@ public class CustomerModelSpawner : MonoBehaviour
         if (_customerModel != null)
             _customerModel.Begin();
 
+        /*
         if (_comparator != null)
             _comparator.SetQuery(_customerModel.CurrentQuery.Query);
         else
             Debug.LogWarning("[Spawner] ProductComparator not found.");
+        */
     }
 
     private void OnCustomerLeftCafe(CustomerRouteMover mover)

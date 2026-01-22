@@ -8,7 +8,7 @@ using UnityEngine.Localization.Settings;
 [Serializable]
 public struct CustomerQuery
 {
-    public Query   Query;
+    //public Query   Query;
     public string  QueryKey;
     public string  DeclineKey;
     public string  AcceptKey;

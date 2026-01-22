@@ -2,6 +2,10 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
+// [Obsolete]
+
+/*
+[Obsolete]
 [Serializable]
 public struct Product
 {
@@ -15,22 +19,25 @@ public struct Product
     public FillingType Filling { get; set; }
 }
 
+
+[Obsolete]
 [Serializable]
 public struct Query
 {
     public ProductType Type;
     public FillingType Filling;
-    
+
     public bool Check(Product product)
     {
         Debug.Log($"{product.Type}, {product.Filling}");
         Debug.Log($"{Type}, {Filling}");
-        
+
         return (product.Type == Type || Type == ProductType.Any)
                && (product.Filling == Filling || Filling == FillingType.Any);
     }
 }
 
+[Obsolete]
 public class ProductComparator : MonoBehaviour
 {
     [SerializeField] private Query _query;
@@ -60,3 +67,4 @@ public class ProductComparator : MonoBehaviour
         return result;
     }
 }
+*/
