@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -19,9 +20,20 @@ public class CustomerInteraction {
     }
 }
 
+[Serializable]
+public struct DialogueOption
+{
+    public string textKey;
+    public CustomerInteraction interaction;
+}
+
+
 [CreateAssetMenu(fileName = "CustomerInteraction", menuName = "ScriptableObjects/CustomerSystem/CustomerInteractionSet")]
 public class CustomerInteractionSet : ScriptableObject
 {
+    
     public CustomerInteraction OnGreeting, OnItemAccepted, OnItemRejected, OnQuestCompleted;
+
+    public List<DialogueOption> DialogueOptions = new List<DialogueOption>();
 
 }

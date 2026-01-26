@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomerInteractionSet
   OnGreeting:
     dialogueKey: hi
-    animationKey: idle
+    animationKey: Accept
   OnItemAccepted:
     dialogueKey: yea
     animationKey: Accept
@@ -24,3 +24,12 @@ MonoBehaviour:
   OnQuestCompleted:
     dialogueKey: bye
     animationKey: MoveOut
+  DialogueOptions:
+  - textKey: How you been?
+    interaction:
+      dialogueKey: man...
+      animationKey: Decline
+  - textKey: Looking good bro!
+    interaction:
+      dialogueKey: thx!
+      animationKey: Accept

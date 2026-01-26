@@ -26,8 +26,15 @@ public class Customer : MonoBehaviour
         _manager.StartNewCycle();
         Destroy(gameObject);
     }
+    public void StartQuest() { 
+        _quest.StartQuest();
+    }
     public void FinishQuest() { 
         Invoke(nameof(Despawn), _timeoutBeforeDespawning);
+    }
+    public void PlayOutDialogue(DialogueOption option)
+    {
+        option.interaction.PlayOut(this);
     }
 
 

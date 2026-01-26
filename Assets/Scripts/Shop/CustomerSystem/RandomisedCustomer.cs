@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class RandomisedCustomer : Customer
 {
+
     [Serializable]
     private struct WeightedQuest
     {

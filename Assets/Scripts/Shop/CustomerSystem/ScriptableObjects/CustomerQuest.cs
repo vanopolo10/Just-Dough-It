@@ -1,7 +1,9 @@
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 [Serializable]
 public struct Product
@@ -22,12 +24,13 @@ public struct Product
 public class CustomerQuest : ScriptableObject
 {
     public CustomerInteractionSet interactions;
+    public CustomerInteraction questInteraction;
 
     public int ProductsNeeded;
     public List<ProductType> ApplicableTypes;
     public List<FillingType> ApplicableFillings;
 
-    public float timeoutOnCompletion = 3f;
+    public float timeoutOnCompletion = 3f, timeoutAfterGreeting = 3f;
 
     private int _productsLeft;
     private Customer _customer;
@@ -39,6 +42,12 @@ public class CustomerQuest : ScriptableObject
         _productsLeft = ProductsNeeded;
 
         interactions.OnGreeting.PlayOut(customer);
+
+        _customer.Invoke(nameof(_customer.StartQuest), timeoutAfterGreeting);
+    }
+    public void StartQuest() {
+        questInteraction.PlayOut(_customer);
+        _customer.DialogueManager.SetDialogueOptions(interactions.DialogueOptions);
     }
     private bool Check(Product product)
     {

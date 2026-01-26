@@ -20,4 +20,5 @@ public class CustomerManager : MonoBehaviour
     public void StartNewCycle() { 
         SpawnCustomer();
     }
+
 }

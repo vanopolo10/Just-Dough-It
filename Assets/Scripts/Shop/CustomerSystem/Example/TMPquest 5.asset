@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: TMPquest 5
   m_EditorClassIdentifier: Assembly-CSharp::CustomerQuest
   interactions: {fileID: 11400000, guid: 5b2c54f9fc188314a985af6e07c7311c, type: 2}
+  questInteraction:
+    dialogueKey: I want some boring pies
+    animationKey: Accept
   ProductsNeeded: 3
   ApplicableTypes: 06000000
   ApplicableFillings: 02000000
-  timeoutOnCompletion: 1
+  timeoutOnCompletion: 2
+  timeoutAfterGreeting: 1
