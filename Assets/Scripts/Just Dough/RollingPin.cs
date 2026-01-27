@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.iOS;
 
 [RequireComponent(typeof(CapsuleCollider))]
 public class RollingPin : MonoBehaviour
@@ -14,6 +15,9 @@ public class RollingPin : MonoBehaviour
     public UnityEvent DoughExited = new();
     public UnityEvent RollStarted = new();
     public UnityEvent RollEnded = new();
+
+    [Header("Debug")]
+    [SerializeField] private bool _debug;
 
     private float _zCord;
     private float _baseY;
@@ -82,31 +86,40 @@ public class RollingPin : MonoBehaviour
         if (!_dragAllowed || !_isDragging)
             return;
 
-        Vector3 currentPos = transform.position;
-        Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
-        targetPos.y = currentPos.y;
-        Vector3 move = targetPos - currentPos;
-        transform.position = targetPos;
-
-        bool rightHeld = Input.GetMouseButton(1);
-
-        if (rightHeld && !IsRolling)
-            StartRolling();
-        else if (!rightHeld && IsRolling)
-            StopRolling();
-
-        _desiredY = IsRolling ? _baseY : _baseY + _raiseBy;
-
-        if (IsRolling && move.sqrMagnitude > 0.00001f)
-            UpdateRotation(move);
-
-        if (IsRolling)
+        Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("CookingSurface")))
         {
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                _targetRotation,
-                Time.deltaTime * _rotationSmooth
-            );
+            Vector3 currentPos = transform.position;
+            Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
+            targetPos.y = currentPos.y;
+
+            Vector3 pointA = targetPos + transform.right * 0.75f;
+            Vector3 pointB = targetPos - transform.right * 0.75f;
+            if (Physics.CheckCapsule(pointA, pointB, 0.1f, LayerMask.GetMask("TableObject")) && !_debug) return;
+
+            Vector3 move = targetPos - currentPos;
+            transform.position = targetPos;
+
+            bool rightHeld = Input.GetMouseButton(1);
+
+            if (rightHeld && !IsRolling)
+                StartRolling();
+            else if (!rightHeld && IsRolling)
+                StopRolling();
+
+            _desiredY = IsRolling ? _baseY : _baseY + _raiseBy;
+
+            if (IsRolling && move.sqrMagnitude > 0.00001f)
+                UpdateRotation(move);
+
+            if (IsRolling)
+            {
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    _targetRotation,
+                    Time.deltaTime * _rotationSmooth
+                );
+            }
         }
     }
 
