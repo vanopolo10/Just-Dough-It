@@ -29,7 +29,6 @@ public class InGameUIController : MonoBehaviour
     {
         _ui.SetActive(!_ui.activeSelf);
         _cameraController.enabled = !_cameraController.enabled;
-        _dropdown.value = LocalizationSettings.SelectedLocale.Identifier.Code == "ru" ? 0 : 1; // Костыль костыльный
     }
 
     private void OnEscape()
@@ -47,13 +46,12 @@ public class InGameUIController : MonoBehaviour
 
     public void CreateSaveButton()
     {
-        if (_inputField.text != "")
-        {
-            _saveManager.SaveGame(_inputField.text);
-            _inputField.text = "";
-            _audioSource.Play();
-            SwitchSaveMenu();
-        }
+        if (_inputField.text == "") return;
+        
+        _saveManager.SaveGame(_inputField.text);
+        _inputField.text = "";
+        _audioSource.Play();
+        SwitchSaveMenu();
     }
 
     public void ExitButton()
@@ -70,14 +68,23 @@ public class InGameUIController : MonoBehaviour
 
     public void ChangeLanguage()
     {
-        string code = _dropdown.options[_dropdown.value].text.ToLower()[..2];
-        StartCoroutine(SetLanguage(code));
+        string code = _dropdown.options[_dropdown.value].text.ToLower();
+        
+        switch (code)
+        {
+            case "english":
+                StartCoroutine(SetLanguage("en"));
+                break;
+            case "русский":
+                StartCoroutine(SetLanguage("ru"));
+                break;
+        }
     }
 
     private IEnumerator SetLanguage(string code)
     {
-        yield return LocalizationSettings.InitializationOperation;
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.GetLocale(new LocaleIdentifier(code));
         SaveSystem.SaveCurrentLanguage();
+        yield return LocalizationSettings.InitializationOperation;
     }
 }

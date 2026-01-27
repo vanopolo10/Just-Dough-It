@@ -9,7 +9,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private MoneyManager _moneyManager;
     [SerializeField] private QuestSystem _questSystem;
     [SerializeField] private DoughBucket _doughBucket;
-    [SerializeField] private Transform _shopTransfotm;
+    [SerializeField] private Transform _shopTransform;
 
     private void Start()
     {
@@ -30,12 +30,12 @@ public class SaveManager : MonoBehaviour
         if (_doughBucket != null)
             _doughBucket.SpawnDough(dough.State, dough.Filling);
 
-        BuyButtonContent[] buyedContent = _shopTransfotm.GetComponentsInChildren<BuyButtonContent>();
-        foreach (BuyButtonContent content in buyedContent)
+        BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
+        foreach (BuyButtonContent content in boughtContent)
         {
-            bool buyed = SaveSystem.LoadData<bool>(SaveSystem.SelectedSave, $"Buyable.{content.Key}");
-            content.BuyableThing.SetActive(buyed);
-            content.Back.SetActive(!buyed);
+            bool bought = SaveSystem.LoadData<bool>(SaveSystem.SelectedSave, $"Buyable.{content.Key}");
+            content.BuyableThing.SetActive(bought);
+            content.Back.SetActive(!bought);
         }
     }
 
@@ -60,8 +60,8 @@ public class SaveManager : MonoBehaviour
         if (_doughBucket.CurrentDough != null)
             SaveSystem.SaveData(saveName, "Dough", new DoughSave(_doughBucket.CurrentDough.State, _doughBucket.CurrentDough.Filling));
 
-        BuyButtonContent[] buyedContent = _shopTransfotm.GetComponentsInChildren<BuyButtonContent>();
-        foreach (BuyButtonContent content in buyedContent)
+        BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
+        foreach (BuyButtonContent content in boughtContent)
         {
             SaveSystem.SaveData(saveName, $"Buyable.{content.Key}", content.BuyableThing.activeSelf);
         }
