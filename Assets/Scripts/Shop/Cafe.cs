@@ -76,7 +76,7 @@ public class Cafe : MonoBehaviour
         BakeManager bakedInstance = _tray.AddDough(bakeManagerPrefab);
         if (bakedInstance == null)
         {
-            Debug.Log("[Cafe] Tray is full, dough not sent");
+            print("[Cafe] Tray is full, dough not sent");
             return;
         }
 

@@ -122,6 +122,7 @@ public class Tray : MonoBehaviour
         foreach (var slot in _slots.Where(t => t.Bun == bun))
         {
             taken = slot.Clear();
+            
             if (taken != null)
                 taken.transform.SetParent(null, true);
 

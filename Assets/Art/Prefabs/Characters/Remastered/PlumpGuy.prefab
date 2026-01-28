@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 3400619276616472122}
   - component: {fileID: 6034628509984792001}
   m_Layer: 0
-  m_Name: Lazkan.001
+  m_Name: Lazkan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -824,6 +824,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4572528840420609670}
   - component: {fileID: 3739427890337224840}
+  - component: {fileID: -2764534498500371279}
+  - component: {fileID: 8720146932771515456}
   m_Layer: 0
   m_Name: PlumpGuy
   m_TagString: Untagged
@@ -879,6 +881,55 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-2764534498500371279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3764783259667371068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1e1b47ee95441d41b3cc40a754ed036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerRouteMover
+  _moveSpeed: 1.6
+  _rotateSpeed: 8
+  _stopDistance: 0.05
+  _entryPoints:
+  - {x: 4.83, y: 0, z: -2.73}
+  - {x: 0.03, y: 0, z: -2.73}
+  - {x: 0.046, y: 0, z: 1.477}
+  _exitPoints:
+  - {x: 0.07, y: 0, z: 1.28}
+  - {x: 0.07, y: 0, z: -4.19}
+  - {x: -6.2, y: 0, z: -4.19}
+  _isWalkingParam: IsWalking
+  _reachedParam: Reached
+  _forwardRotationOffsetY: 180
+--- !u!114 &8720146932771515456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3764783259667371068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83820d42bc38ed74eb0f989065736356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerModel
+  _animator: {fileID: 3739427890337224840}
+  _queries:
+  - Query:
+      Type: 0
+      Filling: 0
+    QueryKey: 
+    DeclineKey: 
+    AcceptKey: 
+  _initDelay: 2
+  _finishDelay: 1
+  _refreshDelay: 3
 --- !u!1 &3857525934373796404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,7 +1342,7 @@ GameObject:
   - component: {fileID: 5457579175325704272}
   - component: {fileID: 6451296085525458716}
   m_Layer: 0
-  m_Name: Sharf
+  m_Name: Scarf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1476,7 +1527,7 @@ GameObject:
   - component: {fileID: 4414879760457743359}
   - component: {fileID: 6719551464501138500}
   m_Layer: 0
-  m_Name: Shapka-Bomzhatka.001
+  m_Name: Shapka
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1597,7 +1648,7 @@ GameObject:
   - component: {fileID: 8048682914554256404}
   - component: {fileID: 5018644095399813286}
   m_Layer: 0
-  m_Name: ManBody.023
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1844,7 +1895,7 @@ GameObject:
   - component: {fileID: 6344289297933676781}
   - component: {fileID: 7309811855845564808}
   m_Layer: 0
-  m_Name: Glass-Sigma.002
+  m_Name: Glasses
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2125,7 +2176,7 @@ GameObject:
   - component: {fileID: 8086498104185305417}
   - component: {fileID: 9121880480935651976}
   m_Layer: 0
-  m_Name: Glass-Sigma.001
+  m_Name: Sunglasses
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

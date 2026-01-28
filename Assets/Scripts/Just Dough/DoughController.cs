@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using JustDough;
 
 [DisallowMultipleComponent]
-[RequireComponent(typeof(DoughVisualSwitcher), typeof(DoughDrag))]
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(DoughVisualSwitcher))]
 public class DoughController : MonoBehaviour
 {
     [Header("Состояния теста")]
@@ -164,7 +161,7 @@ public class DoughController : MonoBehaviour
 
             bool comboComplete = (_comboClicksLeft <= 0);
 
-            Debug.Log(
+            print(
                 $"[DoughController] ComboClick zone={craftZone.name}, " +
                 $"perfect={isPerfect}, perfectTotal={_perfectActionCount}, " +
                 $"imperfectTotal={_imperfectActionCount}, comboComplete={comboComplete}, " +
@@ -177,7 +174,7 @@ public class DoughController : MonoBehaviour
 
         if (DoughCraftTree.TryGetNext(State, action, out var next) == false)
         {
-            Debug.Log($"[DoughController] Для состояния {State} нет перехода по действию {action}");
+            print($"[DoughController] Для состояния {State} нет перехода по действию {action}");
             return false;
         }
 
@@ -204,7 +201,7 @@ public class DoughController : MonoBehaviour
         if (State is DoughState.Flat or DoughState.LongFlat)
             transform.rotation = _rollRotation;
 
-        Debug.Log(
+        print(
             $"[DoughController] {OldState} --{action}--> {next}, " +
             $"perfectTotal={_perfectActionCount}, imperfectTotal={_imperfectActionCount}, " +
             $"state={State}, filling={_filling}"
@@ -233,17 +230,16 @@ public class DoughController : MonoBehaviour
     }
 
     private void UpdateComboAnimation() {
-        Debug.Log("tried updating combo animation");
+        print("tried updating combo animation");
         if (_doughVisualSwitcher.Map[State].TryGetComponent<Animator>(out Animator animator) == false) return;
 
         float progress = (_comboClicksTotal - _comboClicksLeft) / (_comboClicksTotal-1);
-        Debug.Log(animator.GetCurrentAnimatorClipInfo(0));
-        Debug.Log("Set animation progress to " + progress + " on layer " + animator.GetLayerName(0));
+        print(animator.GetCurrentAnimatorClipInfo(0));
+        print("Set animation progress to " + progress + " on layer " + animator.GetLayerName(0));
         animator.Play("Completion", 0, progress);
         //animator.SetFloat("Progress", progress);
-
-
     }
+    
     private void ResetCombo()
     {
         //_comboZones.Clear();
@@ -262,13 +258,11 @@ public class DoughController : MonoBehaviour
         }
         */
         _comboClicksTotal = 0;
+        
         foreach (PerfectComboZone zone in go.GetComponentsInChildren<PerfectComboZone>())
-        {
             _comboClicksTotal+=2;
-        }
+        
         _comboClicksLeft = _comboClicksTotal;
         UpdateComboAnimation();
-
-
     }
 }

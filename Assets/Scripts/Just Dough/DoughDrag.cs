@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class DoughDrag : MonoBehaviour
 {
     private Vector3 _offset;

@@ -16,12 +16,12 @@ public class PerfectComboZone : MonoBehaviour, IPointerDownHandler
     private void RemoveZone() 
     { 
         GetComponent<GraphicRaycaster>().enabled = false;
-        Debug.Log("perfect Combo zone removed");
+        print("perfect Combo zone removed");
     }
     public void OnPointerDown(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Right) return;
-        Debug.Log("perfect combo zone clicked");
+        print("perfect combo zone clicked");
         RemoveZone();
         _craftZone.AddComboClick(true);
         OnClick?.Invoke();

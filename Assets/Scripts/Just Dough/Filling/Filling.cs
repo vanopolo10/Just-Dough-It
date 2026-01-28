@@ -34,10 +34,10 @@ public class Filling : MonoBehaviour
     
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Filling entered trigger");
+        print("Filling entered trigger");
         
         if (other.gameObject.TryGetComponent(out _manager))
-            Debug.Log("Filling area entered");
+            print("Filling area entered");
     }
     
     public void OnTriggerExit(Collider other)

@@ -26,7 +26,7 @@ public class DragMagnet : MonoBehaviour
     {
         if (_target == null) return;
         
-        Debug.Log("mouse entered magnet, target: " + _target.name);
+        print("mouse entered magnet, target: " + _target.name);
         
         if (_target.IsDragging)
             _target.Override(transform);
@@ -37,7 +37,7 @@ public class DragMagnet : MonoBehaviour
         if (_target == null)
             return;
             
-        Debug.Log("mouse exited magnet, target: " + _target.name);
+        print("mouse exited magnet, target: " + _target.name);
         
         if (_target.IsDragging)
             _target.CancelOverride();

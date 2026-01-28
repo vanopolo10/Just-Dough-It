@@ -115,7 +115,7 @@ public class ClickManager : MonoBehaviour
 
         if (hit.transform.TryGetComponent(out ClickableObject clickable))
         {
-            objectTag = clickable.ReturnTag();
+            objectTag = clickable.Tag;
             clickable.PlayReactiveAnimation();
         }
 

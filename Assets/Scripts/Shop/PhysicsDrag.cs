@@ -42,7 +42,7 @@ public class PhysicsDrag : MonoBehaviour
     {
         if (IsDragging) return;
 
-        Debug.Log($"{name} started dragging");
+        print($"{name} started dragging");
 
         _rb.isKinematic = true;
         IsDragging = true;
@@ -52,7 +52,7 @@ public class PhysicsDrag : MonoBehaviour
     {
         if (!IsDragging) return;
 
-        Debug.Log($"{name} stopped dragging");
+        print($"{name} stopped dragging");
 
         if (!_freezeOnRelease)
             _rb.isKinematic = false;

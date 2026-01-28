@@ -10,8 +10,8 @@ public class CustomerModelSpawner : MonoBehaviour
 
     [Header("Models & materials")]
     [SerializeField] private List<CustomerModel> _models;
-    [SerializeField] private List<Material>      _faceMats;
-    [SerializeField] private List<Material>      _clothMats;
+    [SerializeField] private List<Material> _faceMats;
+    [SerializeField] private List<Material> _clothMats;
 
     [Header("Timings")]
     [SerializeField] private float _respawnDelayMin = 2f;
@@ -20,14 +20,19 @@ public class CustomerModelSpawner : MonoBehaviour
     private CustomerModel _customerModel;
     private CustomerRouteMover _routeMover;
     private ProductComparator _comparator;
-
+    
     private SkinnedMeshRenderer _face;
     private SkinnedMeshRenderer _hat;
+    private SkinnedMeshRenderer _hatNoble;
+    private SkinnedMeshRenderer _glasses;
+    private SkinnedMeshRenderer _sunglasses;
     private SkinnedMeshRenderer _scarf;
     private SkinnedMeshRenderer _collar;
     private SkinnedMeshRenderer _pants;
     private SkinnedMeshRenderer _gloves;
     private SkinnedMeshRenderer _coat;
+    
+    private int _customerModelIndex;
 
     private void Start()
     {
@@ -37,7 +42,7 @@ public class CustomerModelSpawner : MonoBehaviour
 
     public void Finish()
     {
-        Debug.Log("[Spawner] Finish (Accept)");
+        print("[Spawner] Finish (Accept)");
 
         if (_customerModel != null)
             _customerModel.Finish();
@@ -49,7 +54,7 @@ public class CustomerModelSpawner : MonoBehaviour
 
     public void Decline()
     {
-        Debug.Log("[Spawner] Decline (Wrong product)");
+        print("[Spawner] Decline (Wrong product)");
 
         if (_customerModel != null)
             _customerModel.Decline();
@@ -59,12 +64,12 @@ public class CustomerModelSpawner : MonoBehaviour
 
     public void Respawn()
     {
-        Debug.Log("[Spawner] Respawn");
+        print("[Spawner] Respawn");
 
         if (_routeMover != null)
         {
             _routeMover.ReachedCounter -= OnCustomerReachedCounter;
-            _routeMover.LeftCafe       -= OnCustomerLeftCafe;
+            _routeMover.LeftCafe -= OnCustomerLeftCafe;
         }
 
         if (_customerModel != null)
@@ -79,7 +84,8 @@ public class CustomerModelSpawner : MonoBehaviour
             return;
         }
 
-        _customerModel = Instantiate(_models[Random.Range(0, _models.Count)], transform);
+        _customerModelIndex = Random.Range(0, _models.Count);
+        _customerModel = Instantiate(_models[_customerModelIndex], transform);
 
         if (_speechBubble != null)
             _customerModel.SetTextBubble(_speechBubble);
@@ -99,13 +105,13 @@ public class CustomerModelSpawner : MonoBehaviour
             Debug.LogError("[Spawner] CustomerRouteMover not found on customer model.");
         }
 
-        //GetMeshes();
-        //ColorMeshes();
+        GetMeshes();
+        TurnAndColorMeshes();
     }
 
     private void OnCustomerReachedCounter(CustomerRouteMover mover)
     {
-        Debug.Log("[Spawner] OnCustomerReachedCounter ? вызываю Begin()");
+        print("[Spawner] OnCustomerReachedCounter ? вызываю Begin()");
 
         if (mover != _routeMover)
             return;
@@ -121,7 +127,7 @@ public class CustomerModelSpawner : MonoBehaviour
 
     private void OnCustomerLeftCafe(CustomerRouteMover mover)
     {
-        Debug.Log("[Spawner] OnCustomerLeftCafe");
+        print("[Spawner] OnCustomerLeftCafe");
 
         if (mover != _routeMover)
             return;
@@ -134,33 +140,59 @@ public class CustomerModelSpawner : MonoBehaviour
         _routeMover = null;
     }
 
-    private void ColorMeshes()
+    private void TurnAndColorMeshes()
     {
         if (_face != null && _faceMats.Count > 0)
             _face.material = _faceMats[Random.Range(0, _faceMats.Count)];
 
-        if (_clothMats == null || _clothMats.Count == 0)
+        if (_clothMats is not { Count: > 0 })
             return;
 
         Material coatMat = _clothMats[Random.Range(0, _clothMats.Count)];
+        
+        _coat.material = coatMat;
+        _pants.material = _clothMats[Random.Range(0, _clothMats.Count)];
+        _hat.material   = _clothMats[Random.Range(0, _clothMats.Count)];
 
-        if (_coat   != null) _coat.material   = coatMat;
-        if (_collar != null) _collar.material = coatMat;
-
-        if (_scarf  != null) _scarf .material = _clothMats[Random.Range(0, _clothMats.Count)];
-        if (_gloves != null) _gloves.material = _clothMats[Random.Range(0, _clothMats.Count)];
-        if (_pants  != null) _pants .material = _clothMats[Random.Range(0, _clothMats.Count)];
-        if (_hat    != null) _hat   .material = _clothMats[Random.Range(0, _clothMats.Count)];
+        switch (Random.Range(0, 1))
+        {
+            case 0:
+                _collar.material = coatMat;
+                _scarf.enabled = false;
+                break;
+            case 1:
+                _collar.enabled = false;
+                _scarf.material = _clothMats[Random.Range(0, _clothMats.Count)];
+                break;
+        }
+        
+        switch (Random.Range(0, 1))
+        {
+            case 0:
+                _hat.material = _clothMats[Random.Range(0, _clothMats.Count)];;
+                _hatNoble.enabled = false;
+                break;
+            case 1:
+                _hat.enabled = false;
+                _hatNoble.enabled = _clothMats[Random.Range(0, _clothMats.Count)];;
+                break;
+        }
+        
+        if (_customerModelIndex == 1 & _gloves != null)
+            _gloves.material = _clothMats[Random.Range(0, _clothMats.Count)];
     }
 
     private void GetMeshes()
     {
-        _customerModel.transform.Find("Face")   ?.TryGetComponent(out _face);
-        _customerModel.transform.Find("Hat")    ?.TryGetComponent(out _hat);
-        _customerModel.transform.Find("Scarf")  ?.TryGetComponent(out _scarf);
-        _customerModel.transform.Find("Collar") ?.TryGetComponent(out _collar);
-        _customerModel.transform.Find("Pants")  ?.TryGetComponent(out _pants);
-        _customerModel.transform.Find("Gloves") ?.TryGetComponent(out _gloves);
-        _customerModel.transform.Find("Coat")   ?.TryGetComponent(out _coat);
+        _customerModel.transform.Find("Face")?.TryGetComponent(out _face);
+        _customerModel.transform.Find("Shapka")?.TryGetComponent(out _hat);
+        _customerModel.transform.Find("Noble Shapka")?.TryGetComponent(out _hatNoble);
+        _customerModel.transform.Find("Glasses")?.TryGetComponent(out _glasses);
+        _customerModel.transform.Find("Sunglasses")?.TryGetComponent(out _sunglasses);
+        _customerModel.transform.Find("Scarf")?.TryGetComponent(out _scarf);
+        _customerModel.transform.Find("Lazkan")?.TryGetComponent(out _collar);
+        _customerModel.transform.Find("Legs")?.TryGetComponent(out _pants);
+        _customerModel.transform.Find("Gloves")?.TryGetComponent(out _gloves);
+        _customerModel.transform.Find("Body")?.TryGetComponent(out _coat);
     }
 }

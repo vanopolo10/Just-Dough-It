@@ -73,7 +73,7 @@ public class CraftZone : MonoBehaviour,
         //bool isPerfect = IsInPerfectClickArea(eventData);
 
         AddComboClick(false);
-        //Debug.Log($"[CraftZone] RightClick {name}, action={_rightClickAction}, perfect={false}, applied={applied}");
+        //print($"[CraftZone] RightClick {name}, action={_rightClickAction}, perfect={false}, applied={applied}");
 
         //if (_isComboZone && applied)
         //    DisableComboZone();
@@ -130,7 +130,7 @@ public class CraftZone : MonoBehaviour,
 
         bool isPerfect = _dragPerfect;
         bool applied = _controller.ApplyAction(action, this, isPerfect);
-        Debug.Log($"[CraftZone] Drag {name}, action={action}, perfect={isPerfect}, applied={applied}");
+        print($"[CraftZone] Drag {name}, action={action}, perfect={isPerfect}, applied={applied}");
 
         _dragActive = false;
         _dragStartZone = null;

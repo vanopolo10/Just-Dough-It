@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+
 public class ClickableObject : MonoBehaviour
 {
     [SerializeField] private string _clickTag;
@@ -9,10 +10,7 @@ public class ClickableObject : MonoBehaviour
     [SerializeField] private float _animationSpeed = 20f;
     [SerializeField] private float _animationAmplitude = 1f;
 
-    public string ReturnTag()
-    {
-        return _clickTag;
-    }
+    public string Tag => _clickTag;
 
     public void PlayReactiveAnimation()
     {

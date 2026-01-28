@@ -49,7 +49,7 @@ public class RecipeManager : MonoBehaviour
     public void ProcessButtonPress(bool isLeftButton)
     {
         int index = _book.currentPage - _firstPageIndex - (isLeftButton ? 1 : 0);
-        Debug.Log(index);
+        print(index);
 
         if (index < 0)
             return;
@@ -57,14 +57,14 @@ public class RecipeManager : MonoBehaviour
         if (!_recipeStates[index].active)
         {
             SetActiveRecipe(index);
-            Debug.Log("set active recipe to " + _recipeStates[index].product);
+            print("set active recipe to " + _recipeStates[index].product);
             _currentRecipeType = _recipeStates[index].product;
             OnActiveRecipeChanged.Invoke();
         }
         else
         {
             SetActiveRecipe(-1);
-            Debug.Log("removed active recipe");
+            print("removed active recipe");
             _currentRecipeType = ProductType.None;
             OnActiveRecipeChanged.Invoke();
         }
