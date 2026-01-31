@@ -1,10 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class InGameUIController : MonoBehaviour
 {
@@ -16,12 +16,13 @@ public class InGameUIController : MonoBehaviour
     [SerializeField] private TMP_InputField _inputField;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private TMP_Dropdown _dropdown;
-
+    
     private void Start()
     {
         _ui.SetActive(false);
         _saveUI.SetActive(false);
         _cameraController.enabled = true;
+        
         StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
     }
 
@@ -33,9 +34,12 @@ public class InGameUIController : MonoBehaviour
 
     private void OnEscape()
     {
+        _dropdown.value = _dropdown.options.FindIndex(option => option.text == LocalizationSettings.SelectedLocale.LocaleName);
+        
         if (_saveUI.activeSelf)
             SwitchSaveMenu();
-        else Switch();
+        else 
+            Switch();
     }
 
     public void SwitchSaveMenu()

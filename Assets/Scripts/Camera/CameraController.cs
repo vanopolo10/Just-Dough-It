@@ -84,11 +84,16 @@ public class CameraController : MonoBehaviour
 
         DragCancelService.RequestCancel();
 
-        if (ViewID is 3 or 4)
-            ViewID = 1;
-        else
-            ViewID = (ViewID + 2) % _views.Count;
-        
+        ViewID = _views[ViewID].Type switch
+        {
+            CameraViewType.Craft => _views.FindIndex(x => x.Type == CameraViewType.Door),
+            CameraViewType.Door => _views.FindIndex(x => x.Type == CameraViewType.Craft),
+            CameraViewType.Table => _views.FindIndex(x => x.Type == CameraViewType.Oven),
+            CameraViewType.Oven => _views.FindIndex(x => x.Type == CameraViewType.Table),
+            CameraViewType.OvenDown => _views.FindIndex(x => x.Type == CameraViewType.Table), 
+            _ => ViewID
+        };
+
         BeginTransition();
     }
     
@@ -120,5 +125,17 @@ public class CameraController : MonoBehaviour
     {
         public Vector3 Position;
         public Quaternion Rotation;
+        public CameraViewType Type;
+
+    }
+    
+    [Serializable]
+    private enum CameraViewType
+    {
+        Door,
+        Table,
+        Craft,
+        Oven,
+        OvenDown
     }
 }

@@ -824,8 +824,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4572528840420609670}
   - component: {fileID: 3739427890337224840}
-  - component: {fileID: -2764534498500371279}
   - component: {fileID: 8720146932771515456}
+  - component: {fileID: 7554992973251602236}
+  - component: {fileID: -7879891333069240762}
   m_Layer: 0
   m_Name: PlumpGuy
   m_TagString: Untagged
@@ -858,7 +859,7 @@ Transform:
   - {fileID: 5467584606189980718}
   - {fileID: 4414879760457743359}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -89.98021, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3739427890337224840
 Animator:
   serializedVersion: 7
@@ -881,32 +882,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-2764534498500371279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3764783259667371068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1e1b47ee95441d41b3cc40a754ed036, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CustomerRouteMover
-  _moveSpeed: 1.6
-  _rotateSpeed: 8
-  _stopDistance: 0.05
-  _entryPoints:
-  - {x: 4.83, y: 0, z: -2.73}
-  - {x: 0.03, y: 0, z: -2.73}
-  - {x: 0.046, y: 0, z: 1.477}
-  _exitPoints:
-  - {x: 0.07, y: 0, z: 1.28}
-  - {x: 0.07, y: 0, z: -4.19}
-  - {x: -6.2, y: 0, z: -4.19}
-  _isWalkingParam: IsWalking
-  _reachedParam: Reached
-  _forwardRotationOffsetY: 180
 --- !u!114 &8720146932771515456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -919,17 +894,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83820d42bc38ed74eb0f989065736356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerModel
-  _animator: {fileID: 3739427890337224840}
-  _queries:
-  - Query:
-      Type: 0
-      Filling: 0
-    QueryKey: 
-    DeclineKey: 
-    AcceptKey: 
-  _initDelay: 2
-  _finishDelay: 1
-  _refreshDelay: 3
+  _animator: {fileID: -7879891333069240762}
+  _currentQuery:
+    Type: 0
+    Filling: 0
+--- !u!114 &7554992973251602236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3764783259667371068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438b6eeb854b4ee42bb4f8feefc724e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ModelRandomizer
+  _face: {fileID: 3587240999053065320}
+  _hat: {fileID: 6719551464501138500}
+  _hatNoble: {fileID: 3237812983088300572}
+  _glasses: {fileID: 7309811855845564808}
+  _sunglasses: {fileID: 9121880480935651976}
+  _scarf: {fileID: 6451296085525458716}
+  _collar: {fileID: 6034628509984792001}
+  _pants: {fileID: 1695504531602540568}
+  _gloves: {fileID: 0}
+  _coat: {fileID: 5018644095399813286}
+  _faceMats:
+  - {fileID: 2100000, guid: 3d86ba1aa26b23446a1e42f353285712, type: 2}
+  - {fileID: 2100000, guid: 694c70f59cb1e63438ef1fea3c4c3ec2, type: 2}
+  - {fileID: 2100000, guid: a3884b0fdce02024f994375a763ffd17, type: 2}
+  - {fileID: 2100000, guid: 7546c42e31f7ddd4781bdf6eaa5cbe01, type: 2}
+  _clothMats:
+  - {fileID: 2100000, guid: 16791c301b0d7c047ba6c40359fd35f2, type: 2}
+  - {fileID: 2100000, guid: 4c8d0fd2030ac7e49845e2ae61d92400, type: 2}
+  - {fileID: 2100000, guid: 39cd90e2a9eed8240a6c6e60ff5d6db7, type: 2}
+--- !u!114 &-7879891333069240762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3764783259667371068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b407847166bd42ce905dd0aefedf56df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerAnimatorController
+  _subIdleVariants: 2
+  _subIdleDelayMin: 3
+  _subIdleDelayMax: 7
 --- !u!1 &3857525934373796404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1018,7 +1032,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 694c70f59cb1e63438ef1fea3c4c3ec2, type: 2}
+  - {fileID: 2100000, guid: 3d86ba1aa26b23446a1e42f353285712, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

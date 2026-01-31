@@ -2,162 +2,148 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
 public class CustomerRouteMover : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed    = 1.6f;
-    [SerializeField] private float _rotateSpeed  = 8f;
+    [Header("Points")]
+    [SerializeField] private Transform _doorPoint;
+    [SerializeField] private Transform _doorLookAt;
+    [SerializeField] private Transform _counterPoint;
+    [SerializeField] private Transform _exitPoint;
+    [SerializeField] private Transform _exitLookAt;
+
+    [Header("Movement")]
+    [SerializeField] private float _moveSpeed = 1.6f;
+    [SerializeField] private float _rotateSpeed = 8f;
     [SerializeField] private float _stopDistance = 0.05f;
+    [SerializeField] private float _modelForwardOffsetY = 180f;
 
-    [Header("Маршруты")]
-    [SerializeField] private Vector3[] _entryPoints;
-    [SerializeField] private Vector3[] _exitPoints;
+    private Transform _target;
+    private Coroutine _routine;
+    private bool _doorAnimationFinished;
 
-    [Header("Параметры аниматора")]
-    [SerializeField] private string _isWalkingParam = "IsWalking";
-    [SerializeField] private string _reachedParam   = "Reached";
+    private CustomerAnimatorController _animatorController;
 
-    [SerializeField] private float _forwardRotationOffsetY = 180f;
+    public event Action ReachedCounter;
+    public event Action LeftCafe;
 
-    private Animator  _animator;
-    private Coroutine _moveRoutine;
-
-    private int  _isWalkingHash;
-    private int  _reachedHash;
-    private bool _hasIsWalkingParam;
-    private bool _hasReachedBool;
-    private bool _hasReachedTrigger;
-
-    private bool _atCounter;
-
-    public event Action<CustomerRouteMover> ReachedCounter;
-    public event Action<CustomerRouteMover> LeftCafe;
-
-    private void Awake()
+    public void MoveIn(Transform target, CustomerAnimatorController animatorController, int sadWalkID)
     {
-        _animator = GetComponent<Animator>();
+        StopCurrentRoutine();
 
-        foreach (var p in _animator.parameters)
-        {
-            if (!string.IsNullOrEmpty(_isWalkingParam) &&
-                p.name == _isWalkingParam &&
-                p.type == AnimatorControllerParameterType.Bool)
-            {
-                _isWalkingHash     = Animator.StringToHash(_isWalkingParam);
-                _hasIsWalkingParam = true;
-            }
+        _target = target;
+        _animatorController = animatorController;
 
-            if (!string.IsNullOrEmpty(_reachedParam) &&
-                p.name == _reachedParam)
-            {
-                _reachedHash = Animator.StringToHash(_reachedParam);
+        _doorAnimationFinished = false;
 
-                if (p.type == AnimatorControllerParameterType.Bool)
-                    _hasReachedBool = true;
-                else if (p.type == AnimatorControllerParameterType.Trigger)
-                    _hasReachedTrigger = true;
-            }
-        }
+        _animatorController.DoorAnimationFinished += OnDoorAnimationFinished;
 
-        if (!_hasIsWalkingParam)
-            Debug.LogWarning("[CustomerRouteMover] Bool parameter '" + _isWalkingParam + "' not found in Animator.");
-
-        if (!_hasReachedBool && !_hasReachedTrigger)
-            Debug.LogWarning("[CustomerRouteMover] Parameter '" + _reachedParam + "' (bool or trigger) not found in Animator.");
+        _routine = StartCoroutine(EnterRoutine(sadWalkID));
     }
 
-    public void StartEntry()
+    public void MoveOut()
     {
-        if (_entryPoints == null || _entryPoints.Length == 0)
-        {
-            Debug.LogError("[CustomerRouteMover] Entry points not set.");
-            return;
-        }
+        StopCurrentRoutine();
 
-        if (_moveRoutine != null)
-            StopCoroutine(_moveRoutine);
-
-        _moveRoutine = StartCoroutine(MovePath(_entryPoints, true));
+        _routine = StartCoroutine(ExitRoutine());
     }
 
-    public void StartExit()
+    private IEnumerator EnterRoutine(int sadWalkID)
     {
-        if (_exitPoints == null || _exitPoints.Length == 0)
-        {
-            Debug.LogError("[CustomerRouteMover] Exit points not set.");
-            return;
-        }
+        _animatorController.OnStartSad(sadWalkID);
+        _animatorController.OnLeaveCounter();
 
-        if (_moveRoutine != null)
-            StopCoroutine(_moveRoutine);
+        _animatorController.OnStartWalking();
+        yield return MoveTo(_doorPoint.position);
+        _animatorController.OnStopWalking();
 
-        _moveRoutine = StartCoroutine(MovePath(_exitPoints, false));
+        yield return FaceTo(_doorLookAt.position);
+
+        _animatorController.OnTriggerOpenDoor();
+        yield return new WaitUntil(() => _doorAnimationFinished);
+
+        _animatorController.OnStartWalking();
+        yield return MoveTo(_counterPoint.position);
+        _animatorController.OnStopWalking();
+
+        _animatorController.OnReachedCounter();
+
+        ReachedCounter?.Invoke();
     }
 
-    private IEnumerator MovePath(Vector3[] points, bool notifyCounterAtEnd)
+    private IEnumerator ExitRoutine()
     {
-        if (_hasIsWalkingParam)
-            _animator.SetBool(_isWalkingHash, true);
+        _animatorController.OnLeaveCounter();
+        _animatorController.OnStartLeaving();
 
-        foreach (var target in points)
+        yield return FaceTo(_doorLookAt.position);
+
+        _animatorController.OnStartWalking();
+        yield return MoveTo(_doorPoint.position);
+        _animatorController.OnStopWalking();
+
+        _animatorController.OnTriggerOpenDoor();
+        yield return new WaitUntil(() => _doorAnimationFinished);
+
+        _animatorController.OnStartWalking();
+        yield return MoveTo(_exitPoint.position);
+        _animatorController.OnStopWalking();
+
+        yield return FaceTo(_exitLookAt.position);
+
+        LeftCafe?.Invoke();
+        Cleanup();
+    }
+
+    private IEnumerator MoveTo(Vector3 destination)
+    {
+        while (Vector3.Distance(_target.position, destination) > _stopDistance)
         {
-            while (true)
-            {
-                Vector3 toTarget = target - transform.position;
-                float   distance = toTarget.magnitude;
-
-                if (distance <= _stopDistance)
-                    break;
-
-                Vector3 direction = toTarget.normalized;
-
-                transform.position += direction * (_moveSpeed * Time.deltaTime);
-
-                if (direction.sqrMagnitude > 0.0001f)
-                {
-                    Quaternion lookRot   = Quaternion.LookRotation(direction, Vector3.up);
-                    Quaternion offsetRot = Quaternion.Euler(0f, _forwardRotationOffsetY, 0f);
-                    Quaternion targetRot = lookRot * offsetRot;
-
-                    transform.rotation = Quaternion.Slerp(
-                        transform.rotation,
-                        targetRot,
-                        _rotateSpeed * Time.deltaTime);
-                }
-
-                yield return null;
-            }
-        }
-
-        if (_hasIsWalkingParam)
-            _animator.SetBool(_isWalkingHash, false);
-
-        _moveRoutine = null;
-
-        if (notifyCounterAtEnd)
-        {
-            _atCounter = true;
-
-            if (_hasReachedBool)
-                _animator.SetBool(_reachedHash, _atCounter);
-            else if (_hasReachedTrigger)
-                _animator.SetTrigger(_reachedHash);
-
-            ReachedCounter?.Invoke(this);
-        }
-        else
-        {
-            _atCounter = false;
-
-            if (_hasReachedBool)
-                _animator.SetBool(_reachedHash, _atCounter);
-
-            LeftCafe?.Invoke(this);
+            Vector3 dir = (destination - _target.position).normalized;
+            _target.position = Vector3.MoveTowards(_target.position, destination, _moveSpeed * Time.deltaTime);
+            RotateTowards(dir);
+            yield return null;
         }
     }
 
-    public void Despawn()
+    private IEnumerator FaceTo(Vector3 lookAt)
     {
-        Destroy(gameObject);
+        Vector3 dir = (lookAt - _target.position).normalized;
+        Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up) * Quaternion.Euler(0, _modelForwardOffsetY, 0);
+
+        while (Quaternion.Angle(_target.rotation, targetRot) > 1f)
+        {
+            _target.rotation = Quaternion.Slerp(_target.rotation, targetRot, _rotateSpeed * Time.deltaTime);
+            yield return null;
+        }
+    }
+
+    private void RotateTowards(Vector3 dir)
+    {
+        if (dir.sqrMagnitude < 0.001f) return;
+
+        Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up) * Quaternion.Euler(0, _modelForwardOffsetY, 0);
+        _target.rotation = Quaternion.Slerp(_target.rotation, targetRot, _rotateSpeed * Time.deltaTime);
+    }
+
+    private void StopCurrentRoutine()
+    {
+        if (_routine != null)
+        {
+            StopCoroutine(_routine);
+            _routine = null;
+        }
+    }
+
+    private void OnDoorAnimationFinished()
+    {
+        _doorAnimationFinished = true;
+    }
+
+    private void Cleanup()
+    {
+        if (_animatorController)
+            _animatorController.DoorAnimationFinished -= OnDoorAnimationFinished;
+
+        _animatorController = null;
     }
 }
