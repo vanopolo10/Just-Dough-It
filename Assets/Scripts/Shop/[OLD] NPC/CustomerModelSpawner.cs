@@ -5,20 +5,19 @@ using Random = UnityEngine.Random;
 
 public class CustomerModelSpawner : MonoBehaviour
 {
-    [SerializeField] private List<CustomerAnimatorController> _customerPrefabs;
-    [SerializeField] private GameObject _speechBubble;
     [SerializeField] private float _respawnDelayMin = 2f;
     [SerializeField] private float _respawnDelayMax = 5f;
 
     private CustomerAnimatorController _animatorController;
+    private Customer _customer;
     private CustomerRouteMover _routeMover;
-    private ProductComparator _productComparator;
+    //private ProductComparator _productComparator;
     private Coroutine _respawnRoutine;
 
     private void Awake()
     {
         _routeMover = GetComponent<CustomerRouteMover>();
-        _productComparator = GetComponent<ProductComparator>();
+       // _productComparator = GetComponent<ProductComparator>();
     }
 
     private void OnEnable()
@@ -33,27 +32,16 @@ public class CustomerModelSpawner : MonoBehaviour
         _routeMover.LeftCafe -= OnCustomerLeftCafe;
     }
 
-    private void Start()
-    {
-        Respawn();
-    }
-
-    public void Accept()
+    public void MoveOut()
     {
         if (_animatorController == null) return;
 
         _routeMover.MoveOut();
     }
 
-    public void Decline()
-    {
-        if (_animatorController == null) return;
+    
 
-        int variant = Random.Range(0, 2);
-        _animatorController.OnTriggerNah(variant);
-    }
-
-    private void Respawn()
+    public GameObject SpawnNewCustomer(GameObject prefab)
     {
         if (_respawnRoutine != null)
         {
@@ -64,37 +52,35 @@ public class CustomerModelSpawner : MonoBehaviour
         if (_animatorController)
             Destroy(_animatorController.gameObject);
 
-        if (_speechBubble)
-            _speechBubble.SetActive(false);
+        GameObject spawnedCustomer = Instantiate(prefab, transform);
+        Debug.Log("succesful spawn");
 
-        _animatorController = Instantiate(
-            _customerPrefabs[Random.Range(0, _customerPrefabs.Count)],
-            transform);
-
-        if (_animatorController.TryGetComponent(out ModelRandomizer randomizer))
-            randomizer.TurnAndColorMeshes();
+        _animatorController = spawnedCustomer.GetComponentInChildren<CustomerAnimatorController>();
+        _customer = spawnedCustomer.GetComponent<Customer>();
 
         _routeMover.MoveIn(_animatorController.transform, _animatorController, Random.Range(0, 2));
+        Debug.Log("succesful start");
+        //_productComparator.SetQuery(new Query());
 
-        _productComparator.SetQuery(new Query());
+        return spawnedCustomer;
     }
 
     private void OnReachedCounter()
-    {
-        if (_speechBubble)
-            _speechBubble.SetActive(true);
-
+    { 
         _animatorController?.OnReachedCounter();
+        _customer.OnReachedCounter();
     }
 
     private void OnCustomerLeftCafe()
     {
-        _respawnRoutine = StartCoroutine(RespawnAfterDelay());
+        //_respawnRoutine = StartCoroutine(RespawnAfterDelay());
     }
 
+    /*
     private IEnumerator RespawnAfterDelay()
     {
         yield return new WaitForSeconds(Random.Range(_respawnDelayMin, _respawnDelayMax));
         Respawn();
     }
+    */
 }

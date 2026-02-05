@@ -9,13 +9,13 @@ using UnityEngine;
 
 [Serializable]
 public class CustomerInteraction {
-    public string dialogueKey, animationKey;
+    public string dialogueKey, animatorTrigger;
     public void PlayOut(Customer target)
     {
         Animator animator = target.Animator;
         DialogueManager dialogueManager = target.DialogueManager;
 
-        animator.Play(animationKey);
+        if(animatorTrigger!="") animator.SetTrigger(animatorTrigger);
         dialogueManager.DisplayText(dialogueKey); // replace with localization key
     }
 }

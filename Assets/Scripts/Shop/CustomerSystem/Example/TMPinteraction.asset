@@ -13,23 +13,23 @@ MonoBehaviour:
   m_Name: TMPinteraction
   m_EditorClassIdentifier: Assembly-CSharp::CustomerInteractionSet
   OnGreeting:
-    dialogueKey: hi
-    animationKey: Accept
+    dialogueKey: "\u043F\u0440\u0438\u0432\u0435\u0442, \u044F \u0412\u0430\u0441\u0438\u043B\u0438\u0439"
+    animatorTrigger: 
   OnItemAccepted:
-    dialogueKey: yea
-    animationKey: Accept
+    dialogueKey: "\u0414\u0430, \u0442\u043E \u0447\u0442\u043E \u043D\u0430\u0434\u043E!"
+    animatorTrigger: 
   OnItemRejected:
-    dialogueKey: nah
-    animationKey: Decline
+    dialogueKey: "\u043D\u0435, \u043D\u0435 \u0442\u043E"
+    animatorTrigger: 
   OnQuestCompleted:
-    dialogueKey: bye
-    animationKey: MoveOut
+    dialogueKey: "\u0441\u043F\u0430\u0441\u0438\u0431\u043E, \u0434\u043E \u0432\u0441\u0442\u0440\u0435\u0447\u0438!"
+    animatorTrigger: 
   DialogueOptions:
-  - textKey: How you been?
+  - textKey: "\u041A\u0430\u043A \u0442\u044B \u0431\u0440\u043E?"
     interaction:
-      dialogueKey: man...
-      animationKey: Decline
-  - textKey: Looking good bro!
+      dialogueKey: "\u042D\u0445..."
+      animatorTrigger: Nah
+  - textKey: "\u041F\u0438\u043F\u0435\u0446 \u0442\u044B \u0445\u043E\u0440\u043E\u0448!"
     interaction:
-      dialogueKey: thx!
-      animationKey: Accept
+      dialogueKey: "\u041E\u0443 \u0435!"
+      animatorTrigger: 

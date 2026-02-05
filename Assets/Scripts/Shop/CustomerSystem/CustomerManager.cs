@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class CustomerManager : MonoBehaviour
 {
     [SerializeField] private List<CustomerPool> _schedule;
-    [SerializeField] private Transform _spawnPoint;
+    private CustomerModelSpawner _spawner;
     private int _currentIndex = 0;
     private Customer _currentCustomer;
     public Customer CurrentCustomer => _currentCustomer;
@@ -17,6 +17,7 @@ public class CustomerManager : MonoBehaviour
 
     void Start()
     {
+        _spawner = GetComponent<CustomerModelSpawner>();
         StartNewDay();
     }
     public void StartNewDay() {
@@ -28,11 +29,12 @@ public class CustomerManager : MonoBehaviour
     }
     public void SpawnCustomer() {
         GameObject prefabFromPool = _schedule[_currentIndex].GetCustomerfromPool();
-        GameObject spawnedCustomer = Instantiate(prefabFromPool, _spawnPoint.position, _spawnPoint.rotation, transform);
+        GameObject spawnedCustomer = _spawner.SpawnNewCustomer(prefabFromPool);
 
         _currentCustomer = spawnedCustomer.GetComponent<Customer>();
 
         OnCustomerSpawned.Invoke();
+        Debug.Log("fully Spawned Customer");
     }
     public void NextCustomer() { 
         _currentIndex++;

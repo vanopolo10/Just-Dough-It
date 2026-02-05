@@ -826,7 +826,7 @@ GameObject:
   - component: {fileID: 3739427890337224840}
   - component: {fileID: 8720146932771515456}
   - component: {fileID: 7554992973251602236}
-  - component: {fileID: -7879891333069240762}
+  - component: {fileID: 1068592225490822227}
   m_Layer: 0
   m_Name: PlumpGuy
   m_TagString: Untagged
@@ -894,10 +894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83820d42bc38ed74eb0f989065736356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerModel
-  _animator: {fileID: -7879891333069240762}
-  _currentQuery:
-    Type: 0
-    Filling: 0
+  _animator: {fileID: 0}
 --- !u!114 &7554992973251602236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -929,7 +926,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 16791c301b0d7c047ba6c40359fd35f2, type: 2}
   - {fileID: 2100000, guid: 4c8d0fd2030ac7e49845e2ae61d92400, type: 2}
   - {fileID: 2100000, guid: 39cd90e2a9eed8240a6c6e60ff5d6db7, type: 2}
---- !u!114 &-7879891333069240762
+--- !u!114 &1068592225490822227
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

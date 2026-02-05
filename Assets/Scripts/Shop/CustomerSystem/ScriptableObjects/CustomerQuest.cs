@@ -41,11 +41,13 @@ public class CustomerQuest : ScriptableObject
 
         _productsLeft = ProductsNeeded;
 
+        customer.AnimatorController.OnGreeting();
         interactions.OnGreeting.PlayOut(customer);
 
         _customer.Invoke(nameof(_customer.StartQuest), timeoutAfterGreeting);
     }
     public void StartQuest() {
+        _customer.AnimatorController.OnQuestStarted();
         questInteraction.PlayOut(_customer);
         _customer.DialogueManager.SetDialogueOptions(interactions.DialogueOptions);
     }
@@ -73,6 +75,7 @@ public class CustomerQuest : ScriptableObject
     }
 
     public void FinishQuest() {
+        _customer.AnimatorController.OnQuestFinished();
         interactions.OnQuestCompleted.PlayOut(_customer);
 
         _customer.FinishQuest();
@@ -87,12 +90,19 @@ public class CustomerQuest : ScriptableObject
         {
             _productsLeft--;
             if (_productsLeft <= 0)
+            {
                 FinishQuest();
+            }    
             else
+            {
+                _customer.AnimatorController.OnItemAccepted();
                 interactions.OnItemAccepted.PlayOut(_customer);
+            }
+                
         }
         else
         {
+            _customer.AnimatorController.OnItemRejected();
             interactions.OnItemRejected.PlayOut(_customer);
         }
 

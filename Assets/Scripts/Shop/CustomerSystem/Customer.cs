@@ -7,9 +7,14 @@ public class Customer : MonoBehaviour
     protected CustomerManager _manager;
     protected DialogueManager _dialogueManager;
     protected Animator _animator;
+    protected CustomerAnimatorController _animatorController;
     public DialogueManager DialogueManager => _dialogueManager;
     public Animator Animator => _animator;
+    public CustomerAnimatorController AnimatorController => _animatorController;
 
+    public void OnReachedCounter() {
+        Invoke(nameof(Initialize), _timeoutBeforeInitializing);
+    }
     protected void Initialize() {
         _quest.Initialize(this);
     }
@@ -17,9 +22,8 @@ public class Customer : MonoBehaviour
     {
         _dialogueManager = GetComponentInParent<DialogueManager>();
         _animator = GetComponentInChildren<Animator>();
+        _animatorController = GetComponentInChildren<CustomerAnimatorController>();
         _manager = GetComponentInParent<CustomerManager>();
-
-        Invoke(nameof(Initialize), _timeoutBeforeInitializing);
     }
 
     protected void Despawn() { 
