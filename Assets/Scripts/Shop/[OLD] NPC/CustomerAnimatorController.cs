@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CustomerAnimatorController : MonoBehaviour
 {
@@ -62,7 +63,7 @@ public class CustomerAnimatorController : MonoBehaviour
 
         StartSubIdleRoutine();
     }
-
+    
     public void OnLeaveCounter()
     {
         _animator.SetBool(IsAtCount, false);
@@ -80,16 +81,33 @@ public class CustomerAnimatorController : MonoBehaviour
     {
         _animator.SetTrigger(OpenDoor);
     }
-
-    public void OnTriggerNah(int variant)
+    public void OnGreeting()
     {
+        // тут добавить анимацию приветствия 
+        // после того как он дошёл до стола, но до того как он ушёл в айдл
+    }
+    public void OnQuestStarted() { 
+        // по хорошему нужна анимация где он объясняет заказ (всё равно нужны будут анимации диалога)
+    }
+    public void OnItemRejected()
+    {
+        int variant = Random.Range(0, 2);
+
         _animator.SetInteger(NahID, variant);
         _animator.SetTrigger(Nah);
     }
 
-    public void OnTriggerBulka()
+    public void OnItemAccepted()
     {
         _animator.SetTrigger(Bulka);
+        // тут нужно сделать так, чтобы после этого он возвращался в айдл, так как у нас может быть несколько булок в заказе
+    }
+
+    public void OnQuestFinished()
+    { 
+        OnItemAccepted();
+        // тут добавить анимацию завершения
+        // типо, может проигрывается последняя анимация приёма, начинает уходить, итд.
     }
 
     public void NotifyDoorAnimationFinished()

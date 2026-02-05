@@ -22,7 +22,7 @@ public class BakeManager : MonoBehaviour
     private bool _invokedDone;
     private bool _invokedBurn;
 
-    private Tray _tray;
+    [SerializeField] private Tray _tray; //debug
     private Shelf _shelf;
 
     private bool _isOnShelf;
@@ -38,7 +38,7 @@ public class BakeManager : MonoBehaviour
     private int _imperfectActionCount;
 
     private Product _product;
-    private ProductComparator _productComparator;
+    private Customer _depositTarget;
 
     public event Action Rare;
     public event Action Done;
@@ -106,7 +106,7 @@ public class BakeManager : MonoBehaviour
 
         if (_tray == null || _shelf == null) return;
         if (_tray.IsInOven || _tray.IsMoving) return;
-        if (BakeState == BakeState.Raw) return;
+        //if (BakeState == BakeState.Raw) return; // DEBUG
         if (_tray.TryTakeBun(this, out BakeManager taken) == false) return;
 
         taken.StopBake();
@@ -232,9 +232,10 @@ public class BakeManager : MonoBehaviour
 
     public void BeginBake()
     {
+        
         if (_bakeRoutine != null)
             return;
-
+        Debug.Log("Baking started");
         _bakeRoutine = StartCoroutine(BakeRoutine());
     }
 
@@ -306,8 +307,8 @@ public class BakeManager : MonoBehaviour
 
     private bool AttemptDeposit()
     {
-        if (_productComparator == null) return false;
-        return _productComparator.OfferCurrentProduct();
+        if (_depositTarget == null) return false;
+        return _depositTarget.OfferProduct(_product);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -315,10 +316,10 @@ public class BakeManager : MonoBehaviour
         if (other.CompareTag("Product Reception Field"))
         {
             Debug.Log("Enering reception field");
-            _productComparator = other.GetComponentInParent<ProductComparator>();
-            if (_productComparator != null)
+            
+            if (other.transform.parent.gameObject.TryGetComponent<CustomerManager>(out CustomerManager manager))
             {
-                _productComparator.SetProduct(_product);
+                _depositTarget = manager.CurrentCustomer;
                 _isInReceptionArea = true;
             }
         }

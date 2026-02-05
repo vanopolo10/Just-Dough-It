@@ -59,7 +59,7 @@ public class CustomerRouteMover : MonoBehaviour
         yield return FaceTo(_doorLookAt.position);
 
         _animatorController.OnTriggerOpenDoor();
-        yield return new WaitUntil(() => _doorAnimationFinished);
+        //yield return new WaitUntil(() => _doorAnimationFinished);
 
         _animatorController.OnStartWalking();
         yield return MoveTo(_counterPoint.position);
@@ -82,7 +82,7 @@ public class CustomerRouteMover : MonoBehaviour
         _animatorController.OnStopWalking();
 
         _animatorController.OnTriggerOpenDoor();
-        yield return new WaitUntil(() => _doorAnimationFinished);
+        //yield return new WaitUntil(() => _doorAnimationFinished);
 
         _animatorController.OnStartWalking();
         yield return MoveTo(_exitPoint.position);

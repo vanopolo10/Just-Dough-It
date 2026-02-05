@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4877778891581249481}
   - component: {fileID: 2190165910189258258}
-  - component: {fileID: 6712738076267400389}
+  - component: {fileID: 3523799612885074286}
   m_Layer: 0
   m_Name: CustomerModel1
   m_TagString: Untagged
@@ -56,7 +56,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6712738076267400389
+--- !u!114 &3523799612885074286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,26 +65,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6207268144424018502}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83820d42bc38ed74eb0f989065736356, type: 3}
+  m_Script: {fileID: 11500000, guid: b1e1b47ee95441d41b3cc40a754ed036, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CustomerModel
-  _animator: {fileID: 2190165910189258258}
-  _queries:
-  - Query:
-      Type: 4
-      Filling: 2
-    QueryKey: npc.bored.query
-    DeclineKey: npc.bored.decline
-    AcceptKey: npc.bored.accept
-  - Query:
-      Type: 2
-      Filling: 3
-    QueryKey: npc.cool.query
-    DeclineKey: npc.cool.decline
-    AcceptKey: npc.cool.accept
-  _initDelay: 2
-  _finishDelay: 1
-  _refreshDelay: 3
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerRouteMover
+  _moveSpeed: 1.6
+  _rotateSpeed: 8
+  _stopDistance: 0.05
+  _entryPoints: []
+  _exitPoints: []
+  _isWalkingParam: IsWalking
+  _reachedParam: Reached
+  _forwardRotationOffsetY: 180
 --- !u!1001 &2731457531695479147
 PrefabInstance:
   m_ObjectHideFlags: 0
