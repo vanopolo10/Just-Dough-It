@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,130 +9,161 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private List<CameraView> _views;
     [SerializeField] private float _transitionDuration = 0.7f;
-    [SerializeField] private int _tableCameraID;
-    
-    private Vector3 _startPosition;
-    private Quaternion _startRotation;
-    private Vector3 _targetPosition;
-    private Quaternion _targetRotation;
-    private float _transitionTime;
-    private bool _isTransition;
 
     public event Action<bool> DragAllowedChanged;
 
-    public int ViewID { get; private set; } = 0;
+    public int ViewID { get; private set; }
+
+    private Coroutine _transitionRoutine;
+    private bool _isTransitioning;
 
     private void Start()
-    {
-        ViewID = Mathf.Clamp(ViewID, 0, _views.Count - 1);
-        SnapToCurrentView();
-    }
-
-    private void Update()
-    {
-        if (_isTransition == false)
-            return;
-
-        if (_transitionDuration <= 0f)
-        {
-            SnapToCurrentView();
-            _isTransition = false;
-            return;
-        }
-
-        _transitionTime += Time.deltaTime;
-        float t = Mathf.Clamp01(_transitionTime / _transitionDuration);
-
-        transform.position = Vector3.Lerp(_startPosition, _targetPosition, t);
-        transform.rotation = Quaternion.Slerp(_startRotation, _targetRotation, t);
-
-        if (t >= 1f)
-            _isTransition = false;
-    }
-
-    public void SetViewID(int id)
-    {
-        ViewID = Mathf.Clamp(id, 0, _views.Count - 1);
-        SnapToCurrentView();
-    }
-    
-    private void OnLeft()
     {
         if (_views.Count == 0)
             return;
 
-        DragCancelService.RequestCancel();
+        ViewID = Mathf.Clamp(ViewID, 0, _views.Count - 1);
+        transform.position = _views[ViewID].Position;
+        transform.rotation = _views[ViewID].Rotation;
+        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Table);
+    }
 
-        ViewID = ViewID == 0 ? _views.Count - 1 : ViewID - 1;
-        BeginTransition();
+    public void SetViewID(int viewID)
+    {
+        ViewID = Mathf.Clamp(viewID, 0, _views.Count - 1);
+        transform.position = _views[ViewID].Position;
+        transform.rotation = _views[ViewID].Rotation;
+        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Table);
+    }
+
+    private void OnLeft()
+    {
+        if (_isTransitioning)
+            return;
+
+        Move(_views[ViewID].Left, TurnDirection.Left);
     }
 
     private void OnRight()
     {
-        if (_views.Count == 0)
+        if (_isTransitioning)
             return;
 
-        DragCancelService.RequestCancel();
-
-        ViewID = (ViewID + 1) % _views.Count;
-        BeginTransition();
+        Move(_views[ViewID].Right, TurnDirection.Right);
     }
 
     private void OnBack()
     {
-        if (_views.Count == 0)
+        if (_isTransitioning)
             return;
 
-        DragCancelService.RequestCancel();
+        Move(_views[ViewID].Back, _views[ViewID].BackTurn);
+    }
 
-        ViewID = _views[ViewID].Type switch
+    private void Move(CameraViewType link, TurnDirection turnDirection)
+    {
+        if (link == CameraViewType.None)
+            return;
+
+        int targetID = FindView(link);
+        if (targetID == ViewID)
+            return;
+
+        StartTransition(targetID, turnDirection);
+    }
+
+    private int FindView(CameraViewType type)
+    {
+        int index = _views.FindIndex(v => v.Type == type);
+        return index >= 0 ? index : ViewID;
+    }
+
+    private void StartTransition(int targetID, TurnDirection turn)
+    {
+        if (_transitionRoutine != null)
+            StopCoroutine(_transitionRoutine);
+
+        _transitionRoutine = StartCoroutine(TransitionRoutine(ViewID, targetID, turn));
+    }
+
+    private IEnumerator TransitionRoutine(int fromID, int toID, TurnDirection turn)
+    {
+        _isTransitioning = true;
+        DragAllowedChanged?.Invoke(false);
+
+        Vector3 startPos = transform.position;
+        Quaternion startRot = transform.rotation;
+
+        Vector3 targetPos = _views[toID].Position;
+        Quaternion targetRot = GetAdjustedRotation(startRot, _views[toID].Rotation, turn);
+
+        float time = 0f;
+
+        while (time < _transitionDuration)
         {
-            CameraViewType.Craft => _views.FindIndex(x => x.Type == CameraViewType.Door),
-            CameraViewType.Door => _views.FindIndex(x => x.Type == CameraViewType.Craft),
-            CameraViewType.Table => _views.FindIndex(x => x.Type == CameraViewType.Oven),
-            CameraViewType.Oven => _views.FindIndex(x => x.Type == CameraViewType.Table),
-            CameraViewType.OvenDown => _views.FindIndex(x => x.Type == CameraViewType.Table), 
-            _ => ViewID
-        };
+            time += Time.deltaTime;
+            float t = Mathf.Clamp01(time / _transitionDuration);
 
-        BeginTransition();
+            transform.position = Vector3.Lerp(startPos, targetPos, t);
+            transform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+
+            yield return null;
+        }
+
+        transform.position = targetPos;
+        transform.rotation = targetRot;
+
+        ViewID = toID;
+        _transitionRoutine = null;
+        _isTransitioning = false;
+
+        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Table);
     }
     
-    private void BeginTransition()
+    private Quaternion GetAdjustedRotation(Quaternion from, Quaternion to, TurnDirection turn)
     {
-        DragAllowedChanged?.Invoke(ViewID == _tableCameraID);
-        
-        _startPosition = transform.position;
-        _startRotation = transform.rotation;
+        if (turn == TurnDirection.None)
+            return to;
 
-        _targetPosition = _views[ViewID].Position;
-        _targetRotation = _views[ViewID].Rotation;
+        Vector3 fromEuler = from.eulerAngles;
+        Vector3 toEuler = to.eulerAngles;
 
-        _transitionTime = 0f;
-        _isTransition = true;
+        float deltaY = Mathf.DeltaAngle(fromEuler.y, toEuler.y);
+
+        if (turn == TurnDirection.Left && deltaY > 0)
+            toEuler.y -= 360f;
+
+        if (turn == TurnDirection.Right && deltaY < 0)
+            toEuler.y += 360f;
+
+        return Quaternion.Euler(toEuler);
     }
 
-    private void SnapToCurrentView()
-    {
-        if (_views.Count == 0)
-            return;
-
-        transform.position = _views[ViewID].Position;
-        transform.rotation = _views[ViewID].Rotation;
-    }
 
     [Serializable]
     private struct CameraView
     {
         public Vector3 Position;
-        public Quaternion Rotation;
+        public Vector3 RotationEuler;
         public CameraViewType Type;
+        public CameraViewType Left;
+        public CameraViewType Right;
+        public CameraViewType Back;
+        public TurnDirection BackTurn;
 
+        public Quaternion Rotation => Quaternion.Euler(RotationEuler);
     }
-    
-    [Serializable]
+
+    private enum TurnDirection
+    {
+        None,
+        Left,
+        Right
+    }
+
     private enum CameraViewType
     {
+        None,
         Door,
         Table,
         Craft,

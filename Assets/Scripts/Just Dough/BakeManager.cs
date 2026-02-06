@@ -156,6 +156,28 @@ public class BakeManager : MonoBehaviour
         if (_shelfAnchor != null) StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Product Reception Field"))
+        {
+            Debug.Log("Entering reception field");
+            
+            if (other.transform.parent.gameObject.TryGetComponent(out CustomerManager manager))
+            {
+                _depositTarget = manager.CurrentCustomer;
+                _isInReceptionArea = true;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Product Reception Field"))
+        {
+            _isInReceptionArea = false;
+        }
+    }
+    
     private IEnumerator BakeRoutine()
     {
         while (true)
@@ -232,9 +254,9 @@ public class BakeManager : MonoBehaviour
 
     public void BeginBake()
     {
-        
         if (_bakeRoutine != null)
             return;
+        
         Debug.Log("Baking started");
         _bakeRoutine = StartCoroutine(BakeRoutine());
     }
@@ -311,33 +333,13 @@ public class BakeManager : MonoBehaviour
         return _depositTarget.OfferProduct(_product);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Product Reception Field"))
-        {
-            Debug.Log("Enering reception field");
-            
-            if (other.transform.parent.gameObject.TryGetComponent<CustomerManager>(out CustomerManager manager))
-            {
-                _depositTarget = manager.CurrentCustomer;
-                _isInReceptionArea = true;
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Product Reception Field"))
-        {
-            _isInReceptionArea = false;
-        }
-    }
-
     private void OnCancelRequested()
     {
         if (_isOnShelf == false || _isDragging == false) return;
+        
         _isDragging = false;
         _dragBlocked = true;
+        
         if (_shelfAnchor != null) StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
     }
 
@@ -365,6 +367,7 @@ public class BakeManager : MonoBehaviour
         Vector3 startPos = transform.position;
         Quaternion startRot = transform.rotation;
         float time = 0f;
+        
         while (time < _returnDuration)
         {
             float t = time / _returnDuration;

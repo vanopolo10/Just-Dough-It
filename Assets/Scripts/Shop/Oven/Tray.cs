@@ -33,6 +33,12 @@ public class Tray : MonoBehaviour
 
     public float BakeSpeedMultiplier => _bakeSpeedMultiplier;
 
+    private void Awake()
+    {
+        if (_oven == null)
+            _oven = GetComponentInParent<Oven>();
+    }
+
     private void OnEnable()
     {
         if (_oven != null)

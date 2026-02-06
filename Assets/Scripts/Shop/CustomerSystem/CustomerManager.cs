@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,38 +5,48 @@ using UnityEngine.Events;
 public class CustomerManager : MonoBehaviour
 {
     [SerializeField] private List<CustomerPool> _schedule;
+    
     private CustomerModelSpawner _spawner;
     private int _currentIndex = 0;
     private Customer _currentCustomer;
+    
     public Customer CurrentCustomer => _currentCustomer;
     public List<CustomerPool> Schedule => _schedule;
-    public UnityEvent OnDayStarted = new UnityEvent();
-    public UnityEvent OnDayEnded = new UnityEvent();
-    public UnityEvent OnCustomerSpawned = new UnityEvent();
+    
+    public UnityEvent DayStarted = new UnityEvent();
+    public UnityEvent DayEnded = new UnityEvent();
+    public UnityEvent CustomerSpawned = new UnityEvent();
 
-    void Start()
+    private void Start()
     {
         _spawner = GetComponent<CustomerModelSpawner>();
         StartNewDay();
     }
-    public void StartNewDay() {
+
+    public void StartNewDay()
+    {
         _currentIndex = 0;
 
-        OnDayStarted.Invoke();
+        DayStarted.Invoke();
 
         SpawnCustomer();
     }
-    public void SpawnCustomer() {
+
+    public void SpawnCustomer()
+    {
         GameObject prefabFromPool = _schedule[_currentIndex].GetCustomerfromPool();
         GameObject spawnedCustomer = _spawner.SpawnNewCustomer(prefabFromPool);
 
         _currentCustomer = spawnedCustomer.GetComponent<Customer>();
 
-        OnCustomerSpawned.Invoke();
+        CustomerSpawned.Invoke();
         Debug.Log("fully Spawned Customer");
     }
-    public void NextCustomer() { 
+
+    public void NextCustomer()
+    {
         _currentIndex++;
+        
         if (_currentIndex >= _schedule.Count)
         {
             _currentIndex = 0;
@@ -49,9 +58,11 @@ public class CustomerManager : MonoBehaviour
             SpawnCustomer();
         }
     }
-    public void EndDay() {
+
+    public void EndDay()
+    {
         Debug.Log("Day ended! Starting new one in 10s");
-        OnDayEnded.Invoke();
+        DayEnded.Invoke();
 
         Invoke(nameof(StartNewDay), 10f); // temp obviously
     }
