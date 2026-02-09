@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class CustomerRouteMover : MonoBehaviour
 {
-    [Header("Points")]
     [SerializeField] private Transform _doorPoint;
     [SerializeField] private Transform _doorLookAt;
     [SerializeField] private Transform _counterPoint;
     [SerializeField] private Transform _exitPoint;
     [SerializeField] private Transform _exitLookAt;
 
-    [Header("Movement")]
     [SerializeField] private float _moveSpeed = 1.6f;
     [SerializeField] private float _rotateSpeed = 8f;
     [SerializeField] private float _stopDistance = 0.05f;
@@ -19,7 +17,7 @@ public class CustomerRouteMover : MonoBehaviour
 
     private Transform _target;
     private Coroutine _routine;
-    private bool _doorAnimationFinished;
+    private bool _isDoorAnimationFinished;
 
     private CustomerAnimatorController _animatorController;
 
@@ -29,11 +27,9 @@ public class CustomerRouteMover : MonoBehaviour
     public void MoveIn(Transform target, CustomerAnimatorController animatorController, int sadWalkID)
     {
         StopCurrentRoutine();
-
         _target = target;
         _animatorController = animatorController;
-
-        _doorAnimationFinished = false;
+        _isDoorAnimationFinished = false;
 
         _animatorController.DoorAnimationFinished += OnDoorAnimationFinished;
 
@@ -43,50 +39,44 @@ public class CustomerRouteMover : MonoBehaviour
     public void MoveOut()
     {
         StopCurrentRoutine();
-
         _routine = StartCoroutine(ExitRoutine());
     }
 
     private IEnumerator EnterRoutine(int sadWalkID)
     {
-        _animatorController.OnStartSad(sadWalkID);
-        _animatorController.OnLeaveCounter();
+        _animatorController.StartSad(sadWalkID);
+        _animatorController.LeaveCounter();
 
-        _animatorController.OnStartWalking();
+        _animatorController.StartWalking();
         yield return MoveTo(_doorPoint.position);
-        _animatorController.OnStopWalking();
 
         yield return FaceTo(_doorLookAt.position);
 
-        _animatorController.OnTriggerOpenDoor();
-        //yield return new WaitUntil(() => _doorAnimationFinished);
+        _animatorController.TriggerOpenDoor();
 
-        _animatorController.OnStartWalking();
         yield return MoveTo(_counterPoint.position);
-        _animatorController.OnStopWalking();
 
-        _animatorController.OnReachedCounter();
+        _animatorController.StopWalking();
+        _animatorController.ReachedCounter();
 
         ReachedCounter?.Invoke();
     }
 
     private IEnumerator ExitRoutine()
     {
-        _animatorController.OnLeaveCounter();
-        _animatorController.OnStartLeaving();
+        _animatorController.LeaveCounter();
+        _animatorController.StartLeaving();
 
         yield return FaceTo(_doorLookAt.position);
 
-        _animatorController.OnStartWalking();
+        _animatorController.StartWalking();
         yield return MoveTo(_doorPoint.position);
-        _animatorController.OnStopWalking();
 
-        _animatorController.OnTriggerOpenDoor();
-        //yield return new WaitUntil(() => _doorAnimationFinished);
+        _animatorController.TriggerOpenDoor();
 
-        _animatorController.OnStartWalking();
         yield return MoveTo(_exitPoint.position);
-        _animatorController.OnStopWalking();
+
+        _animatorController.StopWalking();
 
         yield return FaceTo(_exitLookAt.position);
 
@@ -136,7 +126,7 @@ public class CustomerRouteMover : MonoBehaviour
 
     private void OnDoorAnimationFinished()
     {
-        _doorAnimationFinished = true;
+        _isDoorAnimationFinished = true;
     }
 
     private void Cleanup()

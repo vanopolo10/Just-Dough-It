@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEditor;
 
 [RequireComponent(typeof(PlayerInput))]
 public class CameraController : MonoBehaviour
@@ -119,7 +120,7 @@ public class CameraController : MonoBehaviour
 
         DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Table);
     }
-    
+
     private Quaternion GetAdjustedRotation(Quaternion from, Quaternion to, TurnDirection turn)
     {
         if (turn == TurnDirection.None)
@@ -138,7 +139,6 @@ public class CameraController : MonoBehaviour
 
         return Quaternion.Euler(toEuler);
     }
-
 
     [Serializable]
     private struct CameraView
@@ -170,4 +170,44 @@ public class CameraController : MonoBehaviour
         Oven,
         OvenDown
     }
+    
+#if UNITY_EDITOR
+    [CustomPropertyDrawer(typeof(CameraView))]
+    public class CameraViewDrawer : PropertyDrawer
+    {
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            position.height = EditorGUI.GetPropertyHeight(property, label);
+            EditorGUI.PropertyField(position, property, label, true);
+        
+            position.y += position.height + 2f;
+            position.height = EditorGUIUtility.singleLineHeight;
+        
+            if (GUI.Button(position, "Move Camera Here"))
+            {
+                var controller = property.serializedObject.targetObject as CameraController;
+                var pos = property.FindPropertyRelative("Position").vector3Value;
+                var rot = property.FindPropertyRelative("RotationEuler").vector3Value;
+
+                if (controller != null)
+                {
+                    controller.transform.position = pos;
+                    controller.transform.rotation = Quaternion.Euler(rot);
+                }
+
+                if (Camera.main != null)
+                {
+                    Camera.main.transform.position = pos;
+                    Camera.main.transform.rotation = Quaternion.Euler(rot);
+                }
+            }
+        }
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            return EditorGUI.GetPropertyHeight(property, label) + 
+                   EditorGUIUtility.singleLineHeight + 2f;
+        }
+    }
+#endif
 }

@@ -22,7 +22,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -216,7 +216,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -303,7 +303,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -400,7 +400,7 @@ ModelImporter:
     weldVertices: 1
     bakeAxisConversion: 0
     preserveHierarchy: 0
-    skinWeightsMode: 0
+    skinWeightsMode: 1
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
@@ -431,7 +431,222 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: PlumpGuy(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Armature.002
+      parentName: PlumpGuy(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.003918284, y: -0.70709586, z: -0.70709604, w: 0.003918283}
+      scale: {x: 38.722977, y: 38.722977, z: 38.722977}
+    - name: COG
+      parentName: Armature.002
+      position: {x: 0.0000108063805, y: 0.000787531, z: 0.02907898}
+      rotation: {x: -0.81061476, y: -0.00000015523982, z: 0.00000009319045, w: 0.5855799}
+      scale: {x: 1, y: 1.0000018, z: 1.0000019}
+    - name: DEF-Spine
+      parentName: COG
+      position: {x: 3.1118552e-11, y: -0.0012424426, z: -0.0011117423}
+      rotation: {x: 0.02526636, y: 0.055718895, z: 0.99812585, w: 0.0014104318}
+      scale: {x: 1.0000038, y: 1, z: 1.0000026}
+    - name: DEF-Chest
+      parentName: DEF-Spine
+      position: {x: 5.820766e-13, y: 0.0040945057, z: 1.546141e-11}
+      rotation: {x: -0.09486067, y: 0.000000087544315, z: 0.0048056217, w: 0.9954789}
+      scale: {x: 1.0000052, y: 0.99999964, z: 1.0000061}
+    - name: DEF-Neck
+      parentName: DEF-Chest
+      position: {x: -5.0058586e-11, y: 0.0067847585, z: -3.6838171e-10}
+      rotation: {x: -0.0029467815, y: -0.99254847, z: -0.12181498, w: 0.00009811603}
+      scale: {x: 1.0000013, y: 1.0000026, z: 0.9999993}
+    - name: DEF-Head
+      parentName: DEF-Neck
+      position: {x: 2.386514e-11, y: 0.0029210134, z: -0.000000002964225}
+      rotation: {x: 0.03407623, y: 0.03800958, z: 0.013867139, w: 0.99859995}
+      scale: {x: 0.99999994, y: 1.0000026, z: 0.9999975}
+    - name: DEF-Shoulder.L
+      parentName: DEF-Chest
+      position: {x: -0.0019766379, y: 0.007233376, z: 0.0007875579}
+      rotation: {x: 0.09446004, y: -0.017991096, z: 0.8085241, w: 0.58055365}
+      scale: {x: 1.000001, y: 1.0000031, z: 1.000004}
+    - name: DEF-UpperArm.L
+      parentName: DEF-Shoulder.L
+      position: {x: -0.000000006202608, y: 0.0040708026, z: -5.2154064e-10}
+      rotation: {x: -0.070740946, y: -0.059974805, z: -0.12578708, w: 0.9877127}
+      scale: {x: 0.9670595, y: 0.9670629, z: 0.9670649}
+    - name: DEF-LowerArm.L
+      parentName: DEF-UpperArm.L
+      position: {x: 0.0000000021606683, y: 0.0072955578, z: -0.000000001490116}
+      rotation: {x: 0.046986558, y: 0.0048396974, z: -0.042603362, w: 0.9979749}
+      scale: {x: 1.0050626, y: 1.0050579, z: 1.0050555}
+    - name: DEF-Hand.L
+      parentName: DEF-LowerArm.L
+      position: {x: 0.0000000026961788, y: 0.008681571, z: 0.0000000010570511}
+      rotation: {x: -0.04150154, y: -0.003602193, z: 0.11518466, w: 0.9924702}
+      scale: {x: 0.9999945, y: 1.0000077, z: 1.0000015}
+    - name: DEF-Hand.L.001
+      parentName: DEF-Hand.L
+      position: {x: 0.0000000028684735, y: 0.0028244804, z: -3.72529e-10}
+      rotation: {x: 0.09267694, y: 0.017664572, z: 0.13112867, w: 0.98686594}
+      scale: {x: 0.999993, y: 1.0000116, z: 0.9999998}
+    - name: DEF-LowerArm.L.001
+      parentName: DEF-LowerArm.L
+      position: {x: 0.0000000026961788, y: 0.008681571, z: 0.0000000010570511}
+      rotation: {x: 0.4193242, y: -0.023861246, z: 0.21161914, w: 0.88250506}
+      scale: {x: 0.9999919, y: 1.0000105, z: 1.0000032}
+    - name: DEF-LowerArm.L.002
+      parentName: DEF-LowerArm.L.001
+      position: {x: 0.0000000027008353, y: 0.0027313128, z: -2.9802322e-10}
+      rotation: {x: -0.20445566, y: 0.01908386, z: 0.1395056, w: 0.96869594}
+      scale: {x: 0.9999902, y: 1.0000209, z: 0.99999624}
+    - name: DEF-Shoulder.R
+      parentName: DEF-Chest
+      position: {x: 0.0018747083, y: 0.0072103045, z: 0.0008478607}
+      rotation: {x: -0.05362282, y: -0.04708494, z: 0.81128967, w: -0.580273}
+      scale: {x: 1.0000021, y: 1.0000037, z: 1.0000046}
+    - name: DEF-UpperArm.R
+      parentName: DEF-Shoulder.R
+      position: {x: 0.0000000019744038, y: 0.0040707993, z: 0.000000001490116}
+      rotation: {x: -0.061575837, y: 0.060216952, z: 0.12986314, w: 0.9877843}
+      scale: {x: 0.9657909, y: 0.96579397, z: 0.965797}
+    - name: DEF-LowerArm.R
+      parentName: DEF-UpperArm.R
+      position: {x: -0.000000001490116, y: 0.0072955606, z: -0.0000000031664966}
+      rotation: {x: 0.047806103, y: -0.0047053797, z: 0.042091485, w: 0.99795836}
+      scale: {x: 1.00841, y: 1.0084059, z: 1.0084063}
+    - name: DEF-Hand.R
+      parentName: DEF-LowerArm.R
+      position: {x: 4.225876e-10, y: 0.008681571, z: 5.122274e-10}
+      rotation: {x: -0.0415134, y: 0.0035945177, z: -0.11482485, w: 0.9925115}
+      scale: {x: 0.9999961, y: 1.0000103, z: 1.0000036}
+    - name: DEF-Hand.R.001
+      parentName: DEF-Hand.R
+      position: {x: 7.45058e-10, y: 0.0028244825, z: -0.0000000035017729}
+      rotation: {x: 0.09267696, y: -0.017664643, z: -0.1311289, w: 0.9868658}
+      scale: {x: 0.9999932, y: 1.0000112, z: 1.0000006}
+    - name: DEF-LowerArm.R.001
+      parentName: DEF-LowerArm.R
+      position: {x: 4.225876e-10, y: 0.008681571, z: 5.122274e-10}
+      rotation: {x: 0.4193242, y: 0.023861205, z: -0.21161924, w: 0.8825051}
+      scale: {x: 0.99999195, y: 1.0000106, z: 1.0000068}
+    - name: DEF-LowerArm.R.002
+      parentName: DEF-LowerArm.R.001
+      position: {x: 1.11758706e-10, y: 0.002731311, z: 0.0000000028824434}
+      rotation: {x: -0.20445561, y: -0.019083912, z: -0.13950542, w: 0.96869606}
+      scale: {x: 0.99998945, y: 1.0000304, z: 0.999986}
+    - name: DEF-Pelvis
+      parentName: COG
+      position: {x: 7.0093494e-11, y: -0.001778854, z: -0.002483654}
+      rotation: {x: 0.017028205, y: -0.7394767, z: 0.6727065, w: -0.018718388}
+      scale: {x: 1.000004, y: 1.0000051, z: 0.9999993}
+    - name: DEF-Pelvis.L
+      parentName: DEF-Pelvis
+      position: {x: -0.00083878555, y: 0.0032822313, z: 0.0010039116}
+      rotation: {x: -0.10565269, y: 0.22877541, z: -0.864298, w: -0.43530262}
+      scale: {x: 1.0000023, y: 1.0000023, z: 1.0000013}
+    - name: DEF-UpperLeg.L
+      parentName: DEF-Pelvis.L
+      position: {x: 0.0014652517, y: 0.0015951683, z: 0.00070834823}
+      rotation: {x: 0.120925605, y: -0.2492764, z: 0.856213, w: -0.43604776}
+      scale: {x: 1.0000066, y: 0.9999876, z: 1.0000116}
+    - name: DEF-Pelvis.R
+      parentName: DEF-Pelvis
+      position: {x: 0.00095753133, y: 0.0032822313, z: 0.0009129126}
+      rotation: {x: 0.061789565, y: 0.25050607, z: -0.8685366, w: 0.42317015}
+      scale: {x: 1.0000027, y: 1.0000031, z: 1.0000021}
+    - name: DEF-UpperLeg.R
+      parentName: DEF-Pelvis.R
+      position: {x: -0.0014652517, y: 0.0015951663, z: 0.0007083468}
+      rotation: {x: -0.12092587, y: -0.24927653, z: 0.85621315, w: 0.4360474}
+      scale: {x: 1.0000048, y: 0.99998754, z: 1.0000112}
+    - name: DEF-Sheen.L
+      parentName: Armature.002
+      position: {x: 0.003206489, y: -0.0012350614, z: 0.012751769}
+      rotation: {x: 0.014695173, y: -0.6520379, z: 0.7577444, w: -0.021311998}
+      scale: {x: 1.0000018, y: 1.0000029, z: 0.9999992}
+    - name: DEF-Foot.L
+      parentName: Armature.002
+      position: {x: 0.0032584514, y: -0.0027199187, z: 0.0028888788}
+      rotation: {x: -0.07014969, y: -0.7709534, z: 0.6329319, w: -0.010348895}
+      scale: {x: 1.0000044, y: 1.0000023, z: 1.0000006}
+    - name: DEF-Toes.L
+      parentName: DEF-Foot.L
+      position: {x: -6.0070304e-10, y: 0.0031223644, z: -1.3969838e-11}
+      rotation: {x: -0.106675394, y: -0.0030974965, z: -0.039545573, w: 0.9935023}
+      scale: {x: 1.0000019, y: 1.0000021, z: 1.0000017}
+    - name: DEF-Sheen.R
+      parentName: Armature.002
+      position: {x: -0.0032064903, y: -0.0012350742, z: 0.012751762}
+      rotation: {x: -0.014695146, y: -0.65203786, z: 0.7577444, w: 0.021311969}
+      scale: {x: 1.0000019, y: 1.0000032, z: 0.99999917}
+    - name: DEF-Foot.R
+      parentName: Armature.002
+      position: {x: -0.0032584514, y: -0.0027199187, z: 0.0028888788}
+      rotation: {x: 0.07007054, y: -0.7713146, z: 0.63249886, w: 0.010444661}
+      scale: {x: 1.0000045, y: 1.0000024, z: 1.0000011}
+    - name: DEF-Toes.R
+      parentName: DEF-Foot.R
+      position: {x: 6.0070304e-10, y: 0.0031223644, z: -1.3969838e-11}
+      rotation: {x: -0.106675394, y: 0.0030974816, z: 0.039545573, w: 0.9935023}
+      scale: {x: 1.0000008, y: 1.0000014, z: 1.0000011}
+    - name: Cube.003
+      parentName: PlumpGuy(Clone)
+      position: {x: 0.7296538, y: 0.0003607273, z: 0.69637966}
+      rotation: {x: 0.5478722, y: 0.44703028, z: -0.4470302, w: 0.5478723}
+      scale: {x: 0.009999999, y: 0.009999999, z: 0.01}
+    - name: Empty.002
+      parentName: Cube.003
+      position: {x: 30.236956, y: -79.9144, z: 0.48721895}
+      rotation: {x: -0.48983082, y: 0.6003279, z: -0.39967206, w: -0.48983097}
+      scale: {x: 0.009999999, y: 0.010000001, z: 0.01}
+    - name: Glass-Sigma.001
+      parentName: PlumpGuy(Clone)
+      position: {x: 0.0019831187, y: 1.7205964, z: -0.10194493}
+      rotation: {x: 0.10224983, y: 0, z: -0, w: 0.9947588}
+      scale: {x: 1.0712484, y: 1.0712485, z: 1.0712485}
+    - name: Glass-Sigma.002
+      parentName: PlumpGuy(Clone)
+      position: {x: 0.0019831187, y: 1.7205964, z: -0.10194493}
+      rotation: {x: 0.10224983, y: 0, z: -0, w: 0.9947588}
+      scale: {x: 1.0712484, y: 1.0712485, z: 1.0712485}
+    - name: Lazkan.001
+      parentName: PlumpGuy(Clone)
+      position: {x: 0.000000022183333, y: 1.591213, z: 0.016117822}
+      rotation: {x: 0.70710695, y: -0.00000005338506, z: -0.7071066, w: -0.00000005338509}
+      scale: {x: 0.01, y: 0.01, z: 0.01}
+    - name: ManBody.023
+      parentName: PlumpGuy(Clone)
+      position: {x: 0.004975261, y: 1.4509013, z: -0.019917361}
+      rotation: {x: 1, y: -0, z: 0, w: -0.00000019470718}
+      scale: {x: 0.00009588798, y: 0.00009588798, z: 0.00009588798}
+    - name: ManBody.026
+      parentName: PlumpGuy(Clone)
+      position: {x: 0.0026499128, y: 1.4846889, z: -0.10874776}
+      rotation: {x: -0.6980533, y: 0.1127895, z: 0.6980535, w: -0.11278935}
+      scale: {x: 0.009757263, y: 0.009757263, z: 0.009757264}
+    - name: ManBody.029
+      parentName: PlumpGuy(Clone)
+      position: {x: 0.004975261, y: 1.4722619, z: -0.011582562}
+      rotation: {x: 0.9968385, y: -0, z: 0, w: -0.07945447}
+      scale: {x: 0.00009588798, y: 0.000095887975, z: 0.000095887975}
+    - name: ManBody.031
+      parentName: PlumpGuy(Clone)
+      position: {x: 0.003613131, y: 1.462706, z: 0.004207593}
+      rotation: {x: 1, y: -0, z: 0, w: -0.00000019470718}
+      scale: {x: 0.0000973782, y: 0.0000973782, z: 0.0000973782}
+    - name: ManBody.032
+      parentName: PlumpGuy(Clone)
+      position: {x: 0.004975261, y: 1.4509013, z: -0.019917361}
+      rotation: {x: 1, y: -0, z: 0, w: -0.00000019470718}
+      scale: {x: 0.00009588798, y: 0.00009588798, z: 0.00009588798}
+    - name: Shapka-Bomzhatka.001
+      parentName: PlumpGuy(Clone)
+      position: {x: -0.0006476282, y: 1.7976213, z: -0.0005903876}
+      rotation: {x: 0.70710695, y: -0.00000005338506, z: -0.7071066, w: -0.00000005338509}
+      scale: {x: 0.009794349, y: 0.009794349, z: 0.009794349}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -442,13 +657,13 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0

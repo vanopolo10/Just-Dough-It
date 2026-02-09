@@ -38,9 +38,7 @@ public class CustomerModelSpawner : MonoBehaviour
 
         _routeMover.MoveOut();
     }
-
     
-
     public GameObject SpawnNewCustomer(GameObject prefab)
     {
         if (_respawnRoutine != null)
@@ -67,7 +65,6 @@ public class CustomerModelSpawner : MonoBehaviour
 
     private void OnReachedCounter()
     { 
-        _animatorController?.OnReachedCounter();
         _customer.OnReachedCounter();
     }
 
