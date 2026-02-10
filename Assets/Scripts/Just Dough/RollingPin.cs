@@ -8,6 +8,9 @@ public class RollingPin : MonoBehaviour
     [SerializeField] private float _raiseBy = 3f;
     [SerializeField] private float _rotationSmooth = 5f;
     [SerializeField] private float _heightSmooth = 10f;
+    [SerializeField] private float _obstacleAvoidanceAngle = 15f;
+    [SerializeField] private int _avoidanceAttempts = 3;
+    [SerializeField] private float _rotationThreshold = 0.01f;
 
     [Header("Events")]
     public UnityEvent DoughEntered = new();
@@ -61,7 +64,7 @@ public class RollingPin : MonoBehaviour
     private void OnDragAllowedChanged(bool allowed)
     {
         _dragAllowed = allowed;
-        
+
         if (!allowed)
             CancelDrag();
     }
@@ -92,12 +95,19 @@ public class RollingPin : MonoBehaviour
             Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
             targetPos.y = currentPos.y;
 
-            Vector3 pointA = targetPos + transform.right * 0.75f;
-            Vector3 pointB = targetPos - transform.right * 0.75f;
-            if (Physics.CheckCapsule(pointA, pointB, 0.1f, LayerMask.GetMask("TableObject")) && !_debug) return;
+            if (!TryFindAvailablePosition(targetPos, out Vector3 adjustedPos, out Quaternion adjustedRotation))
+            {
+                if (!_debug) return;
+                adjustedPos = targetPos;
+                adjustedRotation = transform.rotation;
+            }
 
-            Vector3 move = targetPos - currentPos;
-            transform.position = targetPos;
+            Vector3 move = adjustedPos - currentPos;
+            transform.position = adjustedPos;
+
+            float rotationDiff = Quaternion.Dot(adjustedRotation, transform.rotation);
+            if (Mathf.Abs(rotationDiff - 1f) > _rotationThreshold)
+                _targetRotation = adjustedRotation;
 
             bool rightHeld = Input.GetMouseButton(1);
 
@@ -122,9 +132,51 @@ public class RollingPin : MonoBehaviour
         }
     }
 
+    private bool TryFindAvailablePosition(Vector3 targetPos, out Vector3 availablePos, out Quaternion availableRotation)
+    {
+        availablePos = targetPos;
+        availableRotation = transform.rotation;
+
+        if (!CheckPositionForObstacle(targetPos, transform.right))
+            return true;
+
+        for (int i = 0; i < _avoidanceAttempts; i++)
+        {
+            float angle = _obstacleAvoidanceAngle * (i + 1);
+
+            Quaternion rightRotation = Quaternion.Euler(0, angle, 0) * transform.rotation;
+            Vector3 rightDirection = rightRotation * Vector3.right;
+
+            if (!CheckPositionForObstacle(targetPos, rightDirection))
+            {
+                availableRotation = rightRotation;
+                return true;
+            }
+
+            Quaternion leftRotation = Quaternion.Euler(0, -angle, 0) * transform.rotation;
+            Vector3 leftDirection = leftRotation * Vector3.right;
+
+            if (!CheckPositionForObstacle(targetPos, leftDirection))
+            {
+                availableRotation = leftRotation;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool CheckPositionForObstacle(Vector3 position, Vector3 rightDirection)
+    {
+        Vector3 pointA = position + rightDirection * 0.75f;
+        Vector3 pointB = position - rightDirection * 0.75f;
+
+        return Physics.CheckCapsule(pointA, pointB, 0.1f, LayerMask.GetMask("TableObject"));
+    }
+
     private void UpdateRotation(Vector3 move)
     {
-        Vector3 dir = new Vector3(move.x, 0f, move.z);
+        Vector3 dir = new(move.x, 0f, move.z);
         if (dir.sqrMagnitude < 0.0001f) return;
 
         dir.Normalize();
