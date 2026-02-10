@@ -18441,6 +18441,7 @@ MonoBehaviour:
   _burnStartInSeconds: 15
   _burnFullInSeconds: 20
   _returnDuration: 0.25
+  _tray: {fileID: 0}
 --- !u!64 &1151415356282743025
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18663,34 +18664,81 @@ MonoBehaviour:
   _visuals:
   - _state: 0
     _model: {fileID: 3740836076075418074}
+    _colliderCenter: {x: 0.0113498345, y: 0.09799321, z: 0.009614885}
+    _colliderSize: {x: 1.1637092, y: 0.69554543, z: 1.1224809}
+    _useBoxCollider: 0
   - _state: 1
     _model: {fileID: 8665260270550626160}
+    _colliderCenter: {x: -0.0069304258, y: 0.0012639193, z: -0.020639032}
+    _colliderSize: {x: 1.1273807, y: 0.113180615, z: 1.6356074}
+    _useBoxCollider: 1
   - _state: 4
     _model: {fileID: 2011884246188652929}
+    _colliderCenter: {x: -0.035519406, y: 0.034850754, z: -0.016845912}
+    _colliderSize: {x: 0.9848848, y: 0.284991, z: 1.5650744}
+    _useBoxCollider: 1
   - _state: 5
     _model: {fileID: 880110634934316221}
+    _colliderCenter: {x: 0, y: 0, z: 0}
+    _colliderSize: {x: 1, y: 1, z: 1}
+    _useBoxCollider: 0
   - _state: 8
     _model: {fileID: 2381124529505431215}
+    _colliderCenter: {x: 0.024966136, y: 0.020392064, z: -0.032187164}
+    _colliderSize: {x: 0.8901975, y: 0.26159498, z: 1.5138546}
+    _useBoxCollider: 0
   - _state: 9
     _model: {fileID: 3157334740461769257}
+    _colliderCenter: {x: 0, y: 0, z: 0}
+    _colliderSize: {x: 1, y: 1, z: 1}
+    _useBoxCollider: 0
   - _state: 6
     _model: {fileID: 1462308126682109451}
+    _colliderCenter: {x: 0, y: 0, z: 0}
+    _colliderSize: {x: 1, y: 1, z: 1}
+    _useBoxCollider: 1
   - _state: 7
     _model: {fileID: 6435017854399402132}
+    _colliderCenter: {x: 0, y: 0, z: 0}
+    _colliderSize: {x: 1, y: 1, z: 1}
+    _useBoxCollider: 1
   - _state: 2
     _model: {fileID: 7509267303140858334}
+    _colliderCenter: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+    _colliderSize: {x: 1.6542106, y: 0.002, z: 1.6277776}
+    _useBoxCollider: 0
   - _state: 3
     _model: {fileID: 1623926848918556109}
+    _colliderCenter: {x: 0.025980681, y: 0.00063572265, z: 0.021646533}
+    _colliderSize: {x: 2.4917927, y: 0.04882351, z: 0.59908754}
+    _useBoxCollider: 1
   - _state: 10
     _model: {fileID: 5799085478274634307}
+    _colliderCenter: {x: 0.12109472, y: 0.0030885488, z: -0.006309822}
+    _colliderSize: {x: 1.923279, y: 0.5208023, z: 0.57069284}
+    _useBoxCollider: 1
   - _state: 11
     _model: {fileID: 2631648008192245505}
+    _colliderCenter: {x: 0.0055399016, y: 0.002805546, z: -0.006141171}
+    _colliderSize: {x: 0.8254386, y: 0.36069942, z: 0.9628633}
+    _useBoxCollider: 0
   - _state: 12
     _model: {fileID: 6426888753858908591}
+    _colliderCenter: {x: 0, y: 0, z: 0}
+    _colliderSize: {x: 1, y: 1, z: 1}
+    _useBoxCollider: 0
   - _state: 13
     _model: {fileID: 0}
+    _colliderCenter: {x: 0, y: 0, z: 0}
+    _colliderSize: {x: 1, y: 1, z: 1}
+    _useBoxCollider: 0
   - _state: 14
     _model: {fileID: 0}
+    _colliderCenter: {x: 0, y: 0, z: 0}
+    _colliderSize: {x: 1, y: 1, z: 1}
+    _useBoxCollider: 0
+  _updateColliderOnStateChange: 1
+  _autoCalculateColliders: 1
 --- !u!136 &7079906372123288692
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -30042,6 +30090,7 @@ MonoBehaviour:
   _burnStartInSeconds: 15
   _burnFullInSeconds: 20
   _returnDuration: 0.25
+  _tray: {fileID: 0}
 --- !u!136 &6788419875641340486
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -37964,6 +38013,7 @@ MonoBehaviour:
   _burnStartInSeconds: 15
   _burnFullInSeconds: 20
   _returnDuration: 0.25
+  _tray: {fileID: 0}
 --- !u!114 &2567585117612482723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40979,6 +41029,7 @@ MonoBehaviour:
   _burnStartInSeconds: 10
   _burnFullInSeconds: 20
   _returnDuration: 0.25
+  _tray: {fileID: 0}
 --- !u!114 &4475686989499079511
 MonoBehaviour:
   m_ObjectHideFlags: 0
