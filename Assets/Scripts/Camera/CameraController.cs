@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
         ViewID = Mathf.Clamp(ViewID, 0, _views.Count - 1);
         transform.position = _views[ViewID].Position;
         transform.rotation = _views[ViewID].Rotation;
-        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Table);
+        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Craft);
     }
 
     public void SetViewID(int viewID)
@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
         ViewID = Mathf.Clamp(viewID, 0, _views.Count - 1);
         transform.position = _views[ViewID].Position;
         transform.rotation = _views[ViewID].Rotation;
-        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Table);
+        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Craft);
     }
 
     private void OnLeft()
@@ -118,7 +118,7 @@ public class CameraController : MonoBehaviour
         _transitionRoutine = null;
         _isTransitioning = false;
 
-        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Table);
+        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Craft);
     }
 
     private Quaternion GetAdjustedRotation(Quaternion from, Quaternion to, TurnDirection turn)
