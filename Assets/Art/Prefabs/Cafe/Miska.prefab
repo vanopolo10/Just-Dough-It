@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 8000584801409361767}
   - component: {fileID: 2615979607503347651}
   - component: {fileID: 2160147867244294157}
-  m_Layer: 0
+  - component: {fileID: 617511311977143543}
+  m_Layer: 9
   m_Name: Miska.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &8000584801409361767
 Transform:
@@ -89,6 +90,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &617511311977143543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3268583445333291607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18eb5123c1494d4438e685f800776ef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickableObject
+  _clickTag: Jam
+  _useReactiveAnimation: 0
+  _animationDuration: 0.5
+  _animationSpeed: 20
+  _animationAmplitude: 1
 --- !u!1 &7679563213964897558
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,12 +119,13 @@ GameObject:
   - component: {fileID: 5906795761152593927}
   - component: {fileID: 4785240865302264895}
   - component: {fileID: 9063806760857455739}
-  m_Layer: 0
+  - component: {fileID: 6217314041587371991}
+  m_Layer: 9
   m_Name: Miska
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &434752797327149694
 Transform:
@@ -203,6 +222,23 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -8541310429308346212, guid: 14616a6dc662a0145bc59d744130eeff, type: 3}
+--- !u!114 &6217314041587371991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7679563213964897558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18eb5123c1494d4438e685f800776ef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickableObject
+  _clickTag: Metal
+  _useReactiveAnimation: 0
+  _animationDuration: 0.5
+  _animationSpeed: 20
+  _animationAmplitude: 1
 --- !u!1001 &4816212405040032154
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -214,6 +250,14 @@ PrefabInstance:
     - target: {fileID: 3877315760005155275, guid: 81cd560c7c59d8b428d1c40384c3e0ef, type: 3}
       propertyPath: m_Name
       value: PieceOfFarsh
+      objectReference: {fileID: 0}
+    - target: {fileID: 3877315760005155275, guid: 81cd560c7c59d8b428d1c40384c3e0ef, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3877315760005155275, guid: 81cd560c7c59d8b428d1c40384c3e0ef, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5490371664210260787, guid: 81cd560c7c59d8b428d1c40384c3e0ef, type: 3}
       propertyPath: m_LocalScale.y
@@ -271,6 +315,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3877315760005155275, guid: 81cd560c7c59d8b428d1c40384c3e0ef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3128350220571867849}
+    - targetCorrespondingSourceObject: {fileID: 3877315760005155275, guid: 81cd560c7c59d8b428d1c40384c3e0ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3405570804271875346}
   m_SourcePrefab: {fileID: 100100000, guid: 81cd560c7c59d8b428d1c40384c3e0ef, type: 3}
 --- !u!4 &1073871404356786857 stripped
 Transform:
@@ -303,3 +350,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3405570804271875346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8581716353274880081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18eb5123c1494d4438e685f800776ef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickableObject
+  _clickTag: Jam
+  _useReactiveAnimation: 0
+  _animationDuration: 0.5
+  _animationSpeed: 20
+  _animationAmplitude: 1
