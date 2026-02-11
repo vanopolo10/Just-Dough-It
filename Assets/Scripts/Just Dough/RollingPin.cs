@@ -60,7 +60,7 @@ public class RollingPin : MonoBehaviour
 
     private void OnDragAllowedChanged(bool allowed)
     {
-        _dragAllowed = allowed;
+        _dragAllowed = true;
         
         if (!allowed)
             CancelDrag();
