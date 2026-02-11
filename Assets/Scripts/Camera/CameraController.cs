@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
         ViewID = Mathf.Clamp(ViewID, 0, _views.Count - 1);
         transform.position = _views[ViewID].Position;
         transform.rotation = _views[ViewID].Rotation;
-        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Craft);
+        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Table);
     }
 
     public void SetViewID(int viewID)
@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
         ViewID = Mathf.Clamp(viewID, 0, _views.Count - 1);
         transform.position = _views[ViewID].Position;
         transform.rotation = _views[ViewID].Rotation;
-        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Craft);
+        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Table);
     }
 
     private void OnLeft()
@@ -118,7 +118,7 @@ public class CameraController : MonoBehaviour
         _transitionRoutine = null;
         _isTransitioning = false;
 
-        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Craft);
+        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Table);
     }
 
     private Quaternion GetAdjustedRotation(Quaternion from, Quaternion to, TurnDirection turn)
@@ -170,7 +170,7 @@ public class CameraController : MonoBehaviour
         Oven,
         OvenDown
     }
-
+    
 #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(CameraView))]
     public class CameraViewDrawer : PropertyDrawer
@@ -179,10 +179,10 @@ public class CameraController : MonoBehaviour
         {
             position.height = EditorGUI.GetPropertyHeight(property, label);
             EditorGUI.PropertyField(position, property, label, true);
-
+        
             position.y += position.height + 2f;
             position.height = EditorGUIUtility.singleLineHeight;
-
+        
             if (GUI.Button(position, "Move Camera Here"))
             {
                 var controller = property.serializedObject.targetObject as CameraController;
@@ -205,7 +205,7 @@ public class CameraController : MonoBehaviour
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUI.GetPropertyHeight(property, label) +
+            return EditorGUI.GetPropertyHeight(property, label) + 
                    EditorGUIUtility.singleLineHeight + 2f;
         }
     }
