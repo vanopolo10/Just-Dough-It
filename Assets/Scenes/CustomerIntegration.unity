@@ -8720,28 +8720,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826426316}
   m_CullTransparentMesh: 1
---- !u!1 &1833806525 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2357598187031629943, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
-  m_PrefabInstance: {fileID: 2131337764}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1833806533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1833806525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18eb5123c1494d4438e685f800776ef7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ClickableObject
-  _clickTag: Skalka
-  _useReactiveAnimation: 0
-  _animationDuration: 0.5
-  _animationSpeed: 20
-  _animationAmplitude: 1
 --- !u!1 &1840548804
 GameObject:
   m_ObjectHideFlags: 0
@@ -9863,14 +9841,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1548911221623960882, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
-      propertyPath: _tableCollider
-      value: 
-      objectReference: {fileID: 6743013}
-    - target: {fileID: 1548911221623960882, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
-      propertyPath: _cameraController
-      value: 
-      objectReference: {fileID: 330585548}
     - target: {fileID: 1915886572909604334, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.431
@@ -9911,33 +9881,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2154383563711086304, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: ca9052260c8ea5a45ae0bd69885bc8b0, type: 2}
     - target: {fileID: 2357598187031629943, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
       propertyPath: m_Name
       value: Rolling Pin
       objectReference: {fileID: 0}
-    - target: {fileID: 2357598187031629943, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2357598187031629943, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 2357598187031629943, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 6362697842613803956, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
+      propertyPath: _tableCollider
+      value: 
+      objectReference: {fileID: 6743013}
+    - target: {fileID: 6362697842613803956, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
+      propertyPath: _cameraController
+      value: 
+      objectReference: {fileID: 330585548}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2357598187031629943, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1833806533}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
 --- !u!1 &2135180249
 GameObject:

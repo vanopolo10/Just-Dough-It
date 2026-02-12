@@ -12,15 +12,16 @@ GameObject:
   - component: {fileID: 7991174920108793155}
   - component: {fileID: 2154383563711086304}
   - component: {fileID: 905227809290691953}
-  - component: {fileID: 1548911221623960882}
   - component: {fileID: 1175521993765211216}
-  - component: {fileID: 260601923142391132}
+  - component: {fileID: 6216528193073456169}
+  - component: {fileID: 6362697842613803956}
+  - component: {fileID: 1215972166808873251}
   m_Layer: 0
   m_Name: Rolling Pin
   m_TagString: RollingPin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &1915886572909604334
 Transform:
@@ -106,44 +107,16 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 257
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.06268837
-  m_Height: 0.4624483
+  m_Radius: 0.06
+  m_Height: 0.82
   m_Direction: 0
   m_Center: {x: 0.00008419156, y: -0.0021687523, z: 0.0009855006}
---- !u!114 &1548911221623960882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2357598187031629943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99e602686bcfcbd48a1849090c1f55c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RollingPin
-  _raiseBy: 0.2
-  _rotationSmooth: 20
-  _heightSmooth: 10
-  _isRolling: 0
-  OnDoughEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDoughExited:
-    m_PersistentCalls:
-      m_Calls: []
-  OnRollStarted:
-    m_PersistentCalls:
-      m_Calls: []
-  OnRollEnded:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!136 &1175521993765211216
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -164,10 +137,10 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.06496027
-  m_Height: 0.35
+  m_Height: 0.45
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &260601923142391132
+--- !u!54 &6216528193073456169
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,8 +149,8 @@ Rigidbody:
   m_GameObject: {fileID: 2357598187031629943}
   serializedVersion: 5
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_LinearDamping: 10
+  m_AngularDamping: 3
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -188,9 +161,55 @@ Rigidbody:
     serializedVersion: 2
     m_Bits: 0
   m_ImplicitCom: 1
-  m_ImplicitTensor: 1
+  m_ImplicitTensor: 0
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Constraints: 84
+  m_CollisionDetection: 2
+--- !u!114 &6362697842613803956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2357598187031629943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99e602686bcfcbd48a1849090c1f55c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RollingPin
+  _cameraController: {fileID: 0}
+  _raiseBy: 0.2
+  _rotationSmooth: 10
+  _heightSmooth: 10
+  _tableCollider: {fileID: 0}
+  DoughEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  DoughExited:
+    m_PersistentCalls:
+      m_Calls: []
+  RollStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  RollEnded:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1215972166808873251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2357598187031629943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18eb5123c1494d4438e685f800776ef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickableObject
+  _clickTag: Skalka
+  _useReactiveAnimation: 0
+  _animationDuration: 0.5
+  _animationSpeed: 20
+  _animationAmplitude: 1

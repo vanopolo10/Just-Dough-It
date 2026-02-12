@@ -1,22 +1,20 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody))]
 public class RollingPin : MonoBehaviour
 {
     [SerializeField] private CameraController _cameraController;
-    [SerializeField] private float _raiseBy = 3f;
-    [SerializeField] private float _rotationSmooth = 5f;
+    [SerializeField] private float _raiseBy = 0.2f;
+    [SerializeField] private float _rotationSmooth = 10f;
     [SerializeField] private float _heightSmooth = 10f;
+    [SerializeField] private BoxCollider _tableCollider;
 
     [Header("Events")]
     public UnityEvent DoughEntered = new();
     public UnityEvent DoughExited = new();
     public UnityEvent RollStarted = new();
     public UnityEvent RollEnded = new();
-
-    [Header("Debug")]
-    [SerializeField] private bool _debug;
 
     private float _zCord;
     private float _baseY;
@@ -30,6 +28,7 @@ public class RollingPin : MonoBehaviour
     public bool IsRolling { get; private set; }
 
     private Camera _cam;
+    private Rigidbody _rb;
 
     private void Awake()
     {
@@ -40,6 +39,8 @@ public class RollingPin : MonoBehaviour
             enabled = false;
             return;
         }
+
+        _rb = GetComponent<Rigidbody>();
 
         _baseY = transform.position.y;
         _desiredY = _baseY;
@@ -60,7 +61,7 @@ public class RollingPin : MonoBehaviour
 
     private void OnDragAllowedChanged(bool allowed)
     {
-        _dragAllowed = true;
+        _dragAllowed = allowed;
         
         if (!allowed)
             CancelDrag();
@@ -92,12 +93,9 @@ public class RollingPin : MonoBehaviour
             Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
             targetPos.y = currentPos.y;
 
-            Vector3 pointA = targetPos + transform.right * 0.75f;
-            Vector3 pointB = targetPos - transform.right * 0.75f;
-            if (Physics.CheckCapsule(pointA, pointB, 0.1f, LayerMask.GetMask("TableObject")) && !_debug) return;
-
             Vector3 move = targetPos - currentPos;
-            transform.position = targetPos;
+            _rb.linearVelocity = move * 10f;
+            _rb.AddForce(move, ForceMode.VelocityChange);
 
             bool rightHeld = Input.GetMouseButton(1);
 
@@ -113,18 +111,14 @@ public class RollingPin : MonoBehaviour
 
             if (IsRolling)
             {
-                transform.rotation = Quaternion.Slerp(
-                    transform.rotation,
-                    _targetRotation,
-                    Time.deltaTime * _rotationSmooth
-                );
+                _rb.angularVelocity = new(0, (_targetRotation.y - transform.rotation.y) * _rotationSmooth, 0);
             }
         }
     }
 
     private void UpdateRotation(Vector3 move)
     {
-        Vector3 dir = new Vector3(move.x, 0f, move.z);
+        Vector3 dir = new(move.x, 0f, move.z);
         if (dir.sqrMagnitude < 0.0001f) return;
 
         dir.Normalize();
@@ -142,6 +136,17 @@ public class RollingPin : MonoBehaviour
         Vector3 pos = transform.position;
         pos.y = Mathf.Lerp(pos.y, _desiredY, Time.deltaTime * _heightSmooth);
         transform.position = pos;
+    }
+
+    private void FixedUpdate()
+    {
+        Bounds bounds = _tableCollider.bounds;
+        bool outside =
+            transform.position.x < bounds.min.x || transform.position.x > bounds.max.x ||
+            transform.position.z < bounds.min.z || transform.position.z > bounds.max.z;
+
+        if (outside)
+            _rb.linearVelocity = (bounds.center - transform.position) * 10;
     }
 
     private void StartRolling()
