@@ -1,9 +1,6 @@
-using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 
 [Serializable]
 public struct Product
@@ -18,51 +15,86 @@ public struct Product
     public FillingType Filling { get; set; }
 }
 
-
-
 [CreateAssetMenu(fileName = "CustomerQuest", menuName = "ScriptableObjects/CustomerSystem/CustomerQuest")]
 public class CustomerQuest : ScriptableObject
 {
-    public CustomerInteractionSet interactions;
-    public CustomerInteraction questInteraction;
-
-    public int ProductsNeeded;
-    public List<ProductType> ApplicableTypes;
-    public List<FillingType> ApplicableFillings;
-
-    public float timeoutOnCompletion = 3f, timeoutAfterGreeting = 3f;
+    [SerializeField] private CustomerInteractionSet _interactions;
+    [SerializeField] private CustomerInteraction _questInteraction;
+    [SerializeField] private int _productsNeeded;
+    [SerializeField] private List<ProductType> _applicableTypes;
+    [SerializeField] private List<FillingType> _applicableFillings;
+    [SerializeField] private float _timeoutOnCompletion = 3f;
+    [SerializeField] private float _timeoutAfterGreeting = 3f;
 
     private int _productsLeft;
     private Customer _customer;
+    private bool _isInitialized;
+
+    public CustomerInteractionSet Interactions => _interactions;
+    public CustomerInteraction QuestInteraction => _questInteraction;
 
     public void Initialize(Customer customer)
     {
+        if (customer == null)
+        {
+            Debug.LogError($"CustomerQuest {name}: Customer is null");
+            return;
+        }
+
         _customer = customer;
+        _productsLeft = _productsNeeded;
+        _isInitialized = true;
+        
+        if (_customer.AnimatorController != null)
+            _customer.AnimatorController.OnGreeting();
 
-        _productsLeft = ProductsNeeded;
-
-        customer.AnimatorController.OnGreeting();
-        interactions.OnGreeting.PlayOut(customer);
-
-        _customer.Invoke(nameof(_customer.StartQuest), timeoutAfterGreeting);
+        if (_interactions != null && _interactions.OnGreeting != null)
+            _interactions.OnGreeting.PlayOut(_customer);
+        else
+            Debug.LogWarning($"CustomerQuest {name}: OnGreeting interaction is missing");
+            
+        _customer.Invoke(nameof(_customer.StartQuest), _timeoutAfterGreeting);
     }
-    public void StartQuest() {
-        _customer.AnimatorController.OnQuestStarted();
-        questInteraction.PlayOut(_customer);
-        _customer.DialogueManager.SetDialogueOptions(interactions.DialogueOptions);
+
+    public void StartQuest()
+    {
+        if (!_isInitialized || _customer == null)
+        {
+            Debug.LogWarning($"CustomerQuest {name}: Cannot start quest - not properly initialized");
+            return;
+        }
+        
+        if (_customer.AnimatorController != null)
+            _customer.AnimatorController.OnQuestStarted();
+
+        if (_questInteraction != null)
+            _questInteraction.PlayOut(_customer);
+        else
+            Debug.LogWarning($"CustomerQuest {name}: QuestInteraction is missing");
+        
+        if (_interactions != null && _customer.DialogueManager != null)
+            _customer.DialogueManager.SetDialogueOptions(_interactions.DialogueOptions);
     }
+
     private bool Check(Product product)
     {
-        bool typeFits = false, fillingFits = false;
+        if (_applicableTypes == null || _applicableTypes.Count == 0 ||
+            _applicableFillings == null || _applicableFillings.Count == 0)
+            return true;
 
-        foreach (ProductType type in ApplicableTypes) {
-            if (product.Type == type || type == ProductType.Any) { 
+        bool typeFits = false;
+        bool fillingFits = false;
+
+        foreach (ProductType type in _applicableTypes)
+        {
+            if (product.Type == type || type == ProductType.Any)
+            {
                 typeFits = true;
                 break;
             }
         }
 
-        foreach (FillingType filling in ApplicableFillings)
+        foreach (FillingType filling in _applicableFillings)
         {
             if (product.Filling == filling || filling == FillingType.Any)
             {
@@ -71,41 +103,75 @@ public class CustomerQuest : ScriptableObject
             }
         }
 
-        return (typeFits && fillingFits);
+        return typeFits && fillingFits;
     }
 
-    public void FinishQuest() {
-        _customer.AnimatorController.OnQuestFinished();
-        interactions.OnQuestCompleted.PlayOut(_customer);
+    public void FinishQuest()
+    {
+        if (!_isInitialized || _customer == null)
+        {
+            Debug.LogWarning($"CustomerQuest {name}: Cannot finish quest - not properly initialized");
+            return;
+        }
+        
+        if (_customer.AnimatorController != null)
+            _customer.AnimatorController.OnQuestFinished();
 
-        _customer.FinishQuest();
+        if (_interactions != null && _interactions.OnQuestCompleted != null)
+            _interactions.OnQuestCompleted.PlayOut(_customer);
 
-        _customer.DialogueManager.Timeout(timeoutOnCompletion);
+        if (_customer != null)
+            _customer.FinishQuest();
+
+        if (_customer != null && _customer.DialogueManager != null)
+            _customer.DialogueManager.Timeout(_timeoutOnCompletion);
+
+        _isInitialized = false;
     }
 
-    public bool OfferProduct(Product product) { 
+    public bool OfferProduct(Product product)
+    {
+        if (!_isInitialized || _customer == null)
+        {
+            Debug.LogWarning($"CustomerQuest {name}: Cannot offer product - quest not initialized");
+            return false;
+        }
+
         bool fits = Check(product);
 
         if (fits)
         {
             _productsLeft--;
+            
             if (_productsLeft <= 0)
             {
                 FinishQuest();
-            }    
+            }
             else
             {
-                _customer.AnimatorController.OnItemAccepted();
-                interactions.OnItemAccepted.PlayOut(_customer);
+                if (_customer.AnimatorController != null)
+                    _customer.AnimatorController.OnItemAccepted();
+
+                if (_interactions != null && _interactions.OnItemAccepted != null)
+                    _interactions.OnItemAccepted.PlayOut(_customer);
             }
-                
         }
         else
         {
-            _customer.AnimatorController.OnItemRejected();
-            interactions.OnItemRejected.PlayOut(_customer);
+            if (_customer.AnimatorController != null)
+                _customer.AnimatorController.OnItemRejected();
+
+            if (_interactions != null && _interactions.OnItemRejected != null)
+                _interactions.OnItemRejected.PlayOut(_customer);
         }
 
         return fits;
+    }
+
+    public void ResetQuest()
+    {
+        _productsLeft = _productsNeeded;
+        _isInitialized = false;
+        _customer = null;
     }
 }

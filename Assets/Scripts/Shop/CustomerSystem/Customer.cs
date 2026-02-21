@@ -1,26 +1,25 @@
+using System;
 using UnityEngine;
 
 public class Customer : MonoBehaviour
 {
-    [SerializeField] protected float _timeoutBeforeInitializing = 4f,
-        _timeoutBeforeDespawning = 6f,
-        _timeoutBeforeResettingDialogue = 10f;
-
+    [SerializeField] protected float _timeoutBeforeInitializing = 4f;
+    [SerializeField] protected float _timeoutBeforeResettingDialogue = 10f;
+    
     [SerializeField] protected CustomerQuest _quest;
     
     protected CustomerManager _manager;
     protected DialogueManager _dialogueManager;
-    protected Animator _animator;
     protected CustomerAnimatorController _animatorController;
+
+    public event Action QuestCompleted;
     
     public DialogueManager DialogueManager => _dialogueManager;
-    public Animator Animator => _animator;
     public CustomerAnimatorController AnimatorController => _animatorController;
 
     protected void Start()
     {
         _dialogueManager = GetComponentInParent<DialogueManager>();
-        _animator = GetComponentInChildren<Animator>();
         _animatorController = GetComponentInChildren<CustomerAnimatorController>();
         _manager = GetComponentInParent<CustomerManager>();
     }
@@ -29,15 +28,9 @@ public class Customer : MonoBehaviour
     {
         Invoke(nameof(Initialize), _timeoutBeforeInitializing);
     }
-
-    protected void Initialize()
+    
+    public void Despawn()
     {
-        _quest.Initialize(this);
-    }
-
-    protected void Despawn()
-    {
-        _manager.NextCustomer();
         Destroy(gameObject);
     }
 
@@ -49,8 +42,7 @@ public class Customer : MonoBehaviour
     public void FinishQuest()
     {
         CancelInvoke(nameof(ResetDialogue));
-
-        Invoke(nameof(Despawn), _timeoutBeforeDespawning);
+        QuestCompleted?.Invoke();
     }
 
     public void PlayOutDialogue(DialogueOption option)
@@ -58,14 +50,14 @@ public class Customer : MonoBehaviour
         CancelInvoke(nameof(ResetDialogue));
         Invoke(nameof(ResetDialogue), _timeoutBeforeResettingDialogue);
 
-        option.interaction.PlayOut(this);
+        option.Interaction.PlayOut(this);
     }
 
     public void ResetDialogue()
     {
         CancelInvoke(nameof(ResetDialogue));
 
-        _quest.questInteraction.PlayOut(this);
+        _quest.QuestInteraction.PlayOut(this);
     }
 
     public bool OfferProduct(Product product)
@@ -76,5 +68,10 @@ public class Customer : MonoBehaviour
         bool successful = _quest.OfferProduct(product);
 
         return successful;
+    }
+    
+    protected void Initialize()
+    {
+        _quest.Initialize(this);
     }
 }

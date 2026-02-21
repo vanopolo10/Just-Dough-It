@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c582e727f0c967748952c096d2b9c765, type: 3}
   m_Name: FatQuest 2
   m_EditorClassIdentifier: Assembly-CSharp::CustomerQuest
-  interactions: {fileID: 11400000, guid: fa88ce5041a3c694d9a7da1542fdd8a5, type: 2}
-  questInteraction:
-    dialogueKey: "\u0417\u0430\u0432\u0435\u0440\u043D\u0438\u0442\u0435 \u043C\u043D\u0435
+  _interactions: {fileID: 11400000, guid: fa88ce5041a3c694d9a7da1542fdd8a5, type: 2}
+  _questInteraction:
+    _dialogueKey: "\u0417\u0430\u0432\u0435\u0440\u043D\u0438\u0442\u0435 \u043C\u043D\u0435
       \u043E\u0434\u0438\u043D \u043F\u0438\u0440\u043E\u0436\u043E\u043A \u0441
       \u043C\u044F\u0441\u043E\u043C, \u043F\u043E\u0436\u0430\u043B\u0443\u0439\u0441\u0442\u0430"
-    animatorTrigger: 
-  ProductsNeeded: 1
-  ApplicableTypes: 0100000002000000
-  ApplicableFillings: 01000000
-  timeoutOnCompletion: 3
-  timeoutAfterGreeting: 2
+  _productsNeeded: 1
+  _applicableTypes: 0200000001000000
+  _applicableFillings: 01000000
+  _timeoutOnCompletion: 3
+  _timeoutAfterGreeting: 2

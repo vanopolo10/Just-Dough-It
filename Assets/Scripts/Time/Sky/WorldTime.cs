@@ -4,75 +4,107 @@ using UnityEngine;
 
 public class WorldTime : MonoBehaviour
 {
-    private Coroutine _inGameTimeCoroutine;
+    private const float HundredPercent = 100f;
     
-    public GameTime InGameTime;
-    
+    [Header("Day Range")]
+    [SerializeField] private int _minHours = 8;
+    [SerializeField] private int _maxHours = 18;
+    [SerializeField] private float _sunDuration = 20;
+
+    public GameTime InGameTime { get; private set; }
+
     public event Action<GameTime> TimeChanged;
     public event Action DayOver;
-    
-    private void Start()
-    {
-        InGameTime.Initialize();
 
-        InGameTime.DayOver += OnDayOver;
-        
-        _inGameTimeCoroutine = StartCoroutine(TimeCoroutine());
+    private bool _dayEnded;
+    private Coroutine _smoothAddCoroutine;
+    
+    private void Awake()
+    {
+        InGameTime = new GameTime(_minHours, _maxHours);
+        SetDayPercent(0f);
     }
     
-    private IEnumerator TimeCoroutine()
+    public void SetDayPercent(float percent)
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(0.05f);
+        if (_dayEnded)
+            return;
 
-            if (InGameTime.Minutes == 59)
-                InGameTime.SetTime(InGameTime.Hours + 1, 0);
-            else
-                InGameTime.SetTime(InGameTime.Hours, InGameTime.Minutes + 1);
-        
-            TimeChanged?.Invoke(InGameTime);
+        percent = Mathf.Clamp01(percent);
+
+        InGameTime.SetPercent(percent);
+
+        TimeChanged?.Invoke(InGameTime);
+
+        if (percent >= 1f)
+        {
+            _dayEnded = true;
+            DayOver?.Invoke();
         }
     }
 
-    private void OnDayOver()
+    public void StartSmoothAddPercent(float percent)
     {
-        StopCoroutine(_inGameTimeCoroutine);
-        DayOver?.Invoke();
+        if (_smoothAddCoroutine != null)
+            StopCoroutine(_smoothAddCoroutine);
+        
+        _smoothAddCoroutine = StartCoroutine(SmoothAddPercent(percent / HundredPercent, _sunDuration));
+    }
+
+    private IEnumerator SmoothAddPercent(float percentToAdd, float duration)
+    {
+        float start = InGameTime.CompletePercent;
+        float target = Mathf.Clamp01(start + percentToAdd);
+
+        float t = 0f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float p = Mathf.Lerp(start, target, t / duration);
+            SetDayPercent(p);
+            yield return null;
+        }
+
+        SetDayPercent(target);
     }
     
-    public struct GameTime
+    public void AddDayPercent(float deltaPercent)
     {
-        private const int MinHours = 8;
-        private const int MaxHours = 18;
+        Debug.Log("AddDayPercent called: " + deltaPercent);
 
+        float normalized = deltaPercent / HundredPercent;
+        SetDayPercent(InGameTime.CompletePercent + normalized);
+    }
+
+    public class GameTime
+    {
+        private const int ClockPower = 60;
+        
+        private readonly int _minHours;
+        private readonly int _maxHours;
+
+        public float CompletePercent { get; private set; }
         public int Hours { get; private set; }
         public int Minutes { get; private set; }
 
-        public float CompletePercent
+        public GameTime(int minHours, int maxHours)
         {
-            get
-            {
-                int totalMinutesInDay = (MaxHours - MinHours) * 60;
-                int passedMinutes = (Hours - MinHours) * 60 + Minutes;
-                return Mathf.Clamp01((float)passedMinutes / totalMinutesInDay);
-            }
+            _minHours = minHours;
+            _maxHours = maxHours;
         }
 
-        public void Initialize()
+        public void SetPercent(float percent)
         {
-            SetTime(MinHours, 0);
-        }
+            CompletePercent = Mathf.Clamp01(percent);
 
-        public event Action DayOver;
-    
-        public void SetTime(int hours, int minutes)
-        {
-            Hours = Mathf.Clamp(hours, MinHours, MaxHours);
-            Minutes = Mathf.Clamp(minutes, 0, 59);
-            
-            if (hours == MaxHours)
-                DayOver?.Invoke();
+            float totalMinutes = (_maxHours - _minHours) * ClockPower;
+            float passedMinutes = totalMinutes * CompletePercent;
+
+            int total = Mathf.FloorToInt(passedMinutes);
+
+            Hours = _minHours + total / ClockPower;
+            Minutes = total % ClockPower;
         }
     }
 }

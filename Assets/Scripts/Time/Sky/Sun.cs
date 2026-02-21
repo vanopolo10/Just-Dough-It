@@ -40,7 +40,7 @@ public class Sun : MonoBehaviour
 
     private void OnTimeChanged(WorldTime.GameTime time)
     {
-        float p = Mathf.Clamp01(time.CompletePercent);
+        float p = time.CompletePercent;
 
         float angle = _sunAngleCurve.Evaluate(p);
         transform.rotation = Quaternion.Euler(angle, _yRotation, 0f);
@@ -48,12 +48,4 @@ public class Sun : MonoBehaviour
         _light.intensity = _intensityCurve.Evaluate(p);
         _light.color = _colorGradient.Evaluate(p);
     }
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (Application.isPlaying && _worldTime != null && _light != null)
-            OnTimeChanged(_worldTime.InGameTime);
-    }
-#endif
 }

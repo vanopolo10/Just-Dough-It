@@ -4,36 +4,45 @@ using UnityEngine;
 
 public class CustomerRouteMover : MonoBehaviour
 {
+    private static readonly int OpenDoor = Animator.StringToHash("OpenDoor");
+    private static readonly int CloseDoor = Animator.StringToHash("CloseDoor");
+
+    [Header("Door")]
+    [SerializeField] private Animator _doorAnimator;
+    
+    [Header("Targets")]
     [SerializeField] private Transform _doorPoint;
     [SerializeField] private Transform _doorLookAt;
     [SerializeField] private Transform _counterPoint;
+    [SerializeField] private Transform _doorInside;
     [SerializeField] private Transform _exitPoint;
     [SerializeField] private Transform _exitLookAt;
 
+    [Header("Movement")]
     [SerializeField] private float _moveSpeed = 1.6f;
     [SerializeField] private float _rotateSpeed = 8f;
     [SerializeField] private float _stopDistance = 0.05f;
     [SerializeField] private float _modelForwardOffsetY = 180f;
+    [SerializeField] private float _exitDelay = 5;
 
     private Transform _target;
     private Coroutine _routine;
-    private bool _isDoorAnimationFinished;
 
     private CustomerAnimatorController _animatorController;
+    private Customer _customer;
 
     public event Action ReachedCounter;
     public event Action LeftCafe;
 
-    public void MoveIn(Transform target, CustomerAnimatorController animatorController, int sadWalkID)
+    public void MoveIn(Transform target, CustomerAnimatorController animatorController)
     {
         StopCurrentRoutine();
         _target = target;
         _animatorController = animatorController;
-        _isDoorAnimationFinished = false;
-
-        _animatorController.DoorAnimationFinished += OnDoorAnimationFinished;
-
-        _routine = StartCoroutine(EnterRoutine(sadWalkID));
+        _customer = _animatorController.GetComponentInParent<Customer>();
+        _customer.QuestCompleted += MoveOut;
+        
+        _routine = StartCoroutine(EnterRoutine());
     }
 
     public void MoveOut()
@@ -42,10 +51,9 @@ public class CustomerRouteMover : MonoBehaviour
         _routine = StartCoroutine(ExitRoutine());
     }
 
-    private IEnumerator EnterRoutine(int sadWalkID)
+    private IEnumerator EnterRoutine()
     {
-        _animatorController.StartSad(sadWalkID);
-        _animatorController.LeaveCounter();
+        _animatorController.StartSad();
 
         _animatorController.StartWalking();
         yield return MoveTo(_doorPoint.position);
@@ -53,6 +61,7 @@ public class CustomerRouteMover : MonoBehaviour
         yield return FaceTo(_doorLookAt.position);
 
         _animatorController.TriggerOpenDoor();
+        _doorAnimator.SetTrigger(OpenDoor);
 
         yield return MoveTo(_counterPoint.position);
 
@@ -64,24 +73,24 @@ public class CustomerRouteMover : MonoBehaviour
 
     private IEnumerator ExitRoutine()
     {
-        _animatorController.LeaveCounter();
+        yield return new WaitForSeconds(_exitDelay);
+        
         _animatorController.StartLeaving();
 
         yield return FaceTo(_doorLookAt.position);
 
         _animatorController.StartWalking();
-        yield return MoveTo(_doorPoint.position);
+        yield return MoveTo(_doorInside.position);
 
         _animatorController.TriggerOpenDoor();
+        _doorAnimator.SetTrigger(CloseDoor);
 
         yield return MoveTo(_exitPoint.position);
-
-        _animatorController.StopWalking();
-
         yield return FaceTo(_exitLookAt.position);
+        yield return MoveTo(_exitLookAt.position);
 
+        _customer.QuestCompleted -= MoveOut;
         LeftCafe?.Invoke();
-        Cleanup();
     }
 
     private IEnumerator MoveTo(Vector3 destination)
@@ -122,18 +131,5 @@ public class CustomerRouteMover : MonoBehaviour
             StopCoroutine(_routine);
             _routine = null;
         }
-    }
-
-    private void OnDoorAnimationFinished()
-    {
-        _isDoorAnimationFinished = true;
-    }
-
-    private void Cleanup()
-    {
-        if (_animatorController)
-            _animatorController.DoorAnimationFinished -= OnDoorAnimationFinished;
-
-        _animatorController = null;
     }
 }

@@ -52,10 +52,6 @@ MonoBehaviour:
   _quests:
   - Quest: {fileID: 11400000, guid: 18f26de68419ab9459f5bb07bf0b3e95, type: 2}
     Weight: 5
-  - Quest: {fileID: 11400000, guid: bc15e45245d21f04286c33a9a269e788, type: 2}
-    Weight: 0
-  - Quest: {fileID: 11400000, guid: 64eec1a6d8cf45c4a92a18b8f55c001c, type: 2}
-    Weight: 0
 --- !u!1001 &3699702030351760137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -108,7 +104,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8720146932771515456, guid: bb534a47e8dc6f04daf2c4108a5fee5c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

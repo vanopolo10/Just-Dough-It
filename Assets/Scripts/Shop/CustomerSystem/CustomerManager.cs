@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(CustomerRouteMover))]
 public class CustomerManager : MonoBehaviour
 {
     [SerializeField] private List<CustomerPool> _schedule;
-    
+
+    private CustomerRouteMover _customerRouteMover;
     private CustomerModelSpawner _spawner;
     private int _currentIndex = 0;
     private Customer _currentCustomer;
@@ -13,13 +15,30 @@ public class CustomerManager : MonoBehaviour
     public Customer CurrentCustomer => _currentCustomer;
     public List<CustomerPool> Schedule => _schedule;
     
-    public UnityEvent DayStarted = new UnityEvent();
-    public UnityEvent DayEnded = new UnityEvent();
-    public UnityEvent CustomerSpawned = new UnityEvent();
+    public UnityEvent DayStarted = new();
+    public UnityEvent DayEnded = new();
+    public UnityEvent CustomerSpawned = new();
+
+    private void Awake()
+    {
+        _spawner = GetComponent<CustomerModelSpawner>();
+        _customerRouteMover = GetComponent<CustomerRouteMover>();
+    }
+
+    private void OnEnable()
+    {
+        _customerRouteMover.ReachedCounter += InitializeCustomer;
+        _customerRouteMover.LeftCafe += NextCustomer;
+    }
+    
+    private void OnDisable()
+    {
+        _customerRouteMover.ReachedCounter -= InitializeCustomer;
+        _customerRouteMover.LeftCafe -= NextCustomer;
+    }
 
     private void Start()
     {
-        _spawner = GetComponent<CustomerModelSpawner>();
         StartNewDay();
     }
 
@@ -34,24 +53,24 @@ public class CustomerManager : MonoBehaviour
 
     public void SpawnCustomer()
     {
-        GameObject prefabFromPool = _schedule[_currentIndex].GetCustomerfromPool();
+        GameObject prefabFromPool = _schedule[_currentIndex].GetCustomerFromPool();
         GameObject spawnedCustomer = _spawner.SpawnNewCustomer(prefabFromPool);
 
         _currentCustomer = spawnedCustomer.GetComponent<Customer>();
 
         CustomerSpawned.Invoke();
-        Debug.Log("fully Spawned Customer");
+        print("fully Spawned Customer");
     }
 
     public void NextCustomer()
     {
+        _currentCustomer.Despawn();
         _currentIndex++;
         
         if (_currentIndex >= _schedule.Count)
         {
             _currentIndex = 0;
             EndDay();
-            return;
         }
         else
         {
@@ -61,7 +80,7 @@ public class CustomerManager : MonoBehaviour
 
     public void EndDay()
     {
-        Debug.Log("Day ended! Starting new one in 10s");
+        print("Day ended! Starting new one in 10s");
         DayEnded.Invoke();
 
         Invoke(nameof(StartNewDay), 10f); // temp obviously
@@ -70,5 +89,10 @@ public class CustomerManager : MonoBehaviour
     public void ResetCustomerDialogue()
     {
         _currentCustomer?.ResetDialogue();
+    }
+
+    private void InitializeCustomer()
+    {
+        _currentCustomer.OnReachedCounter();
     }
 }
