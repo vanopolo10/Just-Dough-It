@@ -7,6 +7,8 @@ public class CustomerPool : ScriptableObject
 {
     [SerializeField] private List<WeightedObject> _pool;
 
+    public int Count => _pool.Count;
+
     public GameObject GetCustomerFromPool()
     {
         int totalWeight = 0;

@@ -5,6 +5,9 @@ using UnityEngine.Events;
 [RequireComponent(typeof(CustomerRouteMover))]
 public class CustomerManager : MonoBehaviour
 {
+    private const float HundredPercent = 100f;
+    
+    [SerializeField] private WorldTime _worldTime;
     [SerializeField] private List<CustomerPool> _schedule;
 
     private CustomerRouteMover _customerRouteMover;
@@ -53,6 +56,8 @@ public class CustomerManager : MonoBehaviour
 
     public void SpawnCustomer()
     {
+        _worldTime.StartSmoothAddPercent(HundredPercent / _schedule.Count);
+        
         GameObject prefabFromPool = _schedule[_currentIndex].GetCustomerFromPool();
         GameObject spawnedCustomer = _spawner.SpawnNewCustomer(prefabFromPool);
 
