@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Collider))]
 public class DoughDrag : MonoBehaviour
@@ -60,11 +61,14 @@ public class DoughDrag : MonoBehaviour
             return;
         }
 
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
         if (_bothHeld == false)
         {
             _zCord = Camera.main!.WorldToScreenPoint(transform.position).z;
             _offset = transform.position - Utils.GetMouseWorldPos(_zCord);
-            _bothHeld = true;
+            if (Physics.Raycast(ray, 100f, LayerMask.GetMask("Dough")))
+                _bothHeld = true;
         }
 
         if (_isDragging == false)
@@ -73,9 +77,12 @@ public class DoughDrag : MonoBehaviour
             DragStarted?.Invoke();
         }
 
-        Vector3 targetPos = Utils.GetMouseWorldPos(_zCord) + _offset;
-        targetPos.y = transform.position.y;
-        transform.position = targetPos;
+        if (Physics.Raycast(ray, 100f, LayerMask.GetMask("CookingSurface")))
+        {
+            Vector3 targetPos = Utils.GetMouseWorldPos(_zCord) + _offset;
+            targetPos.y = transform.position.y;
+            transform.position = targetPos;
+        }
     }
 
     private void OnMouseUp()
