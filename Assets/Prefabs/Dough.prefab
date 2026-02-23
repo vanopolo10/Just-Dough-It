@@ -2044,7 +2044,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6050629272924962633
 Transform:
   m_ObjectHideFlags: 0
@@ -18237,6 +18237,7 @@ GameObject:
   - component: {fileID: 6632114647629083816}
   - component: {fileID: 4767568361417277524}
   - component: {fileID: 4977137466268770855}
+  - component: {fileID: 8060793835221686939}
   m_Layer: 0
   m_Name: Raw
   m_TagString: Click_Dough
@@ -18332,6 +18333,18 @@ Animation:
   m_AnimatePhysics: 0
   m_UpdateMode: 0
   m_CullingType: 0
+--- !u!114 &8060793835221686939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740836076075418074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b30713652de2b41a98c8061d5e16e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &3743830383059453761
 GameObject:
   m_ObjectHideFlags: 0
@@ -18441,6 +18454,7 @@ MonoBehaviour:
   _burnStartInSeconds: 15
   _burnFullInSeconds: 20
   _returnDuration: 0.25
+  _tray: {fileID: 0}
 --- !u!64 &1151415356282743025
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18535,8 +18549,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 10, z: 1}
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!114 &3718586013197215733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30042,6 +30056,7 @@ MonoBehaviour:
   _burnStartInSeconds: 15
   _burnFullInSeconds: 20
   _returnDuration: 0.25
+  _tray: {fileID: 0}
 --- !u!136 &6788419875641340486
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -30137,7 +30152,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.2168518, y: 1, z: 1}
+  m_Size: {x: 1.2168518, y: 10, z: 1}
   m_Center: {x: 0.012736801, y: 0.57, z: 3.611327e-12}
 --- !u!114 &4255877584397813824
 MonoBehaviour:
@@ -37964,6 +37979,7 @@ MonoBehaviour:
   _burnStartInSeconds: 15
   _burnFullInSeconds: 20
   _returnDuration: 0.25
+  _tray: {fileID: 0}
 --- !u!114 &2567585117612482723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40861,7 +40877,7 @@ PrefabInstance:
     - target: {fileID: 8101706734775659886, guid: 0aee4b690d3e4b14193835ee4d6bbc83, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 7217f354a00dc1b469cbd8c8ed2231c2, type: 2}
+      objectReference: {fileID: 2100000, guid: 2360ef3ddff64ec4586b2dd376ac9727, type: 2}
     - target: {fileID: 8219286483419260476, guid: 0aee4b690d3e4b14193835ee4d6bbc83, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -40979,6 +40995,7 @@ MonoBehaviour:
   _burnStartInSeconds: 10
   _burnFullInSeconds: 20
   _returnDuration: 0.25
+  _tray: {fileID: 0}
 --- !u!114 &4475686989499079511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41659,7 +41676,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4002566394627270462, guid: dd6466b7789425141854cce7773bb114, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4002566394627270462, guid: dd6466b7789425141854cce7773bb114, type: 3}
       propertyPath: m_TagString
@@ -41720,7 +41737,7 @@ PrefabInstance:
     - target: {fileID: 5622516287850990911, guid: dd6466b7789425141854cce7773bb114, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 7217f354a00dc1b469cbd8c8ed2231c2, type: 2}
+      objectReference: {fileID: 2100000, guid: 0534c7f5aac19304f961e8faeae11ad6, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -41739,13 +41756,28 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4720717080918184033, guid: dd6466b7789425141854cce7773bb114, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3553415542352128532}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4002566394627270462, guid: dd6466b7789425141854cce7773bb114, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8764528889352689522}
   m_SourcePrefab: {fileID: 100100000, guid: dd6466b7789425141854cce7773bb114, type: 3}
 --- !u!1 &1623926848918556109 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4002566394627270462, guid: dd6466b7789425141854cce7773bb114, type: 3}
   m_PrefabInstance: {fileID: 2378639683751914227}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8764528889352689522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623926848918556109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b30713652de2b41a98c8061d5e16e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoughSettleHandler
 --- !u!4 &6954115401132374674 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4720717080918184033, guid: dd6466b7789425141854cce7773bb114, type: 3}
@@ -41830,7 +41862,7 @@ PrefabInstance:
     - target: {fileID: 9163821108781114674, guid: d994a707be74e754881854727e8b5535, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 7217f354a00dc1b469cbd8c8ed2231c2, type: 2}
+      objectReference: {fileID: 2100000, guid: 686980241851c5f4fa38ea766b0dbf75, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -41843,7 +41875,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3350438287799971510, guid: d994a707be74e754881854727e8b5535, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3251380716511400029}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 471217115774727432, guid: d994a707be74e754881854727e8b5535, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8019476769171329725}
   m_SourcePrefab: {fileID: 100100000, guid: d994a707be74e754881854727e8b5535, type: 3}
 --- !u!4 &896288124040176831 stripped
 Transform:
@@ -41855,6 +41890,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 471217115774727432, guid: d994a707be74e754881854727e8b5535, type: 3}
   m_PrefabInstance: {fileID: 2454290907751483913}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8019476769171329725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2631648008192245505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b30713652de2b41a98c8061d5e16e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoughSettleHandler
 --- !u!1001 &2742288655019491820
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42045,7 +42092,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6795827721696767644, guid: 715550f24c157174d8396287bd1b9ef2, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6795827721696767644, guid: 715550f24c157174d8396287bd1b9ef2, type: 3}
       propertyPath: m_TagString
@@ -42082,7 +42129,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5834161951202672284, guid: 715550f24c157174d8396287bd1b9ef2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2056872778577205693}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6795827721696767644, guid: 715550f24c157174d8396287bd1b9ef2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5881080443190278705}
   m_SourcePrefab: {fileID: 100100000, guid: 715550f24c157174d8396287bd1b9ef2, type: 3}
 --- !u!4 &8573035523039149936 stripped
 Transform:
@@ -42094,6 +42144,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6795827721696767644, guid: 715550f24c157174d8396287bd1b9ef2, type: 3}
   m_PrefabInstance: {fileID: 2742288655019491820}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5881080443190278705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8665260270550626160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b30713652de2b41a98c8061d5e16e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoughSettleHandler
 --- !u!114 &8938452697217779893 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6486681403609647449, guid: 715550f24c157174d8396287bd1b9ef2, type: 3}
@@ -42991,7 +43053,7 @@ PrefabInstance:
     - target: {fileID: 869896122210662170, guid: 60f16bbc2caff6741b84296e6c0aa9e2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 7217f354a00dc1b469cbd8c8ed2231c2, type: 2}
+      objectReference: {fileID: 2100000, guid: e2cf317cd3a34454c9a1d99974e6d959, type: 2}
     - target: {fileID: 7105880148393541931, guid: 60f16bbc2caff6741b84296e6c0aa9e2, type: 3}
       propertyPath: m_Name
       value: Screw dough
@@ -43075,7 +43137,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8854230269384011111, guid: 60f16bbc2caff6741b84296e6c0aa9e2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7757899837366540045}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7105880148393541931, guid: 60f16bbc2caff6741b84296e6c0aa9e2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4511276664935210308}
   m_SourcePrefab: {fileID: 100100000, guid: 60f16bbc2caff6741b84296e6c0aa9e2, type: 3}
 --- !u!4 &5190361567286656527 stripped
 Transform:
@@ -43087,6 +43152,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7105880148393541931, guid: 60f16bbc2caff6741b84296e6c0aa9e2, type: 3}
   m_PrefabInstance: {fileID: 3667994825699939176}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4511276664935210308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5799085478274634307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b30713652de2b41a98c8061d5e16e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoughSettleHandler
 --- !u!1001 &3992330031526032288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46013,13 +46090,28 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3249866387270803634, guid: be41ce768d1134a4698a6f9d50f3add5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2429949300555722253}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8306852512442829939, guid: be41ce768d1134a4698a6f9d50f3add5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3444919002638879041}
   m_SourcePrefab: {fileID: 100100000, guid: be41ce768d1134a4698a6f9d50f3add5, type: 3}
 --- !u!1 &2011884246188652929 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8306852512442829939, guid: be41ce768d1134a4698a6f9d50f3add5, type: 3}
   m_PrefabInstance: {fileID: 7542535790105998834}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3444919002638879041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011884246188652929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b30713652de2b41a98c8061d5e16e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoughSettleHandler
 --- !u!4 &5023096969144440128 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3249866387270803634, guid: be41ce768d1134a4698a6f9d50f3add5, type: 3}
@@ -46099,7 +46191,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5194918119980237695, guid: 56042505dd3a6bd4fbb2a72c6eb2e29c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5194918119980237695, guid: 56042505dd3a6bd4fbb2a72c6eb2e29c, type: 3}
       propertyPath: m_TagString
@@ -46120,13 +46212,28 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4740645878603477971, guid: 56042505dd3a6bd4fbb2a72c6eb2e29c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 88451448606744092}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5194918119980237695, guid: 56042505dd3a6bd4fbb2a72c6eb2e29c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 519765548202552614}
   m_SourcePrefab: {fileID: 100100000, guid: 56042505dd3a6bd4fbb2a72c6eb2e29c, type: 3}
 --- !u!1 &2381124529505431215 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5194918119980237695, guid: 56042505dd3a6bd4fbb2a72c6eb2e29c, type: 3}
   m_PrefabInstance: {fileID: 7571530248861937104}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &519765548202552614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2381124529505431215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b30713652de2b41a98c8061d5e16e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoughSettleHandler
 --- !u!4 &2943474996600512003 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4740645878603477971, guid: 56042505dd3a6bd4fbb2a72c6eb2e29c, type: 3}
@@ -47513,13 +47620,33 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2876024537080083981, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3942225449606479364}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1530826148038005649, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5103725422000802318}
   m_SourcePrefab: {fileID: 100100000, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
 --- !u!4 &5854417890190894521 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2876024537080083981, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
   m_PrefabInstance: {fileID: 8563211072322016180}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7199062677511815205 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1530826148038005649, guid: 5273a0a6655ac274bb6ebff8644bc6df, type: 3}
+  m_PrefabInstance: {fileID: 8563211072322016180}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5103725422000802318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7199062677511815205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b30713652de2b41a98c8061d5e16e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoughSettleHandler
 --- !u!1001 &8690663526483144610
 PrefabInstance:
   m_ObjectHideFlags: 0
