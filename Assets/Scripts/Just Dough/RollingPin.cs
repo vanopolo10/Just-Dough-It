@@ -1,5 +1,7 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngineInternal;
 
 [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody))]
 public class RollingPin : MonoBehaviour
@@ -19,6 +21,7 @@ public class RollingPin : MonoBehaviour
     private float _zCord;
     private float _baseY;
     private float _desiredY;
+    private float _doughOffsetY;
 
     private bool _dragAllowed = true;
     private bool _isDragging;
@@ -97,15 +100,6 @@ public class RollingPin : MonoBehaviour
             _rb.linearVelocity = move * 10f;
             _rb.AddForce(move, ForceMode.VelocityChange);
 
-            bool rightHeld = Input.GetMouseButton(1);
-
-            if (rightHeld && !IsRolling)
-                StartRolling();
-            else if (!rightHeld && IsRolling)
-                StopRolling();
-
-            _desiredY = IsRolling ? _baseY : _baseY + _raiseBy;
-
             if (IsRolling && move.sqrMagnitude > 0.00001f)
                 UpdateRotation(move);
 
@@ -114,6 +108,13 @@ public class RollingPin : MonoBehaviour
                 _rb.angularVelocity = new(0, (_targetRotation.y - transform.rotation.y) * _rotationSmooth, 0);
             }
         }
+
+        bool rightHeld = Input.GetMouseButton(1);
+
+        if (rightHeld && !IsRolling)
+            StartRolling();
+        else if (!rightHeld && IsRolling)
+            StopRolling();
     }
 
     private void UpdateRotation(Vector3 move)
@@ -147,6 +148,14 @@ public class RollingPin : MonoBehaviour
 
         if (outside)
             _rb.linearVelocity = (bounds.center - transform.position) * 10;
+
+        Collider[] colliders = Physics.OverlapCapsule(transform.position - transform.right * 0.8f, transform.position + transform.right * 0.8f, 0.06f, LayerMask.GetMask("Dough"));
+        if (colliders.Length > 0)
+            _rb.linearDamping = 30f;
+        else
+            _rb.linearDamping = 10f;
+
+        _desiredY = IsRolling ? _baseY : _baseY + _raiseBy;
     }
 
     private void StartRolling()

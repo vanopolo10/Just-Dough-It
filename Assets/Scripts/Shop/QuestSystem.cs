@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.Localization;
-using UnityEditor.Localization.Editor;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;

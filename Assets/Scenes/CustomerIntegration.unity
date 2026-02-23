@@ -143,8 +143,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 29.43657, y: 0.9695302, z: 19.184164}
-  m_Center: {x: -11.202479, y: 0.44737726, z: -1.6948203}
+  m_Size: {x: 27.203493, y: 0.9695302, z: 16.957617}
+  m_Center: {x: -11.996768, y: 0.44737726, z: -2.5507767}
 --- !u!114 &6743018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -556,6 +556,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 495025547}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &140246004
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 140246005}
+  - component: {fileID: 140246006}
+  m_Layer: 9
+  m_Name: Wall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &140246005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140246004}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.57, y: 3.7, z: 7.46}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4493606043477265206}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &140246006
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140246004}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 26.779049, y: 7.566764, z: 1}
+  m_Center: {x: -1.7838154, y: 0.20896761, z: 0}
 --- !u!1 &149623355 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1567497295911268322, guid: 31dcd021702980243a127665d9e006c6, type: 3}
@@ -4691,6 +4744,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4221286617789841712, guid: 2f88467e87b4f194abaa88d5e411130e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7679563213964897558, guid: 2f88467e87b4f194abaa88d5e411130e, type: 3}
       propertyPath: m_Name
       value: Miska
@@ -4705,7 +4762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8581716353274880081, guid: 2f88467e87b4f194abaa88d5e411130e, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8581716353274880081, guid: 2f88467e87b4f194abaa88d5e411130e, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -7537,6 +7594,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3255678981493748354, guid: 48429141d1776ad4f904b54f5bb60e51, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1848
+      objectReference: {fileID: 0}
     - target: {fileID: 4465654816667025898, guid: 48429141d1776ad4f904b54f5bb60e51, type: 3}
       propertyPath: m_Name
       value: Jar
@@ -7548,6 +7609,10 @@ PrefabInstance:
     - target: {fileID: 4465654816667025898, guid: 48429141d1776ad4f904b54f5bb60e51, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7285166332346670888, guid: 48429141d1776ad4f904b54f5bb60e51, type: 3}
+      propertyPath: m_Radius
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 9042422053314206666, guid: 48429141d1776ad4f904b54f5bb60e51, type: 3}
       propertyPath: m_Layer
@@ -10047,6 +10112,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rolling Pin
       objectReference: {fileID: 0}
+    - target: {fileID: 6216528193073456169, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
+      propertyPath: m_AngularDamping
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6362697842613803956, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
+      propertyPath: _doughBucket
+      value: 
+      objectReference: {fileID: 1543892526}
     - target: {fileID: 6362697842613803956, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
       propertyPath: _tableCollider
       value: 
@@ -10632,6 +10705,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2511808806914136326, guid: c28a1c5adf7579848b994f423bbdb947, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1954192771}
+    - targetCorrespondingSourceObject: {fileID: 2511808806914136326, guid: c28a1c5adf7579848b994f423bbdb947, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 140246005}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2995012918843589564, guid: c28a1c5adf7579848b994f423bbdb947, type: 3}
       insertIndex: -1
