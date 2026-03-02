@@ -11,9 +11,11 @@ public class DoughController : MonoBehaviour
     [SerializeField] private DoughVisualSwitcher _doughVisualSwitcher;
     [SerializeField] private FillingType _filling = FillingType.None;
 
-    // private readonly Dictionary<CraftZone, bool> _comboZones = new();
-    [SerializeField] private float _comboClicksTotal;
-    [SerializeField] private float _comboClicksLeft;
+    [SerializeField] private int _cuttingZonesLeft;
+    [SerializeField] private int _altCuttingZonesLeft;
+    
+    private int _comboClicksTotal;
+    private int _comboClicksLeft;
 
     private Vector3 _rollEnterLocalPos;
     private Quaternion _rollRotation;
@@ -48,7 +50,7 @@ public class DoughController : MonoBehaviour
 
     private void Start()
     {
-        ResetCombo();
+        ResetSpecialZones();
         StateChanged?.Invoke();
     }
 
@@ -206,8 +208,8 @@ public class DoughController : MonoBehaviour
             $"perfectTotal={_perfectActionCount}, imperfectTotal={_imperfectActionCount}, " +
             $"state={State}, filling={_filling}"
         );
-        
-        ResetCombo();
+
+        ResetSpecialZones();
         StateChanged?.Invoke();
 
         return true;
@@ -225,7 +227,7 @@ public class DoughController : MonoBehaviour
             _imperfectActionCount = 0;
         }
 
-        ResetCombo();
+        ResetSpecialZones();
         StateChanged?.Invoke();
     }
 
@@ -239,7 +241,11 @@ public class DoughController : MonoBehaviour
         animator.Play("Completion", 0, progress);
         //animator.SetFloat("Progress", progress);
     }
-    
+    private void ResetSpecialZones()
+    {
+        ResetCombo();
+        ResetCutting();
+    }
     private void ResetCombo()
     {
         //_comboZones.Clear();
@@ -264,5 +270,39 @@ public class DoughController : MonoBehaviour
         
         _comboClicksLeft = _comboClicksTotal;
         UpdateComboAnimation();
+    }
+
+    private void ResetCutting()
+    {
+        if (_doughVisualSwitcher == null)
+            return;
+
+        if (_doughVisualSwitcher.Map.TryGetValue(State, out GameObject go) == false || go == null)
+            return;
+
+        _cuttingZonesLeft = 0;
+        _altCuttingZonesLeft = 0;
+
+        foreach (CuttingManager cut in go.GetComponentsInChildren<CuttingManager>())
+        {
+            if (cut.IsAltCuttingZone())
+                _altCuttingZonesLeft++;
+            else
+                _cuttingZonesLeft++;
+        }
+    }
+
+    public void ProgressCutting(bool alt = false) {
+        if (alt)
+        {
+            _altCuttingZonesLeft--;
+            if (_altCuttingZonesLeft <= 0)
+                ApplyAction(DoughCraftAction.AltCutting);
+        }
+        else {
+            _cuttingZonesLeft--;
+            if (_cuttingZonesLeft <= 0)
+                ApplyAction(DoughCraftAction.Cutting);
+        }
     }
 }
