@@ -4196,6 +4196,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5610996046306443518, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      propertyPath: m_Name
+      value: TaskCanvas
+      objectReference: {fileID: 0}
     - target: {fileID: 7936815250444740129, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
       propertyPath: m_SortingOrder
       value: -1
@@ -4246,7 +4250,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 9016880765191868054, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1638504443}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8222219381915961137, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
       insertIndex: -1
@@ -7530,6 +7537,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d65b58f06a180469d7ff66862268a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoneyManager
+--- !u!4 &1638504443 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 725076346642464787, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
+  m_PrefabInstance: {fileID: 2878564066554776694}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1651714244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9541,6 +9553,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4c90b2474143ca844bdb26a887e858d1, type: 3}
   m_PrefabInstance: {fileID: 1972223982}
   m_PrefabAsset: {fileID: 0}
+--- !u!223 &1975856456 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 7936815250444740129, guid: 86df8d52fadfcd849b4239f7fa33a1ec, type: 3}
+  m_PrefabInstance: {fileID: 926123346}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1991130388
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10433,7 +10450,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 926123351}
     m_Modifications:
     - target: {fileID: 318993292547845048, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -10441,7 +10458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 725076346642464787, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.629
+      value: -5.979
       objectReference: {fileID: 0}
     - target: {fileID: 725076346642464787, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10449,7 +10466,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 725076346642464787, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.627
+      value: 3.5390902
       objectReference: {fileID: 0}
     - target: {fileID: 725076346642464787, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10523,10 +10540,26 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7937267098112947955, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
+      propertyPath: m_Name
+      value: TableCanvas
+      objectReference: {fileID: 0}
     - target: {fileID: 8730457476020987041, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: _money
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8730457476020987041, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
+      propertyPath: _textPrefab
+      value: 
+      objectReference: {fileID: 2596184372622098851, guid: ed95d0f9f0d1f4d4593823a850dbf9af, type: 3}
+    - target: {fileID: 8730457476020987041, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
+      propertyPath: _popUpPrefab
+      value: 
+      objectReference: {fileID: 1741541315252861606, guid: ed95d0f9f0d1f4d4593823a850dbf9af, type: 3}
+    - target: {fileID: 8730457476020987041, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
+      propertyPath: _questCanvas
+      value: 
+      objectReference: {fileID: 1975856456}
     - target: {fileID: 8842245647505490411, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: m_Color.b
       value: 0.18823531
@@ -11043,7 +11076,6 @@ SceneRoots:
   - {fileID: 2131337764}
   - {fileID: 905132161}
   - {fileID: 1785999268}
-  - {fileID: 2878564066554776694}
   - {fileID: 2137263373981451798}
   - {fileID: 216030782}
   - {fileID: 598232107}

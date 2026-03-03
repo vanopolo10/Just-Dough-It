@@ -20,7 +20,7 @@ public class SaveManager : MonoBehaviour
         Cafe.Instance.SetVibeLevel(vibe);
 
         int money = SaveSystem.LoadData<int>(SaveSystem.SelectedSave, "MoneyCount");
-        _moneyManager.AddMoney(money);
+        _moneyManager.AddMoney(money, false);
 
         List<QuestDisplay> quests = SaveSystem.LoadData<List<QuestDisplay>>(SaveSystem.SelectedSave, "Quests");
         if (quests != null)

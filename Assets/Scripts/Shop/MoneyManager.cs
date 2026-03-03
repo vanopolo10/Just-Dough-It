@@ -5,6 +5,8 @@ public class MoneyManager : MonoBehaviour
 {
     [SerializeField] private int _money;
     [SerializeField] private TextMeshProUGUI _display;
+    [SerializeField] private Canvas _questCanvas;
+    [SerializeField] private MoneyPopUp _popUpPrefab;
 
     public int Money => _money;
 
@@ -13,9 +15,13 @@ public class MoneyManager : MonoBehaviour
         UpdDisplay();
     }
     
-    public void AddMoney(int amount)
+    public void AddMoney(int amount, bool playPopUp = true)
     {
         _money += amount;
+
+        if (playPopUp)
+            Instantiate(_popUpPrefab, _questCanvas.transform).Initialize(amount);
+        
         UpdDisplay();
     }
     
