@@ -6,17 +6,23 @@ using UnityEngine;
 public class CustomerInteraction
 {
     [SerializeField] private string _dialogueKey;
-    //[SerializeField] private string _triggerName;
+    [SerializeField] private float _postDisplayDelay = 0f;
+
+    private bool _isWaitingForTextDisplay;
+    private Customer _targetCustomer;
+    private CustomerInteraction _nextInteraction;
+    private float _nextDelay;
     
     public string DialogueKey => _dialogueKey;
+    public float PostDisplayDelay => _postDisplayDelay;
 
     public void PlayOut(Customer target)
     {
-        // target.TryGetComponent(out Animator animator);
-        //
-        // if (animator)
-        //     animator.SetTrigger(_triggerName);
-        
+        PlayOut(target, null, 0f);
+    }
+    
+    public void PlayOut(Customer target, CustomerInteraction nextInteraction, float nextDelay = 0f)
+    {
         if (target == null)
         {
             Debug.LogError("Target customer is null");
@@ -24,13 +30,54 @@ public class CustomerInteraction
         }
 
         DialogueManager dialogueManager = target.DialogueManager;
+        
         if (dialogueManager == null)
         {
             Debug.LogError("DialogueManager is null on target customer");
             return;
         }
 
-        dialogueManager.DisplayText(_dialogueKey);
+        if (_isWaitingForTextDisplay)
+        {
+            Debug.LogWarning($"Interaction {_dialogueKey} is already waiting for TextDisplayed");
+            return;
+        }
+
+        _targetCustomer = target;
+        _nextInteraction = nextInteraction;
+        _nextDelay = nextDelay;
+
+        if (nextInteraction != null)
+        {
+            dialogueManager.TextDisplayed += OnTextDisplayed;
+            _isWaitingForTextDisplay = true;
+        }
+
+        dialogueManager.DisplayText(_dialogueKey, _postDisplayDelay);
+    }
+
+    private void OnTextDisplayed()
+    {
+        if (_targetCustomer == null || _targetCustomer.DialogueManager == null)
+        {
+            Cleanup();
+            return;
+        }
+
+        _targetCustomer.DialogueManager.TextDisplayed -= OnTextDisplayed;
+
+        if (_nextInteraction != null)
+            _nextInteraction.PlayOut(_targetCustomer);
+        
+        Cleanup();
+    }
+
+    private void Cleanup()
+    {
+        _isWaitingForTextDisplay = false;
+        _targetCustomer = null;
+        _nextInteraction = null;
+        _nextDelay = 0f;
     }
 }
 

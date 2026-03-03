@@ -16,12 +16,10 @@ public class CustomerModelSpawner : MonoBehaviour
             Destroy(_animatorController.gameObject);
 
         GameObject spawnedCustomer = Instantiate(prefab, transform);
-        Debug.Log("succesful spawn");
 
         _animatorController = spawnedCustomer.GetComponentInChildren<CustomerAnimatorController>();
 
         _routeMover.MoveIn(_animatorController.transform, _animatorController);
-        Debug.Log("succesful start");
 
         return spawnedCustomer;
     }

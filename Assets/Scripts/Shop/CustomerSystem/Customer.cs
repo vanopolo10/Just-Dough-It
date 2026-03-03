@@ -8,7 +8,6 @@ public class Customer : MonoBehaviour
     
     [SerializeField] protected CustomerQuest _quest;
     
-    protected CustomerManager _manager;
     protected DialogueManager _dialogueManager;
     protected CustomerAnimatorController _animatorController;
 
@@ -21,7 +20,6 @@ public class Customer : MonoBehaviour
     {
         _dialogueManager = GetComponentInParent<DialogueManager>();
         _animatorController = GetComponentInChildren<CustomerAnimatorController>();
-        _manager = GetComponentInParent<CustomerManager>();
     }
     
     public void OnReachedCounter()
@@ -31,6 +29,10 @@ public class Customer : MonoBehaviour
     
     public void Despawn()
     {
+        if (_dialogueManager != null)
+        {
+            _dialogueManager.TextDisplayed -= OnTextDisplayed;
+        }
         Destroy(gameObject);
     }
 
@@ -48,9 +50,23 @@ public class Customer : MonoBehaviour
     public void PlayOutDialogue(DialogueOption option)
     {
         CancelInvoke(nameof(ResetDialogue));
-        Invoke(nameof(ResetDialogue), _timeoutBeforeResettingDialogue);
+
+        if (_dialogueManager != null)
+        {
+            _dialogueManager.TextDisplayed += OnTextDisplayed;
+        }
 
         option.Interaction.PlayOut(this);
+    }
+
+    private void OnTextDisplayed()
+    {
+        if (_dialogueManager != null)
+        {
+            _dialogueManager.TextDisplayed -= OnTextDisplayed;
+        }
+
+        Invoke(nameof(ResetDialogue), _timeoutBeforeResettingDialogue);
     }
 
     public void ResetDialogue()
@@ -73,5 +89,18 @@ public class Customer : MonoBehaviour
     protected void Initialize()
     {
         _quest.Initialize(this);
+    }
+
+    private void OnDestroy()
+    {
+        if (_dialogueManager != null)
+        {
+            _dialogueManager.TextDisplayed -= OnTextDisplayed;
+        }
+        
+        if (_quest != null)
+        {
+            _quest.ResetQuest();
+        }
     }
 }

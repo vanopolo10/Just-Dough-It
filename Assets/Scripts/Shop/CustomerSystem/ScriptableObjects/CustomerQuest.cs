@@ -29,6 +29,7 @@ public class CustomerQuest : ScriptableObject
     private int _productsLeft;
     private Customer _customer;
     private bool _isInitialized;
+    private bool _isWaitingForText;
 
     public CustomerInteractionSet Interactions => _interactions;
     public CustomerInteraction QuestInteraction => _questInteraction;
@@ -49,10 +50,34 @@ public class CustomerQuest : ScriptableObject
             _customer.AnimatorController.OnGreeting();
 
         if (_interactions != null && _interactions.OnGreeting != null)
-            _interactions.OnGreeting.PlayOut(_customer);
+        {
+            _interactions.OnGreeting.PlayOut(_customer, null, 0f);
+
+            if (_customer.DialogueManager != null && !_isWaitingForText)
+            {
+                _customer.DialogueManager.TextDisplayed += OnGreetingCompleted;
+                _isWaitingForText = true;
+            }
+        }
         else
+        {
             Debug.LogWarning($"CustomerQuest {name}: OnGreeting interaction is missing");
-            
+            _customer.Invoke(nameof(_customer.StartQuest), _timeoutAfterGreeting);
+        }
+    }
+
+    private void OnGreetingCompleted()
+    {
+        if (_customer == null || _customer.DialogueManager == null)
+        {
+            Debug.LogError($"CustomerQuest {name}: Customer or DialogueManager is null in OnGreetingCompleted");
+            Cleanup();
+            return;
+        }
+
+        _customer.DialogueManager.TextDisplayed -= OnGreetingCompleted;
+        _isWaitingForText = false;
+
         _customer.Invoke(nameof(_customer.StartQuest), _timeoutAfterGreeting);
     }
 
@@ -68,10 +93,14 @@ public class CustomerQuest : ScriptableObject
             _customer.AnimatorController.OnQuestStarted();
 
         if (_questInteraction != null)
+        {
             _questInteraction.PlayOut(_customer);
+        }
         else
+        {
             Debug.LogWarning($"CustomerQuest {name}: QuestInteraction is missing");
-        
+        }
+
         if (_interactions != null && _customer.DialogueManager != null)
             _customer.DialogueManager.SetDialogueOptions(_interactions.DialogueOptions);
     }
@@ -118,7 +147,9 @@ public class CustomerQuest : ScriptableObject
             _customer.AnimatorController.OnQuestFinished();
 
         if (_interactions != null && _interactions.OnQuestCompleted != null)
+        {
             _interactions.OnQuestCompleted.PlayOut(_customer);
+        }
 
         if (_customer != null)
             _customer.FinishQuest();
@@ -170,8 +201,19 @@ public class CustomerQuest : ScriptableObject
 
     public void ResetQuest()
     {
+        if (_customer != null && _customer.DialogueManager != null && _isWaitingForText)
+        {
+            _customer.DialogueManager.TextDisplayed -= OnGreetingCompleted;
+            _isWaitingForText = false;
+        }
+        
         _productsLeft = _productsNeeded;
         _isInitialized = false;
         _customer = null;
+    }
+
+    private void Cleanup()
+    {
+        _isWaitingForText = false;
     }
 }

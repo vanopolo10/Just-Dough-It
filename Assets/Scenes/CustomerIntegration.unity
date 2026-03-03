@@ -1223,6 +1223,7 @@ MonoBehaviour:
     Right: 2
     Back: 3
     BackTurn: 2
+    AllowMouseLook: 1
   - Position: {x: -1.808, y: 2.046, z: 3.5771236}
     RotationEuler: {x: 50.000004, y: 270, z: 0}
     Type: 2
@@ -1230,6 +1231,7 @@ MonoBehaviour:
     Right: 3
     Back: 4
     BackTurn: 2
+    AllowMouseLook: 1
   - Position: {x: -0.336, y: 2.759, z: 5.329}
     RotationEuler: {x: 90, y: 0, z: 0}
     Type: 3
@@ -1237,6 +1239,7 @@ MonoBehaviour:
     Right: 4
     Back: 1
     BackTurn: 1
+    AllowMouseLook: 0
   - Position: {x: 1.928, y: 1.408, z: 4.287}
     RotationEuler: {x: 40, y: 19.999998, z: 0}
     Type: 4
@@ -1244,6 +1247,7 @@ MonoBehaviour:
     Right: 5
     Back: 2
     BackTurn: 1
+    AllowMouseLook: 1
   - Position: {x: 2.718, y: 0.431, z: 3.712}
     RotationEuler: {x: 0, y: 0, z: 0}
     Type: 5
@@ -1251,7 +1255,13 @@ MonoBehaviour:
     Right: 1
     Back: 2
     BackTurn: 2
+    AllowMouseLook: 1
   _transitionDuration: 0.7
+  _enableMouseLook: 1
+  _mouseSensitivity: 0.05
+  _smoothTime: 0.15
+  _verticalLimit: {x: -30, y: 70}
+  _disableMouseLookDuringTransition: 1
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
