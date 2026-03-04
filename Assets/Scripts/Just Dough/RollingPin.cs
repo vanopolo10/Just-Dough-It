@@ -21,7 +21,6 @@ public class RollingPin : MonoBehaviour
     private float _zCord;
     private float _baseY;
     private float _desiredY;
-    private float _doughOffsetY;
 
     private bool _dragAllowed = true;
     private bool _isDragging;
