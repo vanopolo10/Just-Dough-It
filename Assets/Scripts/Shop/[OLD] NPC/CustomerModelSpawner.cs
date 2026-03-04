@@ -2,25 +2,11 @@ using UnityEngine;
 
 public class CustomerModelSpawner : MonoBehaviour
 {
-    private CustomerAnimatorController _animatorController;
-    private CustomerRouteMover _routeMover;
-
-    private void Awake()
+    public GameObject Spawn(GameObject prefab, Transform transformToSpawn)
     {
-        _routeMover = GetComponent<CustomerRouteMover>();
-    }
-    
-    public GameObject SpawnNewCustomer(GameObject prefab)
-    {
-        if (_animatorController)
-            Destroy(_animatorController.gameObject);
+        if (!prefab)
+            return null;
 
-        GameObject spawnedCustomer = Instantiate(prefab, transform);
-
-        _animatorController = spawnedCustomer.GetComponentInChildren<CustomerAnimatorController>();
-
-        _routeMover.MoveIn(_animatorController.transform, _animatorController);
-
-        return spawnedCustomer;
+        return Instantiate(prefab, transformToSpawn ? transformToSpawn : transform);
     }
 }

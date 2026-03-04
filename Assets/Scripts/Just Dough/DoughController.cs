@@ -6,8 +6,9 @@ using JustDough;
 [RequireComponent(typeof(DoughVisualSwitcher))]
 public class DoughController : MonoBehaviour
 {
-    [Header("Состояния теста")]
-    [SerializeField] private DoughState _startState = DoughState.Raw;
+    [Header("Состояния теста")] [SerializeField]
+    private DoughState _startState = DoughState.Raw;
+
     [SerializeField] private DoughVisualSwitcher _doughVisualSwitcher;
     [SerializeField] private FillingType _filling = FillingType.None;
 
@@ -122,8 +123,9 @@ public class DoughController : MonoBehaviour
         }
     }
     */
-    
-    public void SetRollRotation(Quaternion rollRotation) { 
+
+    public void SetRollRotation(Quaternion rollRotation)
+    {
         _rollRotation = rollRotation;
     }
 
@@ -131,7 +133,7 @@ public class DoughController : MonoBehaviour
     {
         _filling = toSet;
     }
-    
+
     public bool ApplyAction(DoughCraftAction action, CraftZone craftZone = null, bool isPerfect = false)
     {
         bool isComboZoneAction = craftZone != null && craftZone.IsComboZone;
@@ -153,7 +155,7 @@ public class DoughController : MonoBehaviour
 
             // bool comboComplete = _comboZones.Values.All(b => b);
 
-            if(isPerfect == true) 
+            if (isPerfect == true)
                 _comboClicksLeft -= 2;
             else
                 _comboClicksLeft -= 1;
@@ -167,7 +169,7 @@ public class DoughController : MonoBehaviour
                 $"imperfectTotal={_imperfectActionCount}, comboComplete={comboComplete}, " +
                 $"state={State}, filling={_filling}"
             );
-            
+
             if (comboComplete == false)
                 return true;
         }
@@ -187,7 +189,7 @@ public class DoughController : MonoBehaviour
 
         if (_lastActionPerfect)
             ActionPerfected?.Invoke();
-        
+
         bool isRollingAction = action is DoughCraftAction.Roll or DoughCraftAction.RollSheer;
 
         if (isComboZoneAction == false)
@@ -206,7 +208,7 @@ public class DoughController : MonoBehaviour
             $"perfectTotal={_perfectActionCount}, imperfectTotal={_imperfectActionCount}, " +
             $"state={State}, filling={_filling}"
         );
-        
+
         ResetCombo();
         StateChanged?.Invoke();
 
@@ -229,17 +231,17 @@ public class DoughController : MonoBehaviour
         StateChanged?.Invoke();
     }
 
-    private void UpdateComboAnimation() {
-        print("tried updating combo animation");
+    private void UpdateComboAnimation()
+    {
         if (_doughVisualSwitcher.Map[State].TryGetComponent<Animator>(out Animator animator) == false) return;
 
-        float progress = (_comboClicksTotal - _comboClicksLeft) / (_comboClicksTotal-1);
+        float progress = (_comboClicksTotal - _comboClicksLeft) / (_comboClicksTotal - 1);
         print(animator.GetCurrentAnimatorClipInfo(0));
         print("Set animation progress to " + progress + " on layer " + animator.GetLayerName(0));
         animator.Play("Completion", 0, progress);
         //animator.SetFloat("Progress", progress);
     }
-    
+
     private void ResetCombo()
     {
         //_comboZones.Clear();
@@ -258,10 +260,10 @@ public class DoughController : MonoBehaviour
         }
         */
         _comboClicksTotal = 0;
-        
+
         foreach (PerfectComboZone zone in go.GetComponentsInChildren<PerfectComboZone>())
-            _comboClicksTotal+=2;
-        
+            _comboClicksTotal += 2;
+
         _comboClicksLeft = _comboClicksTotal;
         UpdateComboAnimation();
     }

@@ -23,7 +23,7 @@ public class CustomerInteraction
     
     public void PlayOut(Customer target, CustomerInteraction nextInteraction, float nextDelay = 0f)
     {
-        if (target == null)
+        if (!target)
         {
             Debug.LogError("Target customer is null");
             return;
@@ -31,7 +31,7 @@ public class CustomerInteraction
 
         DialogueManager dialogueManager = target.DialogueManager;
         
-        if (dialogueManager == null)
+        if (!dialogueManager)
         {
             Debug.LogError("DialogueManager is null on target customer");
             return;
@@ -58,7 +58,7 @@ public class CustomerInteraction
 
     private void OnTextDisplayed()
     {
-        if (_targetCustomer == null || _targetCustomer.DialogueManager == null)
+        if (!_targetCustomer || !_targetCustomer.DialogueManager)
         {
             Cleanup();
             return;
@@ -66,9 +66,8 @@ public class CustomerInteraction
 
         _targetCustomer.DialogueManager.TextDisplayed -= OnTextDisplayed;
 
-        if (_nextInteraction != null)
-            _nextInteraction.PlayOut(_targetCustomer);
-        
+        _nextInteraction?.PlayOut(_targetCustomer);
+
         Cleanup();
     }
 
