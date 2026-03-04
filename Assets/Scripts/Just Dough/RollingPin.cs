@@ -82,6 +82,7 @@ public class RollingPin : MonoBehaviour
     private void OnMouseUp()
     {
         CancelDrag();
+        StopRolling();
     }
 
     private void OnMouseDrag()
@@ -155,7 +156,7 @@ public class RollingPin : MonoBehaviour
         else
             _rb.linearDamping = 10f;
 
-        _desiredY = IsRolling ? _baseY : _baseY + _raiseBy;
+        _desiredY = IsRolling || !_isDragging ? _baseY : _baseY + _raiseBy;
     }
 
     private void StartRolling()

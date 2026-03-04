@@ -80,9 +80,6 @@ public class RollingAgent : MonoBehaviour
         if (other.gameObject.TryGetComponent(out RollingPin rollingPin) == false)
             return;
 
-        if (rollingPin.IsRolling == false)
-            return;
-
         if (_isRollingNow == false)
             return;
 
