@@ -13,6 +13,7 @@ public class Filling : MonoBehaviour
     private FillingManager _manager;
     private MeshRenderer _renderer;
     private Vector3 _homePosition;
+    [SerializeField] float _downBy = 0f;
 
     public event Action Destroyed;
 
@@ -70,9 +71,16 @@ public class Filling : MonoBehaviour
             _mouseHeld = true;
             _isDragging = true;
         }
-
+        
         Vector3 targetPos = Utils.GetMouseWorldPos(_zCord);
-        targetPos.y = transform.position.y;
+
+        Vector3 currentPos = transform.position;
+        currentPos.y = _homePosition.y;
+
+        if (_downBy > 0.1f)
+            targetPos.y = _homePosition.y - (Mathf.Clamp(Vector2.Distance(_homePosition, currentPos), 0.1f, _downBy) - 0.1f);
+        else
+            targetPos.y = _homePosition.y;
         transform.position = targetPos;
 
         if (_renderer != null)
