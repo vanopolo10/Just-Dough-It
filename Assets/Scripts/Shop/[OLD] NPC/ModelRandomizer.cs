@@ -17,11 +17,12 @@ public class ModelRandomizer : MonoBehaviour
     [SerializeField] private List<Material> _faceMats;
     [SerializeField] private List<Material> _clothMats;
 
-    public void Start()
+    private void Start()
     {
         TurnAndColorMeshes();
     }
-    public void TurnAndColorMeshes()
+    
+    private void TurnAndColorMeshes()
     {
         if (_face != null && _faceMats.Count > 0)
             _face.material = _faceMats[Random.Range(0, _faceMats.Count)];
