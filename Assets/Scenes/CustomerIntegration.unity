@@ -790,7 +790,7 @@ GameObject:
   - component: {fileID: 169674268}
   - component: {fileID: 169674270}
   - component: {fileID: 169674269}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1441,7 +1441,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 0}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -2626,7 +2627,7 @@ GameObject:
   - component: {fileID: 625858484}
   - component: {fileID: 625858483}
   - component: {fileID: 625858482}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: provod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9303,7 +9304,7 @@ GameObject:
   - component: {fileID: 1750914916}
   - component: {fileID: 1750914915}
   - component: {fileID: 1750914914}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Sunlamp (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11161,6 +11162,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rolling Pin
       objectReference: {fileID: 0}
+    - target: {fileID: 2357598187031629943, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6216528193073456169, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
       propertyPath: m_AngularDamping
       value: 5
@@ -12063,10 +12068,6 @@ MonoBehaviour:
   - _anchor: {fileID: 895492486}
   - _anchor: {fileID: 2135180250}
   _shelf: {fileID: 1053535225}
-  _offsets:
-  - Type: 3
-    Rotation: {x: 0, y: 0, z: 0}
-    Position: {x: 0, y: 90, z: 0}
 --- !u!4 &4821043576278458731 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5779833653028312817, guid: 31dcd021702980243a127665d9e006c6, type: 3}
@@ -12322,6 +12323,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 543450652622228490}
     m_Modifications:
     - target: {fileID: 105203989048912816, guid: 17249a58b70b82d41bf86c331b8bb401, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 105203989048912816, guid: 17249a58b70b82d41bf86c331b8bb401, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 1
       objectReference: {fileID: 0}
@@ -12370,8 +12375,16 @@ PrefabInstance:
       value: Sunlamp
       objectReference: {fileID: 0}
     - target: {fileID: 6159676215562527681, guid: 17249a58b70b82d41bf86c331b8bb401, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6159676215562527681, guid: 17249a58b70b82d41bf86c331b8bb401, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6530082494400999995, guid: 17249a58b70b82d41bf86c331b8bb401, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6530082494400999995, guid: 17249a58b70b82d41bf86c331b8bb401, type: 3}
       propertyPath: m_StaticEditorFlags

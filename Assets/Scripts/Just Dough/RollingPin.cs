@@ -1,4 +1,5 @@
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngineInternal;
@@ -149,13 +150,19 @@ public class RollingPin : MonoBehaviour
         if (outside)
             _rb.linearVelocity = (bounds.center - transform.position) * 10;
 
-        Collider[] colliders = Physics.OverlapCapsule(transform.position - transform.right * 0.8f, transform.position + transform.right * 0.8f, 0.06f, LayerMask.GetMask("Dough"));
-        if (colliders.Length > 0)
+        Vector3 Left = transform.position - transform.right * 0.65f;
+        Vector3 Right = transform.position + transform.right * 0.65f;
+        if (Physics.CheckCapsule(Left, Right, 0.06f, LayerMask.GetMask("Dough")))
             _rb.linearDamping = 30f;
         else
             _rb.linearDamping = 10f;
 
-        _desiredY = IsRolling || !_isDragging ? _baseY : _baseY + _raiseBy;
+        Left.y = _baseY;
+        Right.y = _baseY;
+        if (Physics.CheckCapsule(Left, Right, 0.06f, LayerMask.GetMask("Dough")))
+            _desiredY = IsRolling || !_isDragging ? _baseY + 0.08f : _baseY + _raiseBy;
+        else
+            _desiredY = IsRolling || !_isDragging ? _baseY : _baseY + _raiseBy;
     }
 
     private void StartRolling()
