@@ -1,8 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Collider))]
 public class DoughDrag : MonoBehaviour
 {
     private Vector3 _offset;
@@ -11,10 +9,18 @@ public class DoughDrag : MonoBehaviour
     private bool _isDragging;
     private bool _dragBlocked;
 
+    private RollingPin _rollingPin;
+
     public bool IsDragging => _isDragging;
 
     public event Action DragStarted;
     public event Action DragEnded;
+
+    private void Awake()
+    {
+        _rollingPin = GameObject.FindGameObjectWithTag("RollingPin").GetComponent<RollingPin>();
+        if (!_rollingPin) enabled = false;
+    }
 
     private void OnEnable()
     {
@@ -37,9 +43,9 @@ public class DoughDrag : MonoBehaviour
         DragEnded?.Invoke();
     }
 
-    private void OnMouseDrag()
+    private void FixedUpdate()
     {
-        if (_dragBlocked)
+        if (_dragBlocked || _rollingPin.IsDragging)
         {
             if (Input.GetMouseButton(0) == false && Input.GetMouseButton(1) == false)
                 _dragBlocked = false;
@@ -83,17 +89,5 @@ public class DoughDrag : MonoBehaviour
             targetPos.y = transform.position.y;
             transform.position = targetPos;
         }
-    }
-
-    private void OnMouseUp()
-    {
-        if (_isDragging)
-        {
-            _isDragging = false;
-            DragEnded?.Invoke();
-        }
-
-        _bothHeld = false;
-        _dragBlocked = false;
     }
 }

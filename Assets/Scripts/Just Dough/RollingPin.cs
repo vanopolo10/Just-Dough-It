@@ -1,8 +1,5 @@
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngineInternal;
 
 [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody))]
 public class RollingPin : MonoBehaviour
@@ -29,6 +26,7 @@ public class RollingPin : MonoBehaviour
     private Quaternion _targetRotation;
 
     public bool IsRolling { get; private set; }
+    public bool IsDragging => _isDragging;
 
     private Camera _cam;
     private Rigidbody _rb;

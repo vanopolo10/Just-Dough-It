@@ -118,6 +118,15 @@ public class ClickManager : MonoBehaviour
             objectTag = clickable.Tag;
             clickable.PlayReactiveAnimation();
         }
+        else
+        {
+            ClickableObject secondClickable = hit.transform.GetComponentInParent<ClickableObject>();
+            if (secondClickable)
+            {
+                objectTag = secondClickable.Tag;
+                secondClickable.PlayReactiveAnimation();
+            }
+        }
 
         if (_materialsByTag.TryGetValue(objectTag, out ClickMaterialData data) == false)
             return;
