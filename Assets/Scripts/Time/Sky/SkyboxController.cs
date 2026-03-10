@@ -50,7 +50,7 @@ public class SkyboxController : MonoBehaviour
 
         if (_skyboxMaterial.HasProperty(_zenithProperty))
             _skyboxMaterial.SetColor(_zenithProperty, _zenithGradient.Evaluate(p));
-
+        
         if (_skyboxMaterial.HasProperty(_horizonProperty))
             _skyboxMaterial.SetColor(_horizonProperty, _horizonGradient.Evaluate(p));
 

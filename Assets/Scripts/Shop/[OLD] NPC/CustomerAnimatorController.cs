@@ -34,6 +34,7 @@ public class CustomerAnimatorController : MonoBehaviour
     public void StartWalking()
     {
         _animator.SetBool(IsWalking, true);
+        _animator.SetInteger(SadWalkID, Random.Range(0, _walkVariants));
         StopSubIdleRoutine();
     }
 
@@ -41,12 +42,6 @@ public class CustomerAnimatorController : MonoBehaviour
     {
         _animator.SetBool(IsWalking, false);
         _animator.SetInteger(IdleID, Random.Range(0, _idleVariants));
-    }
-
-    public void StartSad()
-    {
-        _animator.SetBool(IsSad, true);
-        _animator.SetInteger(SadWalkID, Random.Range(0, _walkVariants));
     }
     
     public void ReachedCounter()
@@ -84,6 +79,7 @@ public class CustomerAnimatorController : MonoBehaviour
     public void OnQuestFinished()
     {
         OnItemAccepted();
+        _animator.SetBool(IsSad, false);
     }
 
     private void StartSubIdleRoutine()

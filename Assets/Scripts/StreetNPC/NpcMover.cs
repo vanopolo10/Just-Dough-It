@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class NpcMover : MonoBehaviour
@@ -25,16 +26,27 @@ public class NpcMover : MonoBehaviour
     
     public void StopAll()
     {
-        foreach (var routine in _activeRoutines.Values)
-        {
-            if (routine != null)
-                StopCoroutine(routine);
-        }
+        foreach (var routine in _activeRoutines.Values.Where(routine => routine != null))
+            StopCoroutine(routine);
+
         _activeRoutines.Clear();
     }
     
     public void MoveRoutine(IEnumerator routine)
     {
+        if (routine == null)
+        {
+            Debug.LogError("MoveRoutine: routine is null!");
+            return;
+        }
+    
+        if (!enabled || !gameObject.activeInHierarchy)
+        {
+            Debug.LogError($"MoveRoutine: component not ready! enabled: {enabled}, active: {gameObject.activeInHierarchy}");
+            return;
+        }
+    
+        Debug.Log($"MoveRoutine: Starting coroutine");
         StartCoroutine(routine);
     }
     
@@ -72,7 +84,8 @@ public class NpcMover : MonoBehaviour
             yield return null;
         }
 
-        target.rotation = targetRot;
+        if (target)
+            target.rotation = targetRot;
     }
     
     private void RotateTowards(Transform target, Vector3 dir)

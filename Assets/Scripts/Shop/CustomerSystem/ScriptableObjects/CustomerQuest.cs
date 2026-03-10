@@ -64,11 +64,13 @@ public class CustomerQuest : ScriptableObject
             Debug.LogWarning($"CustomerQuest {name}: OnGreeting interaction is missing");
             _customer.Invoke(nameof(_customer.StartQuest), _timeoutAfterGreeting);
         }
+        
+        Debug.Log($"Customer Initialized");
     }
 
     private void OnGreetingCompleted()
     {
-        if (_customer == null || _customer.DialogueManager == null)
+        if (!_customer || !_customer.DialogueManager)
         {
             Debug.LogError($"CustomerQuest {name}: Customer or DialogueManager is null in OnGreetingCompleted");
             Cleanup();
@@ -158,13 +160,14 @@ public class CustomerQuest : ScriptableObject
             _customer.DialogueManager.Timeout(_timeoutOnCompletion);
 
         _isInitialized = false;
+        Debug.Log($"Quest finished");
     }
 
     public bool OfferProduct(Product product)
     {
         if (!_isInitialized || _customer == null)
         {
-            Debug.LogWarning($"CustomerQuest {name}: Cannot offer product - quest not initialized");
+            Debug.LogWarning($"{_customer} CustomerQuest {name}: Cannot offer product - quest not initialized");
             return false;
         }
 
@@ -210,6 +213,7 @@ public class CustomerQuest : ScriptableObject
         _productsLeft = _productsNeeded;
         _isInitialized = false;
         _customer = null;
+        Debug.Log($"Quest reset");
     }
 
     private void Cleanup()

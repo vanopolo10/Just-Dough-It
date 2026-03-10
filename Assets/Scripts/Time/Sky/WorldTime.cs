@@ -5,6 +5,10 @@ using UnityEngine;
 public class WorldTime : MonoBehaviour
 {
     private const float HundredPercent = 100f;
+
+    [SerializeField] private bool _isTutorial;
+    [SerializeField][Range(0, HundredPercent)] private float _tutorialTime;
+
     
     [Header("Day Range")]
     [SerializeField] private int _minHours = 8;
@@ -22,9 +26,13 @@ public class WorldTime : MonoBehaviour
     private void Awake()
     {
         InGameTime = new GameTime(_minHours, _maxHours);
-        SetDayPercent(0f);
     }
-    
+
+    private void Start()
+    {
+        SetDayPercent(_isTutorial ? _tutorialTime : 0f);
+    }
+
     public void SetDayPercent(float percent)
     {
         if (_dayEnded)

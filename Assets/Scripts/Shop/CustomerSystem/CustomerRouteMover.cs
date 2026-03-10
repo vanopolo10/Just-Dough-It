@@ -19,13 +19,12 @@ public class CustomerRouteMover : MonoBehaviour
     [Header("Door")]
     [SerializeField] private Animator _doorAnimator;
 
-    [Header("Points")]
-    [SerializeField] private Transform _doorPoint;
-    [SerializeField] private Transform _doorLookAt;
-    [SerializeField] private Transform _counterPoint;
+    [Header("Points")] 
+    [SerializeField] private Transform _doorOutside;
+    [SerializeField] private Transform _reception;
     [SerializeField] private Transform _doorInside;
-    [SerializeField] private Transform _exitPoint;
-    [SerializeField] private Transform _exitLookAt;
+    [SerializeField] private Transform _exit;
+    
 
     [Header("Timings")]
     [SerializeField] private float _exitDelay = 5f;
@@ -57,13 +56,13 @@ public class CustomerRouteMover : MonoBehaviour
     {
         _animator.StartWalking();
 
-        yield return _mover.MoveTo(_animator.transform, _doorPoint.position);
-        yield return _mover.FaceTo(_animator.transform, _doorLookAt.position);
+        yield return _mover.FaceTo(_animator.transform, _doorOutside.position);
+        yield return _mover.MoveTo(_animator.transform, _doorOutside.position);
 
         _animator.TriggerOpenDoor();
         _doorAnimator.SetTrigger(OpenDoor);
-
-        yield return _mover.MoveTo(_animator.transform, _counterPoint.position);
+        yield return _mover.FaceTo(_animator.transform, _reception.position);
+        yield return _mover.MoveTo(_animator.transform, _reception.position);
 
         _animator.StopWalking();
         _animator.ReachedCounter();
@@ -85,16 +84,17 @@ public class CustomerRouteMover : MonoBehaviour
         yield return new WaitForSeconds(_exitDelay);
 
         _animator.StartLeaving();
-        yield return _mover.FaceTo(_animator.transform, _doorLookAt.position);
+        yield return _mover.FaceTo(_animator.transform, _doorOutside.position);
 
         _animator.StartWalking();
         yield return _mover.MoveTo(_animator.transform, _doorInside.position);
 
         _animator.TriggerOpenDoor();
         _doorAnimator.SetTrigger(CloseDoor);
-
-        yield return _mover.MoveTo(_animator.transform, _exitPoint.position);
-        yield return _mover.FaceTo(_animator.transform, _exitLookAt.position);
+        
+        yield return _mover.MoveTo(_animator.transform, _doorOutside.position);
+        yield return _mover.FaceTo(_animator.transform, _exit.position);
+        yield return _mover.MoveTo(_animator.transform, _exit.position);
 
         _customer.QuestCompleted -= MoveOut;
 
