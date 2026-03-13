@@ -67,7 +67,7 @@ public class InGameUIController : MonoBehaviour
 
     private void Exit()
     {
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        SceneManager.LoadScene("MainMenu-draft", LoadSceneMode.Single);
     }
 
     public void ChangeLanguage()

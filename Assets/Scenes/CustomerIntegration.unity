@@ -10322,7 +10322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3321694797005857020, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3421661471300705485, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -10363,6 +10363,10 @@ PrefabInstance:
     - target: {fileID: 5030854034651827981, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SwitchSaveMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5318474310221394383, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -369
       objectReference: {fileID: 0}
     - target: {fileID: 5397172187810352152, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: m_Type
@@ -10445,7 +10449,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8578355944731868658, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
+    - {fileID: 1785268523050585815, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
+    - {fileID: 2244496350802510063, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5587998047748177628, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       insertIndex: -1
