@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CustomerModelSpawner))]
 [RequireComponent(typeof(CustomerRouteMover))]
@@ -8,7 +10,10 @@ public class CustomerManager : MonoBehaviour
 {
     private const float HundredPercent = 100f;
 
+    [SerializeField] private Button _nextDayButton;
+    [SerializeField] private Darkness _darkness;
     [SerializeField] private WorldTime _worldTime;
+    [SerializeField] private float _firstCustomerDelay;
     [SerializeField] private List<CustomerPool> _schedule;
 
     private CustomerRouteMover _routeMover;
@@ -20,37 +25,47 @@ public class CustomerManager : MonoBehaviour
     public UnityEvent DayStarted = new();
     public UnityEvent DayEnded = new();
     public UnityEvent CustomerSpawned = new();
-    
+
     public Customer CurrentCustomer => _currentCustomer;
 
     private void Awake()
     {
         _spawner = GetComponent<CustomerModelSpawner>();
         _routeMover = GetComponent<CustomerRouteMover>();
+        _nextDayButton.gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
         _routeMover.ReachedCounter += OnReachedCounter;
         _routeMover.LeftCafe += NextCustomer;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
         _routeMover.ReachedCounter -= OnReachedCounter;
         _routeMover.LeftCafe -= NextCustomer;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void Start()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         StartNewDay();
     }
 
     public void StartNewDay()
     {
+        _darkness.WakeUp();
         _currentIndex = 0;
         DayStarted.Invoke();
-        SpawnCustomer();
+        Invoke(nameof(SpawnCustomer), _firstCustomerDelay);
+    }
+
+    public void EndDay()
+    {
+        _darkness.FallAsleep();
+        StartNewDay();
     }
 
     private void SpawnCustomer()
@@ -97,16 +112,17 @@ public class CustomerManager : MonoBehaviour
         _currentIndex++;
         if (_currentIndex >= _schedule.Count)
         {
-            EndDay();
+            print("Schedule is worked through");
+            WaitForSleep();
             return;
         }
 
         SpawnCustomer();
     }
 
-    private void EndDay()
+    private void WaitForSleep()
     {
+        _nextDayButton.gameObject.SetActive(true);
         DayEnded.Invoke();
-        Invoke(nameof(StartNewDay), 10f);
     }
 }

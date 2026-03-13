@@ -17,8 +17,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _smoothTime = 0.15f;
     [SerializeField] private Vector2 _verticalLimit = new Vector2(-30f, 70f);
     
-    [Header("View-Specific Settings")]
-    [SerializeField] private bool _disableMouseLookDuringTransition = true;
+    // [Header("View-Specific Settings")]
+    // [SerializeField] private bool _disableMouseLookDuringTransition = true;
     
     public event Action<bool> DragAllowedChanged;
     public int ViewID { get; private set; }

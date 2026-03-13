@@ -1,21 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+
 public class ButtonAnimation : MonoBehaviour
 {
     [SerializeField] private Sprite[] _buttonSprites;
     [SerializeField] private float _spriteChangeRate;
+    
     private Image _buttonImage;
 
-    void Start()
+    private void Start()
     {
         _buttonImage = GetComponent<Image>();
         StartCoroutine(ChangeImagePerTime());
     }
 
-    IEnumerator ChangeImagePerTime()
+    private IEnumerator ChangeImagePerTime()
     {
         int index = 0;
+        
         while (true)
         {
             _buttonImage.sprite = _buttonSprites[index];

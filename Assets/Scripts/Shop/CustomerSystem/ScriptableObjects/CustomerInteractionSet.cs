@@ -49,7 +49,7 @@ public class CustomerInteraction
 
         if (nextInteraction != null)
         {
-            dialogueManager.TextDisplayed += OnTextDisplayed;
+            dialogueManager.Typewriter.TextDisplayed += OnTextDisplayed;
             _isWaitingForTextDisplay = true;
         }
 
@@ -64,7 +64,7 @@ public class CustomerInteraction
             return;
         }
 
-        _targetCustomer.DialogueManager.TextDisplayed -= OnTextDisplayed;
+        _targetCustomer.DialogueManager.Typewriter.TextDisplayed -= OnTextDisplayed;
 
         _nextInteraction?.PlayOut(_targetCustomer);
 
@@ -81,7 +81,7 @@ public class CustomerInteraction
 }
 
 [Serializable]
-public struct DialogueOption
+public struct DialogueOption : IEquatable<DialogueOption>
 {
     [SerializeField] private string _textKey;
     [SerializeField] private CustomerInteraction _interaction;
@@ -93,6 +93,21 @@ public struct DialogueOption
     {
         _textKey = textKey;
         _interaction = interaction;
+    }
+
+    public bool Equals(DialogueOption other)
+    {
+        return _textKey == other._textKey && Equals(_interaction, other._interaction);
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is DialogueOption other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_textKey, _interaction);
     }
 }
 

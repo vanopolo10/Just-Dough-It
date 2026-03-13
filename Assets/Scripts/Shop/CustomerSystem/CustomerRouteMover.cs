@@ -5,14 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(NpcMover))]
 public class CustomerRouteMover : MonoBehaviour
 {
-    private enum State
-    {
-        Idle,
-        Entering,
-        AtCounter,
-        Exiting
-    }
-
     private static readonly int OpenDoor = Animator.StringToHash("OpenDoor");
     private static readonly int CloseDoor = Animator.StringToHash("CloseDoor");
 
@@ -25,14 +17,12 @@ public class CustomerRouteMover : MonoBehaviour
     [SerializeField] private Transform _doorInside;
     [SerializeField] private Transform _exit;
     
-
     [Header("Timings")]
     [SerializeField] private float _exitDelay = 5f;
 
     private NpcMover _mover;
     private CustomerAnimatorController _animator;
     private Customer _customer;
-    private State _state = State.Idle;
 
     public event Action ReachedCounter;
     public event Action LeftCafe;
@@ -48,7 +38,6 @@ public class CustomerRouteMover : MonoBehaviour
         _customer = animator.GetComponentInParent<Customer>();
         _customer.QuestCompleted += MoveOut;
 
-        _state = State.Entering;
         _mover.MoveRoutine(EnterRoutine());
     }
 
@@ -67,15 +56,11 @@ public class CustomerRouteMover : MonoBehaviour
         _animator.StopWalking();
         _animator.ReachedCounter();
 
-        _state = State.AtCounter;
         ReachedCounter?.Invoke();
     }
 
     private void MoveOut()
     {
-        if (_state != State.AtCounter) return;
-
-        _state = State.Exiting;
         _mover.MoveRoutine(ExitRoutine());
     }
 
@@ -98,7 +83,7 @@ public class CustomerRouteMover : MonoBehaviour
 
         _customer.QuestCompleted -= MoveOut;
 
+        _mover.StopAll();
         LeftCafe?.Invoke();
-        Destroy(_animator.gameObject);
     }
 }

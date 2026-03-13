@@ -92,13 +92,13 @@ public class WalkerSpawner : MonoBehaviour
         }
     }
     
-    public void StopNPC(Transform npc)
+    public void StopNpc(Transform npc)
     {
         if (_npcMover != null)
             _npcMover.Stop(npc);
     }
     
-    public void StopAllNPCs()
+    public void StopAllNpc()
     {
         if (_npcMover != null)
             _npcMover.StopAll();
@@ -106,6 +106,6 @@ public class WalkerSpawner : MonoBehaviour
 
     private void OnDestroy()
     {
-        StopAllNPCs();
+        StopAllNpc();
     }
 }

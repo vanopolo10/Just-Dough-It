@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class NpcMover : MonoBehaviour
@@ -26,8 +25,7 @@ public class NpcMover : MonoBehaviour
     
     public void StopAll()
     {
-        foreach (var routine in _activeRoutines.Values.Where(routine => routine != null))
-            StopCoroutine(routine);
+        StopAllCoroutines();
 
         _activeRoutines.Clear();
     }
@@ -46,7 +44,6 @@ public class NpcMover : MonoBehaviour
             return;
         }
     
-        Debug.Log($"MoveRoutine: Starting coroutine");
         StartCoroutine(routine);
     }
     

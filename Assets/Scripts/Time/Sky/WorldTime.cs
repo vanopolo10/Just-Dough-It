@@ -44,9 +44,10 @@ public class WorldTime : MonoBehaviour
 
         TimeChanged?.Invoke(InGameTime);
 
-        if (percent >= 1f)
+        if (percent >= HundredPercent)
         {
             _dayEnded = true;
+            print("Day ended");
             DayOver?.Invoke();
         }
     }

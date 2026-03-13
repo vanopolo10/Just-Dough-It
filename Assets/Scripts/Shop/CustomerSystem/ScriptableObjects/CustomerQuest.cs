@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -55,7 +56,7 @@ public class CustomerQuest : ScriptableObject
 
             if (_customer.DialogueManager != null && !_isWaitingForText)
             {
-                _customer.DialogueManager.TextDisplayed += OnGreetingCompleted;
+                _customer.DialogueManager.Typewriter.TextDisplayed += OnGreetingCompleted;
                 _isWaitingForText = true;
             }
         }
@@ -77,7 +78,7 @@ public class CustomerQuest : ScriptableObject
             return;
         }
 
-        _customer.DialogueManager.TextDisplayed -= OnGreetingCompleted;
+        _customer.DialogueManager.Typewriter.TextDisplayed -= OnGreetingCompleted;
         _isWaitingForText = false;
 
         _customer.Invoke(nameof(_customer.StartQuest), _timeoutAfterGreeting);
@@ -95,13 +96,9 @@ public class CustomerQuest : ScriptableObject
             _customer.AnimatorController.OnQuestStarted();
 
         if (_questInteraction != null)
-        {
             _questInteraction.PlayOut(_customer);
-        }
         else
-        {
             Debug.LogWarning($"CustomerQuest {name}: QuestInteraction is missing");
-        }
 
         if (_interactions != null && _customer.DialogueManager != null)
             _customer.DialogueManager.SetDialogueOptions(_interactions.DialogueOptions);
@@ -113,31 +110,14 @@ public class CustomerQuest : ScriptableObject
             _applicableFillings == null || _applicableFillings.Count == 0)
             return true;
 
-        bool typeFits = false;
-        bool fillingFits = false;
+        bool typeFits = _applicableTypes.Any(type => product.Type == type || type == ProductType.Any);
 
-        foreach (ProductType type in _applicableTypes)
-        {
-            if (product.Type == type || type == ProductType.Any)
-            {
-                typeFits = true;
-                break;
-            }
-        }
-
-        foreach (FillingType filling in _applicableFillings)
-        {
-            if (product.Filling == filling || filling == FillingType.Any)
-            {
-                fillingFits = true;
-                break;
-            }
-        }
+        bool fillingFits = _applicableFillings.Any(filling => product.Filling == filling || filling == FillingType.Any);
 
         return typeFits && fillingFits;
     }
 
-    public void FinishQuest()
+    private void FinishQuest()
     {
         if (!_isInitialized || _customer == null)
         {
@@ -160,7 +140,7 @@ public class CustomerQuest : ScriptableObject
             _customer.DialogueManager.Timeout(_timeoutOnCompletion);
 
         _isInitialized = false;
-        Debug.Log($"Quest finished");
+        Debug.Log("Quest finished");
     }
 
     public bool OfferProduct(Product product)
@@ -202,11 +182,11 @@ public class CustomerQuest : ScriptableObject
         return fits;
     }
 
-    public void ResetQuest()
+    /*public void ResetQuest()
     {
         if (_customer != null && _customer.DialogueManager != null && _isWaitingForText)
         {
-            _customer.DialogueManager.TextDisplayed -= OnGreetingCompleted;
+            _customer.DialogueManager.Typewriter.TextDisplayed -= OnGreetingCompleted;
             _isWaitingForText = false;
         }
         
@@ -214,7 +194,7 @@ public class CustomerQuest : ScriptableObject
         _isInitialized = false;
         _customer = null;
         Debug.Log($"Quest reset");
-    }
+    }*/
 
     private void Cleanup()
     {

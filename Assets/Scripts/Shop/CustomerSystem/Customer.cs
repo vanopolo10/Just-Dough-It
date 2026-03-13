@@ -30,9 +30,8 @@ public class Customer : MonoBehaviour
     public void Despawn()
     {
         if (_dialogueManager != null)
-        {
-            _dialogueManager.TextDisplayed -= OnTextDisplayed;
-        }
+            _dialogueManager.Typewriter.TextDisplayed -= OnTextDisplayed;
+        
         Destroy(gameObject);
     }
 
@@ -53,7 +52,7 @@ public class Customer : MonoBehaviour
 
         if (_dialogueManager != null)
         {
-            _dialogueManager.TextDisplayed += OnTextDisplayed;
+            _dialogueManager.Typewriter.TextDisplayed += OnTextDisplayed;
         }
 
         option.Interaction.PlayOut(this);
@@ -61,9 +60,9 @@ public class Customer : MonoBehaviour
 
     private void OnTextDisplayed()
     {
-        if (_dialogueManager != null)
+        if (_dialogueManager)
         {
-            _dialogueManager.TextDisplayed -= OnTextDisplayed;
+            _dialogueManager.Typewriter.TextDisplayed -= OnTextDisplayed;
         }
 
         Invoke(nameof(ResetDialogue), _timeoutBeforeResettingDialogue);
@@ -94,13 +93,9 @@ public class Customer : MonoBehaviour
     private void OnDestroy()
     {
         if (_dialogueManager != null)
-        {
-            _dialogueManager.TextDisplayed -= OnTextDisplayed;
-        }
+            _dialogueManager.Typewriter.TextDisplayed -= OnTextDisplayed;
         
-        if (_quest != null)
-        {
-            _quest.ResetQuest();
-        }
+        //if (_quest != null)
+            //_quest.ResetQuest();
     }
 }

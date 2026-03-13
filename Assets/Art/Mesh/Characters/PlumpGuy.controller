@@ -271,7 +271,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Walking-Sad-Big
-  m_Speed: 1
+  m_Speed: 1.18
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1175444834098988871}
@@ -286,7 +286,7 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 5428084991798665824, guid: 3936cc485a844724384e2bbfdbbd3e8c, type: 3}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: Blend
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
@@ -992,7 +992,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Walking-Base
-  m_Speed: 1
+  m_Speed: 1.18
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -8226493616648199678}
@@ -1007,7 +1007,7 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 4920006156288731387, guid: 3936cc485a844724384e2bbfdbbd3e8c, type: 3}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: Blend
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
@@ -1091,8 +1091,11 @@ AnimatorTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: IdleID
-    m_EventTreshold: 2
+    m_ConditionEvent: SadWalkID
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: IsSad
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6295022027963552683}
   m_Solo: 0
@@ -1149,8 +1152,11 @@ AnimatorTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: IdleID
+    m_ConditionEvent: SadWalkID
     m_EventTreshold: 1
+  - m_ConditionMode: 1
+    m_ConditionEvent: IsSad
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8451373439521749768}
   m_Solo: 0
@@ -1232,8 +1238,8 @@ AnimatorTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: IdleID
+  - m_ConditionMode: 2
+    m_ConditionEvent: IsSad
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1496209068916208473}
@@ -1386,7 +1392,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Walking-Sad-Pockets-Big
-  m_Speed: 1
+  m_Speed: 1.18
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1785007514151133428}
@@ -1401,7 +1407,7 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 2717108698182146875, guid: 3936cc485a844724384e2bbfdbbd3e8c, type: 3}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: Blend
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 

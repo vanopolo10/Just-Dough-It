@@ -12,18 +12,20 @@ public class MenuUIController : MonoBehaviour
 {
     public static MenuUIController Instance = null;
 
+    [SerializeField] private Darkness _darkness;
     [SerializeField] private TMP_InputField _saveNameInputField;
     [SerializeField] private Transform _viewportContent;
     [SerializeField] private GameObject _savePrefab;
-
-    [SerializeField] private MenuCameraController _cameraController;
-
+    
     private List<GameSave> _saves;
+    private bool _doPreferSunrises;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else if (Instance == this || Instance != null) Destroy(this);
+
+        _darkness.Darkened += LoadNewGame;
     }
 
     private void Start()
@@ -32,7 +34,13 @@ public class MenuUIController : MonoBehaviour
         StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
     }
 
-    public void NewGame()
+    public void NewGame(bool doPreferSunrises)
+    {
+        _darkness.FallAsleep();
+        _doPreferSunrises = doPreferSunrises;
+    }
+
+    private void LoadNewGame()
     {
         SceneManager.LoadScene("CustomerIntegration", LoadSceneMode.Single);
     }
@@ -46,8 +54,11 @@ public class MenuUIController : MonoBehaviour
 
     public void UpdateSavesList()
     {
-        for (int i = 0; i < _viewportContent.childCount; i++) Destroy(_viewportContent.GetChild(i).gameObject);
+        for (int i = 0; i < _viewportContent.childCount; i++) 
+            Destroy(_viewportContent.GetChild(i).gameObject);
+        
         _saves = SaveSystem.GetSavedGames().OrderByDescending(s => DateTime.Parse(s.ChangeTime)).ToList();
+        
         foreach (GameSave save in _saves)
         {
             GameObject saveUIElement = Instantiate(_savePrefab, _viewportContent);
