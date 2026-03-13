@@ -158,20 +158,12 @@ public static class SaveSystem
 
     public static void SaveCurrentLanguage()
     {
-        string path = Path.Combine(_basePath, "language.json");
-        string json = JsonConvert.SerializeObject(new SelectedLanguage(LocalizationSettings.SelectedLocale.Identifier.Code), _settings);
-        File.WriteAllText(path, json);
+        PlayerPrefs.SetString("Language", LocalizationSettings.SelectedLocale.Identifier.Code);
     }
 
     public static string GetSaveLanguage()
     {
-        string path = Path.Combine(_basePath, "language.json");
-
-        if (File.Exists(path) != true) return null;
-        string json = File.ReadAllText(path);
-        SelectedLanguage language = JsonConvert.DeserializeObject<SelectedLanguage>(json);
-
-        return language.Code;
+        return PlayerPrefs.GetString("Language", LocalizationSettings.SelectedLocale.Identifier.Code);
     }
 }
 
