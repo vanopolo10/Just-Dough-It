@@ -13,12 +13,14 @@ public class MenuUIController : MonoBehaviour
     public static MenuUIController Instance = null;
 
     [SerializeField] private Darkness _darkness;
-    [SerializeField] private TMP_InputField _saveNameInputField;
     [SerializeField] private Transform _viewportContent;
     [SerializeField] private GameObject _savePrefab;
+    [SerializeField] private TMP_Dropdown _languageDropdown;
     
     private List<GameSave> _saves;
     private bool _doPreferSunrises;
+
+    private List<string> _languageCodes = new List<string> {"ru", "en"};
 
     private void Awake()
     {
@@ -71,9 +73,9 @@ public class MenuUIController : MonoBehaviour
         Application.Quit();
     }
 
-    public void LoadLanguage(string code)
+    public void ChangeLanguage(int _)
     {
-        StartCoroutine(SetLanguage(code));
+        StartCoroutine(SetLanguage(_languageCodes[_languageDropdown.value]));
     }
 
     private IEnumerator SetLanguage(string code)

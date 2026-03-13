@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 
 public static class SaveSystem
 {
+    private readonly static string _basePath = Application.dataPath;
+
     public static string SelectedSave = "None";
 
     private static readonly JsonSerializerSettings _settings = new()
@@ -19,7 +20,7 @@ public static class SaveSystem
 
     public static void SaveData(string saveFileName, string key, object value)
     {
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Saves", $"{saveFileName}\\");
+        string directoryPath = Path.Combine(_basePath, "Saves", $"{saveFileName}\\");
         string path = Path.Combine(directoryPath, "save.json");
 
         if (File.Exists(path))
@@ -45,7 +46,7 @@ public static class SaveSystem
 
     public static T LoadData<T>(string saveFileName, string key)
     {
-        string path = Path.Combine(Application.persistentDataPath, "Saves", $"{saveFileName}\\", "save.json");
+        string path = Path.Combine(_basePath, "Saves", $"{saveFileName}\\", "save.json");
 
         if (DataExist(saveFileName, key) == false) return default;
         string json = File.ReadAllText(path);
@@ -56,7 +57,7 @@ public static class SaveSystem
 
     public static bool DataExist(string saveFileName, string key)
     {
-        string path = Path.Combine(Application.persistentDataPath, "Saves", $"{saveFileName}\\", "save.json");
+        string path = Path.Combine(_basePath, "Saves", $"{saveFileName}\\", "save.json");
 
         if (File.Exists(path))
         {
@@ -70,7 +71,7 @@ public static class SaveSystem
 
     public static void SaveImage(string saveFileName)
     {
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Saves", $"{saveFileName}\\");
+        string directoryPath = Path.Combine(_basePath, "Saves", $"{saveFileName}\\");
         string path = Path.Combine(directoryPath, "thumbnail.png");
         if (Directory.Exists(directoryPath))
         {
@@ -83,7 +84,7 @@ public static class SaveSystem
 
     public static Sprite LoadSprite(string saveFileName)
     {
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Saves", $"{saveFileName}\\");
+        string directoryPath = Path.Combine(_basePath, "Saves", $"{saveFileName}\\");
         string path = Path.Combine(directoryPath, "thumbnail.png");
         if (File.Exists(path))
         {
@@ -100,7 +101,7 @@ public static class SaveSystem
 
     public static List<GameSave> GetSavedGames()
     {
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Saves");
+        string directoryPath = Path.Combine(_basePath, "Saves");
         List<GameSave> savedGames = new();
 
         if (Directory.Exists(directoryPath) == false) return savedGames;
@@ -119,7 +120,7 @@ public static class SaveSystem
 
     public static void CreateSave(string saveFileName)
     {
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Saves", $"{saveFileName}\\");
+        string directoryPath = Path.Combine(_basePath, "Saves", $"{saveFileName}\\");
         string path = Path.Combine(directoryPath, "save.json");
 
         if (Directory.Exists(directoryPath) == true)
@@ -134,7 +135,7 @@ public static class SaveSystem
 
     public static void DeleteSave(string saveFileName)
     {
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Saves", $"{saveFileName}\\");
+        string directoryPath = Path.Combine(_basePath, "Saves", $"{saveFileName}\\");
 
         if (Directory.Exists(directoryPath) == false)
             return;
@@ -148,7 +149,7 @@ public static class SaveSystem
 
     public static bool SaveExist(string saveFileName)
     {
-        string directoryPath = Path.Combine(Application.persistentDataPath, "Saves", $"{saveFileName}\\");
+        string directoryPath = Path.Combine(_basePath, "Saves", $"{saveFileName}\\");
         string path = Path.Combine(directoryPath, "save.json");
 
         if (File.Exists(path) && Directory.Exists(directoryPath)) return true;
@@ -157,14 +158,14 @@ public static class SaveSystem
 
     public static void SaveCurrentLanguage()
     {
-        string path = Path.Combine(Application.persistentDataPath, "language.json");
+        string path = Path.Combine(_basePath, "language.json");
         string json = JsonConvert.SerializeObject(new SelectedLanguage(LocalizationSettings.SelectedLocale.Identifier.Code), _settings);
         File.WriteAllText(path, json);
     }
 
     public static string GetSaveLanguage()
     {
-        string path = Path.Combine(Application.persistentDataPath, "language.json");
+        string path = Path.Combine(_basePath, "language.json");
 
         if (File.Exists(path) != true) return null;
         string json = File.ReadAllText(path);

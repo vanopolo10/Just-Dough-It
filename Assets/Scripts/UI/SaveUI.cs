@@ -25,7 +25,7 @@ public class SaveUI : MonoBehaviour
     public void StartGame()
     {
         SaveSystem.SelectedSave = _name.text;
-        SceneManager.LoadScene("Cafe", LoadSceneMode.Single);
+        SceneManager.LoadScene("CustomerIntegration", LoadSceneMode.Single);
     }
 
     public void RemoveSave()
