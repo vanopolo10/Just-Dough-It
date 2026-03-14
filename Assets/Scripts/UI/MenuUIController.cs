@@ -12,6 +12,7 @@ public class MenuUIController : MonoBehaviour
 {
     public static MenuUIController Instance = null;
 
+    [SerializeField] private CafeNameController _cafeNameController;
     [SerializeField] private Darkness _darkness;
     [SerializeField] private Transform _viewportContent;
     [SerializeField] private GameObject _savePrefab;
@@ -19,8 +20,9 @@ public class MenuUIController : MonoBehaviour
     
     private List<GameSave> _saves;
     private bool _doPreferSunrises;
+    private string _cafeName;
 
-    private List<string> _languageCodes = new List<string> {"ru", "en"};
+    private List<string> _languageCodes = new() {"ru", "en"};
 
     private void Awake()
     {
@@ -38,8 +40,9 @@ public class MenuUIController : MonoBehaviour
 
     public void NewGame(bool doPreferSunrises)
     {
-        _darkness.FallAsleep();
         _doPreferSunrises = doPreferSunrises;
+        _cafeName = _cafeNameController.CafeName;
+        _darkness.FallAsleep();
     }
 
     private void LoadNewGame()
