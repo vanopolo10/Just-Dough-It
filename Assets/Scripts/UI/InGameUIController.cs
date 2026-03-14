@@ -48,19 +48,9 @@ public class InGameUIController : MonoBehaviour
         _ui.SetActive(!_ui.activeSelf);
     }
 
-    public void CreateSaveButton()
-    {
-        if (_inputField.text == "") return;
-        
-        _saveManager.SaveGame(_inputField.text);
-        _inputField.text = "";
-        _audioSource.Play();
-        SwitchSaveMenu();
-    }
-
     public void ExitButton()
     {
-        _saveManager.Autosave();
+        _saveManager.SaveGame();
         _audioSource.Play();
         Invoke(nameof(Exit), 1);
     }

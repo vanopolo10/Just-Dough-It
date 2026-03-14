@@ -41,34 +41,30 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    public void Autosave()
+    public void SaveGame()
     {
-        StartCoroutine(Save("Autosave"));
+        StartCoroutine(Save());
     }
 
-    public void SaveGame(string saveName)
+    private IEnumerator Save()
     {
-        StartCoroutine(Save(saveName));
-    }
-
-    private IEnumerator Save(string saveName)
-    {
-        SaveSystem.CreateSave(saveName);
+        string currentSave = SaveSystem.SelectedSave; 
+        SaveSystem.CreateSave(currentSave);
         _ui.SetActive(false);
         yield return new WaitForEndOfFrame();
-        SaveSystem.SaveImage(saveName);
+        SaveSystem.SaveImage(currentSave);
         _ui.SetActive(true);
-        SaveSystem.SaveData(saveName, "CameraViewID", _cameraController.ViewID);
-        SaveSystem.SaveData(saveName, "VibeLevel", Cafe.Instance.VibeLevel);
-        SaveSystem.SaveData(saveName, "MoneyCount", _moneyManager.Money);
-        SaveSystem.SaveData(saveName, "Quests", _questSystem.Quests);
+        SaveSystem.SaveData(currentSave, "CameraViewID", _cameraController.ViewID);
+        SaveSystem.SaveData(currentSave, "VibeLevel", Cafe.Instance.VibeLevel);
+        SaveSystem.SaveData(currentSave, "MoneyCount", _moneyManager.Money);
+        SaveSystem.SaveData(currentSave, "Quests", _questSystem.Quests);
         if (_doughBucket.CurrentDough != null)
-            SaveSystem.SaveData(saveName, "Dough", new DoughSave(_doughBucket.CurrentDough.State, _doughBucket.CurrentDough.Filling));
+            SaveSystem.SaveData(currentSave, "Dough", new DoughSave(_doughBucket.CurrentDough.State, _doughBucket.CurrentDough.Filling));
 
         BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
         foreach (BuyButtonContent content in boughtContent)
         {
-            SaveSystem.SaveData(saveName, $"Buyable.{content.Key}", content.BuyableThing.activeSelf);
+            SaveSystem.SaveData(currentSave, $"Buyable.{content.Key}", content.BuyableThing.activeSelf);
             yield return null;
         }
     }
