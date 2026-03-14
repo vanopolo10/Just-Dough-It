@@ -3,6 +3,7 @@ using UnityEngine;
 
 public static class Utils
 {
+#if UNITY_EDITOR
     public class AvatarMaker
     {
         [MenuItem("CustomTools/MakeAvatarMask")]
@@ -37,6 +38,7 @@ public static class Utils
             }
         }
     }
+#endif
 
     public static Vector3 GetMouseWorldPos(float zCord)
     {
