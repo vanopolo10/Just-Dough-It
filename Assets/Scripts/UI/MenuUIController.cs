@@ -17,10 +17,9 @@ public class MenuUIController : MonoBehaviour
     [SerializeField] private Transform _viewportContent;
     [SerializeField] private GameObject _savePrefab;
     [SerializeField] private TMP_Dropdown _languageDropdown;
+    [SerializeField] private Animator _sidesAnimator;
     
     private List<GameSave> _saves;
-    private bool _doPreferSunrises;
-    private string _cafeName;
 
     private List<string> _languageCodes = new() {"ru", "en"};
 
@@ -40,8 +39,9 @@ public class MenuUIController : MonoBehaviour
 
     public void NewGame(bool doPreferSunrises)
     {
-        _doPreferSunrises = doPreferSunrises;
-        _cafeName = _cafeNameController.CafeName;
+        SaveSystem.SelectedSave = _cafeNameController.CafeName;
+        SaveSystem.CreateSave(SaveSystem.SelectedSave);
+        SaveSystem.SaveData(SaveSystem.SelectedSave, "DoPreferSunrises", doPreferSunrises);
         _darkness.FallAsleep();
     }
 
@@ -67,7 +67,10 @@ public class MenuUIController : MonoBehaviour
         foreach (GameSave save in _saves)
         {
             GameObject saveUIElement = Instantiate(_savePrefab, _viewportContent);
-            saveUIElement.GetComponent<SaveUI>().ChangeInfo(save.Name, save.ChangeTime, SaveSystem.LoadSprite(save.Name));
+            SaveUI saveUI = saveUIElement.GetComponent<SaveUI>();
+            saveUI.ChangeInfo(save.Name, save.ChangeTime, SaveSystem.LoadSprite(save.Name));
+            saveUI.SetDarkness(_darkness);
+            saveUI.SetAnimator(_sidesAnimator);
         }
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static QuestSystem;
@@ -10,6 +11,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private QuestSystem _questSystem;
     [SerializeField] private DoughBucket _doughBucket;
     [SerializeField] private Transform _shopTransform;
+    [SerializeField] private GameObject _ui;
 
     private void Start()
     {
@@ -41,18 +43,21 @@ public class SaveManager : MonoBehaviour
 
     public void Autosave()
     {
-        Save("Autosave");
+        StartCoroutine(Save("Autosave"));
     }
 
     public void SaveGame(string saveName)
     {
-        Save(saveName);
+        StartCoroutine(Save(saveName));
     }
 
-    private void Save(string saveName)
+    private IEnumerator Save(string saveName)
     {
         SaveSystem.CreateSave(saveName);
+        _ui.SetActive(false);
+        yield return new WaitForEndOfFrame();
         SaveSystem.SaveImage(saveName);
+        _ui.SetActive(true);
         SaveSystem.SaveData(saveName, "CameraViewID", _cameraController.ViewID);
         SaveSystem.SaveData(saveName, "VibeLevel", Cafe.Instance.VibeLevel);
         SaveSystem.SaveData(saveName, "MoneyCount", _moneyManager.Money);
@@ -64,6 +69,7 @@ public class SaveManager : MonoBehaviour
         foreach (BuyButtonContent content in boughtContent)
         {
             SaveSystem.SaveData(saveName, $"Buyable.{content.Key}", content.BuyableThing.activeSelf);
+            yield return null;
         }
     }
 

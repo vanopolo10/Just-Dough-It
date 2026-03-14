@@ -11,6 +11,8 @@ public class SaveUI : MonoBehaviour
 
     [SerializeField] private GameObject _mainUI;
     [SerializeField] private GameObject _deleteUI;
+    private Darkness _darkness;
+    private Animator _animator;
 
     public void ChangeInfo(string name, string createTime, Sprite thumbnail)
     {
@@ -22,9 +24,23 @@ public class SaveUI : MonoBehaviour
         _deleteUI.SetActive(false);
     }
 
-    public void StartGame()
+    public void SetDarkness(Darkness darkness)
     {
+        _darkness = darkness;
+        _darkness.Darkened += StartGame;
+    }
+
+    public void SetAnimator(Animator animator) => _animator = animator;
+
+    public void Load()
+    {
+        _animator.SetTrigger("TrayClose");
         SaveSystem.SelectedSave = _name.text;
+        _darkness.FallAsleep();
+    }
+
+    private void StartGame()
+    {
         SceneManager.LoadScene("CustomerIntegration", LoadSceneMode.Single);
     }
 
