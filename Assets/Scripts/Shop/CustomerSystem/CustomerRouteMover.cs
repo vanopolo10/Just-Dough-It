@@ -45,13 +45,13 @@ public class CustomerRouteMover : MonoBehaviour
     {
         _animator.StartWalking();
 
-        yield return _mover.FaceTo(_animator.transform, _doorOutside.position);
-        yield return _mover.MoveTo(_animator.transform, _doorOutside.position);
+        yield return _mover.FaceTo(_customer.transform, _doorOutside.position);
+        yield return _mover.MoveTo(_customer.transform, _doorOutside.position);
 
         _animator.TriggerOpenDoor();
         _doorAnimator.SetTrigger(OpenDoor);
-        yield return _mover.FaceTo(_animator.transform, _reception.position);
-        yield return _mover.MoveTo(_animator.transform, _reception.position);
+        yield return _mover.FaceTo(_customer.transform, _reception.position);
+        yield return _mover.MoveTo(_customer.transform, _reception.position);
 
         _animator.StopWalking();
         _animator.ReachedCounter();
@@ -69,17 +69,17 @@ public class CustomerRouteMover : MonoBehaviour
         yield return new WaitForSeconds(_exitDelay);
 
         _animator.StartLeaving();
-        yield return _mover.FaceTo(_animator.transform, _doorOutside.position);
+        yield return _mover.FaceTo(_customer.transform, _doorOutside.position);
 
         _animator.StartWalking();
-        yield return _mover.MoveTo(_animator.transform, _doorInside.position);
+        yield return _mover.MoveTo(_customer.transform, _doorInside.position);
 
         _animator.TriggerOpenDoor();
         _doorAnimator.SetTrigger(CloseDoor);
         
-        yield return _mover.MoveTo(_animator.transform, _doorOutside.position);
-        yield return _mover.FaceTo(_animator.transform, _exit.position);
-        yield return _mover.MoveTo(_animator.transform, _exit.position);
+        yield return _mover.MoveTo(_customer.transform, _doorOutside.position);
+        yield return _mover.FaceTo(_customer.transform, _exit.position);
+        yield return _mover.MoveTo(_customer.transform, _exit.position);
 
         _customer.QuestCompleted -= MoveOut;
 
