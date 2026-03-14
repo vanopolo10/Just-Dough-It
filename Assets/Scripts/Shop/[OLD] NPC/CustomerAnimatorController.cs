@@ -5,10 +5,10 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Animator))]
 public class CustomerAnimatorController : MonoBehaviour
 {
-    protected static readonly int PlaySubIdle = Animator.StringToHash("PlaySubIdle");
-    protected static readonly int IsWalking = Animator.StringToHash("IsWalking");
+    private static readonly int IsWalking = Animator.StringToHash("IsWalking");
     private static readonly int IsSad = Animator.StringToHash("IsSad");
     private static readonly int SadWalkID = Animator.StringToHash("SadWalkID");
+    private static readonly int PlaySubIdle = Animator.StringToHash("PlaySubIdle");
     private static readonly int OpenDoor = Animator.StringToHash("OpenDoor");
     private static readonly int NahID = Animator.StringToHash("NahID");
     private static readonly int Nah = Animator.StringToHash("Nah");
@@ -20,10 +20,10 @@ public class CustomerAnimatorController : MonoBehaviour
     [SerializeField] private int _walkVariants = 3;
     [SerializeField] private int _subIdleVariants = 2;
     [SerializeField] private int _nahVariants = 2;
-    [SerializeField] protected float _subIdleDelayMin = 1f;
-    [SerializeField] protected float _subIdleDelayMax = 4f;
+    [SerializeField] private float _subIdleDelayMin = 1f;
+    [SerializeField] private float _subIdleDelayMax = 4f;
 
-    protected Animator _animator;
+    private Animator _animator;
     private Coroutine _subIdleRoutine;
     
     private void Awake()
@@ -31,20 +31,20 @@ public class CustomerAnimatorController : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public virtual void StartWalking()
+    public void StartWalking()
     {
         _animator.SetBool(IsWalking, true);
         _animator.SetInteger(SadWalkID, Random.Range(0, _walkVariants));
         StopSubIdleRoutine();
     }
 
-    public virtual void StopWalking()
+    public void StopWalking()
     {
         _animator.SetBool(IsWalking, false);
         _animator.SetInteger(IdleID, Random.Range(0, _idleVariants));
     }
     
-    public virtual void ReachedCounter()
+    public void ReachedCounter()
     {
         _animator.SetBool(IsWalking, false);
         StartSubIdleRoutine();
@@ -82,13 +82,13 @@ public class CustomerAnimatorController : MonoBehaviour
         _animator.SetBool(IsSad, false);
     }
 
-    protected void StartSubIdleRoutine()
+    private void StartSubIdleRoutine()
     {
         StopSubIdleRoutine();
         _subIdleRoutine = StartCoroutine(SubIdleCoroutine());
     }
 
-    protected void StopSubIdleRoutine()
+    private void StopSubIdleRoutine()
     {
         if (_subIdleRoutine != null)
         {
@@ -97,7 +97,7 @@ public class CustomerAnimatorController : MonoBehaviour
         }
     }
 
-    protected virtual IEnumerator SubIdleCoroutine()
+    private IEnumerator SubIdleCoroutine()
     {
         while (true)
         {
