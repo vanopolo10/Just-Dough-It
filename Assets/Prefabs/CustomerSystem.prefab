@@ -162,16 +162,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 711212792514700361}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.057475004}
+  m_LocalScale: {x: -0.7376939, y: 0.7692895, z: 0.7476635}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3217064498209895035}
+  m_Father: {fileID: 491093186426200123}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.7382, y: 0.256}
+  m_AnchoredPosition: {x: -0.94063354, y: -0.2748672}
   m_SizeDelta: {x: 0.2143, y: 0.2142}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4805872680017619086
@@ -281,6 +281,7 @@ GameObject:
   - component: {fileID: 121704674350478688}
   - component: {fileID: 4880141796525763737}
   - component: {fileID: 656288214822115577}
+  - component: {fileID: 5098244717743879827}
   m_Layer: 0
   m_Name: CustomerSystem
   m_TagString: Untagged
@@ -318,6 +319,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae4072ca8de9e6b4cb5297af5d837640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerManager
+  _nextDayButton: {fileID: 0}
+  _darkness: {fileID: 0}
+  _worldTime: {fileID: 0}
+  _firstCustomerDelay: 0
   _schedule:
   - {fileID: 11400000, guid: 6754f99f4cfbd0a4db8042b1197d01a2, type: 2}
   - {fileID: 11400000, guid: 6754f99f4cfbd0a4db8042b1197d01a2, type: 2}
@@ -344,6 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
   _speechBubble: {fileID: 9125583254594877991}
+  _typewriter: {fileID: 0}
   _baseDialogueOption: {fileID: 3641826064983509970}
   _baseInactiveDialogueOption: {fileID: 2112368256460977348}
   _dialogueOptionOffset: 0.23
@@ -359,15 +365,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1e1b47ee95441d41b3cc40a754ed036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerRouteMover
-  _doorPoint: {fileID: 6956929411088008698}
-  _doorLookAt: {fileID: 6637034360257877114}
-  _counterPoint: {fileID: 4430367761024294800}
-  _exitPoint: {fileID: 1910375191258678850}
-  _exitLookAt: {fileID: 4490129350737262084}
-  _moveSpeed: 0.8
-  _rotateSpeed: 4
-  _stopDistance: 0.05
-  _modelForwardOffsetY: 180
+  _doorAnimator: {fileID: 0}
+  _doorOutside: {fileID: 0}
+  _reception: {fileID: 0}
+  _doorInside: {fileID: 0}
+  _exit: {fileID: 0}
+  _exitDelay: 5
 --- !u!114 &656288214822115577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,8 +383,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50b7e1f5ec9e72408f61459a9c24108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerModelSpawner
-  _respawnDelayMin: 2
-  _respawnDelayMax: 5
+--- !u!114 &5098244717743879827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331907458245399647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78126c4f7721371408024c408f74b7e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NpcMover
+  _moveSpeed: 1.6
+  _rotateSpeed: 8
+  _stopDistance: 0.05
+  _modelForwardOffsetY: 180
 --- !u!1 &2097792701632814311
 GameObject:
   m_ObjectHideFlags: 0
@@ -761,6 +778,7 @@ RectTransform:
   m_Children:
   - {fileID: 4019670580376935911}
   - {fileID: 7205256017614912745}
+  - {fileID: 2063118720996299947}
   m_Father: {fileID: 3217064498209895035}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1434,7 +1452,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 491093186426200123}
-  - {fileID: 2063118720996299947}
   - {fileID: 6282082868648912900}
   - {fileID: 8878726817803106775}
   m_Father: {fileID: 1666595820988951882}
