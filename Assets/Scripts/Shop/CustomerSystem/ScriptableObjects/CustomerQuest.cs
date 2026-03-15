@@ -52,10 +52,13 @@ public class CustomerQuest : ScriptableObject
         if (_interactions != null && _interactions.OnGreeting != null)
         {
             Debug.Log("[CustomerQuest] Playing OnGreeting with callback to StartQuest");
+            /*
             _customer.DialogueManager.DisplayTextWithCallback(
                 _interactions.OnGreeting.DialogueKey, 
                 StartQuest
             );
+            */
+            _interactions.OnGreeting.PlayOut(_customer, StartQuest);
         }
         else
         {
@@ -119,9 +122,14 @@ public class CustomerQuest : ScriptableObject
 
         if (_interactions != null && _interactions.OnQuestCompleted != null)
         {
-            _customer.DialogueManager.DisplayText(_interactions.OnQuestCompleted.DialogueKey);
+            // _customer.DialogueManager.DisplayText(_interactions.OnQuestCompleted.DialogueKey);
+            _interactions.OnQuestCompleted.PlayOut(_customer, FinalizeQuest);
         }
 
+        
+    }
+
+    public void FinalizeQuest() { //has to be public sadly
         if (_customer != null)
             _customer.FinishQuest();
 
@@ -153,7 +161,7 @@ public class CustomerQuest : ScriptableObject
                     _customer.AnimatorController.OnItemAccepted();
 
                 if (_interactions != null && _interactions.OnItemAccepted != null)
-                    _customer.DialogueManager.DisplayText(_interactions.OnItemAccepted.DialogueKey);
+                    _interactions.OnItemAccepted.PlayOut(_customer);
             }
         }
         else
@@ -162,7 +170,7 @@ public class CustomerQuest : ScriptableObject
                 _customer.AnimatorController.OnItemRejected();
 
             if (_interactions != null && _interactions.OnItemRejected != null)
-                _customer.DialogueManager.DisplayText(_interactions.OnItemRejected.DialogueKey);
+                _interactions.OnItemRejected.PlayOut(_customer);
         }
 
         return fits;

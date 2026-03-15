@@ -63,13 +63,16 @@ public class DialogueManager : MonoBehaviour
         else if (_isTextFullyVisible)
         {
             Debug.Log("[DialogueManager] Case 2: Text is fully visible - executing callback");
+            Debug.Log($"[DialogueManager] Current callback: {(_onCompleteCurrentText != null ? _onCompleteCurrentText.Method.Name : "null")}");
             _isTextFullyVisible = false;
 
             if (_onCompleteCurrentText != null)
             {
                 Debug.Log("[DialogueManager] Callback exists - invoking");
-                _onCompleteCurrentText.Invoke();
+                Action MayLordHaveMercyOnMyWretchedSoul = _onCompleteCurrentText;
                 _onCompleteCurrentText = null;
+                MayLordHaveMercyOnMyWretchedSoul.Invoke();
+                
             }
             else
             {
@@ -100,7 +103,7 @@ public class DialogueManager : MonoBehaviour
         }
         
         _isTextFullyVisible = false;
-        _onCompleteCurrentText = null;
+        //_onCompleteCurrentText = null;
         
         _typewriter.TypingCompleted += OnTypingCompleted;
         
@@ -112,7 +115,7 @@ public class DialogueManager : MonoBehaviour
         Debug.Log($"[DialogueManager] DisplayTextWithCallback called with text: {text}. Callback exists: {onComplete != null}");
         DisplayText(text);
         _onCompleteCurrentText = onComplete;
-        Debug.Log($"[DialogueManager] Callback assigned. Current callback: {(_onCompleteCurrentText != null ? "assigned" : "null")}");
+        Debug.Log($"[DialogueManager] Callback assigned. Current callback: {(_onCompleteCurrentText != null ? _onCompleteCurrentText.Method.Name : "null")}");
     }
 
     public void SetDialogueOptions(List<DialogueOption> options)
@@ -155,7 +158,7 @@ public class DialogueManager : MonoBehaviour
         _speechBubble.gameObject.SetActive(false);
         _typewriter.Clear();
         _isTextFullyVisible = false;
-        _onCompleteCurrentText = null;
+        //_onCompleteCurrentText = null;
     }
 
     private void ClearDialogueHandles()
