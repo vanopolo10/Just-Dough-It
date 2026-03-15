@@ -6,25 +6,26 @@ using UnityEngine;
 public class CustomerInteraction
 {
     [SerializeField] private string _dialogueKey;
+    [SerializeField] private float _postDisplayDelay = 0f;
 
+    private bool _isWaitingForTextDisplay;
     private Customer _targetCustomer;
     private CustomerInteraction _nextInteraction;
+    private float _nextDelay;
     
     public string DialogueKey => _dialogueKey;
+    public float PostDisplayDelay => _postDisplayDelay;
 
     public void PlayOut(Customer target)
     {
-        Debug.Log($"[CustomerInteraction] PlayOut (single) called. DialogueKey: {_dialogueKey}, Target: {(target != null ? target.name : "null")}");
-        PlayOut(target, null);
+        PlayOut(target, null, 0f);
     }
     
-    public void PlayOut(Customer target, CustomerInteraction nextInteraction)
+    public void PlayOut(Customer target, CustomerInteraction nextInteraction, float nextDelay = 0f)
     {
-        Debug.Log($"[CustomerInteraction] PlayOut (with next) called. DialogueKey: {_dialogueKey}, Has nextInteraction: {nextInteraction != null}, Target: {(target != null ? target.name : "null")}");
-        
         if (!target)
         {
-            Debug.LogError("[CustomerInteraction] Target customer is null");
+            Debug.LogError("Target customer is null");
             return;
         }
 
@@ -32,54 +33,50 @@ public class CustomerInteraction
         
         if (!dialogueManager)
         {
-            Debug.LogError("[CustomerInteraction] DialogueManager is null on target customer");
+            Debug.LogError("DialogueManager is null on target customer");
+            return;
+        }
+
+        if (_isWaitingForTextDisplay)
+        {
+            Debug.LogWarning($"Interaction {_dialogueKey} is already waiting for TextDisplayed");
             return;
         }
 
         _targetCustomer = target;
         _nextInteraction = nextInteraction;
+        _nextDelay = nextDelay;
 
         if (nextInteraction != null)
         {
-            Debug.Log($"[CustomerInteraction] Next interaction exists. Creating callback to play next interaction: {nextInteraction.DialogueKey}");
-            dialogueManager.DisplayTextWithCallback(_dialogueKey, OnTextCompleted);
+            dialogueManager.Typewriter.TextDisplayed += OnTextDisplayed;
+            _isWaitingForTextDisplay = true;
         }
-        else
-        {
-            Debug.Log($"[CustomerInteraction] No next interaction. Displaying text without callback");
-            dialogueManager.DisplayText(_dialogueKey);
-        }
+
+        dialogueManager.DisplayText(_dialogueKey, _postDisplayDelay);
     }
 
-    private void OnTextCompleted()
+    private void OnTextDisplayed()
     {
-        Debug.Log($"[CustomerInteraction] OnTextCompleted called. Current dialogue: {_dialogueKey}, Has nextInteraction: {_nextInteraction != null}");
-        
         if (!_targetCustomer || !_targetCustomer.DialogueManager)
         {
-            Debug.LogError("[CustomerInteraction] Target customer or DialogueManager is null in OnTextCompleted");
             Cleanup();
             return;
         }
 
-        if (_nextInteraction != null)
-        {
-            Debug.Log($"[CustomerInteraction] Playing next interaction: {_nextInteraction.DialogueKey}");
-            _nextInteraction.PlayOut(_targetCustomer);
-        }
-        else
-        {
-            Debug.Log("[CustomerInteraction] No next interaction - chain ended");
-        }
+        _targetCustomer.DialogueManager.Typewriter.TextDisplayed -= OnTextDisplayed;
+
+        _nextInteraction?.PlayOut(_targetCustomer);
 
         Cleanup();
     }
 
     private void Cleanup()
     {
-        Debug.Log($"[CustomerInteraction] Cleanup for dialogue: {_dialogueKey}");
+        _isWaitingForTextDisplay = false;
         _targetCustomer = null;
         _nextInteraction = null;
+        _nextDelay = 0f;
     }
 }
 

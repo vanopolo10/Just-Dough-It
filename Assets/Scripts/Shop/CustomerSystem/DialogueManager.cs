@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] private DialogueBubble _speechBubble;
+    [SerializeField] private GameObject _speechBubble;
     [SerializeField] private TextTypewriter _typewriter;
     [SerializeField] private GameObject _baseDialogueOption, _baseInactiveDialogueOption;
     [SerializeField] private float _dialogueOptionOffset = 1f;
@@ -13,9 +13,6 @@ public class DialogueManager : MonoBehaviour
     private List<bool> _dialogueOptionActive;
     private List<Transform> _spawnedDialogueOptions = new();
 
-    private bool _isTextFullyVisible = false;
-    private Action _onCompleteCurrentText;
-    
     public TextTypewriter Typewriter => _typewriter;
 
     private void Awake()
@@ -31,93 +28,16 @@ public class DialogueManager : MonoBehaviour
         DisableBubble();
     }
 
-    private void OnEnable()
+    public void DisplayText(string text, float delayAfterTyping = 0f)
     {
-        if (_speechBubble != null)
-            _speechBubble.OnBubbleClicked += HandleClick;
-    }
-
-    private void OnDisable()
-    {
-        if (_speechBubble != null)
-            _speechBubble.OnBubbleClicked -= HandleClick;
-            
-        if (_typewriter != null)
-        {
-            _typewriter.TypingCompleted -= OnTypingCompleted;
-            _typewriter.Clear();
-        }
-    }
-
-    private void HandleClick()
-    {
-        Debug.Log($"[DialogueManager] HandleClick called. IsTyping: {_typewriter.IsTyping}, IsTextFullyVisible: {_isTextFullyVisible}");
-        
-        if (_typewriter.IsTyping)
-        {
-            Debug.Log("[DialogueManager] Case 1: Text is typing - completing instantly");
-            _typewriter.CompleteTypingInstantly();
-            _isTextFullyVisible = true;
-            Debug.Log($"[DialogueManager] Text completed instantly. IsTextFullyVisible set to: {_isTextFullyVisible}");
-        }
-        else if (_isTextFullyVisible)
-        {
-            Debug.Log("[DialogueManager] Case 2: Text is fully visible - executing callback");
-            _isTextFullyVisible = false;
-
-            if (_onCompleteCurrentText != null)
-            {
-                Debug.Log("[DialogueManager] Callback exists - invoking");
-                _onCompleteCurrentText.Invoke();
-                _onCompleteCurrentText = null;
-            }
-            else
-            {
-                Debug.LogWarning("[DialogueManager] Callback is null! No action to execute");
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"[DialogueManager] Case 3: Unexpected state - IsTyping: {_typewriter.IsTyping}, IsTextFullyVisible: {_isTextFullyVisible}");
-        }
-    }
-
-    private void OnTypingCompleted()
-    {
-        print("[DialogueManager] TypingCompleted event received - text is now fully visible");
-        _isTextFullyVisible = true;
-        _typewriter.TypingCompleted -= OnTypingCompleted;
-    }
-
-    public void DisplayText(string text)
-    {
-        Debug.Log($"[DialogueManager] DisplayText called with text: {text}");
-        
-        if (!_speechBubble.gameObject.activeSelf)
-        {
-            Debug.Log("[DialogueManager] Activating speech bubble");
+        if (!_speechBubble.activeSelf)
             EnableBubble();
-        }
         
-        _isTextFullyVisible = false;
-        _onCompleteCurrentText = null;
-        
-        _typewriter.TypingCompleted += OnTypingCompleted;
-        
-        _typewriter.StartTyping(text);
-    }
-
-    public void DisplayTextWithCallback(string text, Action onComplete)
-    {
-        Debug.Log($"[DialogueManager] DisplayTextWithCallback called with text: {text}. Callback exists: {onComplete != null}");
-        DisplayText(text);
-        _onCompleteCurrentText = onComplete;
-        Debug.Log($"[DialogueManager] Callback assigned. Current callback: {(_onCompleteCurrentText != null ? "assigned" : "null")}");
+        _typewriter.StartTyping(text, delayAfterTyping);
     }
 
     public void SetDialogueOptions(List<DialogueOption> options)
     {
-        Debug.Log($"[DialogueManager] Setting dialogue options. Count: {options.Count}");
         _dialogueOptions = options;
 
         bool[] tmp = new bool[options.Count];
@@ -131,31 +51,21 @@ public class DialogueManager : MonoBehaviour
     {
         int index = _dialogueOptions.IndexOf(option);
         if (index >= 0 && index < _dialogueOptionActive.Count)
-        {
             _dialogueOptionActive[index] = false;
-            Debug.Log($"[DialogueManager] Deactivated option at index: {index}");
-        }
         RefreshDialogueHandles();
     }
 
     private void EnableBubble()
     {
-        _speechBubble.gameObject.SetActive(true);
+        _speechBubble.SetActive(true);
         RefreshDialogueHandles();
     }
 
     public void DisableBubble()
     {
-        Debug.Log("[DialogueManager] Disabling bubble");
-        
-        if (_typewriter != null)
-            _typewriter.TypingCompleted -= OnTypingCompleted;
-        
         ClearDialogueHandles();
-        _speechBubble.gameObject.SetActive(false);
+        _speechBubble.SetActive(false);
         _typewriter.Clear();
-        _isTextFullyVisible = false;
-        _onCompleteCurrentText = null;
     }
 
     private void ClearDialogueHandles()
@@ -199,5 +109,16 @@ public class DialogueManager : MonoBehaviour
                     handle.Setup(customerManager.CurrentCustomer, option);
             }
         }
+    }
+
+    public void Timeout(float time)
+    {
+        Invoke(nameof(DisableBubble), time);
+    }
+
+    private void OnDisable()
+    {
+        if (_typewriter != null)
+            _typewriter.Clear();
     }
 }
