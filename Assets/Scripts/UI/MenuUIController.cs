@@ -47,14 +47,14 @@ public class MenuUIController : MonoBehaviour
 
     private void LoadNewGame()
     {
-        SceneManager.LoadScene("CustomerIntegration", LoadSceneMode.Single);
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
     }
 
     public void LoadLastGame()
     {
         if (_saves.Count == 0) return;
         SaveSystem.SelectedSave = _saves[0].Name;
-        SceneManager.LoadScene("CustomerIntegration", LoadSceneMode.Single);
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
     }
 
     public void UpdateSavesList()
