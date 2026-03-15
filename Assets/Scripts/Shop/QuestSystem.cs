@@ -84,7 +84,7 @@ public class QuestSystem : MonoBehaviour
         UpdateText();
     }
 
-    private void UpdateText(Locale locale = null)
+    private async void UpdateText(Locale locale = null)
     {
         if (_text == null)
             return;
@@ -93,11 +93,17 @@ public class QuestSystem : MonoBehaviour
 
         foreach (QuestDisplay quest in _quests)
         {
-            text += LocalizationSettings.StringDatabase.GetLocalizedString("QuestsTable", quest.DescriptionKey);
-            text += quest.Score < quest.MaxScore
-                ? " (" + quest.Score + "/" + quest.MaxScore + ")"
-                : " " + LocalizationSettings.StringDatabase.GetLocalizedString("QuestsTable", _completionTextKey);
-
+            var _text = LocalizationSettings.StringDatabase.GetLocalizedStringAsync("QuestsTable", quest.DescriptionKey);
+            await _text.Task;
+            text += _text.Result;
+            if (quest.Score < quest.MaxScore)
+                text += " (" + quest.Score + "/" + quest.MaxScore + ")";
+            else
+            {
+                _text = LocalizationSettings.StringDatabase.GetLocalizedStringAsync("QuestsTable", _completionTextKey);
+                await _text.Task;
+                text += " " + _text.Result;
+            }
             text += "\n\n";
         }
 
