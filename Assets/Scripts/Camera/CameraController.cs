@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private bool _enableMouseLook = true;
     [SerializeField] private float _mouseSensitivity = 2f;
     [SerializeField] private float _smoothTime = 0.15f;
-    [SerializeField] private Vector2 _verticalLimit = new Vector2(-30f, 70f);
+    [SerializeField] private Vector2 _rotationLimit = new(10f, 10f);
     
     // [Header("View-Specific Settings")]
     // [SerializeField] private bool _disableMouseLookDuringTransition = true;
@@ -74,12 +74,16 @@ public class CameraController : MonoBehaviour
         
         _targetRotationX -= mouseY;
         _targetRotationY += mouseX;
-        
-        _targetRotationX = Mathf.Clamp(_targetRotationX, _verticalLimit.x, _verticalLimit.y);
-        
+
+        Vector3 currentViewRotation = _views[ViewID].RotationEuler;
+
+        _targetRotationX = Mathf.Clamp(_targetRotationX, currentViewRotation.x - _rotationLimit.x, currentViewRotation.x + _rotationLimit.x);
+        _targetRotationY = Mathf.Clamp(_targetRotationY, currentViewRotation.y - _rotationLimit.y, currentViewRotation.y + _rotationLimit.y);
+
         _currentRotationX = Mathf.SmoothDamp(_currentRotationX, _targetRotationX, ref _velocityX, _smoothTime);
         _currentRotationY = Mathf.SmoothDamp(_currentRotationY, _targetRotationY, ref _velocityY, _smoothTime);
         
+
         transform.localEulerAngles = new Vector3(_currentRotationX, _currentRotationY, 0);
     }
     
