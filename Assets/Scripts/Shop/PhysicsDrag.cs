@@ -7,11 +7,15 @@ public class PhysicsDrag : MonoBehaviour
     [SerializeField] private float _lerpSpeed = 10f;
     [SerializeField] private float _targetY = 1.3f;
     [SerializeField] private bool _freezeOnRelease;
+    [SerializeField] private Vector3 _lockedOffset;
 
     private bool _isOverridden;
+    private bool _isLocked;
+    private bool _wasSetToKinematic = false;
 
     private Vector3 _targetPosition;
     private Quaternion _targetRotation;
+    private GameObject _LockPoint;
 
     private Rigidbody _rb;
     private Camera _mainCamera;
@@ -24,20 +28,39 @@ public class PhysicsDrag : MonoBehaviour
         _mainCamera = Camera.main;
     }
 
-    public void Override(Transform target)
+    public void Override(Transform target, bool setToKinematic = false)
     {
         if (target == null) return;
 
         _isOverridden = true;
-        _targetPosition = target.position;
-        _targetRotation = target.rotation;
+        _LockPoint = target.gameObject;
+
+        if (setToKinematic)
+        {
+            _rb.isKinematic = true;
+            _wasSetToKinematic = true;
+        }
+    }
+    public void SetLocked(bool locked)
+    {
+        _isLocked = locked;
+        if(_isLocked) StopDragging();
     }
 
     public void CancelOverride()
     {
         _isOverridden = false;
-    }
 
+        if(_wasSetToKinematic)
+        {
+            _rb.isKinematic = false;
+            _wasSetToKinematic = false;
+        }
+    }
+    public void TryStartDragging() { 
+        if(Input.GetMouseButton(0)) StartDragging();
+        else UpdateTargetFromMouse();
+    }
     public void StartDragging()
     {
         if (IsDragging) return;
@@ -54,7 +77,7 @@ public class PhysicsDrag : MonoBehaviour
 
         print($"{name} stopped dragging");
 
-        if (!_freezeOnRelease)
+        if (!_freezeOnRelease && !_wasSetToKinematic)
             _rb.isKinematic = false;
 
         IsDragging = false;
@@ -62,23 +85,28 @@ public class PhysicsDrag : MonoBehaviour
 
     private void OnMouseDown()
     {
-        StartDragging();
+        if (!_isLocked) StartDragging();
     }
 
     private void OnMouseUp()
     {
-        StopDragging();
+        if (!_isLocked) StopDragging();
     }
 
     private void Update()
     {
-        if (!IsDragging)
-            return;
-
-        if (!_isOverridden)
+        if (_isOverridden)
+        {
+            _targetPosition = _LockPoint.transform.position + _lockedOffset;
+            _targetRotation = _LockPoint.transform.rotation;
+        }
+        if (IsDragging)
+        {
             UpdateTargetFromMouse();
+        }
+        
 
-        ApplyTransform();
+        if(IsDragging || _isOverridden) ApplyTransform();
     }
 
     private void UpdateTargetFromMouse()

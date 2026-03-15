@@ -11,6 +11,10 @@ namespace JustDough
         DragAgainst,
         
         Roll, //Скалка
-        RollSheer
+        RollSheer,
+
+        BeginCutting,
+        BeginAltCutting,
+        FinishCutting
     }
 }

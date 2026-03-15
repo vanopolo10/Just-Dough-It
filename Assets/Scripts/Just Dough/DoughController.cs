@@ -12,9 +12,10 @@ public class DoughController : MonoBehaviour
     [SerializeField] private DoughVisualSwitcher _doughVisualSwitcher;
     [SerializeField] private FillingType _filling = FillingType.None;
 
-    // private readonly Dictionary<CraftZone, bool> _comboZones = new();
-    [SerializeField] private float _comboClicksTotal;
-    [SerializeField] private float _comboClicksLeft;
+    [SerializeField] private int _cuttingZonesLeft;
+    
+    private int _comboClicksTotal;
+    private int _comboClicksLeft;
 
     private Vector3 _rollEnterLocalPos;
     private Quaternion _rollRotation;
@@ -49,7 +50,7 @@ public class DoughController : MonoBehaviour
 
     private void Start()
     {
-        ResetCombo();
+        ResetSpecialZones();
         StateChanged?.Invoke();
     }
 
@@ -209,7 +210,9 @@ public class DoughController : MonoBehaviour
             $"state={State}, filling={_filling}"
         );
 
-        ResetCombo();
+
+        ResetSpecialZones();
+
         StateChanged?.Invoke();
 
         return true;
@@ -227,7 +230,7 @@ public class DoughController : MonoBehaviour
             _imperfectActionCount = 0;
         }
 
-        ResetCombo();
+        ResetSpecialZones();
         StateChanged?.Invoke();
     }
 
@@ -240,6 +243,12 @@ public class DoughController : MonoBehaviour
         print("Set animation progress to " + progress + " on layer " + animator.GetLayerName(0));
         animator.Play("Completion", 0, progress);
         //animator.SetFloat("Progress", progress);
+    }
+
+    private void ResetSpecialZones()
+    {
+        ResetCombo();
+        ResetCutting();
     }
 
     private void ResetCombo()
@@ -267,4 +276,26 @@ public class DoughController : MonoBehaviour
         _comboClicksLeft = _comboClicksTotal;
         UpdateComboAnimation();
     }
+
+
+    private void ResetCutting()
+    {
+        if (_doughVisualSwitcher == null)
+            return;
+
+        if (_doughVisualSwitcher.Map.TryGetValue(State, out GameObject go) == false || go == null)
+            return;
+
+        _cuttingZonesLeft = 0;
+
+        foreach (CuttingZone cut in go.GetComponentsInChildren<CuttingZone>())
+            _cuttingZonesLeft++;
+    }
+
+    public void ProgressCutting() {
+        _cuttingZonesLeft--;
+        if (_cuttingZonesLeft <= 0)
+            ApplyAction(DoughCraftAction.FinishCutting);
+    }
 }
+
