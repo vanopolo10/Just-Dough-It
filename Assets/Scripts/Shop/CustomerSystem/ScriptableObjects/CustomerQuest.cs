@@ -24,19 +24,18 @@ public class CustomerQuest : ScriptableObject
     [SerializeField] private int _productsNeeded;
     [SerializeField] private List<ProductType> _applicableTypes;
     [SerializeField] private List<FillingType> _applicableFillings;
-    [SerializeField] private float _timeoutOnCompletion = 3f;
-    [SerializeField] private float _timeoutAfterGreeting = 3f;
 
     private int _productsLeft;
     private Customer _customer;
     private bool _isInitialized;
-    private bool _isWaitingForText;
 
     public CustomerInteractionSet Interactions => _interactions;
     public CustomerInteraction QuestInteraction => _questInteraction;
 
     public void Initialize(Customer customer)
     {
+        Debug.Log($"[CustomerQuest] Initialize called for quest: {name}");
+        
         if (customer == null)
         {
             Debug.LogError($"CustomerQuest {name}: Customer is null");
@@ -52,40 +51,23 @@ public class CustomerQuest : ScriptableObject
 
         if (_interactions != null && _interactions.OnGreeting != null)
         {
-            _interactions.OnGreeting.PlayOut(_customer, null, 0f);
-
-            if (_customer.DialogueManager != null && !_isWaitingForText)
-            {
-                _customer.DialogueManager.Typewriter.TextDisplayed += OnGreetingCompleted;
-                _isWaitingForText = true;
-            }
+            Debug.Log("[CustomerQuest] Playing OnGreeting with callback to StartQuest");
+            _customer.DialogueManager.DisplayTextWithCallback(
+                _interactions.OnGreeting.DialogueKey, 
+                StartQuest
+            );
         }
         else
         {
-            Debug.LogWarning($"CustomerQuest {name}: OnGreeting interaction is missing");
-            _customer.Invoke(nameof(_customer.StartQuest), _timeoutAfterGreeting);
+            Debug.LogWarning($"CustomerQuest {name}: OnGreeting is missing. Starting quest immediately.");
+            StartQuest();
         }
-        
-        Debug.Log($"Customer Initialized");
-    }
-
-    private void OnGreetingCompleted()
-    {
-        if (!_customer || !_customer.DialogueManager)
-        {
-            Debug.LogError($"CustomerQuest {name}: Customer or DialogueManager is null in OnGreetingCompleted");
-            Cleanup();
-            return;
-        }
-
-        _customer.DialogueManager.Typewriter.TextDisplayed -= OnGreetingCompleted;
-        _isWaitingForText = false;
-
-        _customer.Invoke(nameof(_customer.StartQuest), _timeoutAfterGreeting);
     }
 
     public void StartQuest()
     {
+        Debug.Log($"[CustomerQuest] StartQuest called");
+        
         if (!_isInitialized || _customer == null)
         {
             Debug.LogWarning($"CustomerQuest {name}: Cannot start quest - not properly initialized");
@@ -96,12 +78,20 @@ public class CustomerQuest : ScriptableObject
             _customer.AnimatorController.OnQuestStarted();
 
         if (_questInteraction != null)
-            _questInteraction.PlayOut(_customer);
+        {
+            Debug.Log("[CustomerQuest] Showing quest text");
+            _customer.DialogueManager.DisplayText(_questInteraction.DialogueKey);
+        }
         else
+        {
             Debug.LogWarning($"CustomerQuest {name}: QuestInteraction is missing");
+        }
 
         if (_interactions != null && _customer.DialogueManager != null)
+        {
+            Debug.Log($"[CustomerQuest] Setting dialogue options. Count: {_interactions.DialogueOptions.Count}");
             _customer.DialogueManager.SetDialogueOptions(_interactions.DialogueOptions);
+        }
     }
 
     private bool Check(Product product)
@@ -111,7 +101,6 @@ public class CustomerQuest : ScriptableObject
             return true;
 
         bool typeFits = _applicableTypes.Any(type => product.Type == type || type == ProductType.Any);
-
         bool fillingFits = _applicableFillings.Any(filling => product.Filling == filling || filling == FillingType.Any);
 
         return typeFits && fillingFits;
@@ -130,14 +119,11 @@ public class CustomerQuest : ScriptableObject
 
         if (_interactions != null && _interactions.OnQuestCompleted != null)
         {
-            _interactions.OnQuestCompleted.PlayOut(_customer);
+            _customer.DialogueManager.DisplayText(_interactions.OnQuestCompleted.DialogueKey);
         }
 
         if (_customer != null)
             _customer.FinishQuest();
-
-        if (_customer != null && _customer.DialogueManager != null)
-            _customer.DialogueManager.Timeout(_timeoutOnCompletion);
 
         _isInitialized = false;
         Debug.Log("Quest finished");
@@ -167,7 +153,7 @@ public class CustomerQuest : ScriptableObject
                     _customer.AnimatorController.OnItemAccepted();
 
                 if (_interactions != null && _interactions.OnItemAccepted != null)
-                    _interactions.OnItemAccepted.PlayOut(_customer);
+                    _customer.DialogueManager.DisplayText(_interactions.OnItemAccepted.DialogueKey);
             }
         }
         else
@@ -176,28 +162,9 @@ public class CustomerQuest : ScriptableObject
                 _customer.AnimatorController.OnItemRejected();
 
             if (_interactions != null && _interactions.OnItemRejected != null)
-                _interactions.OnItemRejected.PlayOut(_customer);
+                _customer.DialogueManager.DisplayText(_interactions.OnItemRejected.DialogueKey);
         }
 
         return fits;
-    }
-
-    /*public void ResetQuest()
-    {
-        if (_customer != null && _customer.DialogueManager != null && _isWaitingForText)
-        {
-            _customer.DialogueManager.Typewriter.TextDisplayed -= OnGreetingCompleted;
-            _isWaitingForText = false;
-        }
-        
-        _productsLeft = _productsNeeded;
-        _isInitialized = false;
-        _customer = null;
-        Debug.Log($"Quest reset");
-    }*/
-
-    private void Cleanup()
-    {
-        _isWaitingForText = false;
     }
 }
