@@ -17,14 +17,6 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _smoothTime = 0.15f;
     [SerializeField] private Vector2 _rotationLimit = new(10f, 10f);
     
-    public event Action<bool> DragAllowedChanged;
-    public event Action<CameraViewType> ViewChanged;
-    
-    public int ViewID { get; private set; }
-    public bool CanMove { get; private set; }
-    public bool CanUseBack { get; private set; }
-    public CameraViewType ViewType => _views[ViewID].Type;
-    
     private float _targetRotationX;
     private float _targetRotationY;
     private float _currentRotationX;
@@ -35,6 +27,16 @@ public class CameraController : MonoBehaviour
     private Coroutine _transitionRoutine;
     private bool _isTransitioning;
     private bool _isMouseLookActive;
+    private bool _isCameraBlocked;
+    private bool _canUseBack;
+    
+    public event Action<bool> DragAllowedChanged;
+    public event Action<CameraViewType> ViewChanged;
+
+    private bool CanMove => _isTransitioning & _isCameraBlocked == false;
+    public int ViewID { get; private set; }
+    
+    public CameraViewType ViewType => _views[ViewID].Type;
     
     private void Start()
     {
@@ -70,45 +72,39 @@ public class CameraController : MonoBehaviour
 
     public void BlockControl()
     {
-        CanMove = false;
-        CanUseBack = false;
+        _isCameraBlocked = false;
+        _canUseBack = false;
     }
     
     public void UnblockControl()
     {
-        CanMove = true;
+        _isCameraBlocked = true;
     }
 
     public void UnlockBack()
     {
-        CanUseBack = true;
+        _canUseBack = true;
     }
-    
+
     private void UpdateMouseLook()
     {
         float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivity;
-        
+
         _targetRotationX -= mouseY;
         _targetRotationY += mouseX;
-        
+
         _targetRotationX = Mathf.Clamp(_targetRotationX, _rotationLimit.x, _rotationLimit.y);
-        
+
         _currentRotationX = Mathf.SmoothDamp(_currentRotationX, _targetRotationX, ref _velocityX, _smoothTime);
         _currentRotationY = Mathf.SmoothDamp(_currentRotationY, _targetRotationY, ref _velocityY, _smoothTime);
-        
+
         transform.localEulerAngles = new Vector3(_currentRotationX, _currentRotationY, 0);
     }
-    
-
-
-    public int GetViewID() => ViewID;
-
-    public CameraViewType GetViewType() => _views[ViewID].Type;
 
     private void OnLeft()
     {
-        if (_isTransitioning)
+        if (CanMove)
             return;
             
         Move(_views[ViewID].Left, TurnDirection.Left);
@@ -116,7 +112,7 @@ public class CameraController : MonoBehaviour
     
     private void OnRight()
     {
-        if (_isTransitioning)
+        if (CanMove)
             return;
             
         Move(_views[ViewID].Right, TurnDirection.Right);
@@ -124,7 +120,7 @@ public class CameraController : MonoBehaviour
     
     private void OnBack()
     {
-        if (_isTransitioning)
+        if (CanMove & _canUseBack)
             return;
             
         Move(_views[ViewID].Back, _views[ViewID].BackTurn);
@@ -184,6 +180,7 @@ public class CameraController : MonoBehaviour
         transform.rotation = targetRot;
         
         ViewID = toID;
+        ViewChanged?.Invoke(ViewType);
         _isMouseLookActive = _views[toID].AllowMouseLook;
         
         Vector3 newRot = transform.localEulerAngles;
@@ -250,7 +247,7 @@ public class CameraController : MonoBehaviour
         Right
     }
 
-    public enum CameraViewType //had to make public for knife shenanigans
+    public enum CameraViewType
     {
         None,
         Door,
