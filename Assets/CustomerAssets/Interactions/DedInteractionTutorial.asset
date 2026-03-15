@@ -14,14 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomerInteractionSet
   _onGreeting:
     _dialogueKey: tutorial.ded.hello
-    _postDisplayDelay: 2
   _onItemAccepted:
     _dialogueKey: 
-    _postDisplayDelay: 2
   _onItemRejected:
     _dialogueKey: tutorial.ded.no
-    _postDisplayDelay: 3
   _onQuestCompleted:
     _dialogueKey: tutorial.ded.yes
-    _postDisplayDelay: 3
-  _dialogueOptions: []
+  _dialogueOptions:
+  - _textKey: tutorial.player.sure
+    _interaction:
+      _dialogueKey: tutorial.ded.thanks
