@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
@@ -15,7 +16,8 @@ public class DialogueManager : MonoBehaviour
 
     private bool _isTextFullyVisible = false;
     private Action _onCompleteCurrentText;
-    
+    private bool _isFinalQuestText = false;
+
     public TextTypewriter Typewriter => _typewriter;
 
     private void Awake()
@@ -51,7 +53,7 @@ public class DialogueManager : MonoBehaviour
 
     private void HandleClick()
     {
-        Debug.Log($"[DialogueManager] HandleClick called. IsTyping: {_typewriter.IsTyping}, IsTextFullyVisible: {_isTextFullyVisible}");
+        Debug.Log($"[DialogueManager] HandleClick called. IsTyping: {_typewriter.IsTyping}, IsTextFullyVisible: {_isTextFullyVisible}, IsFinalQuestText: {_isFinalQuestText}");
         
         if (_typewriter.IsTyping)
         {
@@ -63,13 +65,25 @@ public class DialogueManager : MonoBehaviour
         else if (_isTextFullyVisible)
         {
             Debug.Log("[DialogueManager] Case 2: Text is fully visible - executing callback");
-            _isTextFullyVisible = false;
 
-            if (_onCompleteCurrentText != null)
+            var callback = _onCompleteCurrentText;
+            bool wasFinalText = _isFinalQuestText;
+
+            _isTextFullyVisible = false;
+            _onCompleteCurrentText = null;
+            _isFinalQuestText = false;
+            
+            if (callback != null)
             {
                 Debug.Log("[DialogueManager] Callback exists - invoking");
-                _onCompleteCurrentText.Invoke();
-                _onCompleteCurrentText = null;
+
+                if (wasFinalText)
+                {
+                    Debug.Log("[DialogueManager] This is final quest text - clearing dialogue options");
+                    SetDialogueOptions(new List<DialogueOption>());
+                }
+                
+                callback.Invoke();
             }
             else
             {
@@ -84,24 +98,19 @@ public class DialogueManager : MonoBehaviour
 
     private void OnTypingCompleted()
     {
-        print("[DialogueManager] TypingCompleted event received - text is now fully visible");
         _isTextFullyVisible = true;
         _typewriter.TypingCompleted -= OnTypingCompleted;
     }
 
     public void DisplayText(string text)
     {
-        Debug.Log($"[DialogueManager] DisplayText called with text: {text}");
-        
         if (!_speechBubble.gameObject.activeSelf)
-        {
-            Debug.Log("[DialogueManager] Activating speech bubble");
             EnableBubble();
-        }
         
         _isTextFullyVisible = false;
         _onCompleteCurrentText = null;
-        
+        _isFinalQuestText = false;
+
         _typewriter.TypingCompleted += OnTypingCompleted;
         
         _typewriter.StartTyping(text);
@@ -109,15 +118,28 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayTextWithCallback(string text, Action onComplete)
     {
-        Debug.Log($"[DialogueManager] DisplayTextWithCallback called with text: {text}. Callback exists: {onComplete != null}");
         DisplayText(text);
         _onCompleteCurrentText = onComplete;
-        Debug.Log($"[DialogueManager] Callback assigned. Current callback: {(_onCompleteCurrentText != null ? "assigned" : "null")}");
+    }
+
+    public void DisplayFinalQuestText(string text, Action onComplete)
+    {
+        if (!_speechBubble.gameObject.activeSelf)
+            EnableBubble();
+        
+        _isTextFullyVisible = false;
+        _onCompleteCurrentText = onComplete;
+        _isFinalQuestText = true;
+
+        _typewriter.TypingCompleted += OnTypingCompleted;
+        
+        _typewriter.StartTyping(text);
+        
+        Debug.Log("[DialogueManager] Displaying final quest text");
     }
 
     public void SetDialogueOptions(List<DialogueOption> options)
     {
-        Debug.Log($"[DialogueManager] Setting dialogue options. Count: {options.Count}");
         _dialogueOptions = options;
 
         bool[] tmp = new bool[options.Count];
@@ -130,11 +152,10 @@ public class DialogueManager : MonoBehaviour
     public void DeactivateDialogueOption(DialogueOption option)
     {
         int index = _dialogueOptions.IndexOf(option);
+        
         if (index >= 0 && index < _dialogueOptionActive.Count)
-        {
             _dialogueOptionActive[index] = false;
-            Debug.Log($"[DialogueManager] Deactivated option at index: {index}");
-        }
+        
         RefreshDialogueHandles();
     }
 
@@ -149,25 +170,28 @@ public class DialogueManager : MonoBehaviour
         Debug.Log("[DialogueManager] Disabling bubble");
         
         if (_typewriter != null)
+        {
             _typewriter.TypingCompleted -= OnTypingCompleted;
+            _typewriter.Clear();
+        }
         
         ClearDialogueHandles();
         _speechBubble.gameObject.SetActive(false);
         _typewriter.Clear();
         _isTextFullyVisible = false;
         _onCompleteCurrentText = null;
+        _isFinalQuestText = false;
+
+        SetDialogueOptions(new List<DialogueOption>());
     }
 
     private void ClearDialogueHandles()
     {
         if (_spawnedDialogueOptions == null) return;
-        foreach (Transform child in _spawnedDialogueOptions)
-        {
-            if (child.gameObject != _baseDialogueOption && child.gameObject != _baseInactiveDialogueOption)
-            {
-                Destroy(child.gameObject);
-            }
-        }
+        
+        foreach (var child in _spawnedDialogueOptions.Where(child => child.gameObject != _baseDialogueOption && child.gameObject != _baseInactiveDialogueOption))
+            Destroy(child.gameObject);
+        
         _spawnedDialogueOptions = new List<Transform>();
     }
 
@@ -176,6 +200,7 @@ public class DialogueManager : MonoBehaviour
         ClearDialogueHandles();
 
         Vector3 curOffset = Vector3.zero;
+        
         foreach (DialogueOption option in _dialogueOptions)
         {
             int index = _dialogueOptions.IndexOf(option);

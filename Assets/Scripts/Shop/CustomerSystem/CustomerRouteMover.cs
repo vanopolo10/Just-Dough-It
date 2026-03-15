@@ -12,13 +12,14 @@ public class CustomerRouteMover : MonoBehaviour
     [SerializeField] private Animator _doorAnimator;
 
     [Header("Points")] 
-    [SerializeField] private Transform _doorOutside;
+    [SerializeField] private Transform _door;
     [SerializeField] private Transform _reception;
     [SerializeField] private Transform _doorInside;
+    [SerializeField] private Transform _doorOutside;
     [SerializeField] private Transform _exit;
     
     [Header("Timings")]
-    [SerializeField] private float _exitDelay = 5f;
+    [SerializeField] private float _exitDelay = 1.5f;
 
     private NpcMover _mover;
     private CustomerAnimatorController _animator;
@@ -45,8 +46,8 @@ public class CustomerRouteMover : MonoBehaviour
     {
         _animator.StartWalking();
 
-        yield return _mover.FaceTo(_customer.transform, _doorOutside.position);
-        yield return _mover.MoveTo(_customer.transform, _doorOutside.position);
+        yield return _mover.FaceTo(_customer.transform, _door.position);
+        yield return _mover.MoveTo(_customer.transform, _door.position);
 
         _animator.TriggerOpenDoor();
         _doorAnimator.SetTrigger(OpenDoor);
