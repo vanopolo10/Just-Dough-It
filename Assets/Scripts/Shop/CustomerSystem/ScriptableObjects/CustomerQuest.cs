@@ -29,8 +29,12 @@ public class CustomerQuest : ScriptableObject
     private Customer _customer;
     private bool _isInitialized;
 
+    public event Action CustomerGreeted;
+    
     public void Initialize(Customer customer)
     {
+        CustomerGreeted?.Invoke();
+        
         if (customer == null)
         {
             Debug.LogError($"CustomerQuest {name}: Customer is null");
@@ -123,7 +127,7 @@ public class CustomerQuest : ScriptableObject
         }
 
         if (_interactions == null || _customer.DialogueManager == null) return;
-
+        
         Debug.Log($"[CustomerQuest] Setting dialogue options. Count: {_interactions.DialogueOptions.Count}");
         _customer.DialogueManager.SetDialogueOptions(_interactions.DialogueOptions);
     }

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
+    [SerializeField] private bool _isTutorial;
+    
     [SerializeField] private DialogueBubble _speechBubble;
     [SerializeField] private TextTypewriter _typewriter;
     [SerializeField] private GameObject _baseDialogueOption, _baseInactiveDialogueOption;
@@ -14,12 +16,16 @@ public class DialogueManager : MonoBehaviour
     private List<bool> _dialogueOptionActive;
     private List<Transform> _spawnedDialogueOptions = new();
 
-    private bool _isTextFullyVisible = false;
     private Action _onCompleteCurrentText;
-    private bool _isFinalQuestText = false;
+    private bool _isFinalQuestText;
 
+    public event Action SkipClicked;
+    public event Action ConfirmClicked;
+    public event Action OnGreetingCompleted;
+    
+    public bool IsTextFullyVisible { get; private set; }
     public TextTypewriter Typewriter => _typewriter;
-
+    
     private void Awake()
     {
         if (_typewriter == null)
@@ -53,52 +59,44 @@ public class DialogueManager : MonoBehaviour
 
     private void HandleClick()
     {
-        Debug.Log($"[DialogueManager] HandleClick called. IsTyping: {_typewriter.IsTyping}, IsTextFullyVisible: {_isTextFullyVisible}, IsFinalQuestText: {_isFinalQuestText}");
-        
         if (_typewriter.IsTyping)
         {
-            Debug.Log("[DialogueManager] Case 1: Text is typing - completing instantly");
             _typewriter.CompleteTypingInstantly();
-            _isTextFullyVisible = true;
-            Debug.Log($"[DialogueManager] Text completed instantly. IsTextFullyVisible set to: {_isTextFullyVisible}");
+            IsTextFullyVisible = true;
+
+            SkipClicked?.Invoke();
+            return;
         }
-        else if (_isTextFullyVisible)
+
+        if (IsTextFullyVisible)
         {
-            Debug.Log("[DialogueManager] Case 2: Text is fully visible - executing callback");
+            ConfirmClicked?.Invoke();
 
             var callback = _onCompleteCurrentText;
             bool wasFinalText = _isFinalQuestText;
 
-            _isTextFullyVisible = false;
+            IsTextFullyVisible = false;
             _onCompleteCurrentText = null;
             _isFinalQuestText = false;
-            
+
             if (callback != null)
             {
-                Debug.Log("[DialogueManager] Callback exists - invoking");
-
                 if (wasFinalText)
-                {
-                    Debug.Log("[DialogueManager] This is final quest text - clearing dialogue options");
                     SetDialogueOptions(new List<DialogueOption>());
-                }
-                
+
                 callback.Invoke();
             }
-            else
-            {
-                Debug.LogWarning("[DialogueManager] Callback is null! No action to execute");
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"[DialogueManager] Case 3: Unexpected state - IsTyping: {_typewriter.IsTyping}, IsTextFullyVisible: {_isTextFullyVisible}");
         }
     }
 
     private void OnTypingCompleted()
     {
-        _isTextFullyVisible = true;
+        if (_isTutorial)
+        {
+            OnGreetingCompleted?.Invoke();
+        }
+
+        IsTextFullyVisible = true;
         _typewriter.TypingCompleted -= OnTypingCompleted;
     }
 
@@ -107,7 +105,7 @@ public class DialogueManager : MonoBehaviour
         if (!_speechBubble.gameObject.activeSelf)
             EnableBubble();
         
-        _isTextFullyVisible = false;
+        IsTextFullyVisible = false;
         _onCompleteCurrentText = null;
         _isFinalQuestText = false;
 
@@ -127,7 +125,7 @@ public class DialogueManager : MonoBehaviour
         if (!_speechBubble.gameObject.activeSelf)
             EnableBubble();
         
-        _isTextFullyVisible = false;
+        IsTextFullyVisible = false;
         _onCompleteCurrentText = onComplete;
         _isFinalQuestText = true;
 
@@ -178,7 +176,7 @@ public class DialogueManager : MonoBehaviour
         ClearDialogueHandles();
         _speechBubble.gameObject.SetActive(false);
         _typewriter.Clear();
-        _isTextFullyVisible = false;
+        IsTextFullyVisible = false;
         _onCompleteCurrentText = null;
         _isFinalQuestText = false;
 

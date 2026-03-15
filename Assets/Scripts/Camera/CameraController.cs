@@ -15,13 +15,15 @@ public class CameraController : MonoBehaviour
     [SerializeField] private bool _enableMouseLook = true;
     [SerializeField] private float _mouseSensitivity = 2f;
     [SerializeField] private float _smoothTime = 0.15f;
-    [SerializeField] private Vector2 _verticalLimit = new Vector2(-30f, 70f);
-    
-    // [Header("View-Specific Settings")]
-    // [SerializeField] private bool _disableMouseLookDuringTransition = true;
+    [SerializeField] private Vector2 _verticalLimit = new(-30f, 70f);
     
     public event Action<bool> DragAllowedChanged;
+    public event Action<CameraViewType> ViewChanged;
+    
     public int ViewID { get; private set; }
+    public bool CanMove { get; private set; }
+    public bool CanUseBack { get; private set; }
+    public CameraViewType ViewType => _views[ViewID].Type;
     
     private float _targetRotationX;
     private float _targetRotationY;
@@ -43,6 +45,28 @@ public class CameraController : MonoBehaviour
         InitializeView(ViewID);
     }
     
+    private void Update()
+    {
+        if (_enableMouseLook && _isMouseLookActive && !_isTransitioning)
+            UpdateMouseLook();
+    }
+
+    public void BlockControl()
+    {
+        CanMove = false;
+        CanUseBack = false;
+    }
+    
+    public void UnblockControl()
+    {
+        CanMove = true;
+    }
+
+    public void UnlockBack()
+    {
+        CanUseBack = true;
+    }
+    
     private void InitializeView(int viewID)
     {
         var view = _views[viewID];
@@ -58,13 +82,6 @@ public class CameraController : MonoBehaviour
         _currentRotationY = _targetRotationY;
         
         DragAllowedChanged?.Invoke(view.Type == CameraViewType.Craft);
-    }
-
-    
-    private void Update()
-    {
-        if (_enableMouseLook && _isMouseLookActive && !_isTransitioning)
-            UpdateMouseLook();
     }
     
     private void UpdateMouseLook()
@@ -82,16 +99,10 @@ public class CameraController : MonoBehaviour
         
         transform.localEulerAngles = new Vector3(_currentRotationX, _currentRotationY, 0);
     }
-    
-
-
-    public int GetViewID() => ViewID;
-
-    public CameraViewType GetViewType() => _views[ViewID].Type;
 
     private void OnLeft()
     {
-        if (_isTransitioning)
+        if (_isTransitioning | CanMove == false)
             return;
             
         Move(_views[ViewID].Left, TurnDirection.Left);
@@ -99,7 +110,7 @@ public class CameraController : MonoBehaviour
     
     private void OnRight()
     {
-        if (_isTransitioning)
+        if (_isTransitioning | CanMove == false)
             return;
             
         Move(_views[ViewID].Right, TurnDirection.Right);
@@ -107,7 +118,7 @@ public class CameraController : MonoBehaviour
     
     private void OnBack()
     {
-        if (_isTransitioning)
+        if (_isTransitioning | CanMove == false)
             return;
             
         Move(_views[ViewID].Back, _views[ViewID].BackTurn);
@@ -167,6 +178,7 @@ public class CameraController : MonoBehaviour
         transform.rotation = targetRot;
         
         ViewID = toID;
+        ViewChanged?.Invoke(_views[ViewID].Type);
         _isMouseLookActive = _views[toID].AllowMouseLook;
         
         Vector3 newRot = transform.localEulerAngles;

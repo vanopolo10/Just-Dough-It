@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,10 +22,11 @@ public class CustomerManager : MonoBehaviour
 
     private int _currentIndex;
     private Customer _currentCustomer;
+    
+    public event Action<Customer> CustomerSpawned;
 
     public UnityEvent DayStarted = new();
     public UnityEvent DayEnded = new();
-    public UnityEvent CustomerSpawned = new();
 
     public Customer CurrentCustomer => _currentCustomer;
 
@@ -49,23 +51,23 @@ public class CustomerManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    public void EndDay()
+    {
+        _darkness.FallAsleep();
+        StartNewDay();
+    }
+    
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         StartNewDay();
     }
 
-    public void StartNewDay()
+    private void StartNewDay()
     {
         _darkness.WakeUp();
         _currentIndex = 0;
         DayStarted.Invoke();
         Invoke(nameof(SpawnCustomer), _firstCustomerDelay);
-    }
-
-    public void EndDay()
-    {
-        _darkness.FallAsleep();
-        StartNewDay();
     }
 
     private void SpawnCustomer()
@@ -97,7 +99,7 @@ public class CustomerManager : MonoBehaviour
         var animator = spawned.GetComponentInChildren<CustomerAnimatorController>();
         _routeMover.Initialize(animator);
 
-        CustomerSpawned.Invoke();
+        CustomerSpawned?.Invoke(CurrentCustomer);
     }
 
     private void OnReachedCounter()

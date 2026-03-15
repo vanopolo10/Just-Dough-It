@@ -65,7 +65,7 @@ public class CuttingZone : MonoBehaviour
     }
 
     private void PerformCuttingCalculations() {
-        if (_cameraController.GetViewType() != _activeView) return; // could be optimised OPT
+        if (_cameraController.ViewType != _activeView) return; // could be optimised OPT
 
         //1) get mouse vector in 2d
         Vector2 mousePos = Input.mousePosition;
