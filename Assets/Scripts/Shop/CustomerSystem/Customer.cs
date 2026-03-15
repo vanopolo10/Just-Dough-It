@@ -29,13 +29,9 @@ public class Customer : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void StartQuest()
-    {
-        _quest.StartQuest();
-    }
-
     public void FinishQuest()
     {
+        Debug.Log($"[Customer] FinishQuest called for: {gameObject.name}");
         QuestCompleted?.Invoke();
     }
 

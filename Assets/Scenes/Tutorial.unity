@@ -342,6 +342,10 @@ PrefabInstance:
       propertyPath: _typewriter
       value: 
       objectReference: {fileID: 647052083}
+    - target: {fileID: 121704674350478688, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: _speechBubble
+      value: 
+      objectReference: {fileID: 1828969227}
     - target: {fileID: 491093186426200123, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -679,6 +683,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1224477643}
     - target: {fileID: 4880141796525763737, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: _exitDelay
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4880141796525763737, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       propertyPath: _moveSpeed
       value: 0.8
       objectReference: {fileID: 0}
@@ -811,6 +819,9 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: 111210973}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9125583254594877991, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1828969227}
     - targetCorrespondingSourceObject: {fileID: 92376342153649300, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       insertIndex: -1
       addedObject: {fileID: 647052083}
@@ -10015,6 +10026,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826426316}
   m_CullTransparentMesh: 1
+--- !u!1 &1828969222 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9125583254594877991, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+  m_PrefabInstance: {fileID: 63782452}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1828969227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828969222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bafecc94b8958748badba9757184175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueBubble
 --- !u!1 &1840548804
 GameObject:
   m_ObjectHideFlags: 0
