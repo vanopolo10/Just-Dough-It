@@ -108,7 +108,9 @@ public class ClickManager : MonoBehaviour
 
         Ray ray = _cam.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-        if (!Physics.Raycast(ray, out RaycastHit hit, _clickRayDistance, _clickMask))
+        if (!Physics.Raycast(ray, out RaycastHit hit, _clickRayDistance))
+            return;
+        if (_clickMask != (_clickMask | (1 << hit.collider.gameObject.layer)))
             return;
 
         string objectTag = _defaultClickTag;
