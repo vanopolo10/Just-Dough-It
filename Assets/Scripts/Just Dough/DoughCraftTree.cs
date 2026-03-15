@@ -49,6 +49,10 @@ public static class DoughCraftTree
         
         Add(DoughState.CinnabonBase, DoughCraftAction.ComboClick, DoughState.Cinnabon);
         Add(DoughState.DoubleCinnabonBase, DoughCraftAction.ComboClick, DoughState.DoubleCinnabon);
+
+        // Ветка нарезки круглого теста
+        Add(DoughState.RoundFlat, DoughCraftAction.BeginCutting, DoughState.RoundFlatCutting);
+        Add(DoughState.RoundFlatCutting, DoughCraftAction.FinishCutting, DoughState.RoundFlatCut);
     }
 
     public static bool TryGetNext(DoughState current, DoughCraftAction action, out DoughState next)

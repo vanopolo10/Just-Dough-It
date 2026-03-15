@@ -59,6 +59,7 @@ public class CameraController : MonoBehaviour
         
         DragAllowedChanged?.Invoke(view.Type == CameraViewType.Craft);
     }
+
     
     private void Update()
     {
@@ -82,6 +83,12 @@ public class CameraController : MonoBehaviour
         transform.localEulerAngles = new Vector3(_currentRotationX, _currentRotationY, 0);
     }
     
+
+
+    public int GetViewID() => ViewID;
+
+    public CameraViewType GetViewType() => _views[ViewID].Type;
+
     private void OnLeft()
     {
         if (_isTransitioning)
@@ -225,8 +232,8 @@ public class CameraController : MonoBehaviour
         Left,
         Right
     }
-    
-    private enum CameraViewType
+
+    public enum CameraViewType //had to make public for knife shenanigans
     {
         None,
         Door,
