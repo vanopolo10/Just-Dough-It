@@ -27,5 +27,9 @@ public enum DoughState
     Cinnabon,
     
     DoubleCinnabonBase,
-    DoubleCinnabon
+    DoubleCinnabon,
+
+    // Round flat branch
+    RoundFlatCutting,
+    RoundFlatCut
 }

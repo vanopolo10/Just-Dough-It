@@ -7,6 +7,7 @@ public class PhysicsDrag : MonoBehaviour
     [SerializeField] private float _lerpSpeed = 10f;
     [SerializeField] private float _targetY = 1.3f;
     [SerializeField] private bool _freezeOnRelease;
+    [SerializeField] private Vector3 _lockedOffset;
 
     private bool _isOverridden;
     private bool _isLocked;
@@ -96,7 +97,7 @@ public class PhysicsDrag : MonoBehaviour
     {
         if (_isOverridden)
         {
-            _targetPosition = _LockPoint.transform.position;
+            _targetPosition = _LockPoint.transform.position + _lockedOffset;
             _targetRotation = _LockPoint.transform.rotation;
         }
         if (IsDragging)

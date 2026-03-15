@@ -37,6 +37,10 @@ public class CameraController : MonoBehaviour
         DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Craft);
     }
 
+    public int GetViewID() => ViewID;
+
+    public CameraViewType GetViewType() => _views[ViewID].Type;
+
     private void OnLeft()
     {
         if (_isTransitioning)
@@ -161,7 +165,7 @@ public class CameraController : MonoBehaviour
         Right
     }
 
-    private enum CameraViewType
+    public enum CameraViewType //had to make public for knife shenanigans
     {
         None,
         Door,

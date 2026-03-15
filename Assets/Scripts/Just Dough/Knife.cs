@@ -4,7 +4,7 @@ public class Knife : MonoBehaviour
 {
     private PhysicsDrag _drag;
     [SerializeField] private Transform _raycastPoint;
-    private CuttingManager _cuttingManager;
+    private CuttingZone _cuttingManager;
     private  LayerMask _layer;
     private bool _locked = false;
 
@@ -29,11 +29,17 @@ public class Knife : MonoBehaviour
                ) 
             {
                 Debug.Log($"Knife raycast successful, hit {hit.collider.name}");
-                _cuttingManager = hit.collider.GetComponentInParent<CuttingManager>();
+
+                if (hit.collider.TryGetComponent<CuttingStarterZone>(out CuttingStarterZone starter))
+                {
+                    Debug.Log("Hit Cutting Starter Zone, starting cut");
+                    starter.StartCutting(this);
+                }
+
+                _cuttingManager = hit.collider.GetComponentInParent<CuttingZone>();
 
                 if (_cuttingManager == null) return;
-
-                LockToPoint(_cuttingManager.GetLockPoint());
+                
                 _cuttingManager.StartCutting(this);
             }
         }
@@ -45,7 +51,7 @@ public class Knife : MonoBehaviour
     }
 
 
-    private void LockToPoint(Transform targetPoint) {
+    public void LockToPoint(Transform targetPoint) {
         _locked = true;
         _drag.Override(targetPoint, true);
         _drag.SetLocked(true);

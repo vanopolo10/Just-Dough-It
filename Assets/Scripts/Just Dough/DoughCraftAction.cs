@@ -13,7 +13,8 @@ namespace JustDough
         Roll, //Скалка
         RollSheer,
 
-        Cutting,
-        AltCutting
+        BeginCutting,
+        BeginAltCutting,
+        FinishCutting
     }
 }

@@ -12,7 +12,6 @@ public class DoughController : MonoBehaviour
     [SerializeField] private FillingType _filling = FillingType.None;
 
     [SerializeField] private int _cuttingZonesLeft;
-    [SerializeField] private int _altCuttingZonesLeft;
     
     private int _comboClicksTotal;
     private int _comboClicksLeft;
@@ -281,28 +280,14 @@ public class DoughController : MonoBehaviour
             return;
 
         _cuttingZonesLeft = 0;
-        _altCuttingZonesLeft = 0;
 
-        foreach (CuttingManager cut in go.GetComponentsInChildren<CuttingManager>())
-        {
-            if (cut.IsAltCuttingZone())
-                _altCuttingZonesLeft++;
-            else
-                _cuttingZonesLeft++;
-        }
+        foreach (CuttingZone cut in go.GetComponentsInChildren<CuttingZone>())
+            _cuttingZonesLeft++;
     }
 
-    public void ProgressCutting(bool alt = false) {
-        if (alt)
-        {
-            _altCuttingZonesLeft--;
-            if (_altCuttingZonesLeft <= 0)
-                ApplyAction(DoughCraftAction.AltCutting);
-        }
-        else {
-            _cuttingZonesLeft--;
-            if (_cuttingZonesLeft <= 0)
-                ApplyAction(DoughCraftAction.Cutting);
-        }
+    public void ProgressCutting() {
+        _cuttingZonesLeft--;
+        if (_cuttingZonesLeft <= 0)
+            ApplyAction(DoughCraftAction.FinishCutting);
     }
 }
