@@ -61,12 +61,27 @@ public class CameraController : MonoBehaviour
         
         DragAllowedChanged?.Invoke(view.Type == CameraViewType.Craft);
     }
-
     
     private void Update()
     {
         if (_enableMouseLook && _isMouseLookActive && !_isTransitioning)
             UpdateMouseLook();
+    }
+
+    public void BlockControl()
+    {
+        CanMove = false;
+        CanUseBack = false;
+    }
+    
+    public void UnblockControl()
+    {
+        CanMove = true;
+    }
+
+    public void UnlockBack()
+    {
+        CanUseBack = true;
     }
     
     private void UpdateMouseLook()
