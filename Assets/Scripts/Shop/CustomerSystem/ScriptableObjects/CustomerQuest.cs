@@ -29,12 +29,11 @@ public class CustomerQuest : ScriptableObject
     private Customer _customer;
     private bool _isInitialized;
 
-    public CustomerInteractionSet Interactions => _interactions;
-    public CustomerInteraction QuestInteraction => _questInteraction;
-
+    public event Action CustomerGreeted;
+    
     public void Initialize(Customer customer)
     {
-        Debug.Log($"[CustomerQuest] Initialize called for quest: {name}");
+        CustomerGreeted?.Invoke();
         
         if (customer == null)
         {
@@ -45,15 +44,14 @@ public class CustomerQuest : ScriptableObject
         _customer = customer;
         _productsLeft = _productsNeeded;
         _isInitialized = true;
-        
+
         if (_customer.AnimatorController != null)
             _customer.AnimatorController.OnGreeting();
 
         if (_interactions != null && _interactions.OnGreeting != null)
         {
-            Debug.Log("[CustomerQuest] Playing OnGreeting with callback to StartQuest");
             _customer.DialogueManager.DisplayTextWithCallback(
-                _interactions.OnGreeting.DialogueKey, 
+                _interactions.OnGreeting.DialogueKey,
                 StartQuest
             );
         }
@@ -64,16 +62,57 @@ public class CustomerQuest : ScriptableObject
         }
     }
 
-    public void StartQuest()
+    public bool OfferProduct(Product product)
     {
-        Debug.Log($"[CustomerQuest] StartQuest called");
-        
+        if (!_isInitialized || _customer == null)
+        {
+            Debug.LogWarning($"{_customer} CustomerQuest {name}: Cannot offer product - quest not initialized");
+            return false;
+        }
+
+        bool fits = Check(product);
+
+        if (fits)
+        {
+            _productsLeft--;
+
+            if (_productsLeft <= 0)
+            {
+                FinishQuest();
+            }
+            else
+            {
+                if (_customer.AnimatorController != null)
+                    _customer.AnimatorController.OnItemAccepted();
+
+                if (_interactions == null || _interactions.OnItemAccepted == null) return true;
+                
+                Debug.Log("[CustomerQuest] Item accepted, more items needed");
+                _customer.DialogueManager.DisplayText(_interactions.OnItemAccepted.DialogueKey);
+            }
+        }
+        else
+        {
+            if (_customer.AnimatorController != null)
+                _customer.AnimatorController.OnItemRejected();
+
+            if (_interactions == null || _interactions.OnItemRejected == null) return false;
+            
+            Debug.Log("[CustomerQuest] Item rejected");
+            _customer.DialogueManager.DisplayText(_interactions.OnItemRejected.DialogueKey);
+        }
+
+        return fits;
+    }
+
+    private void StartQuest()
+    {
         if (!_isInitialized || _customer == null)
         {
             Debug.LogWarning($"CustomerQuest {name}: Cannot start quest - not properly initialized");
             return;
         }
-        
+
         if (_customer.AnimatorController != null)
             _customer.AnimatorController.OnQuestStarted();
 
@@ -87,11 +126,10 @@ public class CustomerQuest : ScriptableObject
             Debug.LogWarning($"CustomerQuest {name}: QuestInteraction is missing");
         }
 
-        if (_interactions != null && _customer.DialogueManager != null)
-        {
-            Debug.Log($"[CustomerQuest] Setting dialogue options. Count: {_interactions.DialogueOptions.Count}");
-            _customer.DialogueManager.SetDialogueOptions(_interactions.DialogueOptions);
-        }
+        if (_interactions == null || _customer.DialogueManager == null) return;
+        
+        Debug.Log($"[CustomerQuest] Setting dialogue options. Count: {_interactions.DialogueOptions.Count}");
+        _customer.DialogueManager.SetDialogueOptions(_interactions.DialogueOptions);
     }
 
     private bool Check(Product product)
@@ -113,58 +151,34 @@ public class CustomerQuest : ScriptableObject
             Debug.LogWarning($"CustomerQuest {name}: Cannot finish quest - not properly initialized");
             return;
         }
-        
+    
         if (_customer.AnimatorController != null)
             _customer.AnimatorController.OnQuestFinished();
 
         if (_interactions != null && _interactions.OnQuestCompleted != null)
         {
-            _customer.DialogueManager.DisplayText(_interactions.OnQuestCompleted.DialogueKey);
+            Debug.Log("[CustomerQuest] Quest completed, showing completion text with callback");
+            _customer.DialogueManager.DisplayFinalQuestText(
+                _interactions.OnQuestCompleted.DialogueKey,
+                CompleteQuestAndDespawn
+            );
         }
+        else
+        {
+            CompleteQuestAndDespawn();
+        }
+    }
+
+    private void CompleteQuestAndDespawn()
+    {
+        Debug.Log("[CustomerQuest] Player clicked final text - despawning customer");
+
+        if (_customer != null && _customer.DialogueManager != null)
+            _customer.DialogueManager.DisableBubble();
 
         if (_customer != null)
             _customer.FinishQuest();
 
         _isInitialized = false;
-        Debug.Log("Quest finished");
-    }
-
-    public bool OfferProduct(Product product)
-    {
-        if (!_isInitialized || _customer == null)
-        {
-            Debug.LogWarning($"{_customer} CustomerQuest {name}: Cannot offer product - quest not initialized");
-            return false;
-        }
-
-        bool fits = Check(product);
-
-        if (fits)
-        {
-            _productsLeft--;
-            
-            if (_productsLeft <= 0)
-            {
-                FinishQuest();
-            }
-            else
-            {
-                if (_customer.AnimatorController != null)
-                    _customer.AnimatorController.OnItemAccepted();
-
-                if (_interactions != null && _interactions.OnItemAccepted != null)
-                    _customer.DialogueManager.DisplayText(_interactions.OnItemAccepted.DialogueKey);
-            }
-        }
-        else
-        {
-            if (_customer.AnimatorController != null)
-                _customer.AnimatorController.OnItemRejected();
-
-            if (_interactions != null && _interactions.OnItemRejected != null)
-                _customer.DialogueManager.DisplayText(_interactions.OnItemRejected.DialogueKey);
-        }
-
-        return fits;
     }
 }

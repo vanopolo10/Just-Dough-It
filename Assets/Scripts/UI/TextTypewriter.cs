@@ -13,7 +13,6 @@ public class TextTypewriter : MonoBehaviour
     private bool _isTyping;
     private bool _isSkipping;
 
-    // —обытие, которое вызываетс€ когда текст закончил печататьс€ сам (без пропуска)
     public event Action TypingCompleted;
 
     public bool IsTyping => _isTyping;
@@ -64,26 +63,18 @@ public class TextTypewriter : MonoBehaviour
         _textMeshPro.ForceMeshUpdate();
         int totalCharacters = _textMeshPro.textInfo.characterCount;
         int currentCharIndex = 0;
-
-        Debug.Log($"[TextTypewriter] TypeTextRoutine started. Total characters: {totalCharacters}");
-
+        
         while (currentCharIndex < totalCharacters && !_isSkipping)
         {
             currentCharIndex++;
             _textMeshPro.maxVisibleCharacters = currentCharIndex;
             yield return new WaitForSeconds(_typeSpeed);
         }
-
-        Debug.Log($"[TextTypewriter] Typing finished. Completed: {currentCharIndex}/{totalCharacters}, Was skipped: {_isSkipping}");
         
         _textMeshPro.maxVisibleCharacters = totalCharacters;
 
-        // ¬ызываем событие, если печать завершилась сама (не была пропущена)
         if (!_isSkipping)
-        {
-            Debug.Log("[TextTypewriter] Typing completed naturally - invoking TypingCompleted event");
             TypingCompleted?.Invoke();
-        }
 
         _typeRoutine = null;
         _isTyping = false;

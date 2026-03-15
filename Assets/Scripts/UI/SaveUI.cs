@@ -41,7 +41,7 @@ public class SaveUI : MonoBehaviour
 
     private void StartGame()
     {
-        SceneManager.LoadScene("CustomerIntegration", LoadSceneMode.Single);
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
     }
 
     public void RemoveSave()

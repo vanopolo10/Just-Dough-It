@@ -9,7 +9,8 @@ public class Customer : MonoBehaviour
     protected CustomerAnimatorController _animatorController;
 
     public event Action QuestCompleted;
-    
+
+    public CustomerQuest CustomerQuest => _quest;
     public DialogueManager DialogueManager => _dialogueManager;
     public CustomerAnimatorController AnimatorController => _animatorController;
 
@@ -29,13 +30,9 @@ public class Customer : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void StartQuest()
-    {
-        _quest.StartQuest();
-    }
-
     public void FinishQuest()
     {
+        Debug.Log($"[Customer] FinishQuest called for: {gameObject.name}");
         QuestCompleted?.Invoke();
     }
 

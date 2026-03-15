@@ -14,15 +14,15 @@ public class InGameUIController : MonoBehaviour
 
     [SerializeField] private SaveManager _saveManager;
     [SerializeField] private TMP_InputField _inputField;
-    [SerializeField] private AudioSource _audioSource;
     [SerializeField] private TMP_Dropdown _dropdown;
+    [SerializeField] private Darkness _darkness;
     
     private void Start()
     {
         _ui.SetActive(false);
         _saveUI.SetActive(false);
         _cameraController.enabled = true;
-        
+        _darkness.Darkened += Exit;
         StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
     }
 
@@ -51,14 +51,10 @@ public class InGameUIController : MonoBehaviour
     public void ExitButton()
     {
         _saveManager.SaveGame();
-        _audioSource.Play();
-        Invoke(nameof(Exit), 1);
+        _darkness.FallAsleep();
     }
 
-    private void Exit()
-    {
-        SceneManager.LoadScene("MainMenu-draft", LoadSceneMode.Single);
-    }
+    private void Exit() => SceneManager.LoadScene(0, LoadSceneMode.Single);
 
     public void ChangeLanguage()
     {

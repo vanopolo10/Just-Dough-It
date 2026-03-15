@@ -31,7 +31,7 @@ public class DoughBucket : MonoBehaviour
         SpawnDough();
     }
 
-    public void SpawnDough()
+    private void SpawnDough()
     {
         if (_currentDough != null)
             return;
@@ -74,38 +74,38 @@ public class DoughBucket : MonoBehaviour
         if (_currentDough == dough)
             return;
 
-        if (_currentDough != null)
+        if (_currentDough)
             _currentDough.StateChanged -= OnDoughStateChangedInternal;
 
-        if (_currentDoughDrag != null)
+        if (_currentDoughDrag)
             _currentDoughDrag.DragEnded -= OnDoughDragEnded;
 
         _currentDough = dough;
         _currentDoughDrag = null;
 
-        if (_currentDough != null)
+        if (_currentDough)
         {
             _currentDough.StateChanged += OnDoughStateChangedInternal;
 
             _currentDoughDrag = _currentDough.GetComponent<DoughDrag>();
-            if (_currentDoughDrag != null)
+            if (_currentDoughDrag)
                 _currentDoughDrag.DragEnded += OnDoughDragEnded;
         }
 
         CurrentDoughChanged?.Invoke();
 
-        if (_currentDough != null)
+        if (_currentDough)
             DoughStateChanged?.Invoke(_currentDough.State);
     }
 
-    public void ClearDough()
+    private void ClearDough()
     {
         SetDough(null);
     }
 
     private void OnDoughStateChangedInternal()
     {
-        if (_currentDough == null)
+        if (!_currentDough)
             return;
 
         DoughStateChanged?.Invoke(_currentDough.State);

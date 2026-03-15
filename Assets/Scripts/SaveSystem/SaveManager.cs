@@ -53,7 +53,6 @@ public class SaveManager : MonoBehaviour
         _ui.SetActive(false);
         yield return new WaitForEndOfFrame();
         SaveSystem.SaveImage(currentSave);
-        _ui.SetActive(true);
         SaveSystem.SaveData(currentSave, "CameraViewID", _cameraController.ViewID);
         SaveSystem.SaveData(currentSave, "VibeLevel", Cafe.Instance.VibeLevel);
         SaveSystem.SaveData(currentSave, "MoneyCount", _moneyManager.Money);

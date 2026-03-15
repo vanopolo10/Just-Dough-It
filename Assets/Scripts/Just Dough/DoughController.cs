@@ -13,7 +13,7 @@ public class DoughController : MonoBehaviour
     [SerializeField] private FillingType _filling = FillingType.None;
 
     [SerializeField] private int _cuttingZonesLeft;
-    
+
     private int _comboClicksTotal;
     private int _comboClicksLeft;
 
@@ -236,9 +236,9 @@ public class DoughController : MonoBehaviour
 
     private void UpdateComboAnimation()
     {
-        if (_doughVisualSwitcher.Map[State].TryGetComponent<Animator>(out Animator animator) == false) return;
+        if (_doughVisualSwitcher.Map[State].TryGetComponent(out Animator animator) == false) return;
 
-        float progress = (_comboClicksTotal - _comboClicksLeft) / (_comboClicksTotal - 1);
+        float progress = (_comboClicksTotal - _comboClicksLeft) / (_comboClicksTotal - 1f);
         print(animator.GetCurrentAnimatorClipInfo(0));
         print("Set animation progress to " + progress + " on layer " + animator.GetLayerName(0));
         animator.Play("Completion", 0, progress);
@@ -292,10 +292,10 @@ public class DoughController : MonoBehaviour
             _cuttingZonesLeft++;
     }
 
-    public void ProgressCutting() {
+    public void ProgressCutting()
+    {
         _cuttingZonesLeft--;
         if (_cuttingZonesLeft <= 0)
             ApplyAction(DoughCraftAction.FinishCutting);
     }
 }
-
