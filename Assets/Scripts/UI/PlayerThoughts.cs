@@ -5,15 +5,17 @@ public class PlayerThoughts : MonoBehaviour
 {
     [SerializeField] private DialogueBubble _dialogueBubble;
     [SerializeField] private TextTypewriter _textTypewriter;
-
-    public event Action Thought;
+    
+    private bool _waitingForClose;
+    
+    public event Action ThoughtCompleted;
     
     private void OnEnable()
     {
         _dialogueBubble.OnBubbleClicked += HandleClick;
         _textTypewriter.TypingCompleted += OnTypingCompleted;
     }
-    
+
     private void OnDisable()
     {
         _dialogueBubble.OnBubbleClicked -= HandleClick;
@@ -22,24 +24,36 @@ public class PlayerThoughts : MonoBehaviour
 
     private void Start()
     {
-        _dialogueBubble.gameObject.SetActive(true);
+        _dialogueBubble.gameObject.SetActive(false);
     }
 
     public void Think(string key)
     {
+        _waitingForClose = false;
+
         _dialogueBubble.gameObject.SetActive(true);
-        _textTypewriter.StartTyping(key); //Localize
-        
+        _textTypewriter.StartTyping(key);
     }
 
     private void OnTypingCompleted()
     {
-        Thought?.Invoke();
+        _waitingForClose = true;
     }
-    
+
     private void HandleClick()
     {
         if (_textTypewriter.IsTyping)
+        {
             _textTypewriter.CompleteTypingInstantly();
+            return;
+        }
+
+        if (_waitingForClose)
+        {
+            _dialogueBubble.gameObject.SetActive(false);
+            _waitingForClose = false;
+
+            ThoughtCompleted?.Invoke();
+        }
     }
 }

@@ -27,9 +27,9 @@ public class TextTypewriter : MonoBehaviour
         _textMeshPro.maxVisibleCharacters = 0;
     }
 
-    public void StartTyping(string text)
+    public void StartTyping(string key) //@deer_rus localize
     {
-        Debug.Log($"[TextTypewriter] StartTyping called. Text length: {text.Length}. Is currently typing: {_isTyping}");
+        Debug.Log($"[TextTypewriter] StartTyping called. Text length: {key.Length}. Is currently typing: {_isTyping}");
         
         if (_isTyping)
         {
@@ -38,8 +38,8 @@ public class TextTypewriter : MonoBehaviour
             _isTyping = false;
         }
 
-        _fullText = text;
-        _textMeshPro.text = text;
+        _fullText = key;
+        _textMeshPro.text = key;
         _textMeshPro.maxVisibleCharacters = 0;
 
         _typeRoutine = StartCoroutine(TypeTextRoutine());
