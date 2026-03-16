@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _mouseSensitivity = 2f;
     [SerializeField] private float _smoothTime = 0.15f;
     [SerializeField] private Vector2 _rotationLimit = new(10f, 10f);
-    
+
     private float _targetRotationX;
     private float _targetRotationY;
     private float _currentRotationX;
@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour
     public event Action<bool> DragAllowedChanged;
     public event Action<CameraViewType> ViewChanged;
 
-    private bool CanMove => _isTransitioning & _isCameraBlocked == false;
+    private bool CanMove => !_isTransitioning && !_isCameraBlocked;
     public int ViewID { get; private set; }
     
     public CameraViewType ViewType => _views[ViewID].Type;
@@ -72,13 +72,13 @@ public class CameraController : MonoBehaviour
 
     public void BlockControl()
     {
-        _isCameraBlocked = false;
+        _isCameraBlocked = true;
         _canUseBack = false;
     }
     
     public void UnblockControl()
     {
-        _isCameraBlocked = true;
+        _isCameraBlocked = false;
     }
 
     public void UnlockBack()
@@ -94,7 +94,17 @@ public class CameraController : MonoBehaviour
         _targetRotationX -= mouseY;
         _targetRotationY += mouseX;
 
-        _targetRotationX = Mathf.Clamp(_targetRotationX, _rotationLimit.x, _rotationLimit.y);
+        CameraView currentView = _views[ViewID];
+        float baseRotX = currentView.Rotation.eulerAngles.x;
+        float baseRotY = currentView.Rotation.eulerAngles.y;
+        
+        float minX = baseRotX - _rotationLimit.x;
+        float maxX = baseRotX + _rotationLimit.x;
+        float minY = baseRotY - _rotationLimit.y;
+        float maxY = baseRotY + _rotationLimit.y;
+        
+        _targetRotationX = Mathf.Clamp(_targetRotationX, minX, maxX);
+        _targetRotationY = Mathf.Clamp(_targetRotationY, minY, maxY);
 
         _currentRotationX = Mathf.SmoothDamp(_currentRotationX, _targetRotationX, ref _velocityX, _smoothTime);
         _currentRotationY = Mathf.SmoothDamp(_currentRotationY, _targetRotationY, ref _velocityY, _smoothTime);
@@ -104,24 +114,21 @@ public class CameraController : MonoBehaviour
 
     private void OnLeft()
     {
-        if (CanMove)
-            return;
+        if (!CanMove) return;
             
         Move(_views[ViewID].Left, TurnDirection.Left);
     }
     
     private void OnRight()
     {
-        if (CanMove)
-            return;
+        if (!CanMove) return;
             
         Move(_views[ViewID].Right, TurnDirection.Right);
     }
     
     private void OnBack()
     {
-        if (CanMove & _canUseBack)
-            return;
+        if (!CanMove || !_canUseBack) return;
             
         Move(_views[ViewID].Back, _views[ViewID].BackTurn);
     }

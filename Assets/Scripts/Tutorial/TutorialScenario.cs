@@ -9,6 +9,7 @@ public class TutorialScenario : MonoBehaviour
     [SerializeField] private DoughBucket _doughBucket;
 
     [Header("Icons")] 
+    [SerializeField] private PlayerThoughts _playerThoughts;
     [SerializeField] private Image _dialogueCursor;
 
     private enum TutorialState
@@ -55,19 +56,25 @@ public class TutorialScenario : MonoBehaviour
         if (_state != TutorialState.WaitingForGreetingFinish)
             return;
 
+        _dialogueCursor.enabled = true;
         _state = TutorialState.WaitingForConfirmClick;
     }
 
     private void OnSkipClicked()
     {
-        if (_state == TutorialState.WaitingForGreetingFinish)
-            _state = TutorialState.WaitingForConfirmClick;
+        if (_state != TutorialState.WaitingForGreetingFinish) 
+            return;
+        
+        _dialogueCursor.enabled = true;
+        _state = TutorialState.WaitingForConfirmClick;
     }
 
     private void OnConfirmClicked()
     {
         if (_state != TutorialState.WaitingForConfirmClick)
             return;
+        
+        _dialogueCursor.enabled = false;
 
         Debug.Log("[Tutorial] Movement unlocked");
 

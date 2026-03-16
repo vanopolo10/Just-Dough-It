@@ -7,7 +7,8 @@ public class TextTypewriter : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private float _typeSpeed = 0.05f;
-
+    //[SerializeField] private bool _isRevealMode; мб сделаю
+    
     private string _fullText;
     private Coroutine _typeRoutine;
     private bool _isTyping;
