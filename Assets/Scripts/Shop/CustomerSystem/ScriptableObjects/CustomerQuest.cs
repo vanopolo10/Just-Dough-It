@@ -28,13 +28,10 @@ public class CustomerQuest : ScriptableObject
     private int _productsLeft;
     private Customer _customer;
     private bool _isInitialized;
+    public event Action GreetingTypingCompleted;
 
-    public event Action CustomerGreeted;
-    
     public void Initialize(Customer customer)
     {
-        CustomerGreeted?.Invoke();
-        
         if (customer == null)
         {
             Debug.LogError($"CustomerQuest {name}: Customer is null");
@@ -50,16 +47,27 @@ public class CustomerQuest : ScriptableObject
 
         if (_interactions != null && _interactions.OnGreeting != null)
         {
-            _customer.DialogueManager.DisplayTextWithCallback(
+            _customer.DialogueManager.DisplayTextWithCallbacks(
                 _interactions.OnGreeting.DialogueKey,
-                StartQuest
-            );
+                OnGreetingTypingCompleted, OnGreetingClicked);
         }
         else
         {
             Debug.LogWarning($"CustomerQuest {name}: OnGreeting is missing. Starting quest immediately.");
             StartQuest();
         }
+    }
+
+    private void OnGreetingTypingCompleted()
+    {
+        Debug.Log("[CustomerQuest] GreetingTypingCompleted fired!");
+        GreetingTypingCompleted?.Invoke();
+    }
+
+    private void OnGreetingClicked()
+    {
+        Debug.Log($"[CustomerQuest] Greeting clicked - starting quest");
+        StartQuest();
     }
 
     public bool OfferProduct(Product product)
@@ -105,7 +113,7 @@ public class CustomerQuest : ScriptableObject
         return fits;
     }
 
-    private void StartQuest()
+    public void StartQuest()
     {
         if (!_isInitialized || _customer == null)
         {

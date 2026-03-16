@@ -42,7 +42,7 @@ public class CustomerInteraction
         if (nextInteraction != null)
         {
             Debug.Log($"[CustomerInteraction] Next interaction exists. Creating callback to play next interaction: {nextInteraction.DialogueKey}");
-            dialogueManager.DisplayTextWithCallback(_dialogueKey, OnTextCompleted);
+            dialogueManager.DisplayTextWithClickCallback(_dialogueKey, OnTextClicked);
         }
         else
         {
@@ -51,13 +51,13 @@ public class CustomerInteraction
         }
     }
 
-    private void OnTextCompleted()
+    private void OnTextClicked()
     {
-        Debug.Log($"[CustomerInteraction] OnTextCompleted called. Current dialogue: {_dialogueKey}, Has nextInteraction: {_nextInteraction != null}");
+        Debug.Log($"[CustomerInteraction] OnTextClicked called. Current dialogue: {_dialogueKey}, Has nextInteraction: {_nextInteraction != null}");
         
         if (!_targetCustomer || !_targetCustomer.DialogueManager)
         {
-            Debug.LogError("[CustomerInteraction] Target customer or DialogueManager is null in OnTextCompleted");
+            Debug.LogError("[CustomerInteraction] Target customer or DialogueManager is null in OnTextClicked");
             Cleanup();
             return;
         }

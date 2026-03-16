@@ -11,8 +11,7 @@ public class RecipeManager : MonoBehaviour
     [SerializeField] private ProductType _currentRecipeType;
     [SerializeField] private Book _book;
 
-    public UnityEvent OnActiveRecipeChanged = null;
-    public ProductType CurrentRecipeType => _currentRecipeType;
+    public event Action<ProductType> ActiveRecipeChanged;
     
     public void Start()
     {
@@ -20,6 +19,7 @@ public class RecipeManager : MonoBehaviour
             _book = FindFirstObjectByType<Book>();
 
         RefreshPages();
+        ActiveRecipeChanged?.Invoke(_currentRecipeType);
     }
 
     public void RefreshPages()
@@ -59,14 +59,14 @@ public class RecipeManager : MonoBehaviour
             SetActiveRecipe(index);
             print("set active recipe to " + _recipeStates[index].product);
             _currentRecipeType = _recipeStates[index].product;
-            OnActiveRecipeChanged.Invoke();
+            ActiveRecipeChanged?.Invoke(_currentRecipeType);
         }
         else
         {
             SetActiveRecipe(-1);
             print("removed active recipe");
             _currentRecipeType = ProductType.None;
-            OnActiveRecipeChanged.Invoke();
+            ActiveRecipeChanged?.Invoke(_currentRecipeType);
         }
     }
     

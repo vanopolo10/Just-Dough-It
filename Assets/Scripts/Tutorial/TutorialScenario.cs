@@ -9,28 +9,59 @@ public class TutorialScenario : MonoBehaviour
     [SerializeField] private DoughBucket _dough;
     [SerializeField] private PlayerThoughts _thoughts;
     [SerializeField] private DialogueManager _dialogueManager;
+    [SerializeField] private RecipeManager _recipeManager;
+    [SerializeField] private CustomerManager _customerManager;
 
     [Header("Icons")] 
     [SerializeField] private GameObject _nextDialogueIcon;
+    [SerializeField] private GameObject _leftRightIcons;
+    [SerializeField] private GameObject _rollingPinGuide;
+
+    private Customer _customer;
     
-    private void Start()
+    private void OnEnable()
     {
+        if (_customerManager != null)
+            _customerManager.CustomerSpawned += OnCustomerSpawned;
+    }
+    
+    private void OnDisable()
+    {
+        if (_customerManager != null)
+            _customerManager.CustomerSpawned -= OnCustomerSpawned;
+    }
+
+    private void OnCustomerSpawned(Customer customer)
+    {
+        _customer = customer;
+        _customer.CustomerQuest.GreetingTypingCompleted += StartTutorialScenario;
+    }
+
+    private void StartTutorialScenario()
+    {
+        _customer.CustomerQuest.GreetingTypingCompleted -= StartTutorialScenario;
+
+        
         _runner.StartTutorial(new List<ITutorialGate>
         {
-            new ThoughtGate(_thoughts, "tutorial_turn_to_craft"),
+            new ThoughtGate(_thoughts, "tutorial.think.start"),
             
             new DialogueGate(_dialogueManager, _nextDialogueIcon),
             
+            new ThoughtGate(_thoughts, "tutorial.think.sure"),
+            
             new ActionGate(() => _camera.UnblockControl()),
             
-            new CameraViewGate(_camera, CameraController.CameraViewType.Craft, _nextDialogueIcon),
+            new CameraViewGate(_camera, CameraController.CameraViewType.Craft, _leftRightIcons),
 
-            new ThoughtGate(_thoughts, "tutorial_roll_dough"),
+            new ThoughtGate(_thoughts, "tutorial.think.remember"),
 
-            new DoughStateGate(_dough, DoughState.Flat),
+            new DoughStateGate(_dough, DoughState.Flat, _rollingPinGuide),
 
-            new ThoughtGate(_thoughts, "tutorial_fold_dough"),
-
+            new ThoughtGate(_thoughts, "tutorial.think.remember2"),
+            
+            new RecipeGate(_recipeManager, ProductType.SimplePie),
+            
             new DoughStateGate(_dough, DoughState.FlatFolded),
 
             new ThoughtGate(_thoughts, "tutorial_make_pie"),

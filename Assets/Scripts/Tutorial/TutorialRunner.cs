@@ -5,6 +5,7 @@ public class TutorialRunner : MonoBehaviour
 {
     private Queue<ITutorialGate> _gates = new();
 
+    private ITutorialGate _currentGate;
     private GameObject _currentIcon;
 
     public void StartTutorial(IEnumerable<ITutorialGate> gates)
@@ -17,26 +18,28 @@ public class TutorialRunner : MonoBehaviour
 
     private void RunNext()
     {
+        if(_currentGate != null)
+            _currentGate.Completed -= RunNext;
+        
         if (_gates.Count == 0)
         {
-            HideIcon();
             Debug.Log("Tutorial finished");
             return;
         }
 
-        var gate = _gates.Dequeue();
+        _currentGate = _gates.Dequeue();
 
-        ShowIcon(gate.IconObject);
+        ShowIcon(_currentGate.IconObject);
 
-        gate.Completed += RunNext;
-        gate.Enter();
+        _currentGate.Completed += RunNext;
+        _currentGate.Enter();
     }
 
     private void ShowIcon(GameObject icon)
     {
         HideIcon();
 
-        if (icon == null)
+        if (!icon)
             return;
 
         _currentIcon = icon;
@@ -45,7 +48,7 @@ public class TutorialRunner : MonoBehaviour
 
     private void HideIcon()
     {
-        if (_currentIcon == null) return;
+        if (!_currentIcon) return;
         
         _currentIcon.SetActive(false);
         _currentIcon = null;

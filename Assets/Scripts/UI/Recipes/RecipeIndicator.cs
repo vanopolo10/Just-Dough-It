@@ -17,16 +17,21 @@ public class RecipeIndicator : MonoBehaviour
     
     private void OnEnable()
     {
-        if (_manager == null)
-        {
-            _manager = FindFirstObjectByType<RecipeManager>();
-            _manager.OnActiveRecipeChanged.AddListener(UpdateVisibility);
-        }
+        if (_manager != null) return;
         
-        UpdateVisibility();
+        _manager = FindFirstObjectByType<RecipeManager>();
+        _manager.ActiveRecipeChanged += UpdateVisibility;
+    }
+    
+    private void OnDisable()
+    {
+        if (_manager != null) return;
+        
+        _manager = FindFirstObjectByType<RecipeManager>();
+        _manager.ActiveRecipeChanged -= UpdateVisibility;
     }
 
-    private void UpdateVisibility() 
+    private void UpdateVisibility(ProductType productType) 
     {
         var allIndicators = new HashSet<GameObject>();
         var indicatorsToShow = new HashSet<GameObject>();
@@ -37,7 +42,7 @@ public class RecipeIndicator : MonoBehaviour
             {
                 allIndicators.Add(indicator);
 
-                if (group.Type == _manager.CurrentRecipeType)
+                if (group.Type == productType)
                     indicatorsToShow.Add(indicator);
             }
         }

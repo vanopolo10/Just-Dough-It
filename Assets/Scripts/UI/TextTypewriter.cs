@@ -7,16 +7,14 @@ public class TextTypewriter : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private float _typeSpeed = 0.05f;
-    //[SerializeField] private bool _isRevealMode; мб сделаю
     
     private string _fullText;
     private Coroutine _typeRoutine;
-    private bool _isTyping;
     private bool _isSkipping;
 
     public event Action TypingCompleted;
 
-    public bool IsTyping => _isTyping;
+    public bool IsTyping { get; private set; }
 
     private void Awake()
     {
@@ -27,15 +25,26 @@ public class TextTypewriter : MonoBehaviour
         _textMeshPro.maxVisibleCharacters = 0;
     }
 
-    public void StartTyping(string key) //@deer_rus localize
+    private void OnEnable()
     {
-        Debug.Log($"[TextTypewriter] StartTyping called. Text length: {key.Length}. Is currently typing: {_isTyping}");
+        Debug.Log("[TextTypewriter] OnEnable");
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("[TextTypewriter] OnDisable");
+        Clear();
+    }
+
+    public void StartTyping(string key)
+    {
+        Debug.Log($"[TextTypewriter] StartTyping called. Text: '{key}', Length: {key.Length}, IsTyping: {IsTyping}");
         
-        if (_isTyping)
+        if (IsTyping)
         {
             Debug.Log("[TextTypewriter] Already typing - stopping previous routine");
             StopCoroutine(_typeRoutine);
-            _isTyping = false;
+            IsTyping = false;
         }
 
         _fullText = key;
@@ -47,23 +56,39 @@ public class TextTypewriter : MonoBehaviour
 
     public void CompleteTypingInstantly()
     {
-        Debug.Log($"[TextTypewriter] CompleteTypingInstantly called. IsTyping: {_isTyping}");
+        Debug.Log($"[TextTypewriter] CompleteTypingInstantly called. IsTyping: {IsTyping}");
         
-        if (!_isTyping) return;
+        if (!IsTyping)
+        {
+            Debug.Log("[TextTypewriter] Not typing, ignoring");
+            return;
+        }
 
         _isSkipping = true;
         _textMeshPro.maxVisibleCharacters = _fullText.Length;
-        Debug.Log("[TextTypewriter] Text completed instantly");
+        
+        if (_typeRoutine != null)
+        {
+            StopCoroutine(_typeRoutine);
+            _typeRoutine = null;
+        }
+        
+        IsTyping = false;
+        
+        Debug.Log("[TextTypewriter] Text completed instantly, invoking TypingCompleted");
+        TypingCompleted?.Invoke();
     }
 
     private IEnumerator TypeTextRoutine()
     {
-        _isTyping = true;
+        IsTyping = true;
         _isSkipping = false;
 
         _textMeshPro.ForceMeshUpdate();
         int totalCharacters = _textMeshPro.textInfo.characterCount;
         int currentCharIndex = 0;
+        
+        Debug.Log($"[TextTypewriter] Starting type routine. Total characters: {totalCharacters}");
         
         while (currentCharIndex < totalCharacters && !_isSkipping)
         {
@@ -72,19 +97,21 @@ public class TextTypewriter : MonoBehaviour
             yield return new WaitForSeconds(_typeSpeed);
         }
         
-        _textMeshPro.maxVisibleCharacters = totalCharacters;
-
         if (!_isSkipping)
+        {
+            _textMeshPro.maxVisibleCharacters = totalCharacters;
+            Debug.Log("[TextTypewriter] Typing completed naturally, invoking TypingCompleted");
             TypingCompleted?.Invoke();
+        }
 
         _typeRoutine = null;
-        _isTyping = false;
+        IsTyping = false;
         _isSkipping = false;
     }
 
     public void Clear()
     {
-        Debug.Log("[TextTypewriter] Clear called");
+        Debug.Log("[TextTypewriter] Clear");
         
         if (_typeRoutine != null)
         {
@@ -94,11 +121,6 @@ public class TextTypewriter : MonoBehaviour
 
         _textMeshPro.text = string.Empty;
         _textMeshPro.maxVisibleCharacters = 0;
-        _isTyping = false;
-    }
-
-    private void OnDisable()
-    {
-        Clear();
+        IsTyping = false;
     }
 }

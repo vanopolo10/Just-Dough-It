@@ -10,6 +10,11 @@ public class PlayerThoughts : MonoBehaviour
     
     public event Action ThoughtCompleted;
     
+    private void Awake()
+    {
+        _dialogueBubble.gameObject.SetActive(false);
+    }
+    
     private void OnEnable()
     {
         _dialogueBubble.OnBubbleClicked += HandleClick;
@@ -20,11 +25,6 @@ public class PlayerThoughts : MonoBehaviour
     {
         _dialogueBubble.OnBubbleClicked -= HandleClick;
         _textTypewriter.TypingCompleted -= OnTypingCompleted;
-    }
-
-    private void Start()
-    {
-        _dialogueBubble.gameObject.SetActive(false);
     }
 
     public void Think(string key)

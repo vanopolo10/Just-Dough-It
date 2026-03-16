@@ -6,25 +6,29 @@ using UnityEngine;
 public class DialogueManager : MonoBehaviour
 {
     [SerializeField] private bool _isTutorial;
-    
+
     [SerializeField] private DialogueBubble _speechBubble;
     [SerializeField] private TextTypewriter _typewriter;
-    [SerializeField] private GameObject _baseDialogueOption, _baseInactiveDialogueOption;
-    [SerializeField] private float _dialogueOptionOffset = 1f;
-    
-    private List<DialogueOption> _dialogueOptions;
-    private List<bool> _dialogueOptionActive;
-    private List<Transform> _spawnedDialogueOptions = new();
 
-    private Action _onCompleteCurrentText;
+    [SerializeField] private GameObject _baseDialogueOption;
+    [SerializeField] private GameObject _baseInactiveDialogueOption;
+
+    [SerializeField] private float _dialogueOptionOffset = 1f;
+
+    private List<DialogueOption> _dialogueOptions = new();
+    private List<bool> _dialogueOptionActive = new();
+
+    private readonly List<Transform> _spawnedDialogueOptions = new();
+
+    private Action _onTypingCompleted;
+    private Action _onTextClicked;
+
     private bool _isFinalQuestText;
 
     public event Action SkipClicked;
     public event Action ConfirmClicked;
-    public event Action OnGreetingCompleted;
-    
+
     public bool IsTextFullyVisible { get; private set; }
-    public TextTypewriter Typewriter => _typewriter;
     
     private void Awake()
     {
@@ -41,17 +45,34 @@ public class DialogueManager : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log("[DialogueManager] OnEnable");
         if (_speechBubble != null)
             _speechBubble.OnBubbleClicked += HandleClick;
     }
 
     private void OnDisable()
     {
+        Debug.Log("[DialogueManager] OnDisable");
         if (_speechBubble != null)
             _speechBubble.OnBubbleClicked -= HandleClick;
-            
+
+        UnsubscribeFromTypewriter();
+    }
+
+    private void SubscribeToTypewriter()
+    {
         if (_typewriter != null)
         {
+            Debug.Log("[DialogueManager] Subscribing to Typewriter events");
+            _typewriter.TypingCompleted += OnTypingCompleted;
+        }
+    }
+
+    private void UnsubscribeFromTypewriter()
+    {
+        if (_typewriter != null)
+        {
+            Debug.Log("[DialogueManager] Unsubscribing from Typewriter events");
             _typewriter.TypingCompleted -= OnTypingCompleted;
             _typewriter.Clear();
         }
@@ -59,166 +80,241 @@ public class DialogueManager : MonoBehaviour
 
     private void HandleClick()
     {
+        Debug.Log($"[DialogueManager] HandleClick. IsTyping: {(_typewriter != null ? _typewriter.IsTyping.ToString() : "null")}, IsTextFullyVisible: {IsTextFullyVisible}");
+        
+        if (_typewriter == null)
+        {
+            Debug.LogError("[DialogueManager] Typewriter is null!");
+            return;
+        }
+        
         if (_typewriter.IsTyping)
         {
+            Debug.Log("[DialogueManager] Skipping typing...");
             _typewriter.CompleteTypingInstantly();
-            IsTextFullyVisible = true;
-
             SkipClicked?.Invoke();
             return;
         }
 
         if (IsTextFullyVisible)
         {
+            Debug.Log($"[DialogueManager] Text is fully visible, invoking click callback. Has click callback: {(_onTextClicked != null)}");
+            
             ConfirmClicked?.Invoke();
 
-            var callback = _onCompleteCurrentText;
-            bool wasFinalText = _isFinalQuestText;
+            var clickCallback = _onTextClicked;
+            bool wasFinal = _isFinalQuestText;
 
             IsTextFullyVisible = false;
-            _onCompleteCurrentText = null;
+            _onTypingCompleted = null;
+            _onTextClicked = null;
             _isFinalQuestText = false;
 
-            if (callback != null)
+            if (clickCallback != null)
             {
-                if (wasFinalText)
-                    SetDialogueOptions(new List<DialogueOption>());
-
-                callback.Invoke();
+                Debug.Log("[DialogueManager] Invoking click callback");
+                clickCallback.Invoke();
             }
+            else
+            {
+                Debug.Log("[DialogueManager] No click callback registered");
+            }
+
+            if (wasFinal)
+            {
+                Debug.Log("[DialogueManager] Was final quest text, clearing options");
+                SetDialogueOptions(new List<DialogueOption>());
+            }
+        }
+        else
+        {
+            Debug.Log("[DialogueManager] Text is not fully visible yet, ignoring click");
         }
     }
 
     private void OnTypingCompleted()
     {
-        if (_isTutorial)
-        {
-            OnGreetingCompleted?.Invoke();
-        }
-
+        Debug.Log($"[DialogueManager] OnTypingCompleted received! Has typing callback: {(_onTypingCompleted != null)}");
         IsTextFullyVisible = true;
-        _typewriter.TypingCompleted -= OnTypingCompleted;
+        
+        _onTypingCompleted?.Invoke();
+    }
+
+    private void EnableBubble()
+    {
+        if (!_speechBubble.gameObject.activeSelf)
+            _speechBubble.gameObject.SetActive(true);
+    }
+
+    public void DisableBubble()
+    {
+        Debug.Log("[DialogueManager] DisableBubble");
+        
+        UnsubscribeFromTypewriter();
+
+        ClearDialogueHandles();
+
+        if (_speechBubble != null)
+            _speechBubble.gameObject.SetActive(false);
+
+        IsTextFullyVisible = false;
+
+        _onTypingCompleted = null;
+        _onTextClicked = null;
+        _isFinalQuestText = false;
+
+        SetDialogueOptions(new List<DialogueOption>());
     }
 
     public void DisplayText(string text)
     {
-        if (!_speechBubble.gameObject.activeSelf)
-            EnableBubble();
-        
+        Debug.Log($"[DialogueManager] DisplayText: {text}");
+        EnableBubble();
+
+        UnsubscribeFromTypewriter();
+        SubscribeToTypewriter();
+
         IsTextFullyVisible = false;
-        _onCompleteCurrentText = null;
+        _onTypingCompleted = null;
+        _onTextClicked = null;
         _isFinalQuestText = false;
 
-        _typewriter.TypingCompleted += OnTypingCompleted;
-        
         _typewriter.StartTyping(text);
     }
 
-    public void DisplayTextWithCallback(string text, Action onComplete)
+    public void DisplayTextWithTypingCallback(string text, Action onTypingCompleted)
     {
-        DisplayText(text);
-        _onCompleteCurrentText = onComplete;
+        Debug.Log($"[DialogueManager] DisplayTextWithTypingCallback: {text}");
+        EnableBubble();
+
+        UnsubscribeFromTypewriter();
+        SubscribeToTypewriter();
+
+        IsTextFullyVisible = false;
+        _onTypingCompleted = onTypingCompleted;
+        _onTextClicked = null;
+        _isFinalQuestText = false;
+
+        _typewriter.StartTyping(text);
     }
 
-    public void DisplayFinalQuestText(string text, Action onComplete)
+    public void DisplayTextWithClickCallback(string text, Action onTextClicked)
     {
-        if (!_speechBubble.gameObject.activeSelf)
-            EnableBubble();
-        
+        Debug.Log($"[DialogueManager] DisplayTextWithClickCallback: {text}");
+        EnableBubble();
+
+        UnsubscribeFromTypewriter();
+        SubscribeToTypewriter();
+
         IsTextFullyVisible = false;
-        _onCompleteCurrentText = onComplete;
+        _onTypingCompleted = null;
+        _onTextClicked = onTextClicked;
+        _isFinalQuestText = false;
+
+        _typewriter.StartTyping(text);
+    }
+
+    public void DisplayTextWithCallbacks(string text, Action onTypingCompleted, Action onTextClicked)
+    {
+        Debug.Log($"[DialogueManager] DisplayTextWithCallbacks: {text}");
+        EnableBubble();
+
+        UnsubscribeFromTypewriter();
+        SubscribeToTypewriter();
+
+        IsTextFullyVisible = false;
+        _onTypingCompleted = onTypingCompleted;
+        _onTextClicked = onTextClicked;
+        _isFinalQuestText = false;
+
+        _typewriter.StartTyping(text);
+    }
+
+    public void DisplayFinalQuestText(string text, Action onTextClicked)
+    {
+        Debug.Log($"[DialogueManager] DisplayFinalQuestText: {text}");
+        EnableBubble();
+
+        UnsubscribeFromTypewriter();
+        SubscribeToTypewriter();
+
+        IsTextFullyVisible = false;
+        _onTypingCompleted = null;
+        _onTextClicked = onTextClicked;
         _isFinalQuestText = true;
 
-        _typewriter.TypingCompleted += OnTypingCompleted;
-        
         _typewriter.StartTyping(text);
-        
-        Debug.Log("[DialogueManager] Displaying final quest text");
     }
 
     public void SetDialogueOptions(List<DialogueOption> options)
     {
+        Debug.Log($"[DialogueManager] SetDialogueOptions. Count: {options.Count}");
         _dialogueOptions = options;
 
-        bool[] tmp = new bool[options.Count];
-        Array.Fill(tmp, true);
-        _dialogueOptionActive = new List<bool>(tmp);
+        _dialogueOptionActive.Clear();
+
+        for (int i = 0; i < options.Count; i++)
+            _dialogueOptionActive.Add(true);
 
         RefreshDialogueHandles();
     }
 
     public void DeactivateDialogueOption(DialogueOption option)
     {
-        int index = _dialogueOptions.IndexOf(option);
-        
-        if (index >= 0 && index < _dialogueOptionActive.Count)
-            _dialogueOptionActive[index] = false;
-        
-        RefreshDialogueHandles();
-    }
-
-    private void EnableBubble()
-    {
-        _speechBubble.gameObject.SetActive(true);
-        RefreshDialogueHandles();
-    }
-
-    public void DisableBubble()
-    {
-        Debug.Log("[DialogueManager] Disabling bubble");
-        
-        if (_typewriter != null)
+        for (int i = 0; i < _dialogueOptions.Count; i++)
         {
-            _typewriter.TypingCompleted -= OnTypingCompleted;
-            _typewriter.Clear();
+            if (_dialogueOptions[i].Equals(option))
+            {
+                _dialogueOptionActive[i] = false;
+                break;
+            }
         }
-        
-        ClearDialogueHandles();
-        _speechBubble.gameObject.SetActive(false);
-        _typewriter.Clear();
-        IsTextFullyVisible = false;
-        _onCompleteCurrentText = null;
-        _isFinalQuestText = false;
 
-        SetDialogueOptions(new List<DialogueOption>());
+        RefreshDialogueHandles();
     }
 
     private void ClearDialogueHandles()
     {
-        if (_spawnedDialogueOptions == null) return;
-        
-        foreach (var child in _spawnedDialogueOptions.Where(child => child.gameObject != _baseDialogueOption && child.gameObject != _baseInactiveDialogueOption))
-            Destroy(child.gameObject);
-        
-        _spawnedDialogueOptions = new List<Transform>();
+        foreach (var t in _spawnedDialogueOptions.Where(t => t != null))
+            Destroy(t.gameObject);
+
+        _spawnedDialogueOptions.Clear();
     }
 
     private void RefreshDialogueHandles()
     {
+        if (_speechBubble == null || !_speechBubble.gameObject.activeSelf)
+            return;
+
         ClearDialogueHandles();
 
-        Vector3 curOffset = Vector3.zero;
-        
-        foreach (DialogueOption option in _dialogueOptions)
-        {
-            int index = _dialogueOptions.IndexOf(option);
-            if (index < 0 || index >= _dialogueOptionActive.Count) continue;
+        Vector3 offset = Vector3.zero;
 
-            var optionObj = _dialogueOptionActive[index]
-                ? Instantiate(_baseDialogueOption, _baseDialogueOption.transform.parent)
-                : Instantiate(_baseInactiveDialogueOption, _baseInactiveDialogueOption.transform.parent);
+        for (int i = 0; i < _dialogueOptions.Count; i++)
+        {
+            var option = _dialogueOptions[i];
+
+            GameObject prefab = _dialogueOptionActive[i]
+                ? _baseDialogueOption
+                : _baseInactiveDialogueOption;
+
+            var optionObj = Instantiate(prefab, prefab.transform.parent);
+
             optionObj.SetActive(true);
+
+            optionObj.transform.localPosition += offset;
+
+            offset.y -= _dialogueOptionOffset;
 
             _spawnedDialogueOptions.Add(optionObj.transform);
 
-            optionObj.transform.localPosition += curOffset;
-            curOffset.y -= _dialogueOptionOffset;
-
             var handle = optionObj.GetComponent<DialogueOptionHandle>();
-            if (handle)
+
+            if (handle != null)
             {
                 var customerManager = GetComponent<CustomerManager>();
-                if (customerManager)
+
+                if (customerManager != null)
                     handle.Setup(customerManager.CurrentCustomer, option);
             }
         }

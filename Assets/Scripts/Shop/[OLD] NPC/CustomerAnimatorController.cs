@@ -65,7 +65,7 @@ public class CustomerAnimatorController : MonoBehaviour
 
     public void OnQuestStarted() { }
 
-    public void OnItemRejected()
+    public virtual void OnItemRejected()
     {
         _animator.SetInteger(NahID, Random.Range(0, _nahVariants));
         _animator.SetTrigger(Nah);

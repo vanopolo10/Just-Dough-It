@@ -10,6 +10,7 @@ public class Customer : MonoBehaviour
 
     public event Action QuestCompleted;
 
+    public CustomerQuest CustomerQuest => _quest;
     public DialogueManager DialogueManager => _dialogueManager;
     public CustomerAnimatorController AnimatorController => _animatorController;
 
