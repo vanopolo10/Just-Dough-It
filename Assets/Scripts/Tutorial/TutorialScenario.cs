@@ -9,7 +9,7 @@ public class TutorialScenario : MonoBehaviour
     [SerializeField] private DoughBucket _dough;
     [SerializeField] private PlayerThoughts _thoughts;
     [SerializeField] private DialogueManager _dialogueManager;
-    [SerializeField] private RecipeManager _recipeManager;
+    [SerializeField] private Book _book;
     [SerializeField] private CustomerManager _customerManager;
 
     [Header("Icons")] 
@@ -45,29 +45,31 @@ public class TutorialScenario : MonoBehaviour
         {
             new ActionGate(() => _camera.BlockControl()),
             
-            new ThoughtGate(_thoughts, "tutorial.think.start"),
+            new ActionGate(() => _camera.UnblockControl()),
+            
+            new ActionGate(() => _thoughts.Think("tutorial.think.start")),
             
             new DialogueGate(_dialogueManager, true ,_nextDialogueIcon),
             
             new DialogueGate(_dialogueManager, false),
             
-            new ThoughtGate(_thoughts, "tutorial.think.sure"),
+            new ActionGate(() => _thoughts.Think("tutorial.think.sure")),
             
             new ActionGate(() => _camera.UnblockControl()),
             
             new CameraViewGate(_camera, CameraController.CameraViewType.Craft, _leftRightIcons),
 
-            new ThoughtGate(_thoughts, "tutorial.think.remember"),
+            new ActionGate(() => _thoughts.Think("tutorial.think.remember")),
 
             new DoughStateGate(_dough, DoughState.Flat, _rollingPinGuide),
-
-            new ThoughtGate(_thoughts, "tutorial.think.remember2"),
             
-            new RecipeGate(_recipeManager, ProductType.SimplePie),
+            new ActionGate(() => _thoughts.Think("tutorial.think.remember2")),
+            
+            new RecipeGate(_book, ProductType.SimplePie),
             
             new DoughStateGate(_dough, DoughState.FlatFolded),
 
-            new ThoughtGate(_thoughts, "tutorial_make_pie"),
+            new ActionGate(() => _thoughts.Think("tutorial_make_pie")),
 
             new DoughStateGate(_dough, DoughState.SimplePie)
         });

@@ -6,48 +6,47 @@ using UnityEngine;
 public class RecipeIndicator : MonoBehaviour
 {
     [Serializable]
-    protected struct IndicatorGroup 
+    protected struct IndicatorGroup
     {
         public ProductType Type;
         public List<GameObject> Indicators;
     }
 
     [SerializeField] private List<IndicatorGroup> _indicatorGroups;
-    private RecipeManager _manager;
-    
+    private Book _book;
+
     private void OnEnable()
     {
-        if (_manager != null) return;
-        
-        _manager = FindFirstObjectByType<RecipeManager>();
-        _manager.ActiveRecipeChanged += UpdateVisibility;
+        FindBook();
+        UpdateVisibility(_book.CurrentSelectedProduct);
+
+        if (_book != null)
+            _book.RecipeChanged += UpdateVisibility;
     }
-    
+
     private void OnDisable()
     {
-        if (_manager != null) return;
-        
-        _manager = FindFirstObjectByType<RecipeManager>();
-        _manager.ActiveRecipeChanged -= UpdateVisibility;
+        if (_book != null)
+            _book.RecipeChanged -= UpdateVisibility;
     }
 
-    private void UpdateVisibility(ProductType productType) 
+    private void FindBook()
     {
-        var allIndicators = new HashSet<GameObject>();
-        var indicatorsToShow = new HashSet<GameObject>();
+        if (_book == null)
+            _book = FindFirstObjectByType<Book>();
+    }
 
-        foreach (IndicatorGroup group in _indicatorGroups)
-        {
-            foreach (var indicator in group.Indicators.Where(indicator => indicator != null))
-            {
-                allIndicators.Add(indicator);
+    private void UpdateVisibility(ProductType productType)
+    {
+        var activeGroup = _indicatorGroups.FirstOrDefault(g => g.Type == productType);
 
-                if (group.Type == productType)
-                    indicatorsToShow.Add(indicator);
-            }
-        }
+        foreach (var indicator in _indicatorGroups.SelectMany(group =>
+                     group.Indicators.Where(indicator => indicator != null)))
+            indicator.SetActive(false);
 
-        foreach (var indicator in allIndicators.Where(indicator => indicator != null))
-            indicator.SetActive(indicatorsToShow.Contains(indicator));
+        if (activeGroup.Indicators == null) return;
+
+        foreach (var indicator in activeGroup.Indicators.Where(indicator => indicator != null))
+            indicator.SetActive(true);
     }
 }

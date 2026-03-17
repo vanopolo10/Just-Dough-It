@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerThoughts : MonoBehaviour
 {
     [SerializeField] private DialogueBubble _dialogueBubble;
-    [SerializeField] private RectTransform _blurPanel;
     [SerializeField] private TextTypewriter _textTypewriter;
     
     private bool _waitingForClose;
@@ -13,7 +12,7 @@ public class PlayerThoughts : MonoBehaviour
     
     private void Awake()
     {
-        _blurPanel.gameObject.SetActive(false);
+        _dialogueBubble.gameObject.SetActive(false);
     }
     
     private void OnEnable()
@@ -32,7 +31,7 @@ public class PlayerThoughts : MonoBehaviour
     {
         _waitingForClose = false;
 
-        _blurPanel.gameObject.SetActive(true);
+        _dialogueBubble.gameObject.SetActive(true);
         _textTypewriter.StartTyping(key);
     }
 
@@ -51,7 +50,7 @@ public class PlayerThoughts : MonoBehaviour
 
         if (_waitingForClose)
         {
-            _blurPanel.gameObject.SetActive(false);
+            _dialogueBubble.gameObject.SetActive(false);
             _waitingForClose = false;
 
             ThoughtCompleted?.Invoke();
