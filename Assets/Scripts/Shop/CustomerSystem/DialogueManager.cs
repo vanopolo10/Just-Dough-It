@@ -27,6 +27,7 @@ public class DialogueManager : MonoBehaviour
 
     public event Action SkipClicked;
     public event Action ConfirmClicked;
+    public event Action TypingCompleted;
 
     public bool IsTextFullyVisible { get; private set; }
     
@@ -138,6 +139,7 @@ public class DialogueManager : MonoBehaviour
         IsTextFullyVisible = true;
         
         _onTypingCompleted?.Invoke();
+        TypingCompleted?.Invoke();
     }
 
     private void EnableBubble()

@@ -40,13 +40,16 @@ public class TutorialScenario : MonoBehaviour
     private void StartTutorialScenario()
     {
         _customer.CustomerQuest.GreetingTypingCompleted -= StartTutorialScenario;
-
         
         _runner.StartTutorial(new List<ITutorialGate>
         {
+            new ActionGate(() => _camera.BlockControl()),
+            
             new ThoughtGate(_thoughts, "tutorial.think.start"),
             
-            new DialogueGate(_dialogueManager, _nextDialogueIcon),
+            new DialogueGate(_dialogueManager, true ,_nextDialogueIcon),
+            
+            new DialogueGate(_dialogueManager, false),
             
             new ThoughtGate(_thoughts, "tutorial.think.sure"),
             
