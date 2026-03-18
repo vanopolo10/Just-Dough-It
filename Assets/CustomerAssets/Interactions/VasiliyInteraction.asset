@@ -13,15 +13,11 @@ MonoBehaviour:
   m_Name: VasiliyInteraction
   m_EditorClassIdentifier: Assembly-CSharp::CustomerInteractionSet
   _onGreeting:
-    _dialogueKey: "\u0417\u0434\u0440\u0430\u0432\u0441\u0442\u0432\u0443\u0439\u0442\u0435,
-      \u044F - \u0437\u0430\u0432\u043E\u0434\u0447\u0430\u043D\u0438\u043D \u0412\u0430\u0441\u0438\u043B\u0438\u0439"
+    _dialogueKey: bpc.valissy.greeting
   _onItemAccepted:
-    _dialogueKey: "\u0414\u0430, \u044D\u0442\u043E \u0442\u043E \u0447\u0442\u043E
-      \u043D\u0430\u0434\u043E!"
+    _dialogueKey: bpc.valissy.accepted
   _onItemRejected:
-    _dialogueKey: "\u041D\u0435-\u0435, \u043F\u043E\u0433\u043E\u0434\u0438, \u044F
-      \u043D\u0435 \u0442\u0430\u043A\u043E\u0435 \u043F\u0440\u043E\u0441\u0438\u043B!"
+    _dialogueKey: bpc.valissy.rejected
   _onQuestCompleted:
-    _dialogueKey: "\u0412\u043E\u0442 \u0441\u043F\u0430\u0441\u0438\u0431\u043E,
-      \u0432\u0441\u0435\u0433\u043E \u0432\u0430\u043C \u0434\u043E\u0431\u0440\u043E\u0433\u043E!"
+    _dialogueKey: bpc.valissy.completed
   _dialogueOptions: []

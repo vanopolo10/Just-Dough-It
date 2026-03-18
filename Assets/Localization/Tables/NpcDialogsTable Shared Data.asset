@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: NpcDialogsTable Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: NpcDialogsTable
+  m_TableCollectionNameGuidString: 9091caaf22d8f1f42be0e0ed49a6178e
+  m_Entries:
+  - m_Id: 1764855398400
+    m_Key: npc.picky.greeting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1839648227328
+    m_Key: npc.picky.accepted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1874511282176
+    m_Key: npc.picky.rejected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1900415303680
+    m_Key: npc.picky.completed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2187125342208
+    m_Key: bpc.valissy.greeting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2287352430592
+    m_Key: bpc.valissy.accepted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2290183585792
+    m_Key: bpc.valissy.rejected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2294109454336
+    m_Key: bpc.valissy.completed
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6281393797453840460
+  references:
+    version: 2
+    RefIds:
+    - rid: 6281393797453840460
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1773829587961

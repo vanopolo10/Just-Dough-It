@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: PickyInteractions
   m_EditorClassIdentifier: Assembly-CSharp::CustomerInteractionSet
   _onGreeting:
-    _dialogueKey: ...
+    _dialogueKey: npc.picky.greeting
   _onItemAccepted:
-    _dialogueKey: "\u0425\u043C, \u043F\u043E\u0439\u0434\u0451\u0442"
+    _dialogueKey: npc.picky.accepted
   _onItemRejected:
-    _dialogueKey: "\u041D\u0435\u043F\u0440\u0438\u0435\u043C\u043B\u0438\u043C\u043E."
+    _dialogueKey: npc.picky.rejected
   _onQuestCompleted:
-    _dialogueKey: "\u0412\u044B \u043C\u0435\u043D\u044F \u0432\u043F\u0435\u0447\u0430\u0442\u043B\u0438\u043B\u0438.
-      \u0414\u043E \u0441\u0432\u0438\u0434\u0430\u043D\u0438\u044F."
+    _dialogueKey: npc.picky.completed
   _dialogueOptions: []
