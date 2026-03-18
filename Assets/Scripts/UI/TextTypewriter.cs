@@ -1,11 +1,10 @@
-using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
@@ -34,13 +33,11 @@ public class TextTypewriter : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("[TextTypewriter] OnEnable");
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChange;
     }
 
     private void OnDisable()
     {
-        Debug.Log("[TextTypewriter] OnDisable");
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChange;
         Clear();
     }
@@ -51,7 +48,6 @@ public class TextTypewriter : MonoBehaviour
 
         if (IsTyping)
         {
-            Debug.Log("[TextTypewriter] Already typing - stopping previous routine");
             StopCoroutine(_typeRoutine);
             IsTyping = false;
         }
@@ -67,13 +63,8 @@ public class TextTypewriter : MonoBehaviour
 
     public void CompleteTypingInstantly()
     {
-        Debug.Log($"[TextTypewriter] CompleteTypingInstantly called. IsTyping: {IsTyping}");
-
         if (!IsTyping)
-        {
-            Debug.Log("[TextTypewriter] Not typing, ignoring");
             return;
-        }
 
         _isSkipping = true;
         _textMeshPro.maxVisibleCharacters = _textKey.Length;
@@ -86,7 +77,6 @@ public class TextTypewriter : MonoBehaviour
 
         IsTyping = false;
 
-        Debug.Log("[TextTypewriter] Text completed instantly, invoking TypingCompleted");
         TypingCompleted?.Invoke();
     }
 
@@ -99,7 +89,6 @@ public class TextTypewriter : MonoBehaviour
         int totalCharacters = _textMeshPro.textInfo.characterCount;
         int currentCharIndex = 0;
 
-        Debug.Log($"[TextTypewriter] Starting type routine. Total characters: {totalCharacters}");
 
         while (currentCharIndex < totalCharacters && !_isSkipping)
         {
@@ -111,7 +100,6 @@ public class TextTypewriter : MonoBehaviour
         if (!_isSkipping)
         {
             _textMeshPro.maxVisibleCharacters = totalCharacters;
-            Debug.Log("[TextTypewriter] Typing completed naturally, invoking TypingCompleted");
             TypingCompleted?.Invoke();
         }
 
@@ -122,8 +110,6 @@ public class TextTypewriter : MonoBehaviour
 
     public void Clear()
     {
-        Debug.Log("[TextTypewriter] Clear");
-
         if (_typeRoutine != null)
         {
             StopCoroutine(_typeRoutine);
@@ -149,17 +135,15 @@ public class TextTypewriter : MonoBehaviour
         _textMeshPro.maxVisibleCharacters = Mathf.FloorToInt(_textMeshPro.text.Length * displayedPercent); 
     }
 
-    private async Task<string> FindStringInAllTablesAsync(string key)
+    private static async Task<string> FindStringInAllTablesAsync(string key)
     {
         var task = LocalizationSettings.StringDatabase.GetAllTables();
         await task.Task;
-        List<StringTable> tables = (List<StringTable>)task.Result;
-        foreach (var table in tables)
-        {
-            StringTableEntry entry = table.GetEntry(key);
-            if (entry != null)
-                return entry.GetLocalizedString();
-        }
+        var tables = (List<StringTable>)task.Result;
+
+        foreach (var entry in tables.Select(table => table.GetEntry(key)).Where(entry => entry != null))
+            return entry.GetLocalizedString();
+
         return key;
     }
 }

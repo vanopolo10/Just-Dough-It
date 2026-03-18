@@ -43,35 +43,35 @@ public class TutorialScenario : MonoBehaviour
         
         _runner.StartTutorial(new List<ITutorialGate>
         {
+            new ActionGate(_dough.CurrentDough.GetComponent<DoughDrag>().Block),
             new ActionGate(() => _camera.BlockControl()),
+            new ActionGate(() => _book.Block()),
             
-            new ActionGate(() => _camera.UnblockControl()),
+            new ActionGate(() => _thoughts.Think("tutorial.think.start", true)),
             
-            new ActionGate(() => _thoughts.Think("tutorial.think.start")),
-            
-            new DialogueGate(_dialogueManager, true ,_nextDialogueIcon),
-            
+            new DialogueGate(_dialogueManager, true, _nextDialogueIcon),
             new DialogueGate(_dialogueManager, false),
             
             new ActionGate(() => _thoughts.Think("tutorial.think.sure")),
-            
             new ActionGate(() => _camera.UnblockControl()),
-            
             new CameraViewGate(_camera, CameraController.CameraViewType.Craft, _leftRightIcons),
-
+            
             new ActionGate(() => _thoughts.Think("tutorial.think.remember")),
-
+            new RecipeGate(_book, ProductType.SimplePie),
+            new ActionGate(() => _book.Block()),
+            new ActionGate(() => _book.gameObject.SetActive(false)),
+            
+            new ActionGate(() => _thoughts.Think("tutorial.think.rolling")),
             new DoughStateGate(_dough, DoughState.Flat, _rollingPinGuide),
             
-            new ActionGate(() => _thoughts.Think("tutorial.think.remember2")),
-            
-            new RecipeGate(_book, ProductType.SimplePie),
-            
+            new ActionGate(() => _thoughts.Think("tutorial.think.folding")),
             new DoughStateGate(_dough, DoughState.FlatFolded),
 
-            new ActionGate(() => _thoughts.Think("tutorial_make_pie")),
-
-            new DoughStateGate(_dough, DoughState.SimplePie)
+            new ActionGate(() => _thoughts.Think("tutorial.think.pressing")),
+            new DoughStateGate(_dough, DoughState.SimplePie),
+            new ActionGate(_dough.CurrentDough.GetComponent<DoughDrag>().Unblock)
+            
+            
         });
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Book : MonoBehaviour
 {
+    [SerializeField] private GameObject _book;
     [SerializeField] private List<Page> _pages;
     [SerializeField] private Image _imageLeft;
     [SerializeField] private Image _imageRight;
@@ -15,7 +16,8 @@ public class Book : MonoBehaviour
     [SerializeField] private Button _navigationButtonRight;
     [SerializeField] private Button _recipeButtonLeft;
     [SerializeField] private Button _recipeButtonRight;
-    
+
+    private bool _canOpen;
     private int _id;
     private Page _currentPageLeft;
     private Page _currentPageRight;
@@ -30,8 +32,9 @@ public class Book : MonoBehaviour
         CurrentSelectedProduct = ProductType.None;
         SetSpritesAndText();
         UpdateNavigationButtons();
+        _book.SetActive(false);
     }
-
+    
     public void NextPage()
     {
         bool canGoToNextPage = (_id + 1) * 2 < _pages.Count;
@@ -55,6 +58,22 @@ public class Book : MonoBehaviour
         }
     }
 
+    public void Block()
+    {
+        _canOpen = false;
+    }
+    
+    public void Unblock()
+    {
+        _canOpen = true;
+    }
+    
+    private void OnBook()
+    {
+        if(_canOpen)
+            _book.SetActive(!_book.activeSelf);
+    }
+    
     private void SetSpritesAndText()
     {
         _currentPageLeft = _pages[_id * 2];

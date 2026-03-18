@@ -181,7 +181,7 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = null;
         _isFinalQuestText = false;
 
-        _typewriter.StartTyping(text);
+        _ = _typewriter.StartTyping(text);
     }
 
     public void DisplayTextWithTypingCallback(string text, Action onTypingCompleted)
@@ -197,7 +197,7 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = null;
         _isFinalQuestText = false;
 
-        _typewriter.StartTyping(text);
+        _ = _typewriter.StartTyping(text);
     }
 
     public void DisplayTextWithClickCallback(string text, Action onTextClicked)
@@ -213,7 +213,7 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = onTextClicked;
         _isFinalQuestText = false;
 
-        _typewriter.StartTyping(text);
+        _ = _typewriter.StartTyping(text);
     }
 
     public void DisplayTextWithCallbacks(string text, Action onTypingCompleted, Action onTextClicked)
@@ -229,7 +229,7 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = onTextClicked;
         _isFinalQuestText = false;
 
-        _typewriter.StartTyping(text);
+        _ = _typewriter.StartTyping(text);
     }
 
     public void DisplayFinalQuestText(string text, Action onTextClicked)
@@ -245,7 +245,7 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = onTextClicked;
         _isFinalQuestText = true;
 
-        _typewriter.StartTyping(text);
+        _ = _typewriter.StartTyping(text);
     }
 
     public void SetDialogueOptions(List<DialogueOption> options)
