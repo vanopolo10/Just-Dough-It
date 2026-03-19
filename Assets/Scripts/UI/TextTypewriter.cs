@@ -74,7 +74,7 @@ public class TextTypewriter : MonoBehaviour
         }
 
         _isSkipping = true;
-        _textMeshPro.maxVisibleCharacters = _textKey.Length;
+        _textMeshPro.maxVisibleCharacters = _textMeshPro.text.Length;
 
         if (_typeRoutine != null)
         {
