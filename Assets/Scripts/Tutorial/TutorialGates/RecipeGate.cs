@@ -3,23 +3,23 @@ using UnityEngine;
 
 public class RecipeGate : ITutorialGate
 {
-    private Book _book;
+    private RecipeManager _recipeManager;
     private ProductType _target;
 
     public event Action Completed;
     
     public GameObject IconObject { get; }
 
-    public RecipeGate(Book book, ProductType target, GameObject iconObject = null)
+    public RecipeGate(RecipeManager recipeManager, ProductType target, GameObject iconObject = null)
     {
-        _book = book;
+        _recipeManager = recipeManager;
         _target = target;
         IconObject = iconObject;
     }
 
     public void Enter()
     {
-        _book.RecipeChanged += OnStateChanged;
+        _recipeManager.ActiveRecipeChanged += OnStateChanged;
     }
 
     private void OnStateChanged(ProductType productType)
@@ -27,7 +27,7 @@ public class RecipeGate : ITutorialGate
         if (productType != _target)
             return;
 
-        _book.RecipeChanged -= OnStateChanged;
+        _recipeManager.ActiveRecipeChanged -= OnStateChanged;
         Completed?.Invoke();
     }
 }

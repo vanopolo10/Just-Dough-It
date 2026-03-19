@@ -27,7 +27,6 @@ public class DialogueManager : MonoBehaviour
 
     public event Action SkipClicked;
     public event Action ConfirmClicked;
-    public event Action TypingCompleted;
 
     public bool IsTextFullyVisible { get; private set; }
     
@@ -139,7 +138,6 @@ public class DialogueManager : MonoBehaviour
         IsTextFullyVisible = true;
         
         _onTypingCompleted?.Invoke();
-        TypingCompleted?.Invoke();
     }
 
     private void EnableBubble()
@@ -181,7 +179,7 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = null;
         _isFinalQuestText = false;
 
-        _ = _typewriter.StartTyping(text);
+        _typewriter.StartTyping(text);
     }
 
     public void DisplayTextWithTypingCallback(string text, Action onTypingCompleted)
@@ -197,7 +195,7 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = null;
         _isFinalQuestText = false;
 
-        _ = _typewriter.StartTyping(text);
+        _typewriter.StartTyping(text);
     }
 
     public void DisplayTextWithClickCallback(string text, Action onTextClicked)
@@ -213,7 +211,7 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = onTextClicked;
         _isFinalQuestText = false;
 
-        _ = _typewriter.StartTyping(text);
+        _typewriter.StartTyping(text);
     }
 
     public void DisplayTextWithCallbacks(string text, Action onTypingCompleted, Action onTextClicked)
@@ -229,7 +227,7 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = onTextClicked;
         _isFinalQuestText = false;
 
-        _ = _typewriter.StartTyping(text);
+        _typewriter.StartTyping(text);
     }
 
     public void DisplayFinalQuestText(string text, Action onTextClicked)
@@ -245,7 +243,7 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = onTextClicked;
         _isFinalQuestText = true;
 
-        _ = _typewriter.StartTyping(text);
+        _typewriter.StartTyping(text);
     }
 
     public void SetDialogueOptions(List<DialogueOption> options)

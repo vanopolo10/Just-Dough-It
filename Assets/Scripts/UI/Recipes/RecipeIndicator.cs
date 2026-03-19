@@ -6,47 +6,48 @@ using UnityEngine;
 public class RecipeIndicator : MonoBehaviour
 {
     [Serializable]
-    protected struct IndicatorGroup
+    protected struct IndicatorGroup 
     {
         public ProductType Type;
         public List<GameObject> Indicators;
     }
 
     [SerializeField] private List<IndicatorGroup> _indicatorGroups;
-    private Book _book;
-
+    private RecipeManager _manager;
+    
     private void OnEnable()
     {
-        FindBook();
-        UpdateVisibility(_book.CurrentSelectedProduct);
-
-        if (_book != null)
-            _book.RecipeChanged += UpdateVisibility;
+        if (_manager != null) return;
+        
+        _manager = FindFirstObjectByType<RecipeManager>();
+        _manager.ActiveRecipeChanged += UpdateVisibility;
     }
-
+    
     private void OnDisable()
     {
-        if (_book != null)
-            _book.RecipeChanged -= UpdateVisibility;
+        if (_manager != null) return;
+        
+        _manager = FindFirstObjectByType<RecipeManager>();
+        _manager.ActiveRecipeChanged -= UpdateVisibility;
     }
 
-    private void FindBook()
+    private void UpdateVisibility(ProductType productType) 
     {
-        if (_book == null)
-            _book = FindFirstObjectByType<Book>();
-    }
+        var allIndicators = new HashSet<GameObject>();
+        var indicatorsToShow = new HashSet<GameObject>();
 
-    private void UpdateVisibility(ProductType productType)
-    {
-        var activeGroup = _indicatorGroups.FirstOrDefault(g => g.Type == productType);
+        foreach (IndicatorGroup group in _indicatorGroups)
+        {
+            foreach (var indicator in group.Indicators.Where(indicator => indicator != null))
+            {
+                allIndicators.Add(indicator);
 
-        foreach (var indicator in _indicatorGroups.SelectMany(group =>
-                     group.Indicators.Where(indicator => indicator != null)))
-            indicator.SetActive(false);
+                if (group.Type == productType)
+                    indicatorsToShow.Add(indicator);
+            }
+        }
 
-        if (activeGroup.Indicators == null) return;
-
-        foreach (var indicator in activeGroup.Indicators.Where(indicator => indicator != null))
-            indicator.SetActive(true);
+        foreach (var indicator in allIndicators.Where(indicator => indicator != null))
+            indicator.SetActive(indicatorsToShow.Contains(indicator));
     }
 }

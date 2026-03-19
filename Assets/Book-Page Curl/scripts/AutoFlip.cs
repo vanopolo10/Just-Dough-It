@@ -7,13 +7,13 @@ public class AutoFlip : MonoBehaviour {
     public float TimeBetweenPages = 1;
     public float DelayBeforeStarting = 0;
     public bool AutoStartFlip=true;
-    public BookOld ControledBook;
+    public Book ControledBook;
     public int AnimationFramesCount = 40;
     bool isFlipping = false;
     // Use this for initialization
     void Start () {
         if (!ControledBook)
-            ControledBook = GetComponent<BookOld>();
+            ControledBook = GetComponent<Book>();
         if (AutoStartFlip)
             StartFlipping();
         ControledBook.OnFlip.AddListener(new UnityEngine.Events.UnityAction(PageFlipped));

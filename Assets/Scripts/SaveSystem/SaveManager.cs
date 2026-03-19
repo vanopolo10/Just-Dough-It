@@ -61,7 +61,6 @@ public class SaveManager : MonoBehaviour
             SaveSystem.SaveData(currentSave, "Dough", new DoughSave(_doughBucket.CurrentDough.State, _doughBucket.CurrentDough.Filling));
 
         BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
-        
         foreach (BuyButtonContent content in boughtContent)
         {
             SaveSystem.SaveData(currentSave, $"Buyable.{content.Key}", content.BuyableThing.activeSelf);
@@ -83,11 +82,11 @@ public class SaveManager : MonoBehaviour
     }
 
     [Serializable]
-    private struct BoughtStuff
+    private struct BuyedStuff
     {
         public List<BuyButtonContent> Values;
 
-        public BoughtStuff(List<BuyButtonContent> values)
+        public BuyedStuff(List<BuyButtonContent> values)
         {
             Values = values;
         }

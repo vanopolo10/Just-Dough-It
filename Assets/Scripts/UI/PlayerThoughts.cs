@@ -1,12 +1,10 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerThoughts : MonoBehaviour
 {
     [SerializeField] private DialogueBubble _dialogueBubble;
     [SerializeField] private TextTypewriter _textTypewriter;
-    [SerializeField] private Image _icon;
     
     private bool _waitingForClose;
     
@@ -15,7 +13,6 @@ public class PlayerThoughts : MonoBehaviour
     private void Awake()
     {
         _dialogueBubble.gameObject.SetActive(false);
-        _icon.gameObject.SetActive(false);
     }
     
     private void OnEnable()
@@ -30,15 +27,12 @@ public class PlayerThoughts : MonoBehaviour
         _textTypewriter.TypingCompleted -= OnTypingCompleted;
     }
 
-    public void Think(string key, bool doShowIcon = false)
+    public void Think(string key)
     {
         _waitingForClose = false;
 
         _dialogueBubble.gameObject.SetActive(true);
-        _ = _textTypewriter.StartTyping(key);
-
-        if (doShowIcon)
-            _icon.gameObject.SetActive(true);
+        _textTypewriter.StartTyping(key);
     }
 
     private void OnTypingCompleted()
@@ -59,7 +53,6 @@ public class PlayerThoughts : MonoBehaviour
             _dialogueBubble.gameObject.SetActive(false);
             _waitingForClose = false;
 
-            _icon.gameObject.SetActive(false);
             ThoughtCompleted?.Invoke();
         }
     }

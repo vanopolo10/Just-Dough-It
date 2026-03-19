@@ -7,15 +7,14 @@ public class DoughDrag : MonoBehaviour
     private float _zCord;
     private bool _bothHeld;
     private bool _isDragging;
-    private bool _dragBlockedCamera;
     private bool _dragBlocked;
 
     private RollingPin _rollingPin;
 
+    public bool IsDragging => _isDragging;
+
     public event Action DragStarted;
     public event Action DragEnded;
-
-    private bool CanMove => _dragBlocked == false & _dragBlockedCamera == false;
 
     private void Awake()
     {
@@ -33,16 +32,6 @@ public class DoughDrag : MonoBehaviour
         DragCancelService.CancelRequested -= OnCancelRequested;
     }
 
-    public void Block()
-    {
-        _dragBlocked = true;
-    }
-
-    public void Unblock()
-    {
-        _dragBlocked = false;
-    }
-
     private void OnCancelRequested()
     {
         if (_isDragging == false)
@@ -50,16 +39,16 @@ public class DoughDrag : MonoBehaviour
 
         _isDragging = false;
         _bothHeld = false;
-        _dragBlockedCamera = true;
+        _dragBlocked = true;
         DragEnded?.Invoke();
     }
 
     private void FixedUpdate()
     {
-        if (CanMove == false || _rollingPin.IsDragging)
+        if (_dragBlocked || _rollingPin.IsDragging)
         {
             if (Input.GetMouseButton(0) == false && Input.GetMouseButton(1) == false)
-                _dragBlockedCamera = false;
+                _dragBlocked = false;
 
             return;
         }

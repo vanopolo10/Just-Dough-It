@@ -9,7 +9,7 @@ public class TutorialScenario : MonoBehaviour
     [SerializeField] private DoughBucket _dough;
     [SerializeField] private PlayerThoughts _thoughts;
     [SerializeField] private DialogueManager _dialogueManager;
-    [SerializeField] private Book _book;
+    [SerializeField] private RecipeManager _recipeManager;
     [SerializeField] private CustomerManager _customerManager;
 
     [Header("Icons")] 
@@ -40,38 +40,33 @@ public class TutorialScenario : MonoBehaviour
     private void StartTutorialScenario()
     {
         _customer.CustomerQuest.GreetingTypingCompleted -= StartTutorialScenario;
+
         
         _runner.StartTutorial(new List<ITutorialGate>
         {
-            new ActionGate(_dough.CurrentDough.GetComponent<DoughDrag>().Block),
-            new ActionGate(() => _camera.BlockControl()),
-            new ActionGate(() => _book.Block()),
+            new ThoughtGate(_thoughts, "tutorial.think.start"),
             
-            new ActionGate(() => _thoughts.Think("tutorial.think.start", true)),
+            new DialogueGate(_dialogueManager, _nextDialogueIcon),
             
-            new DialogueGate(_dialogueManager, true, _nextDialogueIcon),
-            new DialogueGate(_dialogueManager, false),
+            new ThoughtGate(_thoughts, "tutorial.think.sure"),
             
-            new ActionGate(() => _thoughts.Think("tutorial.think.sure")),
             new ActionGate(() => _camera.UnblockControl()),
+            
             new CameraViewGate(_camera, CameraController.CameraViewType.Craft, _leftRightIcons),
-            
-            new ActionGate(() => _thoughts.Think("tutorial.think.remember")),
-            new RecipeGate(_book, ProductType.SimplePie),
-            new ActionGate(() => _book.Block()),
-            new ActionGate(() => _book.gameObject.SetActive(false)),
-            
-            new ActionGate(() => _thoughts.Think("tutorial.think.rolling")),
+
+            new ThoughtGate(_thoughts, "tutorial.think.remember"),
+
             new DoughStateGate(_dough, DoughState.Flat, _rollingPinGuide),
+
+            new ThoughtGate(_thoughts, "tutorial.think.remember2"),
             
-            new ActionGate(() => _thoughts.Think("tutorial.think.folding")),
+            new RecipeGate(_recipeManager, ProductType.SimplePie),
+            
             new DoughStateGate(_dough, DoughState.FlatFolded),
 
-            new ActionGate(() => _thoughts.Think("tutorial.think.pressing")),
-            new DoughStateGate(_dough, DoughState.SimplePie),
-            new ActionGate(_dough.CurrentDough.GetComponent<DoughDrag>().Unblock)
-            
-            
+            new ThoughtGate(_thoughts, "tutorial_make_pie"),
+
+            new DoughStateGate(_dough, DoughState.SimplePie)
         });
     }
 }

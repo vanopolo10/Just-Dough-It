@@ -12,7 +12,7 @@ public enum FlipMode
     LeftToRight
 }
 [ExecuteInEditMode]
-public class BookOld : MonoBehaviour {
+public class Book : MonoBehaviour {
     public Canvas canvas;
     [SerializeField]
     RectTransform BookPanel;

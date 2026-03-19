@@ -5,31 +5,25 @@ public class DialogueGate : ITutorialGate
 {
     private readonly DialogueManager _dialogue;
     private readonly string _textKey;
-    private bool _isOnConfirm;
 
     public event Action Completed;
 
     public GameObject IconObject { get; }
 
-    public DialogueGate(DialogueManager dialogue, bool isOnConfirm, GameObject iconObject = null)
+    public DialogueGate(DialogueManager dialogue, GameObject iconObject = null)
     {
-        _isOnConfirm = isOnConfirm;
         _dialogue = dialogue;
         IconObject = iconObject;
     }
 
     public void Enter()
     {
-        if (_isOnConfirm)
-            _dialogue.ConfirmClicked += OnTalked;
-        else
-            _dialogue.TypingCompleted += OnTalked;
+        _dialogue.ConfirmClicked += OnConfirmClicked;
     }
 
-    private void OnTalked()
+    private void OnConfirmClicked()
     {
-        _dialogue.ConfirmClicked -= OnTalked;
-        _dialogue.ConfirmClicked -= OnTalked;
+        _dialogue.ConfirmClicked -= OnConfirmClicked;
         Completed?.Invoke();
     }
 }
