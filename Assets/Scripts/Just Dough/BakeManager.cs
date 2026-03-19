@@ -330,7 +330,7 @@ public class BakeManager : MonoBehaviour
     private bool AttemptDeposit()
     {
         if (_depositTarget == null) return false;
-        return _depositTarget.OfferProduct(_product);
+        return _depositTarget.OfferProduct(_product, gameObject);
     }
 
     private void OnCancelRequested()

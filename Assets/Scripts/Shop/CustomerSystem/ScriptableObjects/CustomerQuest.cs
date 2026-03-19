@@ -95,6 +95,8 @@ public class CustomerQuest : ScriptableObject
             Debug.Log($"[CustomerQuest] Setting dialogue options. Count: {_interactions.DialogueOptions.Count}");
             _customer.DialogueManager.SetDialogueOptions(_interactions.DialogueOptions);
         }
+
+        _customer.EnableReception();
     }
 
     private bool Check(Product product)
@@ -111,6 +113,9 @@ public class CustomerQuest : ScriptableObject
 
     private void FinishQuest()
     {
+        _customer.DisableReception();
+        _customer.DialogueManager.SetDialogueOptions(null);
+
         if (!_isInitialized || _customer == null)
         {
             Debug.LogWarning($"CustomerQuest {name}: Cannot finish quest - not properly initialized");
@@ -130,6 +135,8 @@ public class CustomerQuest : ScriptableObject
     }
 
     public void FinalizeQuest() { //has to be public sadly
+        _customer.DialogueManager.DisableBubble();
+
         if (_customer != null)
             _customer.FinishQuest();
 
@@ -162,6 +169,7 @@ public class CustomerQuest : ScriptableObject
 
                 if (_interactions != null && _interactions.OnItemAccepted != null)
                     _interactions.OnItemAccepted.PlayOut(_customer);
+
             }
         }
         else

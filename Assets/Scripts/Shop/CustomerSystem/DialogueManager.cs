@@ -120,6 +120,12 @@ public class DialogueManager : MonoBehaviour
 
     public void SetDialogueOptions(List<DialogueOption> options)
     {
+        if (options == null) {
+            Debug.Log($"[DialogueManager] Setting dialogue options to null.");
+            _dialogueOptions = new List<DialogueOption>();
+            RefreshDialogueHandles();
+            return;
+        }
         Debug.Log($"[DialogueManager] Setting dialogue options. Count: {options.Count}");
         _dialogueOptions = options;
 

@@ -9,13 +9,24 @@ public class Shelf : MonoBehaviour
     [SerializeField] private int _qualityMultiplayer = 20;
     
     [SerializeField] private List<Transform> _places = new();
-    
+    [SerializeField] private GameObject _debugPie;
+    [SerializeField] private bool _placeDebugPies;
+
     private readonly Queue<BakeManager> _queue = new();
     private BakeManager[] _occupied;
 
     private void Awake()
     {
         _occupied = new BakeManager[_places.Count];
+    }
+    private void Start()
+    {
+        if (_placeDebugPies) {
+            for (int i = 0; i <3; i++) { 
+                GameObject spawnedPie = Instantiate(_debugPie, transform);
+                Place(spawnedPie.GetComponent<BakeManager>());
+            }
+        }
     }
 
     public void Place(BakeManager bun)

@@ -36,7 +36,7 @@ public class CustomerRouteMover : MonoBehaviour
     {
         _animator = animator;
         _customer = animator.GetComponentInParent<Customer>();
-        _customer.QuestCompleted += MoveOut;
+        _customer.OnQuestCompleted += MoveOut;
 
         _mover.MoveRoutine(EnterRoutine());
     }
@@ -81,7 +81,7 @@ public class CustomerRouteMover : MonoBehaviour
         yield return _mover.FaceTo(_customer.transform, _exit.position);
         yield return _mover.MoveTo(_customer.transform, _exit.position);
 
-        _customer.QuestCompleted -= MoveOut;
+        _customer.OnQuestCompleted -= MoveOut;
 
         _mover.StopAll();
         LeftCafe?.Invoke();

@@ -26,13 +26,13 @@ public class CustomerInteraction
         Debug.Log($"[CustomerInteraction] SetNextInteraction set. Current dialogue: {_dialogueKey}, Next dialogue: {(nextInteraction != null ? nextInteraction.DialogueKey : "null")}");
         _nextInteraction = nextInteraction;
     }
-    public void PlayOut(Customer target)
+    public virtual void PlayOut(Customer target)
     {
         Debug.Log($"[CustomerInteraction] PlayOut (single) called. DialogueKey: {_dialogueKey}, Target: {(target != null ? target.name : "null")}");
         PlayOut(target, _nextInteraction);
     }
     
-    public void PlayOut(Customer target, CustomerInteraction nextInteraction)
+    public virtual void PlayOut(Customer target, CustomerInteraction nextInteraction)
     {
         Debug.Log($"[CustomerInteraction] PlayOut (with next) called. DialogueKey: {_dialogueKey}, Has nextInteraction: {nextInteraction != null}, Target: {(target != null ? target.name : "null")}");
         
@@ -103,26 +103,61 @@ public class CustomerInteraction
 }
 
 [Serializable]
+public class AnimatedCustomerInteraction : CustomerInteraction
+{
+    [SerializeField] private string _animationTrigger;
+    public AnimatedCustomerInteraction(string dialogueKey = "", string animationTrigger = "") : base(dialogueKey)
+    {
+        _animationTrigger = animationTrigger;
+        Debug.Log($"[AnimatedCustomerInteraction] Created with dialogueKey: {dialogueKey} and animationTrigger: {_animationTrigger}");
+    }
+
+    public override void PlayOut(Customer target)
+    {
+        if(_animationTrigger != "")
+            target.AnimatorController.SetCustomTrigger(_animationTrigger);
+
+        base.PlayOut(target);
+    }
+    public override void PlayOut(Customer target, CustomerInteraction nextInteraction)
+    {
+        if (_animationTrigger != "")
+            target.AnimatorController.SetCustomTrigger(_animationTrigger);
+        base.PlayOut(target, nextInteraction);
+    }
+}
+
+[Serializable]
 public class CustomerInteractionSequence
 {
     [SerializeField] private List<String> _interactionTexts;
-    private List<CustomerInteraction> _interactions;
+    [SerializeField] private List<String> _animationTriggers;
+    private List<AnimatedCustomerInteraction> _interactions;
     private bool _wasInitialized = false;
 
     private void Initialize(Action callback)
     {
         Debug.Log("Initializing interaction Sequence");
+        _interactions = new List<AnimatedCustomerInteraction>();
+
+        while(_animationTriggers.Count < _interactionTexts.Count)
+        {
+            _animationTriggers.Add("");
+        }
+
         if (_interactionTexts.Count != 0)
         {
-            for (int i = 0; i < _interactions.Count; i++)
+            for (int i = 0; i < _interactionTexts.Count; i++)
+                _interactions.Add(new AnimatedCustomerInteraction(_interactionTexts[i], _animationTriggers[i]));
+
+            for (int i = 0; i < _interactionTexts.Count; i++)
             {
-                _interactions.Add(new CustomerInteraction(_interactionTexts[i]));
                 if (i < _interactionTexts.Count - 1)
                 {
                     _interactions[i].SetNextInteraction(_interactions[i + 1]);
                     Debug.Log("InteractionSequence set next interaction for element number " + i);
                 }
-                else 
+                else
                 {
                     _interactions[i].SetCallback(callback);
                     Debug.Log("InteractionSequence set callback for element number " + (_interactions.Count - 1));
@@ -131,7 +166,7 @@ public class CustomerInteractionSequence
         }
         else
         {
-            _interactions.Add(new CustomerInteraction());
+            _interactions.Add(new AnimatedCustomerInteraction());
             Debug.Log("Empty interaction sequence detected. Adding element");
         }
     }
@@ -140,7 +175,6 @@ public class CustomerInteractionSequence
         Debug.Log("Sequece playOut called. checking for initialization");
         Initialize(callback);
 
-        
         _interactions[0].PlayOut(target);
     }
 }
