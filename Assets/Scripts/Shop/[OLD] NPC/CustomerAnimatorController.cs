@@ -30,7 +30,10 @@ public class CustomerAnimatorController : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
     }
-
+    public virtual void SetCustomTrigger(string triggerName)
+    {
+        _animator.SetTrigger(triggerName);
+    }
     public virtual void StartWalking()
     {
         _animator.SetBool(IsWalking, true);

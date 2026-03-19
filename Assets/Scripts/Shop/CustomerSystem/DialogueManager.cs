@@ -105,6 +105,9 @@ public class DialogueManager : MonoBehaviour
 
             var clickCallback = _onTextClicked;
             bool wasFinal = _isFinalQuestText;
+            Debug.Log("[DialogueManager] Case 2: Text is fully visible - executing callback");
+            Debug.Log($"[DialogueManager] Current callback: {(_onCompleteCurrentText != null ? _onCompleteCurrentText.Method.Name : "null")}");
+            _isTextFullyVisible = false;
 
             IsTextFullyVisible = false;
             _onTypingCompleted = null;
@@ -115,6 +118,11 @@ public class DialogueManager : MonoBehaviour
             {
                 Debug.Log("[DialogueManager] Invoking click callback");
                 clickCallback.Invoke();
+                Debug.Log("[DialogueManager] Callback exists - invoking");
+                Action MayLordHaveMercyOnMyWretchedSoul = _onCompleteCurrentText;
+                _onCompleteCurrentText = null;
+                MayLordHaveMercyOnMyWretchedSoul.Invoke();
+                
             }
             else
             {
@@ -245,11 +253,36 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = onTextClicked;
         _isFinalQuestText = true;
 
+        {
+            Debug.Log("[DialogueManager] Activating speech bubble");
+            EnableBubble();
+        }
+        
+        _isTextFullyVisible = false;
+        //_onCompleteCurrentText = null;
+        
+        _typewriter.TypingCompleted += OnTypingCompleted;
+        
         _typewriter.StartTyping(text);
+    }
+
+    public void DisplayTextWithCallback(string text, Action onComplete)
+    {
+        Debug.Log($"[DialogueManager] DisplayTextWithCallback called with text: {text}. Callback exists: {onComplete != null}");
+        DisplayText(text);
+        _onCompleteCurrentText = onComplete;
+        Debug.Log($"[DialogueManager] Callback assigned. Current callback: {(_onCompleteCurrentText != null ? _onCompleteCurrentText.Method.Name : "null")}");
     }
 
     public void SetDialogueOptions(List<DialogueOption> options)
     {
+        if (options == null) {
+            Debug.Log($"[DialogueManager] Setting dialogue options to null.");
+            _dialogueOptions = new List<DialogueOption>();
+            RefreshDialogueHandles();
+            return;
+        }
+        Debug.Log($"[DialogueManager] Setting dialogue options. Count: {options.Count}");
         Debug.Log($"[DialogueManager] SetDialogueOptions. Count: {options.Count}");
         _dialogueOptions = options;
 
@@ -273,6 +306,20 @@ public class DialogueManager : MonoBehaviour
         }
 
         RefreshDialogueHandles();
+    }
+
+    public void DisableBubble()
+    {
+        Debug.Log("[DialogueManager] Disabling bubble");
+        
+        if (_typewriter != null)
+            _typewriter.TypingCompleted -= OnTypingCompleted;
+        
+        ClearDialogueHandles();
+        _speechBubble.gameObject.SetActive(false);
+        _typewriter.Clear();
+        _isTextFullyVisible = false;
+        //_onCompleteCurrentText = null;
     }
 
     private void ClearDialogueHandles()
