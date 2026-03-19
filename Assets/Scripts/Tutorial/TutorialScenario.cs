@@ -16,9 +16,17 @@ public class TutorialScenario : MonoBehaviour
     [SerializeField] private GameObject _nextDialogueIcon;
     [SerializeField] private GameObject _leftRightIcons;
     [SerializeField] private GameObject _rollingPinGuide;
+    [SerializeField] private GameObject _bookGuide;
 
     private Customer _customer;
-    
+
+    private void Start()
+    {
+        _dough.CurrentDough.GetComponent<DoughDrag>().Block();
+        _camera.BlockControl();
+         _book.Block();
+    }
+
     private void OnEnable()
     {
         if (_customerManager != null)
@@ -43,10 +51,6 @@ public class TutorialScenario : MonoBehaviour
         
         _runner.StartTutorial(new List<ITutorialGate>
         {
-            new ActionGate(_dough.CurrentDough.GetComponent<DoughDrag>().Block),
-            new ActionGate(() => _camera.BlockControl()),
-            new ActionGate(() => _book.Block()),
-            
             new ActionGate(() => _thoughts.Think("tutorial.think.start", true)),
             
             new DialogueGate(_dialogueManager, true, _nextDialogueIcon),
@@ -56,10 +60,10 @@ public class TutorialScenario : MonoBehaviour
             new ActionGate(() => _camera.UnblockControl()),
             new CameraViewGate(_camera, CameraController.CameraViewType.Craft, _leftRightIcons),
             
-            new ActionGate(() => _thoughts.Think("tutorial.think.remember")),
-            new RecipeGate(_book, ProductType.SimplePie),
+            new ActionGate(() => _book.Unblock()),
+            new RecipeGate(_book, ProductType.SimplePie, _bookGuide),
             new ActionGate(() => _book.Block()),
-            new ActionGate(() => _book.gameObject.SetActive(false)),
+            new ActionGate(() => _book.Disable()),
             
             new ActionGate(() => _thoughts.Think("tutorial.think.rolling")),
             new DoughStateGate(_dough, DoughState.Flat, _rollingPinGuide),

@@ -32,7 +32,7 @@ public class Book : MonoBehaviour
         CurrentSelectedProduct = ProductType.None;
         SetSpritesAndText();
         UpdateNavigationButtons();
-        _book.SetActive(false);
+        Disable();
     }
     
     public void NextPage()
@@ -66,6 +66,11 @@ public class Book : MonoBehaviour
     public void Unblock()
     {
         _canOpen = true;
+    }
+
+    public void Disable()
+    {
+        _book.gameObject.SetActive(false);
     }
     
     private void OnBook()
