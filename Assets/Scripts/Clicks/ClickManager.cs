@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class ClickManager : MonoBehaviour
@@ -104,6 +105,8 @@ public class ClickManager : MonoBehaviour
     private void OnClickPerformed(InputAction.CallbackContext ctx)
     {
         if (_useLushClicks == false || _cam == null)
+            return;
+        if (EventSystem.current.IsPointerOverGameObject())
             return;
 
         Ray ray = _cam.ScreenPointToRay(Mouse.current.position.ReadValue());
