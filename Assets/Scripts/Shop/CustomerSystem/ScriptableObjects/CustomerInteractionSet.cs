@@ -1,7 +1,5 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 
 [Serializable]
@@ -14,28 +12,37 @@ public class CustomerInteraction
     private Action _callback;
 
     public string DialogueKey => _dialogueKey;
-    public CustomerInteraction(String dialogueKey = "") { 
+
+    public CustomerInteraction(String dialogueKey = "")
+    {
         _dialogueKey = dialogueKey;
     }
-    public void SetCallback(Action callback) {
+
+    public void SetCallback(Action callback)
+    {
         _callback = callback;
         Debug.Log($"[CustomerInteraction] Set a new callback for interaction with text {_dialogueKey}");
     }
+
     public void SetNextInteraction(CustomerInteraction nextInteraction)
     {
-        Debug.Log($"[CustomerInteraction] SetNextInteraction set. Current dialogue: {_dialogueKey}, Next dialogue: {(nextInteraction != null ? nextInteraction.DialogueKey : "null")}");
+        Debug.Log(
+            $"[CustomerInteraction] SetNextInteraction set. Current dialogue: {_dialogueKey}, Next dialogue: {(nextInteraction != null ? nextInteraction.DialogueKey : "null")}");
         _nextInteraction = nextInteraction;
     }
+
     public virtual void PlayOut(Customer target)
     {
-        Debug.Log($"[CustomerInteraction] PlayOut (single) called. DialogueKey: {_dialogueKey}, Target: {(target != null ? target.name : "null")}");
+        Debug.Log(
+            $"[CustomerInteraction] PlayOut (single) called. DialogueKey: {_dialogueKey}, Target: {(target != null ? target.name : "null")}");
         PlayOut(target, _nextInteraction);
     }
-    
+
     public virtual void PlayOut(Customer target, CustomerInteraction nextInteraction)
     {
-        Debug.Log($"[CustomerInteraction] PlayOut (with next) called. DialogueKey: {_dialogueKey}, Has nextInteraction: {nextInteraction != null}, Target: {(target != null ? target.name : "null")}");
-        
+        Debug.Log(
+            $"[CustomerInteraction] PlayOut (with next) called. DialogueKey: {_dialogueKey}, Has nextInteraction: {nextInteraction != null}, Target: {(target != null ? target.name : "null")}");
+
         if (!target)
         {
             Debug.LogError("[CustomerInteraction] Target customer is null");
@@ -43,7 +50,7 @@ public class CustomerInteraction
         }
 
         DialogueManager dialogueManager = target.DialogueManager;
-        
+
         if (!dialogueManager)
         {
             Debug.LogError("[CustomerInteraction] DialogueManager is null on target customer");
@@ -55,7 +62,8 @@ public class CustomerInteraction
 
         if (nextInteraction != null)
         {
-            Debug.Log($"[CustomerInteraction] Next interaction exists. Creating callback to play next interaction: {nextInteraction.DialogueKey}");
+            Debug.Log(
+                $"[CustomerInteraction] Next interaction exists. Creating callback to play next interaction: {nextInteraction.DialogueKey}");
             dialogueManager.DisplayTextWithClickCallback(_dialogueKey, OnTextClicked);
         }
         else if (_callback != null)
@@ -72,8 +80,9 @@ public class CustomerInteraction
 
     private void OnTextClicked()
     {
-        Debug.Log($"[CustomerInteraction] OnTextClicked called. Current dialogue: {_dialogueKey}, Has nextInteraction: {_nextInteraction != null}");
-        
+        Debug.Log(
+            $"[CustomerInteraction] OnTextClicked called. Current dialogue: {_dialogueKey}, Has nextInteraction: {_nextInteraction != null}");
+
         if (!_targetCustomer || !_targetCustomer.DialogueManager)
         {
             Debug.LogError("[CustomerInteraction] Target customer or DialogueManager is null in OnTextClicked");
@@ -106,19 +115,22 @@ public class CustomerInteraction
 public class AnimatedCustomerInteraction : CustomerInteraction
 {
     [SerializeField] private string _animationTrigger;
+
     public AnimatedCustomerInteraction(string dialogueKey = "", string animationTrigger = "") : base(dialogueKey)
     {
         _animationTrigger = animationTrigger;
-        Debug.Log($"[AnimatedCustomerInteraction] Created with dialogueKey: {dialogueKey} and animationTrigger: {_animationTrigger}");
+        Debug.Log(
+            $"[AnimatedCustomerInteraction] Created with dialogueKey: {dialogueKey} and animationTrigger: {_animationTrigger}");
     }
 
     public override void PlayOut(Customer target)
     {
-        if(_animationTrigger != "")
+        if (_animationTrigger != "")
             target.AnimatorController.SetCustomTrigger(_animationTrigger);
 
         base.PlayOut(target);
     }
+
     public override void PlayOut(Customer target, CustomerInteraction nextInteraction)
     {
         if (_animationTrigger != "")
@@ -132,15 +144,15 @@ public class CustomerInteractionSequence
 {
     [SerializeField] private List<String> _interactionTexts;
     [SerializeField] private List<String> _animationTriggers;
+    
     private List<AnimatedCustomerInteraction> _interactions;
-    private bool _wasInitialized = false;
 
     private void Initialize(Action callback)
     {
         Debug.Log("Initializing interaction Sequence");
         _interactions = new List<AnimatedCustomerInteraction>();
 
-        while(_animationTriggers.Count < _interactionTexts.Count)
+        while (_animationTriggers.Count < _interactionTexts.Count)
         {
             _animationTriggers.Add("");
         }
@@ -171,7 +183,8 @@ public class CustomerInteractionSequence
         }
     }
 
-    public void PlayOut(Customer target, Action callback = null) {
+    public void PlayOut(Customer target, Action callback = null)
+    {
         Debug.Log("Sequece playOut called. checking for initialization");
         Initialize(callback);
 
@@ -184,10 +197,10 @@ public struct DialogueOption : IEquatable<DialogueOption>
 {
     [SerializeField] private string _textKey;
     [SerializeField] private CustomerInteractionSequence _interaction;
-    
+
     public string TextKey => _textKey;
     public CustomerInteractionSequence Interaction => _interaction;
-    
+
     public DialogueOption(string textKey, CustomerInteractionSequence interaction)
     {
         _textKey = textKey;
@@ -219,23 +232,23 @@ public class CustomerInteractionSet : ScriptableObject
     [SerializeField] private CustomerInteractionSequence _onItemRejected;
     [SerializeField] private CustomerInteractionSequence _onQuestCompleted;
     [SerializeField] private List<DialogueOption> _dialogueOptions = new();
-    
+
     public CustomerInteractionSequence OnGreeting => _onGreeting;
     public CustomerInteractionSequence OnItemAccepted => _onItemAccepted;
     public CustomerInteractionSequence OnItemRejected => _onItemRejected;
     public CustomerInteractionSequence OnQuestCompleted => _onQuestCompleted;
     public List<DialogueOption> DialogueOptions => _dialogueOptions;
-    
+
     public void AddDialogueOption(DialogueOption option)
     {
         _dialogueOptions.Add(option);
     }
-    
+
     public void RemoveDialogueOption(DialogueOption option)
     {
         _dialogueOptions.Remove(option);
     }
-    
+
     public void ClearDialogueOptions()
     {
         _dialogueOptions.Clear();

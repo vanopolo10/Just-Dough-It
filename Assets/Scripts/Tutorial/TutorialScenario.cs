@@ -19,12 +19,13 @@ public class TutorialScenario : MonoBehaviour
     [SerializeField] private GameObject _bookGuide;
 
     private Customer _customer;
+    private bool _tutorialStarted = false;
 
     private void Start()
     {
         _dough.CurrentDough.GetComponent<DoughDrag>().Block();
         _camera.BlockControl();
-         _book.Block();
+        _book.Block();
     }
 
     private void OnEnable()
@@ -37,17 +38,26 @@ public class TutorialScenario : MonoBehaviour
     {
         if (_customerManager != null)
             _customerManager.CustomerSpawned -= OnCustomerSpawned;
+            
+        if (_customer != null && _customer.Quest != null)
+            _customer.Quest.GreetingTypingCompleted -= StartTutorialScenario;
     }
 
     private void OnCustomerSpawned(Customer customer)
     {
         _customer = customer;
-        _customer.CustomerQuest.GreetingTypingCompleted += StartTutorialScenario;
+
+        if (_customer != null && _customer.Quest != null)
+            _customer.Quest.GreetingTypingCompleted += StartTutorialScenario;
     }
 
     private void StartTutorialScenario()
     {
-        _customer.CustomerQuest.GreetingTypingCompleted -= StartTutorialScenario;
+        if (_tutorialStarted) return;
+        _tutorialStarted = true;
+        
+        if (_customer != null && _customer.Quest != null)
+            _customer.Quest.GreetingTypingCompleted -= StartTutorialScenario;
         
         _runner.StartTutorial(new List<ITutorialGate>
         {
