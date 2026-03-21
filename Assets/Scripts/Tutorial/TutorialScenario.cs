@@ -25,6 +25,7 @@ public class TutorialScenario : MonoBehaviour
     {
         _dough.CurrentDough.GetComponent<DoughDrag>().Block();
         _camera.BlockControl();
+        //_camera.BlockRollingPin();
         _book.Block();
     }
 
@@ -71,13 +72,17 @@ public class TutorialScenario : MonoBehaviour
             new CameraViewGate(_camera, CameraController.CameraViewType.Craft, _leftRightIcons),
             
             new ActionGate(() => _book.Unblock()),
+            new ActionGate(() => _camera.BlockControl()),
+            //new ActionGate(() => _camera.BlockRollingPin()),
             new RecipeGate(_book, ProductType.SimplePie, _bookGuide),
             new ActionGate(() => _book.Block()),
             new ActionGate(() => _book.Disable()),
             
+            //new ActionGate(() => _camera.UnblockRollingPin()),
             new ActionGate(() => _thoughts.Think("tutorial.think.rolling")),
             new DoughStateGate(_dough, DoughState.Flat, _rollingPinGuide),
             
+            //new ActionGate(() => _camera.BlockRollingPin()),
             new ActionGate(() => _thoughts.Think("tutorial.think.folding")),
             new DoughStateGate(_dough, DoughState.FlatFolded),
 
