@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class WindowPainter : MonoBehaviour
 {
@@ -63,7 +62,7 @@ public class WindowPainter : MonoBehaviour
             _lastPaintUv = null;
         }
 
-        if (Input.GetMouseButton(0) && _isPainting)
+        if (Input.GetMouseButton(0) && _isPainting && _input != null)
         {
             if(_input.TryGetUv(out Vector2 uv))
             {
@@ -147,9 +146,15 @@ public class WindowPainter : MonoBehaviour
 
     private void DrawLine(Vector2 from, Vector2 to)
     {
+        float stepSize = _brushHeight * 0.1f;
+        if (stepSize <= 0)
+        {
+            DrawOnFrost(to);
+            return;
+        }
         float distance = Vector2.Distance(from, to);
         int steps = Mathf.CeilToInt(distance / (_brushSize * 0.1f));
-        steps = Mathf.Max(steps, 1);
+        steps = Mathf.Max(steps, 1, 500);
 
         for (int i = 0; i <= steps; i++)
         {
