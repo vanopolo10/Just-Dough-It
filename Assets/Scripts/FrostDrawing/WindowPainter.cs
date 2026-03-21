@@ -23,6 +23,7 @@ public class WindowPainter : MonoBehaviour
     private bool _isPainting = false;
     private Vector2? _lastPaintUv = null;
     [SerializeField] private RenderTexture _maskTexture;
+    private bool _enabled = true;
 
     private void OnEnable()
     {
@@ -54,9 +55,13 @@ public class WindowPainter : MonoBehaviour
             Debug.LogError($"WindowPainter requires a MonoBehaviour that implements IFrostInput in {gameObject.name}");
     }
 
+    private void OnMouseEnter() => _enabled = true;
+    private void OnMouseExit() => _enabled = false;
+
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if (!_enabled) return;
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             _isPainting = true;
             _lastPaintUv = null;
