@@ -200,6 +200,7 @@ public class CameraController : MonoBehaviour
         _isTransitioning = false;
         
         DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Craft);
+        print(_views[ViewID].Type);
     }
     
     private Quaternion GetAdjustedRotation(Quaternion from, Quaternion to, TurnDirection turn)

@@ -115,7 +115,7 @@ public class CustomerQuest : ScriptableObject
     public void StartQuest()
     {
         Debug.Log($"[CustomerQuest] StartQuest called");
-        
+    
         if (!_isInitialized || _customer == null)
         {
             Debug.LogWarning($"CustomerQuest {name}: Cannot start quest - not properly initialized");
@@ -128,13 +128,28 @@ public class CustomerQuest : ScriptableObject
         if (_questInteraction != null)
         {
             Debug.Log("[CustomerQuest] Showing quest text");
+            _customer.DialogueManager.TypingCompleted += OnQuestTextTypingCompleted;
             _customer.DialogueManager.DisplayText(_questInteraction.DialogueKey);
         }
         else
         {
             Debug.LogWarning($"CustomerQuest {name}: QuestInteraction is missing");
+            ShowDialogueOptions();
         }
+    }
 
+    private void OnQuestTextTypingCompleted()
+    {
+        Debug.Log("[CustomerQuest] Quest text typing completed");
+
+        if (_customer != null && _customer.DialogueManager != null)
+            _customer.DialogueManager.TypingCompleted -= OnQuestTextTypingCompleted;
+
+        ShowDialogueOptions();
+    }
+
+    private void ShowDialogueOptions()
+    {
         if (_interactions != null && _customer.DialogueManager != null)
         {
             Debug.Log($"[CustomerQuest] Setting dialogue options. Count: {_interactions.DialogueOptions.Count}");
@@ -158,6 +173,9 @@ public class CustomerQuest : ScriptableObject
 
     private void FinishQuest()
     {
+        if (_customer != null && _customer.DialogueManager != null)
+            _customer.DialogueManager.TypingCompleted -= OnQuestTextTypingCompleted;
+    
         _customer.DisableReception();
         _customer.DialogueManager.SetDialogueOptions(null);
 
@@ -166,21 +184,17 @@ public class CustomerQuest : ScriptableObject
             Debug.LogWarning($"CustomerQuest {name}: Cannot finish quest - not properly initialized");
             return;
         }
-        
+    
         if (_customer.AnimatorController != null)
             _customer.AnimatorController.OnQuestFinished();
 
         if (_interactions != null && _interactions.OnQuestCompleted != null)
-        {
             _interactions.OnQuestCompleted.PlayOut(_customer, FinalizeQuest);
-        }
         else
-        {
             FinalizeQuest();
-        }
     }
 
-    public void FinalizeQuest()
+    private void FinalizeQuest()
     {
         if (_customer != null)
         {

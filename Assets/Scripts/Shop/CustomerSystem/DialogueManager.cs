@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
@@ -26,6 +27,7 @@ public class DialogueManager : MonoBehaviour
     public event Action SkipClicked;
     public event Action ConfirmClicked;
     public event Action TypingCompleted;
+    public event Action<DialogueOption> DialogueOptionPlayed;
 
     public bool IsTextFullyVisible { get; private set; }
     
@@ -77,7 +79,6 @@ public class DialogueManager : MonoBehaviour
     {
         if (_typewriter != null)
         {
-            Debug.Log("[DialogueManager] Subscribing to Typewriter events");
             _typewriter.TypingCompleted += OnTypingCompleted;
         }
     }
@@ -86,24 +87,17 @@ public class DialogueManager : MonoBehaviour
     {
         if (_typewriter != null)
         {
-            Debug.Log("[DialogueManager] Unsubscribing from Typewriter events");
             _typewriter.TypingCompleted -= OnTypingCompleted;
         }
     }
 
     private void HandleClick()
     {
-        Debug.Log($"[DialogueManager] HandleClick. IsTyping: {(_typewriter != null ? _typewriter.IsTyping.ToString() : "null")}, IsTextFullyVisible: {IsTextFullyVisible}");
-        
         if (_typewriter == null)
-        {
-            Debug.LogError("[DialogueManager] Typewriter is null!");
             return;
-        }
         
         if (_typewriter.IsTyping)
         {
-            Debug.Log("[DialogueManager] Skipping typing...");
             _typewriter.CompleteTypingInstantly();
             SkipClicked?.Invoke();
             return;
@@ -111,8 +105,6 @@ public class DialogueManager : MonoBehaviour
 
         if (IsTextFullyVisible)
         {
-            Debug.Log($"[DialogueManager] Text is fully visible, invoking click callback. Has click callback: {(_onTextClicked != null)}");
-            
             ConfirmClicked?.Invoke();
 
             var clickCallback = _onTextClicked;
@@ -124,30 +116,15 @@ public class DialogueManager : MonoBehaviour
             _isFinalQuestText = false;
 
             if (clickCallback != null)
-            {
-                Debug.Log("[DialogueManager] Invoking click callback");
                 clickCallback.Invoke();
-            }
-            else
-            {
-                Debug.Log("[DialogueManager] No click callback registered");
-            }
 
             if (wasFinal)
-            {
-                Debug.Log("[DialogueManager] Was final quest text, clearing options");
                 SetDialogueOptions(new List<DialogueOption>());
-            }
-        }
-        else
-        {
-            Debug.Log("[DialogueManager] Text is not fully visible yet, ignoring click");
         }
     }
 
     private void OnTypingCompleted()
     {
-        Debug.Log($"[DialogueManager] OnTypingCompleted received! Has typing callback: {(_onTypingCompleted != null)}");
         IsTextFullyVisible = true;
         
         _onTypingCompleted?.Invoke();
@@ -162,8 +139,6 @@ public class DialogueManager : MonoBehaviour
 
     public void DisableBubble()
     {
-        Debug.Log("[DialogueManager] DisableBubble");
-
         IsTextFullyVisible = false;
         _onTypingCompleted = null;
         _onTextClicked = null;
@@ -181,8 +156,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     public void DisplayText(string text)
-    {
-        Debug.Log($"[DialogueManager] DisplayText: {text}");
+    { 
         EnableBubble();
 
         IsTextFullyVisible = false;
@@ -190,12 +164,11 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = null;
         _isFinalQuestText = false;
 
-        _typewriter.StartTyping(text);
+        _ = _typewriter.StartTyping(text);
     }
 
     public void DisplayTextWithTypingCallback(string text, Action onTypingCompleted)
     {
-        Debug.Log($"[DialogueManager] DisplayTextWithTypingCallback: {text}");
         EnableBubble();
 
         IsTextFullyVisible = false;
@@ -203,12 +176,11 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = null;
         _isFinalQuestText = false;
 
-        _typewriter.StartTyping(text);
+        _ = _typewriter.StartTyping(text);
     }
 
     public void DisplayTextWithClickCallback(string text, Action onTextClicked)
     {
-        Debug.Log($"[DialogueManager] DisplayTextWithClickCallback: {text}");
         EnableBubble();
 
         IsTextFullyVisible = false;
@@ -216,12 +188,11 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = onTextClicked;
         _isFinalQuestText = false;
 
-        _typewriter.StartTyping(text);
+        _ = _typewriter.StartTyping(text);
     }
 
     public void DisplayTextWithCallbacks(string text, Action onTypingCompleted, Action onTextClicked)
     {
-        Debug.Log($"[DialogueManager] DisplayTextWithCallbacks: {text}");
         EnableBubble();
 
         IsTextFullyVisible = false;
@@ -229,12 +200,11 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = onTextClicked;
         _isFinalQuestText = false;
 
-        _typewriter.StartTyping(text);
+        _ = _typewriter.StartTyping(text);
     }
 
     public void DisplayFinalQuestText(string text, Action onTextClicked)
     {
-        Debug.Log($"[DialogueManager] DisplayFinalQuestText: {text}");
         EnableBubble();
 
         IsTextFullyVisible = false;
@@ -242,48 +212,39 @@ public class DialogueManager : MonoBehaviour
         _onTextClicked = onTextClicked;
         _isFinalQuestText = true;
 
-        _typewriter.StartTyping(text);
+        _ = _typewriter.StartTyping(text);
     }
 
     public void DisplayTextWithCallback(string text, Action onComplete)
     {
-        Debug.Log($"[DialogueManager] DisplayTextWithCallback called with text: {text}");   
         DisplayTextWithClickCallback(text, onComplete);
     }
 
     public void SetDialogueOptions(List<DialogueOption> options)
     {
-        Debug.Log($"[DialogueManager] Setting dialogue options. Count: {(options != null ? options.Count : 0)}");
-        
         _dialogueOptions.Clear();
         
         if (options != null)
-        {
             foreach (var option in options)
-            {
-                _dialogueOptions.Add(new DialogueOptionData(option, true));
-            }
-        }
+                _dialogueOptions.Add(new DialogueOptionData(option));
         
         RefreshDialogueHandles();
     }
 
     public void DeactivateDialogueOption(DialogueOption option)
     {
-        Debug.Log($"[DialogueManager] Deactivating dialogue option: {option.TextKey}");
-        
         var optionData = _dialogueOptions.FirstOrDefault(od => od.Option.Equals(option));
         if (optionData != null)
         {
             optionData.IsActive = false;
             RefreshDialogueHandles();
         }
+        
+        DialogueOptionPlayed?.Invoke(option);
     }
     
     public void ActivateDialogueOption(DialogueOption option)
     {
-        Debug.Log($"[DialogueManager] Activating dialogue option: {option.TextKey}");
-        
         var optionData = _dialogueOptions.FirstOrDefault(od => od.Option.Equals(option));
         if (optionData != null)
         {

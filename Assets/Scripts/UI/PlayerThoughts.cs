@@ -40,6 +40,15 @@ public class PlayerThoughts : MonoBehaviour
         if (doShowIcon)
             _icon.gameObject.SetActive(true);
     }
+    
+    public void Close()
+    {
+        _dialogueBubble.gameObject.SetActive(false);
+        _waitingForClose = false;
+
+        _icon.gameObject.SetActive(false);
+        ThoughtCompleted?.Invoke();
+    }
 
     private void OnTypingCompleted()
     {
@@ -55,12 +64,6 @@ public class PlayerThoughts : MonoBehaviour
         }
 
         if (_waitingForClose)
-        {
-            _dialogueBubble.gameObject.SetActive(false);
-            _waitingForClose = false;
-
-            _icon.gameObject.SetActive(false);
-            ThoughtCompleted?.Invoke();
-        }
+            Close();
     }
 }

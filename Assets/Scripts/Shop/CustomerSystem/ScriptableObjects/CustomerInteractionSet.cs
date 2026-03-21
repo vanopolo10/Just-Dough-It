@@ -26,15 +26,13 @@ public class CustomerInteraction
 
     public void SetNextInteraction(CustomerInteraction nextInteraction)
     {
-        Debug.Log(
-            $"[CustomerInteraction] SetNextInteraction set. Current dialogue: {_dialogueKey}, Next dialogue: {(nextInteraction != null ? nextInteraction.DialogueKey : "null")}");
+        Debug.Log($"[CustomerInteraction] SetNextInteraction set. Current dialogue: {_dialogueKey}, Next dialogue: {(nextInteraction != null ? nextInteraction.DialogueKey : "null")}");
         _nextInteraction = nextInteraction;
     }
 
     public virtual void PlayOut(Customer target)
     {
-        Debug.Log(
-            $"[CustomerInteraction] PlayOut (single) called. DialogueKey: {_dialogueKey}, Target: {(target != null ? target.name : "null")}");
+        Debug.Log($"[CustomerInteraction] PlayOut (single) called. DialogueKey: {_dialogueKey}, Target: {(target != null ? target.name : "null")}");
         PlayOut(target, _nextInteraction);
     }
 
@@ -142,8 +140,8 @@ public class AnimatedCustomerInteraction : CustomerInteraction
 [Serializable]
 public class CustomerInteractionSequence
 {
-    [SerializeField] private List<String> _interactionTexts;
-    [SerializeField] private List<String> _animationTriggers;
+    [SerializeField] private List<string> _interactionTexts;
+    [SerializeField] private List<string> _animationTriggers;
     
     private List<AnimatedCustomerInteraction> _interactions;
 
@@ -185,7 +183,7 @@ public class CustomerInteractionSequence
 
     public void PlayOut(Customer target, Action callback = null)
     {
-        Debug.Log("Sequece playOut called. checking for initialization");
+        Debug.Log("Sequence playOut called. checking for initialization");
         Initialize(callback);
 
         _interactions[0].PlayOut(target);

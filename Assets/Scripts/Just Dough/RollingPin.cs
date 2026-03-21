@@ -20,6 +20,7 @@ public class RollingPin : MonoBehaviour
     private float _baseY;
     private float _desiredY;
 
+    private bool _dragAllowedCamera = true;
     private bool _dragAllowed = true;
     private bool _isDragging;
 
@@ -62,7 +63,7 @@ public class RollingPin : MonoBehaviour
 
     private void OnDragAllowedChanged(bool allowed)
     {
-        _dragAllowed = allowed;
+        _dragAllowedCamera = allowed;
         
         if (!allowed)
             CancelDrag();
@@ -70,7 +71,7 @@ public class RollingPin : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!_dragAllowed) return;
+        if (!_dragAllowedCamera) return;
 
         _zCord = _cam.WorldToScreenPoint(transform.position).z;
         _isDragging = true;
@@ -85,7 +86,7 @@ public class RollingPin : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        if (!_dragAllowed || !_isDragging)
+        if (!_dragAllowed || !_dragAllowedCamera || !_isDragging)
             return;
 
         Ray ray = _cam.ScreenPointToRay(Input.mousePosition);
@@ -116,6 +117,16 @@ public class RollingPin : MonoBehaviour
             StopRolling();
     }
 
+    public void Block()
+    {
+        _dragAllowed = false;
+    }
+    
+    public void Unblock()
+    {
+        _dragAllowed = true;
+    }
+    
     private void UpdateRotation(Vector3 move)
     {
         Vector3 dir = new(move.x, 0f, move.z);

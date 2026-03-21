@@ -995,13 +995,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WindowPainter
   _frostInput: {fileID: 92127779}
   _baseWindowMaterial: {fileID: 2100000, guid: 8097f0aead8094b4585b6a8a6c1aa02d, type: 2}
-  _resetMaterial: {fileID: 0}
+  _resetMaterial: {fileID: 2100000, guid: c028700a2e35331419e92b922605c740, type: 2}
   _frostTexture: {fileID: 2800000, guid: edee6681a07993c49a8fd50d3d999231, type: 3}
   _brushTexture: {fileID: 2800000, guid: c557d4d0abdb510498a6f0ad72fba111, type: 3}
-  _pixelBrushSize: 50
+  _pixelBrushSize: 3
   _brushSize: 0.05
-  _baseOpacity: 0
-  _frostColor: {r: 0, g: 0, b: 0, a: 0}
+  _baseOpacity: 0.3
+  _frostColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 0}
   _resetDuration: 1
   _maskTexture: {fileID: 0}
 --- !u!114 &92127779
@@ -1513,6 +1513,7 @@ RectTransform:
   m_Children:
   - {fileID: 1901029663}
   - {fileID: 544945695}
+  - {fileID: 1677974988}
   m_Father: {fileID: 1896390616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6420,13 +6421,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WindowPainter
   _frostInput: {fileID: 922430155}
   _baseWindowMaterial: {fileID: 2100000, guid: 8097f0aead8094b4585b6a8a6c1aa02d, type: 2}
-  _resetMaterial: {fileID: 0}
+  _resetMaterial: {fileID: 2100000, guid: c028700a2e35331419e92b922605c740, type: 2}
   _frostTexture: {fileID: 2800000, guid: edee6681a07993c49a8fd50d3d999231, type: 3}
   _brushTexture: {fileID: 2800000, guid: c557d4d0abdb510498a6f0ad72fba111, type: 3}
-  _pixelBrushSize: 50
+  _pixelBrushSize: 3
   _brushSize: 0.05
-  _baseOpacity: 0
-  _frostColor: {r: 0, g: 0, b: 0, a: 0}
+  _baseOpacity: 0.3
+  _frostColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 0}
   _resetDuration: 1
   _maskTexture: {fileID: 0}
 --- !u!114 &922430155
@@ -8133,13 +8134,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WindowPainter
   _frostInput: {fileID: 1040977892}
   _baseWindowMaterial: {fileID: 2100000, guid: 8097f0aead8094b4585b6a8a6c1aa02d, type: 2}
-  _resetMaterial: {fileID: 0}
+  _resetMaterial: {fileID: 2100000, guid: c028700a2e35331419e92b922605c740, type: 2}
   _frostTexture: {fileID: 2800000, guid: edee6681a07993c49a8fd50d3d999231, type: 3}
   _brushTexture: {fileID: 2800000, guid: c557d4d0abdb510498a6f0ad72fba111, type: 3}
-  _pixelBrushSize: 50
+  _pixelBrushSize: 3
   _brushSize: 0.05
-  _baseOpacity: 0
-  _frostColor: {r: 0, g: 0, b: 0, a: 0}
+  _baseOpacity: 0.3
+  _frostColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 0}
   _resetDuration: 1
   _maskTexture: {fileID: 0}
 --- !u!114 &1040977892
@@ -11616,13 +11617,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WindowPainter
   _frostInput: {fileID: 1501447321}
   _baseWindowMaterial: {fileID: 2100000, guid: 8097f0aead8094b4585b6a8a6c1aa02d, type: 2}
-  _resetMaterial: {fileID: 0}
+  _resetMaterial: {fileID: 2100000, guid: c028700a2e35331419e92b922605c740, type: 2}
   _frostTexture: {fileID: 2800000, guid: edee6681a07993c49a8fd50d3d999231, type: 3}
   _brushTexture: {fileID: 2800000, guid: c557d4d0abdb510498a6f0ad72fba111, type: 3}
-  _pixelBrushSize: 50
+  _pixelBrushSize: 3
   _brushSize: 0.05
-  _baseOpacity: 0
-  _frostColor: {r: 0, g: 0, b: 0, a: 0}
+  _baseOpacity: 0.3
+  _frostColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 0}
   _resetDuration: 1
   _maskTexture: {fileID: 0}
 --- !u!114 &1501447321
@@ -12017,13 +12018,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WindowPainter
   _frostInput: {fileID: 1576833784}
   _baseWindowMaterial: {fileID: 2100000, guid: 8097f0aead8094b4585b6a8a6c1aa02d, type: 2}
-  _resetMaterial: {fileID: 0}
+  _resetMaterial: {fileID: 2100000, guid: c028700a2e35331419e92b922605c740, type: 2}
   _frostTexture: {fileID: 2800000, guid: edee6681a07993c49a8fd50d3d999231, type: 3}
   _brushTexture: {fileID: 2800000, guid: c557d4d0abdb510498a6f0ad72fba111, type: 3}
-  _pixelBrushSize: 50
+  _pixelBrushSize: 3
   _brushSize: 0.05
-  _baseOpacity: 0
-  _frostColor: {r: 0, g: 0, b: 0, a: 0}
+  _baseOpacity: 0.3
+  _frostColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 0}
   _resetDuration: 1
   _maskTexture: {fileID: 0}
 --- !u!114 &1576833784
@@ -12390,6 +12391,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1053535222}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1623485596 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6362697842613803956, guid: 0d8f6444db207664da0a5cc688b27d71, type: 3}
+  m_PrefabInstance: {fileID: 2131337764}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99e602686bcfcbd48a1849090c1f55c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RollingPin
 --- !u!1 &1629731878
 GameObject:
   m_ObjectHideFlags: 0
@@ -12699,6 +12711,145 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1677974987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1677974988}
+  - component: {fileID: 1677974990}
+  - component: {fileID: 1677974989}
+  m_Layer: 0
+  m_Name: RollingPin Guide
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1677974988
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677974987}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 129402380}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -50.9}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1677974989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677974987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "\u0417\u0430\u0436\u043C\u0438\u0442\u0435 \u041B\u041A\u041C \u0447\u0442\u043E\u0431\u044B
+    \u0432\u0437\u044F\u0442\u044C \u0441\u043A\u0430\u043B\u043A\u0443\n\u0417\u0430\u0436\u043C\u0438\u0442\u0435
+    \u041F\u041A\u041C \u0447\u0442\u043E\u0431\u044B \u0440\u0430\u0441\u043A\u0430\u0442\u0430\u0442\u044C
+    \u0442\u0435\u0441\u0442\u043E"
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: a184c66cfdc9c7c4bbe4f015ac472cfc, type: 2}
+  m_sharedMaterial: {fileID: 7499218146120705260, guid: a184c66cfdc9c7c4bbe4f015ac472cfc, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 24.6
+  m_fontSizeBase: 24.6
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: -110, y: 0, z: -110, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1677974990
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677974987}
+  m_CullTransparentMesh: 1
 --- !u!1 &1697426079
 GameObject:
   m_ObjectHideFlags: 0
@@ -12863,13 +13014,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WindowPainter
   _frostInput: {fileID: 1706450769}
   _baseWindowMaterial: {fileID: 2100000, guid: 8097f0aead8094b4585b6a8a6c1aa02d, type: 2}
-  _resetMaterial: {fileID: 0}
+  _resetMaterial: {fileID: 2100000, guid: c028700a2e35331419e92b922605c740, type: 2}
   _frostTexture: {fileID: 2800000, guid: edee6681a07993c49a8fd50d3d999231, type: 3}
   _brushTexture: {fileID: 2800000, guid: c557d4d0abdb510498a6f0ad72fba111, type: 3}
-  _pixelBrushSize: 50
+  _pixelBrushSize: 3
   _brushSize: 0.05
-  _baseOpacity: 0
-  _frostColor: {r: 0, g: 0, b: 0, a: 0}
+  _baseOpacity: 0.3
+  _frostColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 0}
   _resetDuration: 1
   _maskTexture: {fileID: 0}
 --- !u!114 &1706450769
@@ -13261,13 +13412,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WindowPainter
   _frostInput: {fileID: 1728636195}
   _baseWindowMaterial: {fileID: 2100000, guid: 8097f0aead8094b4585b6a8a6c1aa02d, type: 2}
-  _resetMaterial: {fileID: 0}
+  _resetMaterial: {fileID: 2100000, guid: c028700a2e35331419e92b922605c740, type: 2}
   _frostTexture: {fileID: 2800000, guid: edee6681a07993c49a8fd50d3d999231, type: 3}
   _brushTexture: {fileID: 2800000, guid: c557d4d0abdb510498a6f0ad72fba111, type: 3}
-  _pixelBrushSize: 50
+  _pixelBrushSize: 3
   _brushSize: 0.05
-  _baseOpacity: 0
-  _frostColor: {r: 0, g: 0, b: 0, a: 0}
+  _baseOpacity: 0.3
+  _frostColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 0}
   _resetDuration: 1
   _maskTexture: {fileID: 0}
 --- !u!114 &1728636195
@@ -14586,9 +14737,10 @@ MonoBehaviour:
   _dialogueManager: {fileID: 1851663132}
   _book: {fileID: 330585552}
   _customerManager: {fileID: 1851663128}
+  _rollingPin: {fileID: 1623485596}
   _nextDialogueIcon: {fileID: 1850360863}
   _leftRightIcons: {fileID: 1901029662}
-  _rollingPinGuide: {fileID: 0}
+  _rollingPinGuide: {fileID: 1677974987}
   _bookGuide: {fileID: 544945692}
 --- !u!1 &1898650124
 GameObject:
@@ -16888,13 +17040,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WindowPainter
   _frostInput: {fileID: 9112111004549639586}
   _baseWindowMaterial: {fileID: 2100000, guid: 8097f0aead8094b4585b6a8a6c1aa02d, type: 2}
-  _resetMaterial: {fileID: 0}
+  _resetMaterial: {fileID: 2100000, guid: c028700a2e35331419e92b922605c740, type: 2}
   _frostTexture: {fileID: 2800000, guid: edee6681a07993c49a8fd50d3d999231, type: 3}
   _brushTexture: {fileID: 2800000, guid: c557d4d0abdb510498a6f0ad72fba111, type: 3}
-  _pixelBrushSize: 50
+  _pixelBrushSize: 3
   _brushSize: 0.05
-  _baseOpacity: 0
-  _frostColor: {r: 0, g: 0, b: 0, a: 0}
+  _baseOpacity: 0.3
+  _frostColor: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 0}
   _resetDuration: 1
   _maskTexture: {fileID: 0}
 --- !u!1 &5148817237523220726

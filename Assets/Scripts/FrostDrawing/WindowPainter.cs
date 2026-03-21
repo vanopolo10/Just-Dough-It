@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class WindowPainter : MonoBehaviour
+public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
 {
     [SerializeField] private MonoBehaviour _frostInput;
     [SerializeField] private Material _baseWindowMaterial;
@@ -22,8 +23,9 @@ public class WindowPainter : MonoBehaviour
     private IFrostInput _input;
     private bool _isPainting = false;
     private Vector2? _lastPaintUv = null;
+    
     [SerializeField] private RenderTexture _maskTexture;
-    private bool _enabled = true;
+    private bool _enabled;
 
     private void OnEnable()
     {
@@ -49,18 +51,21 @@ public class WindowPainter : MonoBehaviour
 
         GenerateMaterial();
 
-        if (_frostInput is IFrostInput)
-            _input = _frostInput as IFrostInput;
+        if (_frostInput is IFrostInput input)
+            _input = input;
         else
             Debug.LogError($"WindowPainter requires a MonoBehaviour that implements IFrostInput in {gameObject.name}");
     }
 
-    private void OnMouseEnter() => _enabled = true;
+    public void OnPointerEnter(PointerEventData eventData) => _enabled = true;
+    public void OnPointerExit(PointerEventData eventData) => _enabled = false;
+    
     private void OnMouseExit() => _enabled = false;
 
     private void Update()
     {
         if (!_enabled) return;
+        
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             _isPainting = true;
