@@ -28,9 +28,20 @@ public class CustomerRouteMover : MonoBehaviour
     public event Action ReachedCounter;
     public event Action LeftCafe;
 
+    public void CopyValues(CustomerRouteMover other = null, NpcMover mover = null) 
+    {
+        if (other == null) return;
+        _doorAnimator = other._doorAnimator;
+        _doorOutside = other._doorOutside;
+        _reception = other._reception;
+        _doorInside = other._doorInside;
+        _exit = other._exit;
+        _exitDelay = other._exitDelay;
+        _mover = mover;
+    }
     private void Awake()
     {
-        _mover = GetComponent<NpcMover>();
+        if(_mover==null) _mover = GetComponent<NpcMover>();
     }
 
     public void Initialize(CustomerAnimatorController animator)
@@ -39,15 +50,20 @@ public class CustomerRouteMover : MonoBehaviour
         _customer = animator.GetComponentInParent<Customer>();
         _customer.OnQuestCompleted += MoveOut;
 
+        Debug.Log($"[CustomerRouteMover] Initialized for customer '{_customer.name}'");
         _mover.MoveRoutine(EnterRoutine());
     }
 
     private IEnumerator EnterRoutine()
     {
+        Debug.Log($"[CustomerRouteMover] Routine entered for customer '{_customer.name}'");
         _animator.StartWalking();
+        Debug.Log($"[CustomerRouteMover] '{_customer.name}' successfully started walking");
+
 
         yield return _mover.FaceTo(_customer.transform, _door.position);
         yield return _mover.MoveTo(_customer.transform, _door.position);
+
 
         _animator.TriggerOpenDoor();
         _doorAnimator.SetTrigger(OpenDoor);

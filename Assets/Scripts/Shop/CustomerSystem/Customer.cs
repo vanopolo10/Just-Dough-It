@@ -13,6 +13,7 @@ public class Customer : MonoBehaviour
     public event Action OnQuestCompleted;
     public event Action OnQuestInitialized;
     public event Action<GameObject> OnProductAccepted;
+    public event Action OnCounterReached;
 
     public CustomerQuest Quest => _quest;
     public DialogueManager DialogueManager => _dialogueManager;
@@ -27,6 +28,7 @@ public class Customer : MonoBehaviour
 
     public void OnReachedCounter()
     {
+        OnCounterReached?.Invoke();
         Initialize();
     }
 
@@ -81,6 +83,12 @@ public class Customer : MonoBehaviour
 
     protected void Initialize()
     {
+        if(_quest == null)
+        {
+            Debug.LogError("[Customer] No quest assigned to customer.");
+            OnQuestInitialized?.Invoke();
+            return;
+        }
         _quest.Initialize(this);
         Debug.Log($"[Customer] Initialized Quest");
         OnQuestInitialized?.Invoke();
