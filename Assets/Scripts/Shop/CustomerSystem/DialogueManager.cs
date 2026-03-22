@@ -288,7 +288,7 @@ public class DialogueManager : MonoBehaviour
             {
                 var customerManager = GetComponent<CustomerManager>();
                 if (customerManager != null)
-                    handle.Setup(customerManager.CurrentCustomer, optionData.Option);
+                    _ = handle.Setup(customerManager.CurrentCustomer, optionData.Option);
             }
         }
     }

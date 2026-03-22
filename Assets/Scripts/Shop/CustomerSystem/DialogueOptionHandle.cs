@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,13 +8,15 @@ public class DialogueOptionHandle : MonoBehaviour, IPointerClickHandler
     private Customer _target;
     private DialogueOption _option;
 
-    public void Setup(Customer target, DialogueOption option)
+    public async Task Setup(Customer target, DialogueOption option)
     {
         _target = target;
         TextMeshProUGUI optionText = GetComponentInChildren<TextMeshProUGUI>();
         
         _option = option;
-        optionText.text = option.TextKey; // replace with localization key
+        var task = LocalizationSettingsExtension.FindStringInAllTablesAsync(option.TextKey);
+        await task;
+        optionText.text = task.Result;
     }
 
     public void Delete()

@@ -55,7 +55,7 @@ public class TextTypewriter : MonoBehaviour
         }
 
         _textKey = key;
-        var task = FindStringInAllTablesAsync(_textKey);
+        var task = LocalizationSettingsExtension.FindStringInAllTablesAsync(_textKey);
         await task;
         _textMeshPro.text = task.Result;
         _textMeshPro.maxVisibleCharacters = 0;
@@ -141,23 +141,9 @@ public class TextTypewriter : MonoBehaviour
     private async Task SelectedLocaleChanged()
     {
         float displayedPercent = _textMeshPro.maxVisibleCharacters / _textMeshPro.text.Length;
-        var task = FindStringInAllTablesAsync(_textKey);
+        var task = LocalizationSettingsExtension.FindStringInAllTablesAsync(_textKey);
         await task;
         _textMeshPro.text = task.Result;
         _textMeshPro.maxVisibleCharacters = Mathf.FloorToInt(_textMeshPro.text.Length * displayedPercent); 
-    }
-
-    private async Task<string> FindStringInAllTablesAsync(string key)
-    {
-        var task = LocalizationSettings.StringDatabase.GetAllTables();
-        await task.Task;
-        List<StringTable> tables = (List<StringTable>)task.Result;
-        foreach (var table in tables)
-        {
-            StringTableEntry entry = table.GetEntry(key);
-            if (entry != null)
-                return entry.GetLocalizedString();
-        }
-        return key;
     }
 }
