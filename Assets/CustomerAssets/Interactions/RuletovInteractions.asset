@@ -19,15 +19,18 @@ MonoBehaviour:
     _animationTriggers:
     - 
     - 
+    _dialogueSplit: {fileID: 11400000, guid: 8f484213d9b410744a23fd18b57b3a88, type: 2}
   _onItemAccepted:
     _interactionTexts:
     - yeee
     - aga
     _animationTriggers: []
+    _dialogueSplit: {fileID: 0}
   _onItemRejected:
     _interactionTexts:
     - no
     _animationTriggers: []
+    _dialogueSplit: {fileID: 0}
   _onQuestCompleted:
     _interactionTexts:
     - "\u0434\u0440\u0443\u0436\u0438\u0449\u0435"
@@ -35,10 +38,5 @@ MonoBehaviour:
     _animationTriggers:
     - Stare
     - Nah
-  _dialogueOptions:
-  - _textKey: ask
-    _interaction:
-      _interactionTexts:
-      - ans 1
-      - ans 2
-      _animationTriggers: []
+    _dialogueSplit: {fileID: 0}
+  _questDialogueOptions: []
