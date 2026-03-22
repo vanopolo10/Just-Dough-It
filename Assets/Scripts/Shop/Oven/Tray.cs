@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,32 +7,31 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Tray : MonoBehaviour
 {
-    [Header("Печь")]
+    [Header("Печь")] 
     [SerializeField] private Oven _oven;
 
-    [Header("Движение подноса")]
+    [Header("Движение подноса")] 
     [SerializeField] private Vector3 _outsidePoint;
+
     [SerializeField] private Vector3 _insidePoint;
     [SerializeField] private float _moveDuration = 0.75f;
     [SerializeField] private AnimationCurve _moveCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
-    [Header("Слоты для булочек")]
-    [SerializeField] private List<TraySlot> _slots = new();
+    [Header("Слоты для булочек")] [SerializeField]
+    private List<TraySlot> _slots = new();
 
-    [Header("Полка для булочек")]
-    [SerializeField] private Shelf _shelf;
+    [Header("Полка для булочек")] [SerializeField]
+    private Shelf _shelf;
 
-    private bool _isInOven;
-    private bool _isMoving;
     private Coroutine _moveRoutine;
 
-    private float _bakeSpeedMultiplier;
-
-    public bool IsInOven => _isInOven;
-    public bool IsMoving => _isMoving;
+    public bool IsInOven { get; private set; }
+    public bool IsMoving { get; private set; }
+    public float BakeSpeedMultiplier { get; private set; }
     public bool IsFull => _slots.All(t => !t.IsEmpty);
 
-    public float BakeSpeedMultiplier => _bakeSpeedMultiplier;
+    public event Action<bool> MovedToOven;
+    public event Action PastryRemoved;
 
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class Tray : MonoBehaviour
 
     private void OnFirePowerChanged(int firePower)
     {
-        _bakeSpeedMultiplier = Mathf.Clamp(firePower / 50f, 0f, 2f);
+        BakeSpeedMultiplier = Mathf.Clamp(firePower / 50f, 0f, 2f);
     }
 
     private void Reset()
@@ -64,10 +64,10 @@ public class Tray : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (_isMoving)
+        if (IsMoving)
             return;
 
-        bool toOven = !_isInOven;
+        bool toOven = !IsInOven;
 
         TogglePosition();
 
@@ -82,7 +82,7 @@ public class Tray : MonoBehaviour
 
     private void TogglePosition()
     {
-        if (_isInOven)
+        if (IsInOven)
             MoveTo(_outsidePoint, false);
         else
             MoveTo(_insidePoint, true);
@@ -110,7 +110,7 @@ public class Tray : MonoBehaviour
         freeSlot.SetBun(instance);
         instance.Setup(this, _shelf);
 
-        if (_isInOven)
+        if (IsInOven)
             instance.BeginBake();
 
         return instance;
@@ -128,7 +128,7 @@ public class Tray : MonoBehaviour
         foreach (var slot in _slots.Where(t => t.Bun == bun))
         {
             taken = slot.Clear();
-            
+
             if (taken != null)
                 taken.transform.SetParent(null, true);
 
@@ -142,13 +142,14 @@ public class Tray : MonoBehaviour
     {
         if (_moveRoutine != null)
             StopCoroutine(_moveRoutine);
-
+        
         _moveRoutine = StartCoroutine(MoveRoutine(targetPosition, toOven));
+        MovedToOven?.Invoke(toOven);
     }
 
     private IEnumerator MoveRoutine(Vector3 targetPosition, bool toOven)
     {
-        _isMoving = true;
+        IsMoving = true;
 
         Vector3 start = transform.position;
         float time = 0f;
@@ -163,8 +164,8 @@ public class Tray : MonoBehaviour
         }
 
         transform.position = targetPosition;
-        _isInOven = toOven;
-        _isMoving = false;
+        IsInOven = toOven;
+        IsMoving = false;
         _moveRoutine = null;
     }
 

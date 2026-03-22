@@ -22,7 +22,7 @@ public class BakeManager : MonoBehaviour
     private bool _invokedDone;
     private bool _invokedBurn;
 
-    [SerializeField] private Tray _tray; //debug
+    private Tray _tray;
     private Shelf _shelf;
 
     private bool _isOnShelf;
@@ -106,7 +106,7 @@ public class BakeManager : MonoBehaviour
 
         if (_tray == null || _shelf == null) return;
         if (_tray.IsInOven || _tray.IsMoving) return;
-        //if (BakeState == BakeState.Raw) return; // DEBUG
+        if (BakeState == BakeState.Raw) return;
         if (_tray.TryTakeBun(this, out BakeManager taken) == false) return;
 
         taken.StopBake();

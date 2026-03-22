@@ -14,15 +14,15 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     [SerializeField] private float _baseOpacity;
     [SerializeField] private Color _frostColor;
-    [SerializeField] private float _resetDuration = 1f;
+    //[SerializeField] private float _resetDuration = 1f;
 
     private Material _windowMaterial;
     private float _brushWidth;
     private float _brushHeight;
 
     private IFrostInput _input;
-    private bool _isPainting = false;
-    private Vector2? _lastPaintUv = null;
+    private bool _isPainting;
+    private Vector2? _lastPaintUv;
     
     [SerializeField] private RenderTexture _maskTexture;
     private bool _enabled;
@@ -102,13 +102,13 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         _windowMaterial = new Material(_baseWindowMaterial);
 
-        if (gameObject.TryGetComponent<Renderer>(out Renderer renderer))
+        if (gameObject.TryGetComponent(out Renderer renderer))
         {
             _brushWidth = _brushSize * _maskTexture.width;
             _brushHeight = _brushSize * _maskTexture.height;
             renderer.material = _windowMaterial;
         }
-        else if (TryGetComponent<RawImage>(out RawImage image))
+        else if (TryGetComponent(out RawImage image))
         {
             image.material = _windowMaterial;
             SetBrushSizeUi(image);

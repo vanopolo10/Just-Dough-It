@@ -13,13 +13,19 @@ public class TutorialScenario : MonoBehaviour
     [SerializeField] private Book _book;
     [SerializeField] private CustomerManager _customerManager;
     [SerializeField] private RollingPin _rollingPin;
+    [SerializeField] private OvenSender _ovenSender;
+    [SerializeField] private Tray _tray;
+    [SerializeField] private Oven _oven;
     
     [Header("Icons")] 
     [SerializeField] private GameObject _nextDialogueIcon;
     [SerializeField] private GameObject _dialogueOptionIcon;
     [SerializeField] private GameObject _leftRightIcons;
+    [SerializeField] private GameObject _rightIcon;
     [SerializeField] private GameObject _rollingPinGuide;
     [SerializeField] private GameObject _bookGuide;
+    [SerializeField] private GameObject _toOvenGuide;
+    [SerializeField] private GameObject _trayClickIcon;
 
     private Customer _customer;
     private bool _tutorialStarted = false;
@@ -93,6 +99,13 @@ public class TutorialScenario : MonoBehaviour
             
             new ActionGate(_dough.CurrentDough.GetComponent<DoughDrag>().Unblock),
             new ActionGate(() => _thoughts.Close()),
+            new DoughSendGate(_ovenSender, _toOvenGuide),
+            
+            new CameraViewGate(_camera, CameraController.CameraViewType.Oven, _rightIcon),
+            new TrayGate(_tray, true, _trayClickIcon),
+            
+            new CameraViewGate(_camera, CameraController.CameraViewType.OvenDown, _rightIcon),
+            new OvenGate(_oven)
         });
     }
 }

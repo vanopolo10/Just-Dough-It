@@ -31,8 +31,9 @@ MonoBehaviour:
     - tutorial.ded.yes
     _animationTriggers: []
   _dialogueOptions:
-  - _textKey: tutorial.player.sure
+  - _textKey: tutorial.think.sure
     _interaction:
       _interactionTexts:
       - tutorial.ded.thanks
-      _animationTriggers: []
+      _animationTriggers:
+      - 

@@ -14,13 +14,15 @@ public class Oven : MonoBehaviour
     private float _speedСoef = Math.Abs(2f);
     [SerializeField, Tooltip("В сколько раз оно затухает медленнее, чем разгорается")] 
     private float _fadeCoef = Math.Abs(2f);
-    
+
+    public event Action WoodAdded;
     public event Action<int> FirePowerChanged;
 
     public int FirePower { get; private set; } = 0;
 
     public void AddWood()
     {
+        WoodAdded?.Invoke();
         StartCoroutine(FireWood());
     }
 

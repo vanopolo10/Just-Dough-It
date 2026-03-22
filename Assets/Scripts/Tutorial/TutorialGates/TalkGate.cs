@@ -19,15 +19,15 @@ public class TalkGate : ITutorialGate
 
     public void Enter()
     {
-        _dialogueManager.DialogueOptionPlayed += OnStateChanged;
+        _dialogueManager.DialogueOptionPlayed += OnTalked;
     }
 
-    private void OnStateChanged(DialogueOption dialogueOption)
+    private void OnTalked(DialogueOption dialogueOption)
     { 
         if (dialogueOption.TextKey != _textKey && _textKey != "")
              return;
         
-        _dialogueManager.DialogueOptionPlayed -= OnStateChanged; 
+        _dialogueManager.DialogueOptionPlayed -= OnTalked; 
         Completed?.Invoke();
     }
 }
