@@ -12,6 +12,7 @@ public class ClickManager : MonoBehaviour
     [SerializeField] private string _defaultClickTag = "Default";
     [SerializeField] private float _clickRayDistance = 100f;
     [SerializeField] private LayerMask _clickMask = ~0;
+    [SerializeField] private string _ignoreTag;
 
     [Header("Particles")]
     [SerializeField] private GameObject _particlesPrefab;
@@ -106,8 +107,16 @@ public class ClickManager : MonoBehaviour
     {
         if (_useLushClicks == false || _cam == null)
             return;
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
+
+        PointerEventData eventData = new(EventSystem.current);
+        eventData.position = Input.mousePosition;
+        List<RaycastResult> result = new();
+        EventSystem.current.RaycastAll(eventData, result);
+        if (result.Count > 0)
+            if (!string.IsNullOrEmpty(_ignoreTag))
+                foreach (var resultItem in result)
+                    if (!resultItem.gameObject.CompareTag(_ignoreTag))
+                        return;
 
         Ray ray = _cam.ScreenPointToRay(Mouse.current.position.ReadValue());
 
