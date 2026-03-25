@@ -27,13 +27,14 @@ public class CameraController : MonoBehaviour
     private Coroutine _transitionRoutine;
     private bool _isTransitioning;
     private bool _isMouseLookActive;
-    private bool _isCameraBlocked;
+    
+    private bool _canUseLeft;
+    private bool _canUseRight;
     private bool _canUseBack;
     
     public event Action<bool> DragAllowedChanged;
     public event Action<CameraViewType> ViewChanged;
 
-    private bool CanMove => !_isTransitioning && !_isCameraBlocked;
     public int ViewID { get; private set; }
     
     public CameraViewType ViewType => _views[ViewID].Type;
@@ -70,20 +71,11 @@ public class CameraController : MonoBehaviour
             UpdateMouseLook();
     }
 
-    public void BlockControl()
+    public void SetControlBlock(bool canLeft, bool canRight, bool canBack)
     {
-        _isCameraBlocked = true;
-        _canUseBack = false;
-    }
-    
-    public void UnblockControl()
-    {
-        _isCameraBlocked = false;
-    }
-
-    public void UnlockBack()
-    {
-        _canUseBack = true;
+        _canUseLeft = canLeft;
+        _canUseRight = canRight;
+        _canUseBack = canBack;
     }
 
     private void UpdateMouseLook()
@@ -114,21 +106,21 @@ public class CameraController : MonoBehaviour
 
     private void OnLeft()
     {
-        if (!CanMove) return;
+        if (!_canUseLeft || _isTransitioning) return;
             
         Move(_views[ViewID].Left, TurnDirection.Left);
     }
     
     private void OnRight()
     {
-        if (!CanMove) return;
+        if (!_canUseRight || _isTransitioning) return;
             
         Move(_views[ViewID].Right, TurnDirection.Right);
     }
     
     private void OnBack()
     {
-        if (!CanMove || !_canUseBack) return;
+        if (!_canUseBack || _isTransitioning) return;
             
         Move(_views[ViewID].Back, _views[ViewID].BackTurn);
     }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PerfectComboZone : MonoBehaviour, IPointerDownHandler
 {
     private CraftZone _craftZone;
+    
     public UnityEvent OnClick;
 
     private void Awake()

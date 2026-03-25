@@ -10,7 +10,7 @@ public class SecondRuletovInteractions : MonoBehaviour
     private void Start()
     {
         _customer = GetComponent<Customer>();
-        _customer.OnCounterReached += OnCounterReached;
+        _customer.CounterReached += OnCounterReached;
 
         _mafiozi = Instantiate(_mafioziPrefab, transform.position, Quaternion.identity);
         _mafioziAnimator = _mafiozi.transform.GetChild(0).GetComponent<Animator>();
@@ -22,7 +22,8 @@ public class SecondRuletovInteractions : MonoBehaviour
         added.Initialize(_mafioziAnimator.gameObject.GetComponent<CustomerAnimatorController>());
     }
 
-    public void OnCounterReached() {
+    public void OnCounterReached()
+    {
         //_mafioziAnimator.SetBool("IsWalking", false);
         _mafioziDisplacementAnimator.SetTrigger("StartDisplacement");
     }

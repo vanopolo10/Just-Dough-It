@@ -7,23 +7,23 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Tray : MonoBehaviour
 {
-    [Header("Печь")] 
-    [SerializeField] private Oven _oven;
+    [Header("Печь")] [SerializeField] private Oven _oven;
 
-    [Header("Движение подноса")] 
-    [SerializeField] private Vector3 _outsidePoint;
+    [Header("Движение подноса")] [SerializeField]
+    private Vector3 _outsidePoint;
 
     [SerializeField] private Vector3 _insidePoint;
     [SerializeField] private float _moveDuration = 0.75f;
     [SerializeField] private AnimationCurve _moveCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
-    [Header("Слоты для булочек")] [SerializeField]
-    private List<TraySlot> _slots = new();
+    [Header("Слоты для булочек")] 
+    [SerializeField] private List<TraySlot> _slots = new();
 
-    [Header("Полка для булочек")] [SerializeField]
-    private Shelf _shelf;
+    [Header("Полка для булочек")] 
+    [SerializeField] private Shelf _shelf;
 
     private Coroutine _moveRoutine;
+    private bool _canMove;
 
     public bool IsInOven { get; private set; }
     public bool IsMoving { get; private set; }
@@ -51,11 +51,16 @@ public class Tray : MonoBehaviour
             _oven.FirePowerChanged -= OnFirePowerChanged;
     }
 
+    public BakeManager GetFirstBakeManager()
+    {
+        return _slots.FirstOrDefault(slot => !slot.IsEmpty)?.Bun;
+    }
+    
     private void OnFirePowerChanged(int firePower)
     {
         BakeSpeedMultiplier = Mathf.Clamp(firePower / 50f, 0f, 2f);
     }
-
+    
     private void Reset()
     {
         Collider col = GetComponent<Collider>();
@@ -64,7 +69,7 @@ public class Tray : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (IsMoving)
+        if (IsMoving || _canMove == false)
             return;
 
         bool toOven = !IsInOven;
@@ -80,6 +85,12 @@ public class Tray : MonoBehaviour
         }
     }
 
+    public void StopBake()
+    {
+        foreach (var bun in _slots.Select(slot => slot.Bun).Where(bakeManager => bakeManager != null)) 
+            bun.StopBake();
+    }
+
     private void TogglePosition()
     {
         if (IsInOven)
@@ -87,6 +98,8 @@ public class Tray : MonoBehaviour
         else
             MoveTo(_insidePoint, true);
     }
+
+    public void SetCanMove(bool can) => _canMove = can;
 
     public BakeManager AddDough(BakeManager prefab)
     {
@@ -132,6 +145,8 @@ public class Tray : MonoBehaviour
             if (taken != null)
                 taken.transform.SetParent(null, true);
 
+            PastryRemoved?.Invoke();
+            
             return true;
         }
 
@@ -169,7 +184,7 @@ public class Tray : MonoBehaviour
         _moveRoutine = null;
     }
 
-    [System.Serializable]
+    [Serializable]
     private class TraySlot
     {
         [SerializeField] private Transform _anchor;

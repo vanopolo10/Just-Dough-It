@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
+public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private MonoBehaviour _frostInput;
     [SerializeField] private Material _baseWindowMaterial;
@@ -23,9 +24,12 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private IFrostInput _input;
     private bool _isPainting;
     private Vector2? _lastPaintUv;
-    
+
     [SerializeField] private RenderTexture _maskTexture;
     private bool _enabled;
+
+    public event Action PointerEntered;
+    public event Action PointerExited;
 
     private void OnEnable()
     {
@@ -39,7 +43,7 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private void Awake()
     {
-        if(_brushTexture == null)
+        if (_brushTexture == null)
         {
             Debug.LogError($"_brushTexture is not assigned in FrostPainter in {gameObject.name}");
             return;
@@ -57,9 +61,18 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             Debug.LogError($"WindowPainter requires a MonoBehaviour that implements IFrostInput in {gameObject.name}");
     }
 
-    public void OnPointerEnter(PointerEventData eventData) => _enabled = true;
-    public void OnPointerExit(PointerEventData eventData) => _enabled = false;
-    
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _enabled = true;
+        PointerEntered?.Invoke();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _enabled = false;
+        PointerExited?.Invoke();
+    }
+
     private void OnMouseExit() => _enabled = false;
 
     private void Update()

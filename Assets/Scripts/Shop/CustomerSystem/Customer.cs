@@ -10,10 +10,10 @@ public class Customer : MonoBehaviour
     protected DialogueManager _dialogueManager;
     protected CustomerAnimatorController _animatorController;
     
-    public event Action OnQuestCompleted;
-    public event Action OnQuestInitialized;
-    public event Action<GameObject> OnProductAccepted;
-    public event Action OnCounterReached;
+    public event Action QuestCompleted;
+    public event Action QuestInitialized;
+    public event Action<GameObject> ProductAccepted;
+    public event Action CounterReached;
 
     public CustomerQuest Quest => _quest;
     public DialogueManager DialogueManager => _dialogueManager;
@@ -28,7 +28,7 @@ public class Customer : MonoBehaviour
 
     public void OnReachedCounter()
     {
-        OnCounterReached?.Invoke();
+        CounterReached?.Invoke();
         Initialize();
     }
 
@@ -39,7 +39,7 @@ public class Customer : MonoBehaviour
 
     public virtual void FinishQuest()
     {
-        OnQuestCompleted?.Invoke();
+        QuestCompleted?.Invoke();
     }
 
     public void PlayOutDialogue(DialogueOption option)
@@ -59,13 +59,11 @@ public class Customer : MonoBehaviour
 
     public void EnableReception()
     {
-        Debug.Log("[Customer] Reception enabled.");
         _canAcceptProduct = true;
     }
 
     public void DisableReception()
     {
-        Debug.Log("[Customer] Reception disabled.");
         _canAcceptProduct = false;
     }
 
@@ -76,7 +74,7 @@ public class Customer : MonoBehaviour
         bool successful = _quest.OfferProduct(product);
 
         if (successful)
-            OnProductAccepted?.Invoke(productObj);
+            ProductAccepted?.Invoke(productObj);
 
         return successful;
     }
@@ -86,11 +84,11 @@ public class Customer : MonoBehaviour
         if(_quest == null)
         {
             Debug.LogError("[Customer] No quest assigned to customer.");
-            OnQuestInitialized?.Invoke();
+            QuestInitialized?.Invoke();
             return;
         }
         _quest.Initialize(this);
         Debug.Log($"[Customer] Initialized Quest");
-        OnQuestInitialized?.Invoke();
+        QuestInitialized?.Invoke();
     }
 }

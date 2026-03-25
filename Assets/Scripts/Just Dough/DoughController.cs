@@ -1,22 +1,21 @@
 using System;
-using UnityEngine;
+using System.Collections.Generic;
 using JustDough;
+using UnityEngine;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(DoughVisualSwitcher))]
 public class DoughController : MonoBehaviour
 {
-    [Header("Состояния теста")] [SerializeField]
-    private DoughState _startState = DoughState.Raw;
-
+    [Header("Состояния теста")]
+    [SerializeField] private DoughState _startState = DoughState.Raw;
     [SerializeField] private DoughVisualSwitcher _doughVisualSwitcher;
     [SerializeField] private FillingType _filling = FillingType.None;
-
     [SerializeField] private int _cuttingZonesLeft;
 
+    private List<DoughDrag> _doughDrags;
     private int _comboClicksTotal;
     private int _comboClicksLeft;
-
     private Vector3 _rollEnterLocalPos;
     private Quaternion _rollRotation;
     private bool _isRollingInside;
@@ -25,14 +24,20 @@ public class DoughController : MonoBehaviour
     private int _perfectActionCount;
     private int _imperfectActionCount;
 
+    private bool _isDragging;
+
     public FillingType Filling => _filling;
 
+    public event Action FillingChanged;
     public event Action StateChanged;
     public event Action ActionPerfected;
+    public event Action DragStarted;
+    public event Action DragEnded;
 
+    public bool CanApplyAction { get; private set; } = true;
     public DoughState OldState { get; private set; }
     public DoughState State { get; private set; }
-
+    public bool IsDragging => _isDragging;
     public bool LastActionPerfect => _lastActionPerfect;
     public int PerfectActionCount => _perfectActionCount;
     public int ImperfectActionCount => _imperfectActionCount;
@@ -42,6 +47,8 @@ public class DoughController : MonoBehaviour
         if (_doughVisualSwitcher == null)
             _doughVisualSwitcher = GetComponent<DoughVisualSwitcher>();
 
+        _doughDrags = new List<DoughDrag>(GetComponentsInChildren<DoughDrag>(true));
+        
         State = _startState;
         OldState = State;
         _perfectActionCount = 0;
@@ -54,76 +61,17 @@ public class DoughController : MonoBehaviour
         StateChanged?.Invoke();
     }
 
-    /*
-    private void OnTriggerEnter(Collider other)
+    public void OnChildDragStarted()
     {
-        if (other.gameObject.TryGetComponent(out RollingPin rollingPin) == false)
-            return;
-
-        if (rollingPin.IsRolling == false)
-            return;
-
-        if (_canRoll == false)
-            return;
-
-        _canRoll = false;
-        _isRollingInside = true;
-
-        _rollEnterLocalPos = transform.InverseTransformPoint(other.transform.position);
-
-        float absEnterX = Mathf.Abs(_rollEnterLocalPos.x);
-        float absEnterZ = Mathf.Abs(_rollEnterLocalPos.z);
-        _rollFromAlongSide = absEnterZ >= absEnterX;
+        _isDragging = true;
+        DragStarted?.Invoke();
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnChildDragEnded()
     {
-        if (other.gameObject.TryGetComponent(out RollingPin rollingPin) == false)
-            return;
-
-        if (rollingPin.IsRolling == false)
-            return;
-
-        if (_isRollingInside == false)
-        {
-            _canRoll = true;
-            return;
-        }
-
-        _isRollingInside = false;
-        _canRoll = true;
-        _rollRotation = rollingPin.transform.rotation;
-
-        Vector3 exitLocalPos = transform.InverseTransformPoint(other.transform.position);
-
-        if (_rollFromAlongSide)
-        {
-            float enterSignZ = Mathf.Sign(_rollEnterLocalPos.z);
-            float exitSignZ = Mathf.Sign(exitLocalPos.z);
-
-            if (Mathf.Approximately(enterSignZ, 0f) || Mathf.Approximately(exitSignZ, 0f))
-                return;
-
-            if (Mathf.Approximately(enterSignZ, exitSignZ))
-                return;
-
-            ApplyAction(DoughCraftAction.Roll);
-        }
-        else
-        {
-            float enterSignX = Mathf.Sign(_rollEnterLocalPos.x);
-            float exitSignX = Mathf.Sign(exitLocalPos.x);
-
-            if (Mathf.Approximately(enterSignX, 0f) || Mathf.Approximately(exitSignX, 0f))
-                return;
-
-            if (Mathf.Approximately(enterSignX, exitSignX))
-                return;
-
-            ApplyAction(DoughCraftAction.RollSheer);
-        }
+        _isDragging = false;
+        DragEnded?.Invoke();
     }
-    */
 
     public void SetRollRotation(Quaternion rollRotation)
     {
@@ -132,21 +80,30 @@ public class DoughController : MonoBehaviour
 
     public void SetGlobalFilling(FillingType toSet)
     {
+        if (_filling == toSet) return;
+
         _filling = toSet;
+        FillingChanged?.Invoke();
     }
 
-    public bool ApplyAction(DoughCraftAction action, CraftZone craftZone = null, bool isPerfect = false)
+    public void SetCanDrag(bool can)
     {
+        foreach (var doughDrag in _doughDrags)
+            doughDrag.SetIsDragBlocked(!can);
+    }
+    
+    public void SetCanActing(bool can) => CanApplyAction = can;
+
+    public bool TryApplyAction(DoughCraftAction action, CraftZone craftZone = null, bool isPerfect = false)
+    {
+        if (CanApplyAction == false) return false;
+
         bool isComboZoneAction = craftZone != null && craftZone.IsComboZone;
 
         if (isComboZoneAction)
         {
             action = DoughCraftAction.ComboClick;
 
-            /*
-            if (_comboZones.ContainsKey(craftZone))
-                _comboZones[craftZone] = true;
-            */
             _lastActionPerfect = isPerfect;
 
             if (isPerfect)
@@ -154,15 +111,14 @@ public class DoughController : MonoBehaviour
             else
                 _imperfectActionCount++;
 
-            // bool comboComplete = _comboZones.Values.All(b => b);
-
-            if (isPerfect == true)
+            if (isPerfect)
                 _comboClicksLeft -= 2;
             else
                 _comboClicksLeft -= 1;
+
             UpdateComboAnimation();
 
-            bool comboComplete = (_comboClicksLeft <= 0);
+            bool comboComplete = _comboClicksLeft <= 0;
 
             print(
                 $"[DoughController] ComboClick zone={craftZone.name}, " +
@@ -210,7 +166,6 @@ public class DoughController : MonoBehaviour
             $"state={State}, filling={_filling}"
         );
 
-
         ResetSpecialZones();
 
         StateChanged?.Invoke();
@@ -239,10 +194,7 @@ public class DoughController : MonoBehaviour
         if (_doughVisualSwitcher.Map[State].TryGetComponent(out Animator animator) == false) return;
 
         float progress = (_comboClicksTotal - _comboClicksLeft) / (_comboClicksTotal - 1f);
-        print(animator.GetCurrentAnimatorClipInfo(0));
-        print("Set animation progress to " + progress + " on layer " + animator.GetLayerName(0));
         animator.Play("Completion", 0, progress);
-        //animator.SetFloat("Progress", progress);
     }
 
     private void ResetSpecialZones()
@@ -253,21 +205,12 @@ public class DoughController : MonoBehaviour
 
     private void ResetCombo()
     {
-        //_comboZones.Clear();
-
         if (_doughVisualSwitcher == null)
             return;
 
         if (_doughVisualSwitcher.Map.TryGetValue(State, out GameObject go) == false || go == null)
             return;
 
-        /*
-        foreach (CraftZone zone in go.GetComponentsInChildren<CraftZone>())
-        {
-            if (zone.IsComboZone)
-                _comboZones.Add(zone, false);
-        }
-        */
         _comboClicksTotal = 0;
 
         foreach (PerfectComboZone zone in go.GetComponentsInChildren<PerfectComboZone>())
@@ -276,7 +219,6 @@ public class DoughController : MonoBehaviour
         _comboClicksLeft = _comboClicksTotal;
         UpdateComboAnimation();
     }
-
 
     private void ResetCutting()
     {
@@ -292,10 +234,16 @@ public class DoughController : MonoBehaviour
             _cuttingZonesLeft++;
     }
 
+    public void Destroy()
+    {
+        OnChildDragEnded();
+        Destroy(gameObject);
+    }
+    
     public void ProgressCutting()
     {
         _cuttingZonesLeft--;
         if (_cuttingZonesLeft <= 0)
-            ApplyAction(DoughCraftAction.FinishCutting);
+            TryApplyAction(DoughCraftAction.FinishCutting);
     }
 }

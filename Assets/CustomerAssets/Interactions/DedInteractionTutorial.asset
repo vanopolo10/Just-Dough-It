@@ -17,7 +17,6 @@ MonoBehaviour:
     - tutorial.ded.hello
     _animationTriggers:
     - 
-    - 
   _onItemAccepted:
     _interactionTexts:
     - 
@@ -30,8 +29,8 @@ MonoBehaviour:
     _interactionTexts:
     - tutorial.ded.yes
     _animationTriggers: []
-  _dialogueOptions:
-  - _textKey: tutorial.think.sure
+  _questDialogueOptions:
+  - _textKey: tutorial.player.sure
     _interaction:
       _interactionTexts:
       - tutorial.ded.thanks

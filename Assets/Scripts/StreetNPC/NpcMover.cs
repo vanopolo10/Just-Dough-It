@@ -51,12 +51,7 @@ public class NpcMover : MonoBehaviour
     public IEnumerator MoveTo(Transform target, Vector3 destination)
     {
         if (!target)
-        {
-            Debug.Log($"[NpcMover] MoveTo aborted for destination {destination}");
             yield break;
-        }
-
-        Debug.Log($"[NpcMover] MoveTo called for '{target.name}' to destination {destination}");
 
         while (Vector3.Distance(target.position, destination) > _stopDistance)
         {
@@ -73,12 +68,7 @@ public class NpcMover : MonoBehaviour
     public IEnumerator FaceTo(Transform target, Vector3 lookAt)
     {
         if (!target)
-        {
-            Debug.Log($"[NpcMover] faceto aborted for destination {lookAt}");
             yield break;
-        }
-
-        Debug.Log($"[NpcMover] faceto called for '{target.name}' to destination {lookAt}");
 
         Vector3 dir = lookAt - target.position;
         if (dir.sqrMagnitude < 0.001f) yield break;

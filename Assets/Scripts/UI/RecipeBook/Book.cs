@@ -17,7 +17,7 @@ public class Book : MonoBehaviour
     [SerializeField] private Button _recipeButtonLeft;
     [SerializeField] private Button _recipeButtonRight;
 
-    private bool _canOpen;
+    private bool _canOpen = true;
     private int _id;
     private Page _currentPageLeft;
     private Page _currentPageRight;
@@ -58,15 +58,7 @@ public class Book : MonoBehaviour
         }
     }
 
-    public void Block()
-    {
-        _canOpen = false;
-    }
-    
-    public void Unblock()
-    {
-        _canOpen = true;
-    }
+    public void SetCanOpen(bool canOpen) => _canOpen = canOpen;
 
     public void Disable()
     {

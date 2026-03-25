@@ -32,8 +32,6 @@ public class TrayGate : ITutorialGate
 
     private void OnTrayMoved(bool toOven)
     {
-        if (!toOven) return;
-        
         _tray.MovedToOven -= OnTrayMoved;
         Completed?.Invoke();
     }

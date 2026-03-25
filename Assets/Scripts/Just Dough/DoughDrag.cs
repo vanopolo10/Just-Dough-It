@@ -11,20 +11,22 @@ public class DoughDrag : MonoBehaviour
     private bool _dragBlocked;
 
     private RollingPin _rollingPin;
+    private DoughController _doughController;
 
     public event Action DragStarted;
     public event Action DragEnded;
 
-    private bool CanMove => _dragBlocked == false & _dragBlockedCamera == false;
-
-    private void Awake()
-    {
-        _rollingPin = GameObject.FindGameObjectWithTag("RollingPin").GetComponent<RollingPin>();
-        if (!_rollingPin) enabled = false;
-    }
+    private bool CanMove => _dragBlocked == false && 
+                            _dragBlockedCamera == false && 
+                            _rollingPin.IsRolling == false;
 
     private void OnEnable()
     {
+        _rollingPin = GameObject.FindGameObjectWithTag("RollingPin").GetComponent<RollingPin>();
+        if (!_rollingPin) enabled = false;
+        
+        _doughController = GetComponentInParent<DoughController>();
+        
         DragCancelService.CancelRequested += OnCancelRequested;
     }
 
@@ -33,15 +35,7 @@ public class DoughDrag : MonoBehaviour
         DragCancelService.CancelRequested -= OnCancelRequested;
     }
 
-    public void Block()
-    {
-        _dragBlocked = true;
-    }
-
-    public void Unblock()
-    {
-        _dragBlocked = false;
-    }
+    public void SetIsDragBlocked(bool isDragBlocked) => _dragBlocked = isDragBlocked;
 
     private void OnCancelRequested()
     {
@@ -52,6 +46,7 @@ public class DoughDrag : MonoBehaviour
         _bothHeld = false;
         _dragBlockedCamera = true;
         DragEnded?.Invoke();
+        _doughController?.OnChildDragEnded();
     }
 
     private void FixedUpdate()
@@ -72,6 +67,7 @@ public class DoughDrag : MonoBehaviour
             {
                 _isDragging = false;
                 DragEnded?.Invoke();
+                _doughController?.OnChildDragEnded();
             }
 
             _bothHeld = false;
@@ -92,6 +88,7 @@ public class DoughDrag : MonoBehaviour
         {
             _isDragging = true;
             DragStarted?.Invoke();
+            _doughController?.OnChildDragStarted();
         }
 
         if (Physics.Raycast(ray, 100f, LayerMask.GetMask("CookingSurface")))

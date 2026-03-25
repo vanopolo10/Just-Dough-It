@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using JustDough;
 
 [RequireComponent(typeof(RectTransform))]
@@ -79,9 +79,9 @@ public class CraftZone : MonoBehaviour,
         //    DisableComboZone();
     }
 
-    public void AddComboClick(bool isperfect) 
+    public void AddComboClick(bool isPerfect) 
     {
-        bool applied = _controller.ApplyAction(_rightClickAction, this, isperfect);
+        bool applied = _controller.TryApplyAction(_rightClickAction, this, isPerfect);
     }
 
     /*
@@ -114,22 +114,13 @@ public class CraftZone : MonoBehaviour,
         if (_dragActive == false || _dragStartZone == null || _dragStartZone == this || !Input.GetMouseButton(0))
             return;
 
-        DoughCraftAction action = DoughCraftAction.None;
-
-        foreach (DragRule rule in _dragRules)
-        {
-            if (rule.EndZone == _dragStartZone)
-            {
-                action = rule.Action;
-                break;
-            }
-        }
+        DoughCraftAction action = (from rule in _dragRules where rule.EndZone == _dragStartZone select rule.Action).FirstOrDefault();
 
         if (action == DoughCraftAction.None)
             return;
 
         bool isPerfect = _dragPerfect;
-        bool applied = _controller.ApplyAction(action, this, isPerfect);
+        bool applied = _controller.TryApplyAction(action, this, isPerfect);
         print($"[CraftZone] Drag {name}, action={action}, perfect={isPerfect}, applied={applied}");
 
         _dragActive = false;
@@ -158,22 +149,6 @@ public class CraftZone : MonoBehaviour,
 
         _dragPerfect = false;
     }
-
-    /*
-    private bool IsInPerfectClickArea(PointerEventData eventData)
-    {
-        if (_perfectClickArea == null)
-            return false;
-
-        Camera cam = eventData.pressEventCamera ?? eventData.enterEventCamera ?? Camera.main;
-
-        return RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            _perfectClickArea,
-            eventData.position,
-            cam,
-            out Vector2 local) && _perfectClickArea.rect.Contains(local);
-    }
-    */
 
     private bool IsInPerfectDragArea(PointerEventData eventData)
     {

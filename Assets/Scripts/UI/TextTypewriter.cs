@@ -32,13 +32,11 @@ public class TextTypewriter : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("[TextTypewriter] OnEnable");
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChange;
     }
 
     private void OnDisable()
     {
-        Debug.Log("[TextTypewriter] OnDisable");
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChange;
         Clear();
     }
@@ -120,8 +118,6 @@ public class TextTypewriter : MonoBehaviour
 
     public void Clear()
     {
-        Debug.Log("[TextTypewriter] Clear");
-
         if (_typeRoutine != null)
         {
             StopCoroutine(_typeRoutine);

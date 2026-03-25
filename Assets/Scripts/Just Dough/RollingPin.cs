@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,13 +10,20 @@ public class RollingPin : MonoBehaviour
     [SerializeField] private float _rotationSmooth = 10f;
     [SerializeField] private float _heightSmooth = 10f;
     [SerializeField] private BoxCollider _tableCollider;
-
+    
     [Header("Events")]
     public UnityEvent DoughEntered = new();
     public UnityEvent DoughExited = new();
     public UnityEvent RollStarted = new();
     public UnityEvent RollEnded = new();
+    
+    public event Action MouseHovered;
+    public event Action MouseUnhovered;
+    public event Action DragStarted;
+    public event Action DragEnded;
 
+    private Vector3 _startPosition;
+    private Quaternion _startRotation;
     private float _zCord;
     private float _baseY;
     private float _desiredY;
@@ -49,16 +57,24 @@ public class RollingPin : MonoBehaviour
         _targetRotation = transform.rotation;
     }
 
+    private void Start()
+    {
+        _startPosition = transform.position;
+        _startRotation = transform.rotation;
+    }
+
     private void OnEnable()
     {
         DragCancelService.CancelRequested += CancelDrag;
-        _cameraController.DragAllowedChanged += OnDragAllowedChanged;
+        if (_cameraController != null)
+            _cameraController.DragAllowedChanged += OnDragAllowedChanged;
     }
 
     private void OnDisable()
     {
         DragCancelService.CancelRequested -= CancelDrag;
-        _cameraController.DragAllowedChanged -= OnDragAllowedChanged;
+        if (_cameraController != null)
+            _cameraController.DragAllowedChanged -= OnDragAllowedChanged;
     }
 
     private void OnDragAllowedChanged(bool allowed)
@@ -69,6 +85,16 @@ public class RollingPin : MonoBehaviour
             CancelDrag();
     }
 
+    private void OnMouseEnter()
+    {
+        MouseHovered?.Invoke();
+    }
+
+    private void OnMouseExit()
+    {
+        MouseUnhovered?.Invoke();
+    }
+
     private void OnMouseDown()
     {
         if (!_dragAllowedCamera) return;
@@ -76,12 +102,16 @@ public class RollingPin : MonoBehaviour
         _zCord = _cam.WorldToScreenPoint(transform.position).z;
         _isDragging = true;
         _desiredY = _baseY + _raiseBy;
+        
+        DragStarted?.Invoke();
     }
 
     private void OnMouseUp()
     {
         CancelDrag();
         StopRolling();
+        
+        DragEnded?.Invoke();
     }
 
     private void OnMouseDrag()
@@ -117,14 +147,13 @@ public class RollingPin : MonoBehaviour
             StopRolling();
     }
 
-    public void Block()
-    {
-        _dragAllowed = false;
-    }
+    public void SetDragAllowed(bool isAllowed) => _dragAllowed = isAllowed;
     
-    public void Unblock()
+    public void MoveToStart()
     {
-        _dragAllowed = true;
+        CancelDrag();
+        transform.position = _startPosition;
+        transform.rotation = _startRotation;
     }
     
     private void UpdateRotation(Vector3 move)
@@ -190,9 +219,6 @@ public class RollingPin : MonoBehaviour
 
     private void CancelDrag()
     {
-        if (!_isDragging)
-            return;
-
         StopRolling();
         _isDragging = false;
         _desiredY = _baseY;

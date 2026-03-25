@@ -21,6 +21,7 @@ public class BakeManager : MonoBehaviour
     private bool _invokedRare;
     private bool _invokedDone;
     private bool _invokedBurn;
+    private bool _invokedFullBurn;
 
     private Tray _tray;
     private Shelf _shelf;
@@ -43,12 +44,15 @@ public class BakeManager : MonoBehaviour
     public event Action Rare;
     public event Action Done;
     public event Action Burned;
+    public event Action FullBurned;
 
     public event Action<float, float> VisualChanged;
     public event Action<BakeManager> Sold;
 
+    public bool IsInTray => _tray != null;
+    public bool IsInShelf => _shelf != null;
     public BakeState BakeState { get; private set; } = BakeState.Raw;
-
+    
     public int PerfectActionCount
     {
         get => _perfectActionCount;
@@ -76,6 +80,7 @@ public class BakeManager : MonoBehaviour
         _invokedRare = false;
         _invokedDone = false;
         _invokedBurn = false;
+        _invokedFullBurn = false;
     }
 
     private void OnEnable()
@@ -177,6 +182,81 @@ public class BakeManager : MonoBehaviour
             _isInReceptionArea = false;
         }
     }
+
+    public void BeginBake()
+    {
+        if (_bakeRoutine != null)
+            return;
+        
+        Debug.Log("Baking started");
+        _bakeRoutine = StartCoroutine(BakeRoutine());
+    }
+
+    public void StopBake()
+    {
+        if (_bakeRoutine == null)
+            return;
+
+        StopCoroutine(_bakeRoutine);
+        _bakeRoutine = null;
+    }
+
+    public void Setup(Tray tray, Shelf shelf)
+    {
+        _tray = tray;
+        _shelf = shelf;
+        _isOnShelf = false;
+        _shelfAnchor = null;
+    }
+
+    public void OnPlacedOnShelf(Transform anchor)
+    {
+        _isOnShelf = true;
+        _shelfAnchor = anchor;
+    }
+
+    public void OnPlacedOnTray()
+    {
+        _isOnShelf = false;
+        _shelfAnchor = null;
+    }
+
+    public void SetPerfectActionCount(int count)
+    {
+        _perfectActionCount = Mathf.Max(0, count);
+    }
+
+    public void SetImperfectActionCount(int count)
+    {
+        _imperfectActionCount = Mathf.Max(0, count);
+    }
+
+    public void SetDoughInfo(Product product)
+    {
+        _product = product;
+    }
+
+    public void SetProductFromDoughController(DoughController dough)
+    {
+        Product product = new Product { Filling = dough.Filling };
+        ProductType productType;
+        try
+        {
+            productType = (ProductType)Enum.Parse(typeof(ProductType), dough.State.ToString());
+        }
+        catch (Exception)
+        {
+            productType = ProductType.None;
+        }
+
+        product.Type = productType;
+        SetProduct(product);
+    }
+
+    private void SetProduct(Product product)
+    {
+        _product = product;
+    }
     
     private IEnumerator BakeRoutine()
     {
@@ -250,81 +330,12 @@ public class BakeManager : MonoBehaviour
             _invokedBurn = true;
             Burned?.Invoke();
         }
-    }
 
-    public void BeginBake()
-    {
-        if (_bakeRoutine != null)
-            return;
-        
-        Debug.Log("Baking started");
-        _bakeRoutine = StartCoroutine(BakeRoutine());
-    }
-
-    public void StopBake()
-    {
-        if (_bakeRoutine == null)
-            return;
-
-        StopCoroutine(_bakeRoutine);
-        _bakeRoutine = null;
-    }
-
-    public void Setup(Tray tray, Shelf shelf)
-    {
-        _tray = tray;
-        _shelf = shelf;
-        _isOnShelf = false;
-        _shelfAnchor = null;
-    }
-
-    public void OnPlacedOnShelf(Transform anchor)
-    {
-        _isOnShelf = true;
-        _shelfAnchor = anchor;
-    }
-
-    public void OnPlacedOnTray()
-    {
-        _isOnShelf = false;
-        _shelfAnchor = null;
-    }
-
-    public void SetPerfectActionCount(int count)
-    {
-        _perfectActionCount = Mathf.Max(0, count);
-    }
-
-    public void SetImperfectActionCount(int count)
-    {
-        _imperfectActionCount = Mathf.Max(0, count);
-    }
-
-    public void SetDoughInfo(Product product)
-    {
-        _product = product;
-    }
-
-    public void SetProductFromDoughController(DoughController dough)
-    {
-        Product product = new Product { Filling = dough.Filling };
-        ProductType productType;
-        try
+        if (!_invokedFullBurn && t >= _burnFullInSeconds)
         {
-            productType = (ProductType)Enum.Parse(typeof(ProductType), dough.State.ToString());
+            _invokedFullBurn = true;
+            FullBurned?.Invoke();
         }
-        catch (Exception)
-        {
-            productType = ProductType.None;
-        }
-
-        product.Type = productType;
-        SetProduct(product);
-    }
-
-    public void SetProduct(Product product)
-    {
-        _product = product;
     }
 
     private bool AttemptDeposit()

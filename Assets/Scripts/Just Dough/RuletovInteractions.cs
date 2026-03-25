@@ -35,8 +35,8 @@ public class RuletovInteractions : MonoBehaviour
         }
 
         //_customer.OnQuestCompleted += HandleQuestCompletion;
-        _customer.OnQuestInitialized += UpdateQuest;
-        _customer.OnProductAccepted += SpawnPie;
+        _customer.QuestInitialized += UpdateQuest;
+        _customer.ProductAccepted += SpawnPie;
     }
     public void UpdateQuest() {
         _currentQuest = _customer.Quest;

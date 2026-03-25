@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class TutorialScenario : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class TutorialScenario : MonoBehaviour
 
     [Header("Info")] 
     [SerializeField] private CameraController _camera;
-    [SerializeField] private DoughBucket _dough;
+    [SerializeField] private DoughBucket _doughBucket;
     [SerializeField] private PlayerThoughts _thoughts;
     [SerializeField] private DialogueManager _dialogueManager;
     [SerializeField] private Book _book;
@@ -16,25 +17,44 @@ public class TutorialScenario : MonoBehaviour
     [SerializeField] private OvenSender _ovenSender;
     [SerializeField] private Tray _tray;
     [SerializeField] private Oven _oven;
+    [SerializeField] private Filling _jam;
+    [SerializeField] private Filling _farce;
+    [SerializeField] private Thermometer _thermometer;
     
     [Header("Icons")] 
     [SerializeField] private GameObject _nextDialogueIcon;
     [SerializeField] private GameObject _dialogueOptionIcon;
     [SerializeField] private GameObject _leftRightIcons;
     [SerializeField] private GameObject _rightIcon;
+    [SerializeField] private GameObject _leftIcon;
+    [SerializeField] private GameObject _backIcon;
     [SerializeField] private GameObject _rollingPinGuide;
     [SerializeField] private GameObject _bookGuide;
+    [SerializeField] private GameObject _toBowlGuide;
+    [SerializeField] private GameObject _fromBowlGuide;
+    [SerializeField] private GameObject _fillingGuide;
     [SerializeField] private GameObject _toOvenGuide;
     [SerializeField] private GameObject _trayClickIcon;
+    [SerializeField] private GameObject _ovenClickIcon;
+    [SerializeField] private GameObject _ovenPowerGuide;
+    [SerializeField] private GameObject _waitingGuide;
+    [SerializeField] private GameObject _trayDoughIcon;
+    [SerializeField] private GameObject _shelfDragIcon;
 
     private Customer _customer;
     private bool _tutorialStarted = false;
 
     private void Start()
     {
-        _dough.CurrentDough.GetComponent<DoughDrag>().Block();
-        _camera.BlockControl();
-        _book.Block();
+        _doughBucket.CurrentDough.SetCanDrag(false);
+        
+        _camera.SetControlBlock(false, false, false);
+        _book.SetCanOpen(false);
+        _jam.SetCanGrab(false);
+        _farce.SetCanGrab(false);
+        _ovenSender.SetCanAppear(false);
+        _tray.SetCanMove(false);
+        _thermometer.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -74,38 +94,87 @@ public class TutorialScenario : MonoBehaviour
             
             new DialogueGate(_dialogueManager, true, _nextDialogueIcon),
             new DialogueGate(_dialogueManager, false),
-            new TalkGate(_dialogueManager, _dialogueOptionIcon, "tutorial.think.sure"),
+            new TalkGate(_dialogueManager, _dialogueOptionIcon, "tutorial.player.sure"),
             
-            new ActionGate(() => _camera.UnblockControl()),
+            new ActionGate(() => _camera.SetControlBlock(true, true, false)),
             new CameraViewGate(_camera, CameraController.CameraViewType.Craft, _leftRightIcons),
+            new ActionGate(() => _thermometer.gameObject.SetActive(true)),
             
-            new ActionGate(() => _book.Unblock()), 
-            new ActionGate(() => _camera.BlockControl()),
-            new ActionGate(() => _rollingPin.Block()),
+            new ActionGate(() => _book.SetCanOpen(true)), 
+            new ActionGate(() => _camera.SetControlBlock(false, false, false)),
+            new ActionGate(() => _rollingPin.SetDragAllowed(false)),
             new RecipeGate(_book, ProductType.SimplePie, _bookGuide),
-            new ActionGate(() => _book.Block()),
+            new ActionGate(() => _book.SetCanOpen(false)),
             new ActionGate(() => _book.Disable()), 
             
-            new ActionGate(() => _rollingPin.Unblock()),
+            new ActionGate(() => _rollingPin.SetDragAllowed(true)),
             new ActionGate(() => _thoughts.Think("tutorial.think.rolling")),
-            new DoughStateGate(_dough, DoughState.Flat, _rollingPinGuide),
-            new ActionGate(() => _rollingPin.Block()),
+            new DoughStateGate(_doughBucket, DoughState.Flat, _rollingPinGuide),
+            new ActionGate(() => _rollingPin.SetDragAllowed(false)),
+            new ActionGate(() => _rollingPin.MoveToStart()),
             
             new ActionGate(() => _thoughts.Think("tutorial.think.folding")),
-            new DoughStateGate(_dough, DoughState.FlatFolded),
+            new DoughStateGate(_doughBucket, DoughState.FlatFolded),
 
             new ActionGate(() => _thoughts.Think("tutorial.think.pressing")),
-            new DoughStateGate(_dough, DoughState.SimplePie),
+            new DoughStateGate(_doughBucket, DoughState.SimplePie),
             
-            new ActionGate(_dough.CurrentDough.GetComponent<DoughDrag>().Unblock),
+            new ActionGate(() => _doughBucket.CurrentDough.SetCanDrag(true)),
+            new ActionGate(() => _thoughts.Think("tutorial.think.forgot")),
+            new DoughRemovedGate(_doughBucket, _toBowlGuide),
+            new DoughPutGate(_doughBucket, _fromBowlGuide),
+            
+            new ActionGate(() => _thoughts.Think("tutorial.think.fast")),
+            new ActionGate(() => _rollingPin.SetDragAllowed(true)),
+            new DoughStateGate(_doughBucket, DoughState.Flat),
+            new ActionGate(() => _rollingPin.SetDragAllowed(false)),
+            new ActionGate(() => _rollingPin.MoveToStart()),
+            
+            new ActionGate(() => _doughBucket.CurrentDough.SetCanActing(false)),
+            new ActionGate(() => _thoughts.Think("tutorial.think.filling")),
+            new ActionGate(() => _jam.SetCanGrab(true)),
+            new ActionGate(() => _farce.SetCanGrab(true)),
+            new PutFillingGate(_doughBucket, _fillingGuide),
+            
+            new ActionGate(() => _doughBucket.CurrentDough.SetCanActing(true)),
+            new DoughStateGate(_doughBucket, DoughState.SimplePie),
+            
+            new ActionGate(() => _ovenSender.SetCanAppear(true)),
             new ActionGate(() => _thoughts.Close()),
             new DoughSendGate(_ovenSender, _toOvenGuide),
             
+            new ActionGate(() => _camera.SetControlBlock(false, true, false)),
             new CameraViewGate(_camera, CameraController.CameraViewType.Oven, _rightIcon),
+            new ActionGate(() => _camera.SetControlBlock(false, false, false)),
+            new ActionGate(() => _tray.SetCanMove(true)),
             new TrayGate(_tray, true, _trayClickIcon),
+            new ActionGate(() => _tray.SetCanMove(false)),
             
+            new ActionGate(() => _camera.SetControlBlock(false, true, false)),
             new CameraViewGate(_camera, CameraController.CameraViewType.OvenDown, _rightIcon),
-            new OvenGate(_oven)
+            new ActionGate(() => _camera.SetControlBlock(false, false, false)),
+            
+            new ActionGate(() => _thermometer.SetCanAddWood(true)),
+            new OvenGate(_oven,false, 0, _ovenClickIcon),
+            new ActionGate(() => _thermometer.SetCanAddWood(false)),
+            new OvenGate(_oven, true, 20, _ovenPowerGuide),
+            
+            new ActionGate(() => _camera.SetControlBlock(true, false, false)), 
+            new CameraViewGate(_camera, CameraController.CameraViewType.Oven, _leftIcon),
+            new ActionGate(() => _camera.SetControlBlock(false, false, false)), 
+            new BakeGate(_tray, BakeState.Done, _waitingGuide),
+            new ActionGate(() => _tray.StopBake()),
+            new ActionGate(() => _thoughts.Think("player.think.done")),
+            
+            new ActionGate(() => _tray.SetCanMove(true)),
+            new TrayGate(_tray, true, _trayClickIcon),
+            new ActionGate(() => _tray.SetCanMove(false)),
+            new TrayGate(_tray, false, _trayDoughIcon),
+            
+            new ActionGate(() => _camera.SetControlBlock(false, false, true)),
+            new CameraViewGate(_camera, CameraController.CameraViewType.Door, _backIcon),
+            new ActionGate(() => _camera.SetControlBlock(false, false, false)),
+            new ItemAcceptGate(_customer, _shelfDragIcon)
         });
     }
 }

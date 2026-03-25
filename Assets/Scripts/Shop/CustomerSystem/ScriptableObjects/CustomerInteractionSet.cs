@@ -26,13 +26,15 @@ public class CustomerInteraction
 
     public void SetNextInteraction(CustomerInteraction nextInteraction)
     {
-        Debug.Log($"[CustomerInteraction] SetNextInteraction set. Current dialogue: {_dialogueKey}, Next dialogue: {(nextInteraction != null ? nextInteraction.DialogueKey : "null")}");
+        Debug.Log(
+            $"[CustomerInteraction] SetNextInteraction set. Current dialogue: {_dialogueKey}, Next dialogue: {(nextInteraction != null ? nextInteraction.DialogueKey : "null")}");
         _nextInteraction = nextInteraction;
     }
 
     public virtual void PlayOut(Customer target)
     {
-        Debug.Log($"[CustomerInteraction] PlayOut (single) called. DialogueKey: {_dialogueKey}, Target: {(target != null ? target.name : "null")}");
+        Debug.Log(
+            $"[CustomerInteraction] PlayOut (single) called. DialogueKey: {_dialogueKey}, Target: {(target != null ? target.name : "null")}");
         PlayOut(target, _nextInteraction);
     }
 
@@ -140,12 +142,11 @@ public class AnimatedCustomerInteraction : CustomerInteraction
 [Serializable]
 public class CustomerInteractionSequence
 {
-
     [SerializeField] private List<String> _interactionTexts;
     [SerializeField] private List<String> _animationTriggers;
+
     //[SerializeField] private CustomerDialogueSplit _dialogueSplit = null;
     private List<AnimatedCustomerInteraction> _interactions;
-    private bool _wasInitialized = false;
     private Action _callback = null;
     private Customer _customer = null;
 
@@ -156,9 +157,7 @@ public class CustomerInteractionSequence
         _interactions = new List<AnimatedCustomerInteraction>();
 
         while (_animationTriggers.Count < _interactionTexts.Count)
-        {
             _animationTriggers.Add("");
-        }
 
         if (_interactionTexts.Count != 0)
         {
@@ -166,17 +165,11 @@ public class CustomerInteractionSequence
                 _interactions.Add(new AnimatedCustomerInteraction(_interactionTexts[i], _animationTriggers[i]));
 
             for (int i = 0; i < _interactionTexts.Count - 1; i++)
-            {
                 _interactions[i].SetNextInteraction(_interactions[i + 1]);
-                Debug.Log("InteractionSequence set next interaction for element number " + i);
-            }
 
             //if (_dialogueSplit == null)
-            if(true)
-            {
+            if (true)
                 _interactions[_interactionTexts.Count - 1].SetCallback(callback);
-                Debug.Log("InteractionSequence set callback for element number " + (_interactions.Count - 1));
-            }
             /*else
             {
                 _interactions[_interactionTexts.Count - 1].SetCallback(_dialogueSplit.PlayOut);
@@ -188,30 +181,29 @@ public class CustomerInteractionSequence
         else
         {
             _interactions.Add(new AnimatedCustomerInteraction());
-            Debug.Log("Empty interaction sequence detected. Adding element");
         }
     }
-
-
 
     public void SetCallback(Action callback)
     {
         _callback = callback;
     }
-    public void SetCustomer(Customer customer) { 
+
+    public void SetCustomer(Customer customer)
+    {
         _customer = customer;
     }
-    public void PlayOutBase() {
-        Debug.Log($"[CustomerInteractionSet] playing out base on {_interactionTexts[0]}");
+
+    public void PlayOutBase()
+    {
         PlayOut();
     }
-    public void PlayOut(Customer target = null, Action callback = null) {
-        Debug.Log("Sequece playOut called. checking for initialization");
 
-
-        if(callback != null) 
+    public void PlayOut(Customer target = null, Action callback = null)
+    {
+        if (callback != null)
             _callback = callback;
-        if(target != null)
+        if (target != null)
             _customer = target;
 
         Initialize(_callback);
@@ -262,7 +254,7 @@ public class CustomerInteractionSet : ScriptableObject
     [SerializeField] private CustomerInteractionSequence _onItemRejected;
     [SerializeField] private CustomerInteractionSequence _onQuestCompleted;
     [SerializeField] private List<DialogueOption> _questDialogueOptions = new();
-    
+
 
     public CustomerInteractionSequence OnGreeting => _onGreeting;
     public CustomerInteractionSequence OnItemAccepted => _onItemAccepted;

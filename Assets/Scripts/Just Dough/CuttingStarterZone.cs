@@ -15,9 +15,9 @@ public class CuttingStarterZone : MonoBehaviour
         if (_associatedCuttingZone != null && _doughController != null)
         {
             if (_isAltZone)
-                _doughController.ApplyAction(DoughCraftAction.BeginAltCutting);
+                _doughController.TryApplyAction(DoughCraftAction.BeginAltCutting);
             else
-                _doughController.ApplyAction(DoughCraftAction.BeginCutting);
+                _doughController.TryApplyAction(DoughCraftAction.BeginCutting);
 
             _associatedCuttingZone.StartCutting(knife);
         }

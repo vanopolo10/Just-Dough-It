@@ -13,8 +13,11 @@ public class DoughBucket : MonoBehaviour
 
     public DoughController CurrentDough => _currentDough;
 
+    public event Action DoughRemoved;
+    public event Action DoughSpawned;
     public event Action CurrentDoughChanged;
     public event Action<DoughState> DoughStateChanged;
+    public event Action<FillingType> FillingChanged;
 
     private void Awake()
     {
@@ -46,6 +49,7 @@ public class DoughBucket : MonoBehaviour
 
         DoughController instance = Instantiate(_doughPrefab, spawnPos, new Quaternion());
         SetDough(instance);
+        DoughSpawned?.Invoke();
     }
 
     public void SpawnDough(DoughState state, FillingType filling)
@@ -66,16 +70,29 @@ public class DoughBucket : MonoBehaviour
         FillingManager fillingManager = instance.transform.GetComponentInChildren<FillingManager>();
         if (fillingManager != null)
             fillingManager.SetFilling(filling);
+        
         SetDough(instance);
     }
 
+    public void Disable()
+    {
+        foreach (var meshRenderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+            meshRenderer.enabled = false;
+        
+        foreach (var col in gameObject.GetComponentsInChildren<Collider>())
+            col.enabled = false;
+    }
+    
     public void SetDough(DoughController dough)
     {
         if (_currentDough == dough)
             return;
 
         if (_currentDough)
+        {
             _currentDough.StateChanged -= OnDoughStateChangedInternal;
+            _currentDough.FillingChanged -= OnFillingChanged;
+        }
 
         if (_currentDoughDrag)
             _currentDoughDrag.DragEnded -= OnDoughDragEnded;
@@ -86,6 +103,7 @@ public class DoughBucket : MonoBehaviour
         if (_currentDough)
         {
             _currentDough.StateChanged += OnDoughStateChangedInternal;
+            _currentDough.FillingChanged += OnFillingChanged;
 
             _currentDoughDrag = _currentDough.GetComponent<DoughDrag>();
             if (_currentDoughDrag)
@@ -96,6 +114,11 @@ public class DoughBucket : MonoBehaviour
 
         if (_currentDough)
             DoughStateChanged?.Invoke(_currentDough.State);
+    }
+
+    private void OnFillingChanged()
+    {
+        FillingChanged?.Invoke(_currentDough.Filling);
     }
 
     private void ClearDough()
@@ -127,7 +150,8 @@ public class DoughBucket : MonoBehaviour
         if (inside == false)
             return;
 
-        Destroy(_currentDough.gameObject);
+        _currentDough.Destroy();
         ClearDough();
+        DoughRemoved?.Invoke();
     }
 }
