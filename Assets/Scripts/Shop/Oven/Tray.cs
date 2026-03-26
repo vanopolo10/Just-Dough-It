@@ -90,6 +90,12 @@ public class Tray : MonoBehaviour
         foreach (var bun in _slots.Select(slot => slot.Bun).Where(bakeManager => bakeManager != null)) 
             bun.StopBake();
     }
+    
+    public void StartBake()
+    {
+        foreach (var bun in _slots.Select(slot => slot.Bun).Where(bakeManager => bakeManager != null)) 
+            bun.BeginBake();
+    }
 
     private void TogglePosition()
     {

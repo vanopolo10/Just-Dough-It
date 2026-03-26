@@ -28,8 +28,8 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private RenderTexture _maskTexture;
     private bool _enabled;
 
-    public event Action PointerEntered;
-    public event Action PointerExited;
+    public event Action<WindowPainter> PointerEntered;
+    public event Action<WindowPainter> PointerExited;
 
     private void OnEnable()
     {
@@ -64,17 +64,15 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerEnter(PointerEventData eventData)
     {
         _enabled = true;
-        PointerEntered?.Invoke();
+        PointerEntered?.Invoke(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         _enabled = false;
-        PointerExited?.Invoke();
+        PointerExited?.Invoke(this);
     }
-
-    private void OnMouseExit() => _enabled = false;
-
+    
     private void Update()
     {
         if (!_enabled) return;

@@ -15,6 +15,7 @@ public class CursorController : MonoBehaviour
     [SerializeField] private Texture2D _pickDough;
     [SerializeField] private Texture2D _draw;
     [SerializeField] private Texture2D _glove;
+    [SerializeField] private Texture2D _give;
 
     [Header("Settings")]
     [SerializeField] private LayerMask _raycastLayers;
@@ -24,12 +25,20 @@ public class CursorController : MonoBehaviour
     private bool _isHoveringDraw;
     
     private Camera _mainCamera;
-    private bool _isHoveringInteractable;
-    private bool _isDragging;
-    private bool _isHoveringPickDough;
-    private bool _isHoveringFilling;
-    private bool _isHoveringTray;
 
+    private CursorPriority _currentPriority = CursorPriority.None;
+
+    private enum CursorPriority
+    {
+        None = 0,
+        Draw = 1,
+        PickMe = 2,
+        Glove = 3,
+        PickDough = 4,
+        Drag = 5,
+        Give = 6
+    }
+    
     private void Awake()
     {
         _mainCamera = Camera.main;
@@ -52,12 +61,12 @@ public class CursorController : MonoBehaviour
         }
     }
     
-    private void OnDrawPointerEntered()
+    private void OnDrawPointerEntered(WindowPainter window)
     {
         _isHoveringDraw = true;
     }
     
-    private void OnDrawPointerExited()
+    private void OnDrawPointerExited(WindowPainter window)
     {
         _isHoveringDraw = false;
     }
@@ -70,18 +79,30 @@ public class CursorController : MonoBehaviour
     
     private void UpdateMouseStates()
     {
-        _isHoveringInteractable = false;
-        _isDragging = false;
-        _isHoveringPickDough = false;
-        _isHoveringFilling = false;
-        _isHoveringTray = false;
+        _currentPriority = CursorPriority.None;
 
-        bool isDoughDragging = IsDoughDragging();
-        bool isRollingPinDragging = IsRollingPinDragging();
-        
-        if (isDoughDragging || isRollingPinDragging)
+        var draggingBake = GetDraggingBakeManager();
+        if (draggingBake != null)
         {
-            _isDragging = true;
+            if (draggingBake.IsInReceptionArea)
+            {
+                _currentPriority = CursorPriority.Give;
+                return;
+            }
+
+            _currentPriority = CursorPriority.Drag;
+            return;
+        }
+
+        if (IsDoughDragging())
+        {
+            _currentPriority = CursorPriority.Drag;
+            return;
+        }
+        
+        if (IsRollingPinDragging())
+        {
+            _currentPriority = CursorPriority.Drag;
             return;
         }
 
@@ -92,92 +113,112 @@ public class CursorController : MonoBehaviour
         {
             GameObject hitObject = hit.collider.gameObject;
 
-            DoughController doughController = hitObject.GetComponentInParent<DoughController>();
-            if (doughController != null)
-            {
-                _isHoveringInteractable = true;
-            }
-
-            RollingPin rollingPin = hitObject.GetComponent<RollingPin>();
-            if (rollingPin != null)
-            {
-                _isHoveringInteractable = true;
-            }
-
             Filling filling = hitObject.GetComponent<Filling>();
             if (filling != null)
             {
-                _isHoveringFilling = true;
                 if (filling.IsDragging)
                 {
-                    _isDragging = true;
+                    _currentPriority = CursorPriority.Drag;
                     return;
                 }
+                _currentPriority = CursorPriority.PickMe;
+                return;
             }
 
             Tray tray = hitObject.GetComponent<Tray>();
             if (tray != null)
             {
-                _isHoveringTray = true;
+                _currentPriority = CursorPriority.Glove;
+                return;
             }
 
             DoughBucket doughBucket = hitObject.GetComponent<DoughBucket>();
             if (doughBucket != null)
             {
-                _isHoveringPickDough = true;
+                _currentPriority = CursorPriority.PickDough;
+                return;
             }
 
-            BakeManager bakeManager = hitObject.GetComponent<BakeManager>();
-            if (bakeManager != null && (bakeManager.IsInTray | bakeManager.IsInShelf))
+            DoughController doughController = hitObject.GetComponentInParent<DoughController>();
+            if (doughController != null)
             {
-                _isHoveringPickDough = true;
+                _currentPriority = CursorPriority.PickMe;
+                return;
+            }
+            
+            BakeManager bakeManager = hitObject.GetComponentInParent<BakeManager>();
+            if (bakeManager != null)
+            {
+                _currentPriority = CursorPriority.PickDough;
+                return;
+            }
+
+            RollingPin rollingPin = hitObject.GetComponent<RollingPin>();
+            if (rollingPin != null)
+            {
+                _currentPriority = CursorPriority.PickMe;
+                return;
             }
         }
+
+        if (_isHoveringDraw && _currentPriority == CursorPriority.None)
+        {
+            _currentPriority = CursorPriority.Draw;
+        }
     }
-    
+
     private bool IsDoughDragging()
     {
-        if (_doughBucket != null && _doughBucket.CurrentDough != null)
-        {
-            return _doughBucket.CurrentDough.IsDragging;
-        }
-        return false;
+        return _doughBucket != null && _doughBucket.CurrentDough != null && _doughBucket.CurrentDough.IsDragging;
     }
     
     private bool IsRollingPinDragging()
     {
         return _rollingPin != null && _rollingPin.IsDragging;
     }
+
+    private BakeManager GetDraggingBakeManager()
+    {
+        return FindObjectsByType<BakeManager>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
+            .FirstOrDefault(b => b.IsDragging);
+    }
     
     private void UpdateCursor()
     {
-        if (_isHoveringDraw && _draw != null)
+        Texture2D cursorToSet = null;
+        
+        switch (_currentPriority)
         {
-            Cursor.SetCursor(_draw, new Vector2(0.8f, 0), CursorMode.Auto);
+            case CursorPriority.Give:
+                cursorToSet = _give;
+                break;
+            case CursorPriority.Drag:
+                cursorToSet = _drag;
+                break;
+            case CursorPriority.Glove:
+                cursorToSet = _glove;
+                break;
+            case CursorPriority.PickDough:
+                cursorToSet = _pickDough;
+                break;
+            case CursorPriority.PickMe:
+                cursorToSet = _pickMe;
+                break;
+            case CursorPriority.Draw:
+                cursorToSet = _draw;
+                break;
+            default:
+                cursorToSet = _normal;
+                break;
         }
-        else if (_isDragging && _drag != null)
+        
+        if (cursorToSet != null)
         {
-            Cursor.SetCursor(_drag, new Vector2(0.8f, 0), CursorMode.Auto);
-        }
-        else if (_isHoveringTray && _glove != null)
-        {
-            Cursor.SetCursor(_glove, new Vector2(0.8f, 0), CursorMode.Auto);
-        }
-        else if (_isHoveringPickDough && _pickDough != null)
-        {
-            Cursor.SetCursor(_pickDough, new Vector2(0.8f, 0), CursorMode.Auto);
-        }
-        else if ((_isHoveringInteractable || _isHoveringFilling) && _pickMe != null)
-        {
-            Cursor.SetCursor(_pickMe, new Vector2(0.8f, 0), CursorMode.Auto);
-        }
-        else if (_normal != null)
-        {
-            Cursor.SetCursor(_normal, new Vector2(0.8f, 0), CursorMode.Auto);
+            Cursor.SetCursor(cursorToSet, new Vector2(0.8f, 0), CursorMode.Auto);
         }
     }
     
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying || _mainCamera == null) return;
@@ -192,5 +233,5 @@ public class CursorController : MonoBehaviour
             Gizmos.DrawSphere(hit.point, 0.05f);
         }
     }
-    #endif
+#endif
 }

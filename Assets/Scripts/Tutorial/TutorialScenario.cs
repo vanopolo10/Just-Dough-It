@@ -153,6 +153,7 @@ public class TutorialScenario : MonoBehaviour
             new ActionGate(() => _camera.SetControlBlock(false, true, false)),
             new CameraViewGate(_camera, CameraController.CameraViewType.OvenDown, _rightIcon),
             new ActionGate(() => _camera.SetControlBlock(false, false, false)),
+            new ActionGate(() => _tray.StopBake()),
             
             new ActionGate(() => _thermometer.SetCanAddWood(true)),
             new OvenGate(_oven,false, 0, _ovenClickIcon),
@@ -161,6 +162,7 @@ public class TutorialScenario : MonoBehaviour
             
             new ActionGate(() => _camera.SetControlBlock(true, false, false)), 
             new CameraViewGate(_camera, CameraController.CameraViewType.Oven, _leftIcon),
+            new ActionGate(() => _tray.StartBake()),
             new ActionGate(() => _camera.SetControlBlock(false, false, false)), 
             new BakeGate(_tray, BakeState.Done, _waitingGuide),
             new ActionGate(() => _tray.StopBake()),

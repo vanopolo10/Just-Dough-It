@@ -29,9 +29,7 @@ public class BakeManager : MonoBehaviour
     private bool _isOnShelf;
     private Transform _shelfAnchor;
 
-    private bool _isDragging;
     private bool _dragBlocked;
-    private bool _isInReceptionArea;
     private float _dragZ;
     private Vector3 _dragOffset;
 
@@ -69,6 +67,8 @@ public class BakeManager : MonoBehaviour
 
     public float CurrentBakeBlend { get; private set; }
     public float CurrentBurnAmount { get; private set; }
+    public bool IsInReceptionArea { get; private set; }
+    public bool IsDragging { get; private set; }
 
     private void Awake()
     {
@@ -122,7 +122,7 @@ public class BakeManager : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        if (_isOnShelf == false || _isDragging == false) return;
+        if (_isOnShelf == false || IsDragging == false) return;
         if (_dragBlocked)
         {
             if (Input.GetMouseButton(0) == false) _dragBlocked = false;
@@ -135,7 +135,7 @@ public class BakeManager : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (_isInReceptionArea)
+        if (IsInReceptionArea)
         {
             if (AttemptDeposit())
             {
@@ -150,13 +150,13 @@ public class BakeManager : MonoBehaviour
             return;
         }
 
-        if (_isDragging == false)
+        if (IsDragging == false)
         {
             _dragBlocked = false;
             return;
         }
 
-        _isDragging = false;
+        IsDragging = false;
         _dragBlocked = false;
         if (_shelfAnchor != null) StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
     }
@@ -170,7 +170,7 @@ public class BakeManager : MonoBehaviour
             if (other.transform.parent.gameObject.TryGetComponent(out CustomerManager manager))
             {
                 _depositTarget = manager.CurrentCustomer;
-                _isInReceptionArea = true;
+                IsInReceptionArea = true;
             }
         }
     }
@@ -179,7 +179,7 @@ public class BakeManager : MonoBehaviour
     {
         if (other.CompareTag("Product Reception Field"))
         {
-            _isInReceptionArea = false;
+            IsInReceptionArea = false;
         }
     }
 
@@ -346,9 +346,9 @@ public class BakeManager : MonoBehaviour
 
     private void OnCancelRequested()
     {
-        if (_isOnShelf == false || _isDragging == false) return;
+        if (_isOnShelf == false || IsDragging == false) return;
         
-        _isDragging = false;
+        IsDragging = false;
         _dragBlocked = true;
         
         if (_shelfAnchor != null) StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
@@ -361,7 +361,7 @@ public class BakeManager : MonoBehaviour
         Vector3 screenPos = cam.WorldToScreenPoint(transform.position);
         _dragZ = screenPos.z;
         _dragOffset = transform.position - GetMouseWorldPos();
-        _isDragging = true;
+        IsDragging = true;
     }
 
     private Vector3 GetMouseWorldPos()
