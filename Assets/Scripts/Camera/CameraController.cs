@@ -28,9 +28,9 @@ public class CameraController : MonoBehaviour
     private bool _isTransitioning;
     private bool _isMouseLookActive;
     
-    private bool _canUseLeft;
-    private bool _canUseRight;
-    private bool _canUseBack;
+    private bool _canUseLeft = true;
+    private bool _canUseRight = true;
+    private bool _canUseBack = true;
     
     public event Action<bool> DragAllowedChanged;
     public event Action<CameraViewType> ViewChanged;

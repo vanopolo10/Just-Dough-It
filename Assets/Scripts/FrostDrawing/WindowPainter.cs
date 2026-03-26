@@ -15,7 +15,6 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     [SerializeField] private float _baseOpacity;
     [SerializeField] private Color _frostColor;
-    //[SerializeField] private float _resetDuration = 1f;
 
     private Material _windowMaterial;
     private float _brushWidth;
@@ -26,7 +25,7 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private Vector2? _lastPaintUv;
 
     [SerializeField] private RenderTexture _maskTexture;
-    private bool _enabled;
+    private bool _isPointerOver;
 
     public event Action<WindowPainter> PointerEntered;
     public event Action<WindowPainter> PointerExited;
@@ -63,43 +62,66 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _enabled = true;
+        _isPointerOver = true;
+
+        _isPainting = false;
+        _lastPaintUv = null;
+        
         PointerEntered?.Invoke(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        _enabled = false;
+        _isPointerOver = false;
+
+        _isPainting = false;
+        _lastPaintUv = null;
+        
         PointerExited?.Invoke(this);
     }
     
     private void Update()
     {
-        if (!_enabled) return;
-        
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (!_isPointerOver) return;
+
+        if (Input.GetMouseButtonDown(0))
         {
             _isPainting = true;
             _lastPaintUv = null;
         }
 
-        if (Input.GetMouseButton(0) && _isPainting && _input != null)
+        if (Input.GetMouseButtonUp(0))
         {
-            if(_input.TryGetUv(out Vector2 uv))
+            _isPainting = false;
+            _lastPaintUv = null;
+        }
+
+        if (!Input.GetMouseButton(0) || !_isPainting || _input == null) return;
+        if (!_input.TryGetUv(out Vector2 uv)) return;
+        
+        if (uv.x is >= 0 and <= 1 && uv.y is >= 0 and <= 1)
+        {
+            Vector2 currentUV = uv;
+
+            if (_lastPaintUv.HasValue)
             {
-                Vector2 currentUV = uv;
-
-                if (_lastPaintUv.HasValue)
-                {
+                float distance = Vector2.Distance(_lastPaintUv.Value, currentUV);
+                
+                if (distance < 0.5f)
                     DrawLine(_lastPaintUv.Value, currentUV);
-                }
                 else
-                {
                     DrawOnFrost(currentUV);
-                }
-
-                _lastPaintUv = currentUV;
             }
+            else
+            {
+                DrawOnFrost(currentUV);
+            }
+
+            _lastPaintUv = currentUV;
+        }
+        else
+        {
+            _lastPaintUv = null;
         }
     }
 
@@ -153,29 +175,41 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private void DrawOnFrost(Vector2 uv)
     {
+        if (uv.x < 0 || uv.x > 1 || uv.y < 0 || uv.y > 1)
+            return;
+            
         RenderTexture.active = _maskTexture;
         GL.PushMatrix();
         GL.LoadPixelMatrix(0, _maskTexture.width, 0, _maskTexture.height);
-        Rect rect = new Rect(uv.x * _maskTexture.width - _brushWidth / 2, uv.y * _maskTexture.height - _brushHeight / 2, _brushWidth, _brushHeight);
+        
+        float x = uv.x * _maskTexture.width - _brushWidth / 2;
+        float y = uv.y * _maskTexture.height - _brushHeight / 2;
+
+        Rect rect = new Rect(
+            Mathf.Clamp(x, 0, _maskTexture.width - _brushWidth),
+            Mathf.Clamp(y, 0, _maskTexture.height - _brushHeight),
+            _brushWidth, 
+            _brushHeight
+        );
         
         Graphics.DrawTexture(rect, _brushTexture);
         GL.PopMatrix();
-
         RenderTexture.active = null;
-
     }
 
     private void DrawLine(Vector2 from, Vector2 to)
     {
         float stepSize = _brushHeight * 0.1f;
+        
         if (stepSize <= 0)
         {
             DrawOnFrost(to);
             return;
         }
+        
         float distance = Vector2.Distance(from, to);
         int steps = Mathf.CeilToInt(distance / (_brushSize * 0.1f));
-        steps = Mathf.Max(steps, 1, 500);
+        steps = Mathf.Min(steps, 50);
 
         for (int i = 0; i <= steps; i++)
         {
@@ -188,33 +222,5 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     void ResetMask()
     {
         Graphics.Blit(Texture2D.whiteTexture, _maskTexture);
-        //StartCoroutine(SmoothResetMask());
     }
-
-/*
-    public IEnumerator SmoothResetMask()
-    {
-        float elapsed = 0f;
-        Material blendMaterial = new Material(_resetMaterial);
-        Texture2D whiteTex = Texture2D.whiteTexture;
-
-        RenderTexture mask = RenderTexture.GetTemporary(_maskTexture.width, _maskTexture.height, 0, _maskTexture.format);
-
-        while (elapsed < _resetDuration)
-        {
-            float t = elapsed / _resetDuration;
-            blendMaterial.SetFloat("_Blend", t);
-            Graphics.Blit(_maskTexture, mask, blendMaterial,-1);
-            Graphics.Blit(mask, _maskTexture);
-
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        Graphics.Blit(whiteTex, _maskTexture);
-
-        RenderTexture.ReleaseTemporary(mask);
-        Destroy(blendMaterial);
-    }
-*/
 }
