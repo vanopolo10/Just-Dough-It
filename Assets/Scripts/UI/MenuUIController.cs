@@ -47,7 +47,7 @@ public class MenuUIController : MonoBehaviour
 
     private void LoadNewGame()
     {
-        SceneManager.LoadScene(1, LoadSceneMode.Single);
+        SceneManager.LoadScene(2, LoadSceneMode.Single);
     }
 
     public void LoadLastGame()
