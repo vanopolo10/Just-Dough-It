@@ -45,7 +45,7 @@ public class Customer : MonoBehaviour
     public void PlayOutDialogue(DialogueOption option)
     {
         option.Interaction.PlayOut(this, ReturnToQuestInteraction);
-        DisableReception();
+        //DisableReception();
     }
 
     public void ReturnToQuestInteraction()
