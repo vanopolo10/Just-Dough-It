@@ -28,6 +28,8 @@ public class TutorialScenario : MonoBehaviour
     [SerializeField] private GameObject _leftIcon;
     [SerializeField] private GameObject _backIcon;
     [SerializeField] private GameObject _rollingPinGuide;
+    [SerializeField] private GameObject _foldingGuide;
+    [SerializeField] private GameObject _pressingGuide;
     [SerializeField] private GameObject _bookGuide;
     [SerializeField] private GameObject _toBowlGuide;
     [SerializeField] private GameObject _fromBowlGuide;
@@ -113,10 +115,10 @@ public class TutorialScenario : MonoBehaviour
             new ActionGate(() => _rollingPin.MoveToStart()),
             
             new ActionGate(() => _thoughts.Think("tutorial.think.folding")),
-            new DoughStateGate(_doughBucket, DoughState.FlatFolded),
+            new DoughStateGate(_doughBucket, DoughState.FlatFolded, _foldingGuide),
 
             new ActionGate(() => _thoughts.Think("tutorial.think.pressing")),
-            new DoughStateGate(_doughBucket, DoughState.SimplePie),
+            new DoughStateGate(_doughBucket, DoughState.SimplePie, _pressingGuide),
             
             new ActionGate(() => _doughBucket.CurrentDough.SetCanDrag(true)),
             new ActionGate(() => _thoughts.Think("tutorial.think.forgot")),
@@ -165,12 +167,13 @@ public class TutorialScenario : MonoBehaviour
             new ActionGate(() => _camera.SetControlBlock(false, false, false)), 
             new BakeGate(_tray, BakeState.Done, _waitingGuide),
             new ActionGate(() => _tray.StopBake()),
-            new ActionGate(() => _thoughts.Think("player.think.done")),
+            new ActionGate(() => _thoughts.Think("tutorial.think.done")),
             
             new ActionGate(() => _tray.SetCanMove(true)),
             new TrayGate(_tray, true, _trayClickIcon),
             new ActionGate(() => _tray.SetCanMove(false)),
             new TrayGate(_tray, false, _trayDoughIcon),
+            new ActionGate(() => _thoughts.Close()),
             
             new ActionGate(() => _camera.SetControlBlock(false, false, true)),
             new CameraViewGate(_camera, CameraController.CameraViewType.Door, _backIcon),

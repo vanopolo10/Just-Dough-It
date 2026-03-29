@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -29,7 +30,7 @@ public class ClickManager : MonoBehaviour
 
     private InputAction _clickAction;
 
-    public event Action<bool> ClicksToggled;
+    //public event Action<bool> ClicksToggled;
 
     private void Awake()
     {
@@ -42,12 +43,12 @@ public class ClickManager : MonoBehaviour
 
     private void OnEnable()
     {
-        ClicksToggled += ToggleClicks;
+        //ClicksToggled += ToggleClicks;
     }
 
     private void OnDisable()
     {
-        ClicksToggled -= ToggleClicks;
+        //ClicksToggled -= ToggleClicks;
 
         if (_clickAction == null) return;
 
@@ -114,9 +115,8 @@ public class ClickManager : MonoBehaviour
         EventSystem.current.RaycastAll(eventData, result);
         if (result.Count > 0)
             if (!string.IsNullOrEmpty(_ignoreTag))
-                foreach (var resultItem in result)
-                    if (!resultItem.gameObject.CompareTag(_ignoreTag))
-                        return;
+                if (result.Any(resultItem => !resultItem.gameObject.CompareTag(_ignoreTag)))
+                    return;
 
         Ray ray = _cam.ScreenPointToRay(Mouse.current.position.ReadValue());
 

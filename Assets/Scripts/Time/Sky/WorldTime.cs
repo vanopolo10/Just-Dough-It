@@ -9,6 +9,8 @@ public class WorldTime : MonoBehaviour
     [SerializeField] private bool _isTutorial;
     [SerializeField][Range(0, HundredPercent)] private float _tutorialTime;
 
+    [Header("Customer System")] 
+    [SerializeField] private CustomerManager _customerManager;
     
     [Header("Day Range")]
     [SerializeField] private int _minHours = 8;
@@ -18,22 +20,46 @@ public class WorldTime : MonoBehaviour
     public GameTime InGameTime { get; private set; }
 
     public event Action<GameTime> TimeChanged;
-    public event Action DayOver;
 
     private bool _dayEnded;
     private Coroutine _smoothAddCoroutine;
     
     private void Awake()
     {
-        InGameTime = new GameTime(_minHours, _maxHours);
+        OnDayStarted();
+    }
+
+    private void OnEnable()
+    {
+        _customerManager.DayStarted += OnDayStarted;
+    }
+    
+    private void OnDisable()
+    {
+        _customerManager.DayStarted -= OnDayStarted;
     }
 
     private void Start()
     {
         SetDayPercent(_isTutorial ? _tutorialTime : 0f);
     }
+    
+    public void StartSmoothAddPercent(float percent)
+    {
+        if (_smoothAddCoroutine != null)
+            StopCoroutine(_smoothAddCoroutine);
+        
+        _smoothAddCoroutine = StartCoroutine(SmoothAddPercent(percent / HundredPercent, _sunDuration));
+    }
 
-    public void SetDayPercent(float percent)
+    private void OnDayStarted()
+    {
+        _dayEnded = false;
+        InGameTime = new GameTime(_minHours, _maxHours);
+        SetDayPercent(0);
+    }
+
+    private void SetDayPercent(float percent)
     {
         if (_dayEnded)
             return;
@@ -48,16 +74,7 @@ public class WorldTime : MonoBehaviour
         {
             _dayEnded = true;
             print("Day ended");
-            DayOver?.Invoke();
         }
-    }
-
-    public void StartSmoothAddPercent(float percent)
-    {
-        if (_smoothAddCoroutine != null)
-            StopCoroutine(_smoothAddCoroutine);
-        
-        _smoothAddCoroutine = StartCoroutine(SmoothAddPercent(percent / HundredPercent, _sunDuration));
     }
 
     private IEnumerator SmoothAddPercent(float percentToAdd, float duration)
@@ -76,14 +93,6 @@ public class WorldTime : MonoBehaviour
         }
 
         SetDayPercent(target);
-    }
-    
-    public void AddDayPercent(float deltaPercent)
-    {
-        Debug.Log("AddDayPercent called: " + deltaPercent);
-
-        float normalized = deltaPercent / HundredPercent;
-        SetDayPercent(InGameTime.CompletePercent + normalized);
     }
 
     public class GameTime

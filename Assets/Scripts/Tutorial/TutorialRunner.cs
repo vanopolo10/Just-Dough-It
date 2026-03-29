@@ -23,6 +23,7 @@ public class TutorialRunner : MonoBehaviour
         
         if (_gates.Count == 0)
         {
+            HideIcon();
             Debug.Log("Tutorial finished");
             return;
         }

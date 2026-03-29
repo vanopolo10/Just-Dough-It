@@ -10385,6 +10385,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!114 &1104063929 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4749271440549519797, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+  m_PrefabInstance: {fileID: 63782452}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae4072ca8de9e6b4cb5297af5d837640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerManager
 --- !u!1 &1121874899
 GameObject:
   m_ObjectHideFlags: 0
@@ -17299,6 +17310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldTime
   _isTutorial: 0
   _tutorialTime: 0
+  _customerManager: {fileID: 1104063929}
   _minHours: 8
   _maxHours: 18
   _sunDuration: 20

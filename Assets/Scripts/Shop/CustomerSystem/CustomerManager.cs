@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -25,8 +24,8 @@ public class CustomerManager : MonoBehaviour
     
     public event Action<Customer> CustomerSpawned;
 
-    public UnityEvent DayStarted = new();
-    public UnityEvent DayEnded = new();
+    public event Action DayStarted;
+    public event Action DayEnded;
 
     public Customer CurrentCustomer => _currentCustomer;
 
@@ -66,7 +65,7 @@ public class CustomerManager : MonoBehaviour
     {
         _darkness.WakeUp();
         _currentIndex = 0;
-        DayStarted.Invoke();
+        DayStarted?.Invoke();
         Invoke(nameof(SpawnCustomer), _firstCustomerDelay);
     }
 
@@ -125,6 +124,6 @@ public class CustomerManager : MonoBehaviour
     private void WaitForSleep()
     {
         _nextDayButton.gameObject.SetActive(true);
-        DayEnded.Invoke();
+        DayEnded?.Invoke();
     }
 }
