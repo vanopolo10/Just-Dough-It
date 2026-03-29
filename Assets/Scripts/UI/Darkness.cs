@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,81 +5,102 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class Darkness : MonoBehaviour
 {
-    [SerializeField] private float _blinkDuration = 2f;
-    [SerializeField] private float _fullDarkDelay = 1.5f;
-    
-    private Image _darkness;
+    [SerializeField] private float _fadeDuration = 0.5f;
 
-    public event Action Darkened; 
+    private Image _image;
+    private Coroutine _coroutine;
     
+    public bool IsFading { get; private set; }
+    public static Darkness Instance { get; private set; }
+
     private void Awake()
     {
-        _darkness = GetComponent<Image>();
-        _darkness.color = new Color(0, 0, 0, 0);
-        _darkness.enabled = false;
-    }
-
-    public void WakeUp()
-    {
-        StopAllCoroutines();
-        _darkness.enabled = true;
-        _darkness.color = new Color(0, 0, 0, 1f);
-        StartCoroutine(Fade(false));
-    }
-    
-    public void FallAsleep()
-    {
-        StopAllCoroutines();
-        _darkness.enabled = true;
-        _darkness.color = new Color(0, 0, 0, 0f);
-        StartCoroutine(Fade(true));
-    }
-    
-    public void Blink()
-    {
-        StopAllCoroutines();
-        _darkness.enabled = true;
-        StartCoroutine(BlinkAnimation());
-    }
-
-    private IEnumerator BlinkAnimation()
-    {
-        yield return Fade(true);
-        
-        _darkness.color = new Color(0, 0, 0, 1f);
-        
-        yield return new WaitForSeconds(_fullDarkDelay);
-
-        yield return Fade(false);
-        
-        _darkness.enabled = false;
-    }
-
-    private IEnumerator Fade(bool isFadingIn)
-    {
-        float elapsedTime = 0f;
-        float fadeDuration = _blinkDuration / 2f;
-        
-        float startAlpha = isFadingIn ? 0f : 1f;
-        float endAlpha = isFadingIn ? 1f : 0f;
-        
-        _darkness.enabled = true;
-        
-        while (elapsedTime < fadeDuration)
+        if (Instance == null)
         {
-            float t = elapsedTime / fadeDuration;
-            float alpha = Mathf.Lerp(startAlpha, endAlpha, t);
-            _darkness.color = new Color(0, 0, 0, alpha);
-            
-            elapsedTime += Time.deltaTime;
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _image = GetComponent<Image>();
+        _image.color = new Color(0, 0, 0, 0);
+        _image.enabled = false;
+    }
+
+    public void FadeIn()
+    {
+        StartFade(1f);
+    }
+
+    public void FadeOut()
+    {
+        StartFade(0f);
+    }
+
+    public void SetDark()
+    {
+        Stop();
+        _image.enabled = true;
+        _image.color = new Color(0, 0, 0, 1f);
+    }
+
+    public void SetLight()
+    {
+        Stop();
+        _image.color = new Color(0, 0, 0, 0f);
+        _image.enabled = false;
+    }
+
+    public bool IsDark()
+    {
+        return _image.enabled && _image.color.a >= 0.99f;
+    }
+
+    private void StartFade(float target)
+    {
+        if (_coroutine != null) StopCoroutine(_coroutine);
+
+        IsFading = true;
+        _coroutine = StartCoroutine(FadeRoutine(target));
+    }
+
+    private IEnumerator FadeRoutine(float target)
+    {
+        _image.enabled = true;
+
+        float start = _image.color.a;
+        float time = 0f;
+
+        while (time < _fadeDuration)
+        {
+            float t = time / _fadeDuration;
+            float a = Mathf.Lerp(start, target, Mathf.SmoothStep(0f, 1f, t));
+            _image.color = new Color(0, 0, 0, a);
+
+            time += Time.unscaledDeltaTime;
             yield return null;
         }
-        
-        _darkness.color = new Color(0, 0, 0, endAlpha);
 
-        if (!isFadingIn)
-            _darkness.enabled = false;
-        else
-            Darkened?.Invoke();
+        _image.color = new Color(0, 0, 0, target);
+
+        if (target == 0f)
+            _image.enabled = false;
+
+        IsFading = false;
+    }
+
+    private void Stop()
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        IsFading = false;
     }
 }

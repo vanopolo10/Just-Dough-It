@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SaveUI : MonoBehaviour
@@ -11,7 +10,7 @@ public class SaveUI : MonoBehaviour
 
     [SerializeField] private GameObject _mainUI;
     [SerializeField] private GameObject _deleteUI;
-    private Darkness _darkness;
+
     private Animator _animator;
 
     public void ChangeInfo(string name, string createTime, Sprite thumbnail)
@@ -24,24 +23,16 @@ public class SaveUI : MonoBehaviour
         _deleteUI.SetActive(false);
     }
 
-    public void SetDarkness(Darkness darkness)
+    public void SetAnimator(Animator animator)
     {
-        _darkness = darkness;
-        _darkness.Darkened += StartGame;
+        _animator = animator;
     }
-
-    public void SetAnimator(Animator animator) => _animator = animator;
 
     public void Load()
     {
         _animator.SetTrigger("TrayClose");
         SaveSystem.SelectedSave = _name.text;
-        _darkness.FallAsleep();
-    }
-
-    private void StartGame()
-    {
-        SceneManager.LoadScene(1, LoadSceneMode.Single);
+        SceneLoader.Instance.LoadScene(1);
     }
 
     public void RemoveSave()

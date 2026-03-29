@@ -4,16 +4,11 @@ using UnityEngine;
 public class Sun : MonoBehaviour
 {
     [SerializeField] private WorldTime _worldTime;
-
-    [Header("Rotation")]
     [SerializeField] private AnimationCurve _sunAngleCurve;
     [SerializeField] private float _yRotation = 25f;
-
-    [Header("Light")]
     [SerializeField] private AnimationCurve _intensityCurve;
     [SerializeField] private Gradient _colorGradient;
 
-    private bool _doPreferSunrises;
     private Light _light;
 
     private void Awake()
@@ -39,17 +34,21 @@ public class Sun : MonoBehaviour
             OnTimeChanged(_worldTime.InGameTime);
     }
 
+    private float Remap(float t)
+    {
+        return _worldTime.PreferSunrise ? t : 1f - t;
+    }
+
     private void OnTimeChanged(WorldTime.GameTime time)
     {
         float p = time.CompletePercent;
+        float t = Remap(p);
 
-        if (p == 0)
-            _doPreferSunrises = SaveSystem.LoadData<bool>(SaveSystem.SelectedSave, "DoPreferSunrises");
-        
-        float angle = _doPreferSunrises ? _sunAngleCurve.Evaluate(p) : _sunAngleCurve.Evaluate(180 - p);
+        float angle = _sunAngleCurve.Evaluate(t);
+
         transform.rotation = Quaternion.Euler(angle, _yRotation, 0f);
 
-        _light.intensity = _intensityCurve.Evaluate(p);
-        _light.color = _colorGradient.Evaluate(p);
+        _light.intensity = _intensityCurve.Evaluate(t);
+        _light.color = _colorGradient.Evaluate(t);
     }
 }

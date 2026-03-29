@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,29 +5,24 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
-using UnityEngine.SceneManagement;
 
 public class MenuUIController : MonoBehaviour
 {
     public static MenuUIController Instance = null;
 
     [SerializeField] private CafeNameController _cafeNameController;
-    [SerializeField] private Darkness _darkness;
     [SerializeField] private Transform _viewportContent;
     [SerializeField] private GameObject _savePrefab;
     [SerializeField] private TMP_Dropdown _languageDropdown;
     [SerializeField] private Animator _sidesAnimator;
 
     private List<GameSave> _saves;
-
     private List<string> _languageCodes = new() { "ru", "en" };
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
-        else if (Instance == this || Instance != null) Destroy(this);
-
-        _darkness.Darkened += LoadNewGame;
+        else Destroy(this);
     }
 
     private void Start()
@@ -42,19 +36,16 @@ public class MenuUIController : MonoBehaviour
         SaveSystem.SelectedSave = _cafeNameController.CafeName;
         SaveSystem.CreateSave(SaveSystem.SelectedSave);
         SaveSystem.SaveData(SaveSystem.SelectedSave, "DoPreferSunrises", doPreferSunrises);
-        _darkness.FallAsleep();
-    }
 
-    private void LoadNewGame()
-    {
-        SceneManager.LoadScene(1, LoadSceneMode.Single);
+        SceneLoader.Instance.LoadScene(1);
     }
 
     public void LoadLastGame()
     {
         if (_saves.Count == 0) return;
+
         SaveSystem.SelectedSave = _saves[0].Name;
-        SceneManager.LoadScene(2, LoadSceneMode.Single);
+        SceneLoader.Instance.LoadScene(2);
     }
 
     public void UpdateSavesList()
@@ -62,14 +53,15 @@ public class MenuUIController : MonoBehaviour
         for (int i = 0; i < _viewportContent.childCount; i++)
             Destroy(_viewportContent.GetChild(i).gameObject);
 
-        _saves = SaveSystem.GetSavedGames().OrderByDescending(s => DateTime.Parse(s.ChangeTime)).ToList();
+        _saves = SaveSystem.GetSavedGames()
+            .OrderByDescending(s => System.DateTime.Parse(s.ChangeTime))
+            .ToList();
 
         foreach (GameSave save in _saves)
         {
             GameObject saveUIElement = Instantiate(_savePrefab, _viewportContent);
             SaveUI saveUI = saveUIElement.GetComponent<SaveUI>();
             saveUI.ChangeInfo(save.Name, save.ChangeTime, SaveSystem.LoadSprite(save.Name));
-            saveUI.SetDarkness(_darkness);
             saveUI.SetAnimator(_sidesAnimator);
         }
     }

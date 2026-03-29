@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
-using UnityEngine.SceneManagement;
 
 public class InGameUIController : MonoBehaviour
 {
@@ -15,15 +13,20 @@ public class InGameUIController : MonoBehaviour
     [SerializeField] private SaveManager _saveManager;
     [SerializeField] private TMP_InputField _inputField;
     [SerializeField] private TMP_Dropdown _dropdown;
-    [SerializeField] private Darkness _darkness;
-    
+
     private void Start()
     {
         _ui.SetActive(false);
         _saveUI.SetActive(false);
         _cameraController.enabled = true;
-        _darkness.Darkened += Exit;
+
         StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            OnEscape();
     }
 
     private void Switch()
@@ -35,10 +38,10 @@ public class InGameUIController : MonoBehaviour
     private void OnEscape()
     {
         _dropdown.value = _dropdown.options.FindIndex(option => option.text == LocalizationSettings.SelectedLocale.LocaleName);
-        
+
         if (_saveUI.activeSelf)
             SwitchSaveMenu();
-        else 
+        else
             Switch();
     }
 
@@ -51,15 +54,13 @@ public class InGameUIController : MonoBehaviour
     public void ExitButton()
     {
         _saveManager.SaveGame();
-        _darkness.FallAsleep();
+        SceneLoader.Instance.LoadScene(0);
     }
-
-    private void Exit() => SceneManager.LoadScene(0, LoadSceneMode.Single);
 
     public void ChangeLanguage()
     {
         string code = _dropdown.options[_dropdown.value].text.ToLower();
-        
+
         switch (code)
         {
             case "english":
@@ -73,8 +74,11 @@ public class InGameUIController : MonoBehaviour
 
     private IEnumerator SetLanguage(string code)
     {
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.GetLocale(new LocaleIdentifier(code));
+        LocalizationSettings.SelectedLocale =
+            LocalizationSettings.AvailableLocales.GetLocale(new LocaleIdentifier(code));
+
         SaveSystem.SaveCurrentLanguage();
+
         yield return LocalizationSettings.InitializationOperation;
     }
 }

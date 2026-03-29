@@ -1,4 +1,3 @@
-using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,28 +9,27 @@ public class DynamicSliderHandle : MonoBehaviour
     [SerializeField] private Image _glowImage;
 
     private float _sliderAmplitude;
-    private float nextValue;
+    private float _nextValue;
 
-    void Start()
+    private void Start()
     {
         if(_slider != null)
         {
             _slider.onValueChanged.AddListener(GetSliderValue);
             _sliderAmplitude = _slider.maxValue - _slider.minValue;
         } 
-        else
-            Debug.LogWarning("Слайдер не указан");
+
         GetSliderValue(_slider.value);
     }
 
-    void GetSliderValue(float value)
+    private void GetSliderValue(float value)
     {
         HandlePreset handlePreset = null;
 
-        for (int i = 0; i < _handlePresets.Length; i++)
+        foreach (var t in _handlePresets)
         {
-            if (value >= _handlePresets[i].Value)
-                handlePreset = _handlePresets[i];
+            if (value >= t.Value)
+                handlePreset = t;
             else
                 break;
         }

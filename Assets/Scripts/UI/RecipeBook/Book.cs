@@ -31,7 +31,7 @@ public class Book : MonoBehaviour
     {
         _id = 0;
         CurrentSelectedProduct = ProductType.None;
-        SetSpritesAndText();
+        _ = SetSpritesAndText();
         UpdateNavigationButtons();
         Disable();
     }
@@ -44,7 +44,7 @@ public class Book : MonoBehaviour
         if (canGoToNextPage || isLastPageWithOnlyLeft)
         {
             _id++;
-            SetSpritesAndText();
+            _ = SetSpritesAndText();
             UpdateNavigationButtons();
         }
     }
@@ -54,7 +54,7 @@ public class Book : MonoBehaviour
         if (_id > 0)
         {
             _id--;
-            SetSpritesAndText();
+            _ = SetSpritesAndText();
             UpdateNavigationButtons();
         }
     }

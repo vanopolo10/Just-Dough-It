@@ -1,7 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CustomerModelSpawner))]
@@ -11,7 +11,6 @@ public class CustomerManager : MonoBehaviour
     private const float HundredPercent = 100f;
 
     [SerializeField] private Button _nextDayButton;
-    [SerializeField] private Darkness _darkness;
     [SerializeField] private WorldTime _worldTime;
     [SerializeField] private float _firstCustomerDelay;
     [SerializeField] private List<CustomerPool> _schedule;
@@ -20,110 +19,175 @@ public class CustomerManager : MonoBehaviour
     private CustomerModelSpawner _spawner;
 
     private int _currentIndex;
-    private Customer _currentCustomer;
-    
-    public event Action<Customer> CustomerSpawned;
+    private bool _isDayStarting;
+    private Coroutine _spawnCoroutine;
 
+    public event Action<Customer> CustomerSpawned;
     public event Action DayStarted;
     public event Action DayEnded;
 
-    public Customer CurrentCustomer => _currentCustomer;
+    public Customer CurrentCustomer { get; private set; }
 
     private void Awake()
     {
         _spawner = GetComponent<CustomerModelSpawner>();
         _routeMover = GetComponent<CustomerRouteMover>();
-        _nextDayButton.gameObject.SetActive(false);
+
+        if (_nextDayButton != null)
+            _nextDayButton.gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
         _routeMover.ReachedCounter += OnReachedCounter;
         _routeMover.LeftCafe += NextCustomer;
-        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
         _routeMover.ReachedCounter -= OnReachedCounter;
         _routeMover.LeftCafe -= NextCustomer;
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        if (_spawnCoroutine != null)
+            StopCoroutine(_spawnCoroutine);
+    }
+
+    private void Start()
+    {
+        StartCoroutine(StartAfterFade());
+    }
+
+    private IEnumerator StartAfterFade()
+    {
+        yield return null;
+
+        if (Darkness.Instance != null && Darkness.Instance.IsDark())
+        {
+            Darkness.Instance.FadeOut();
+            yield return new WaitUntil(() => Darkness.Instance.IsDark() == false);
+            yield return null;
+        }
+
+        StartNewDay();
     }
 
     public void EndDay()
     {
-        _darkness.FallAsleep();
-        StartNewDay();
-    }
-    
-    private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
-    {
-        StartNewDay();
+        if (_spawnCoroutine != null)
+        {
+            StopCoroutine(_spawnCoroutine);
+            _spawnCoroutine = null;
+        }
+
+        _isDayStarting = false;
+        Darkness.Instance.FadeIn();
     }
 
-    private void StartNewDay()
+    public void StartNewDay()
     {
-        _darkness.WakeUp();
+        if (_isDayStarting)
+            return;
+
+        _isDayStarting = true;
+        StartCoroutine(DayRoutine());
+    }
+
+    private IEnumerator DayRoutine()
+    {
         _currentIndex = 0;
         DayStarted?.Invoke();
-        Invoke(nameof(SpawnCustomer), _firstCustomerDelay);
+
+        yield return new WaitForSecondsRealtime(_firstCustomerDelay);
+
+        SpawnCustomer();
     }
 
     private void SpawnCustomer()
     {
         if (_schedule.Count == 0)
-        {
-            Debug.LogError("Schedule is empty.");
             return;
-        }
+
+        if (_spawnCoroutine != null)
+            StopCoroutine(_spawnCoroutine);
+
+        _spawnCoroutine = StartCoroutine(SpawnCustomerCoroutine());
+    }
+
+    private IEnumerator SpawnCustomerCoroutine()
+    {
+        yield return null;
 
         _worldTime?.StartSmoothAddPercent(HundredPercent / _schedule.Count);
 
-        GameObject prefab = _schedule[_currentIndex].GetCustomerFromPool();
+        GameObject prefab;
+
+        try
+        {
+            prefab = _schedule[_currentIndex].GetCustomerFromPool();
+        }
+        catch
+        {
+            NextCustomer();
+            yield break;
+        }
+
+        if (prefab == null)
+        {
+            NextCustomer();
+            yield break;
+        }
+
         GameObject spawned = _spawner.Spawn(prefab, null);
 
         if (!spawned)
         {
-            Debug.LogError("Customer spawn failed.");
-            return;
+            NextCustomer();
+            yield break;
         }
 
-        _currentCustomer = spawned.GetComponent<Customer>();
-        if (!_currentCustomer)
+        CurrentCustomer = spawned.GetComponent<Customer>();
+
+        if (!CurrentCustomer)
         {
-            Debug.LogError("Customer component missing.");
-            return;
+            NextCustomer();
+            yield break;
         }
 
         var animator = spawned.GetComponentInChildren<CustomerAnimatorController>();
         _routeMover.Initialize(animator);
 
         CustomerSpawned?.Invoke(CurrentCustomer);
+        _spawnCoroutine = null;
     }
 
     private void OnReachedCounter()
     {
-        _currentCustomer?.OnReachedCounter();
+        CurrentCustomer?.OnReachedCounter();
     }
 
     private void NextCustomer()
     {
-        _currentCustomer?.Despawn();
+        CurrentCustomer?.Despawn();
+        CurrentCustomer = null;
 
         _currentIndex++;
+
         if (_currentIndex >= _schedule.Count)
         {
-            print("Schedule is worked through");
-            WaitForSleep();
+            StartCoroutine(ShowNextDayButton());
             return;
         }
 
         SpawnCustomer();
     }
 
-    private void WaitForSleep()
+    private IEnumerator ShowNextDayButton()
     {
-        _nextDayButton.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        if (_nextDayButton != null)
+            _nextDayButton.gameObject.SetActive(true);
+
         DayEnded?.Invoke();
     }
 }

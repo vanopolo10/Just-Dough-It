@@ -9,23 +9,27 @@ public class WorldTime : MonoBehaviour
     [SerializeField] private bool _isTutorial;
     [SerializeField][Range(0, HundredPercent)] private float _tutorialTime;
 
-    [Header("Customer System")] 
     [SerializeField] private CustomerManager _customerManager;
-    
-    [Header("Day Range")]
+
     [SerializeField] private int _minHours = 8;
     [SerializeField] private int _maxHours = 18;
-    [SerializeField] private float _sunDuration = 20;
+    [SerializeField] private float _sunDuration = 20f;
 
     public GameTime InGameTime { get; private set; }
 
     public event Action<GameTime> TimeChanged;
 
+    public bool PreferSunrise { get; private set; }
+
+    private bool _pendingPreferSunrise;
+    private bool _hasPendingChange;
+
     private bool _dayEnded;
     private Coroutine _smoothAddCoroutine;
-    
+
     private void Awake()
     {
+        PreferSunrise = SaveSystem.LoadData<bool>(SaveSystem.SelectedSave, "DoPreferSunrises");
         OnDayStarted();
     }
 
@@ -33,7 +37,7 @@ public class WorldTime : MonoBehaviour
     {
         _customerManager.DayStarted += OnDayStarted;
     }
-    
+
     private void OnDisable()
     {
         _customerManager.DayStarted -= OnDayStarted;
@@ -43,20 +47,41 @@ public class WorldTime : MonoBehaviour
     {
         SetDayPercent(_isTutorial ? _tutorialTime : 0f);
     }
-    
+
+    public void SetPreference(bool preferSunrise)
+    {
+        _pendingPreferSunrise = preferSunrise;
+        _hasPendingChange = true;
+    }
+
+    private void ApplyPendingPreference()
+    {
+        if (!_hasPendingChange)
+            return;
+
+        PreferSunrise = _pendingPreferSunrise;
+        SaveSystem.SaveData(SaveSystem.SelectedSave, "DoPreferSunrises", PreferSunrise);
+        _hasPendingChange = false;
+    }
+
     public void StartSmoothAddPercent(float percent)
     {
+        if (_isTutorial)
+            return;
+
         if (_smoothAddCoroutine != null)
             StopCoroutine(_smoothAddCoroutine);
-        
+
         _smoothAddCoroutine = StartCoroutine(SmoothAddPercent(percent / HundredPercent, _sunDuration));
     }
 
     private void OnDayStarted()
     {
+        ApplyPendingPreference();
+
         _dayEnded = false;
         InGameTime = new GameTime(_minHours, _maxHours);
-        SetDayPercent(0);
+        SetDayPercent(0f);
     }
 
     private void SetDayPercent(float percent)
@@ -70,10 +95,9 @@ public class WorldTime : MonoBehaviour
 
         TimeChanged?.Invoke(InGameTime);
 
-        if (percent >= HundredPercent)
+        if (percent >= 1f)
         {
             _dayEnded = true;
-            print("Day ended");
         }
     }
 
@@ -98,7 +122,7 @@ public class WorldTime : MonoBehaviour
     public class GameTime
     {
         private const int ClockPower = 60;
-        
+
         private readonly int _minHours;
         private readonly int _maxHours;
 
