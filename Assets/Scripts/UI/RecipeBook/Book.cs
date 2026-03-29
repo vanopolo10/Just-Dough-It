@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -71,11 +72,13 @@ public class Book : MonoBehaviour
             _book.SetActive(!_book.activeSelf);
     }
     
-    private void SetSpritesAndText()
+    private async Task SetSpritesAndText()
     {
         _currentPageLeft = _pages[_id * 2];
         _imageLeft.sprite = GetCorrectSprite(_currentPageLeft);
-        _textLeft.text = _currentPageLeft.NameKey;
+        var task = LocalizationSettingsExtension.FindStringInAllTablesAsync(_currentPageLeft.NameKey);
+        await task;
+        _textLeft.text = task.Result;
         
         _recipeButtonLeft.onClick.RemoveAllListeners();
         ProductType leftProductType = _currentPageLeft.ProductType;
@@ -87,7 +90,9 @@ public class Book : MonoBehaviour
         {
             _currentPageRight = _pages[rightIndex];
             _imageRight.sprite = GetCorrectSprite(_currentPageRight);
-            _textRight.text = _currentPageRight.NameKey;
+            task = LocalizationSettingsExtension.FindStringInAllTablesAsync(_currentPageRight.NameKey);
+            await task;
+            _textRight.text = task.Result;
             _imageRight.gameObject.SetActive(true);
             _textRight.gameObject.SetActive(true);
 
