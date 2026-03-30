@@ -19,7 +19,7 @@ public class OvenSender : MonoBehaviour
     private BoxCollider _collider;
     private DoughController _currentDough;
     private DoughDrag _currentDoughDrag;
-    private bool _canAppear;
+    private bool _canSend;
 
     public event Action DoughSent;
 
@@ -49,7 +49,7 @@ public class OvenSender : MonoBehaviour
         DetachFromDough();
     }
 
-    public void SetCanAppear(bool canAppear) => _canAppear = canAppear;
+    public void SetCanSend(bool canSend) => _canSend = canSend;
     
     private void OnDoughChanged()
     {
@@ -95,7 +95,7 @@ public class OvenSender : MonoBehaviour
 
     private void RefreshIcon()
     {
-        if (_currentDough == null | _canAppear == false | (_tray != null && _tray.IsFull))
+        if (_currentDough == null | _canSend == false | (_tray != null && _tray.IsFull))
         {
             _image.gameObject.SetActive(false);
             return;
@@ -115,7 +115,7 @@ public class OvenSender : MonoBehaviour
         if (_finalStates.Contains(_currentDough.State) == false)
             return;
 
-        if (_collider.bounds.Contains(_currentDough.transform.position) == false)
+        if (_collider.bounds.Contains(_currentDough.transform.position) == false || _canSend == false)
             return;
 
         DoughSent?.Invoke();

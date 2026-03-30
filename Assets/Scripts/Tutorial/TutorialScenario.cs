@@ -53,7 +53,7 @@ public class TutorialScenario : MonoBehaviour
         _book.SetCanOpen(false);
         _jam.SetCanGrab(false);
         _farce.SetCanGrab(false);
-        _ovenSender.SetCanAppear(false);
+        _ovenSender.SetCanSend(false);
         _tray.SetCanMove(false);
         _thermometer.gameObject.SetActive(false);
     }
@@ -140,7 +140,7 @@ public class TutorialScenario : MonoBehaviour
             new ActionGate(() => _doughBucket.CurrentDough.SetCanActing(true)),
             new DoughStateGate(_doughBucket, DoughState.SimplePie),
             
-            new ActionGate(() => _ovenSender.SetCanAppear(true)),
+            new ActionGate(() => _ovenSender.SetCanSend(true)),
             new ActionGate(() => _thoughts.Close()),
             new DoughSendGate(_ovenSender, _toOvenGuide),
             

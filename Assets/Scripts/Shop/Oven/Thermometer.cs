@@ -6,7 +6,7 @@ public class Thermometer : MonoBehaviour
     [SerializeField] private Button _addWoodButton;
     [SerializeField] private Oven _oven;
 
-    private bool _canAddWood;
+    private bool _canAddWood = true;
     
     private void OnEnable()
     {
@@ -22,6 +22,6 @@ public class Thermometer : MonoBehaviour
     private void TryAddWood()
     {
         if(_canAddWood)
-            _oven.AddWood();
+            _oven.TryAddWood();
     }
 }
