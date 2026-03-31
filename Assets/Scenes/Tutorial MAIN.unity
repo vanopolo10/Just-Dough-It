@@ -2703,8 +2703,8 @@ MonoBehaviour:
     Back: 1
     BackTurn: 1
     AllowMouseLook: 1
-  - Position: {x: 2.355, y: 0.855, z: 3.223}
-    RotationEuler: {x: 14, y: 0, z: 0}
+  - Position: {x: 2.36621, y: 0.74040294, z: 3.43}
+    RotationEuler: {x: 10, y: 0, z: 0}
     Type: 5
     Left: 4
     Right: 1
@@ -8171,6 +8171,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 966392693}
   m_CullTransparentMesh: 1
+--- !u!1 &968240462 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4733604710617112403, guid: 72a21a03f5f6be84dbcc46792c3e7c84, type: 3}
+  m_PrefabInstance: {fileID: 5597961596677951701}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &979479852
 GameObject:
   m_ObjectHideFlags: 0
@@ -10057,7 +10062,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -164.1, y: 0}
+  m_AnchoredPosition: {x: -131.3, y: 0}
   m_SizeDelta: {x: 300, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1099842743
@@ -16649,8 +16654,8 @@ MonoBehaviour:
   _fillingGuide: {fileID: 774145293}
   _toOvenGuide: {fileID: 1250524689}
   _trayClickIcon: {fileID: 512884578}
-  _ovenClickIcon: {fileID: 0}
-  _hatchClickIcon: {fileID: 0}
+  _ovenClickIcon: {fileID: 968240462}
+  _hatchClickIcon: {fileID: 43163331}
   _waitingGuide: {fileID: 221174971}
   _trayDoughIcon: {fileID: 213665373}
   _shelfDragIcon: {fileID: 1009679233}
