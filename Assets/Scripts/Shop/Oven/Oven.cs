@@ -171,7 +171,7 @@ public class Oven : MonoBehaviour
             data.CurrentPower = power;
 
             UpdateTotalFirePower();
-            wood.SetVisualProgress(burn, emission);
+            wood.SetVisualProgress(burn, emission, _hatch.OpenPercentage);
 
             yield return null;
         }

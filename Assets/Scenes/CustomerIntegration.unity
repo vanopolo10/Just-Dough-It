@@ -7917,6 +7917,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
   m_ShowMaskGraphic: 0
+--- !u!1 &815604283 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4639256254255799640, guid: 8495f0dc762d51640a787e1c5b761847, type: 3}
+  m_PrefabInstance: {fileID: 1967266374}
+  m_PrefabAsset: {fileID: 0}
+--- !u!169 &815604286
+AudioLowPassFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815604283}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_LowpassResonanceQ: 1
+  lowpassLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &828004233
 GameObject:
   m_ObjectHideFlags: 0
@@ -17815,7 +17845,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7198642726316263202, guid: 8495f0dc762d51640a787e1c5b761847, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1213233116}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4639256254255799640, guid: 8495f0dc762d51640a787e1c5b761847, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 815604286}
   m_SourcePrefab: {fileID: 100100000, guid: 8495f0dc762d51640a787e1c5b761847, type: 3}
 --- !u!1001 &1972223982
 PrefabInstance:

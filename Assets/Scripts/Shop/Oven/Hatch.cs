@@ -16,6 +16,7 @@ public class Hatch : MonoBehaviour
     public event Action<bool> StateChanged;
 
     public bool IsOpen { get; private set; }
+    public float OpenPercentage { get; private set; } = 0;
 
     private void Awake()
     {
@@ -85,6 +86,8 @@ public class Hatch : MonoBehaviour
 
             float curveValue = _openCurve.Evaluate(normalized);
             float x = Mathf.Lerp(startX, endX, curveValue);
+
+            OpenPercentage = 1 - x / 90f;
 
             transform.localRotation = Quaternion.Euler(x, 0f, 0f);
 

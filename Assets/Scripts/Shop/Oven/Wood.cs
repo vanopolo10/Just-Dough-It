@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer))]
+[RequireComponent(typeof(Renderer), typeof(AudioSource), typeof(AudioLowPassFilter))]
 public class Wood : MonoBehaviour
 {
     private static readonly int BurnProgress = Shader.PropertyToID("_BurnProgress");
@@ -9,11 +9,16 @@ public class Wood : MonoBehaviour
 
     [SerializeField] private float _maxEmission = 8f;
     [SerializeField] private Light _fireLight;
+    [SerializeField] private AudioClip _hitClip;
 
     private Renderer _renderer;
     private MaterialPropertyBlock _mpb;
 
     private float _baseLight;
+
+    private AudioSource _audioSource;
+    private AudioLowPassFilter _audioFilter;
+    private Vector3 _initialScale;
 
     private void Awake()
     {
@@ -22,6 +27,11 @@ public class Wood : MonoBehaviour
 
         if (_fireLight != null)
             _baseLight = _fireLight.intensity;
+
+        _initialScale = transform.localScale;
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.pitch = Random.Range(0.8f, 1.2f);
+        _audioFilter = GetComponent<AudioLowPassFilter>();
 
         ResetWood();
     }
@@ -34,7 +44,7 @@ public class Wood : MonoBehaviour
             _fireLight.intensity = 0f;
     }
 
-    public void SetVisualProgress(float burn, float emission)
+    public void SetVisualProgress(float burn, float emission, float hatchOpenPercentage)
     {
         Apply(burn, emission);
 
@@ -43,6 +53,11 @@ public class Wood : MonoBehaviour
             float flicker = 0.8f + Mathf.Sin(Time.time * 15f) * 0.2f;
             _fireLight.intensity = _baseLight * emission * flicker;
         }
+
+        _audioFilter.cutoffFrequency = Mathf.Lerp(3000, 22000, hatchOpenPercentage);
+        if (emission == 1)
+            transform.localScale = Vector3.Lerp(_initialScale, _initialScale * 0.5f, burn / 2f);
+        print(burn);
     }
 
     private void Apply(float burn, float emission)
@@ -54,5 +69,11 @@ public class Wood : MonoBehaviour
         _mpb.SetFloat(EmissionIntensity, emission * _maxEmission);
 
         _renderer.SetPropertyBlock(_mpb);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        float volume = Mathf.Clamp01(collision.relativeVelocity.magnitude / 5f);
+        _audioSource.PlayOneShot(_hitClip, volume);
     }
 }
