@@ -451,6 +451,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7641420a17004084d8141698502c07e9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5754743263469617239}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7641420a17004084d8141698502c07e9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 975458552956744382}
   m_SourcePrefab: {fileID: 100100000, guid: 7641420a17004084d8141698502c07e9, type: 3}
 --- !u!1 &2603949856127505423 stripped
 GameObject:
@@ -479,3 +482,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &975458552956744382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2603949856127505423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276d6086f3099314faa0f8a4b70a551a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StepAudio
+  _config: {fileID: 11400000, guid: 2518755775cf23846af101e7c4ed2397, type: 2}

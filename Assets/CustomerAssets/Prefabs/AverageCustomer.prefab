@@ -45,9 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 340ed90497f92d6478b528a305a51647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RandomisedCustomer
-  _timeoutBeforeInitializing: 1
-  _timeoutBeforeDespawning: 3
-  _timeoutBeforeResettingDialogue: 10
   _quest: {fileID: 0}
   _quests:
   - Quest: {fileID: 11400000, guid: 18f26de68419ab9459f5bb07bf0b3e95, type: 2}
@@ -60,6 +57,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2190967450838305047}
     m_Modifications:
+    - target: {fileID: 2999195199779538127, guid: bb534a47e8dc6f04daf2c4108a5fee5c, type: 3}
+      propertyPath: _config
+      value: 
+      objectReference: {fileID: 11400000, guid: 2518755775cf23846af101e7c4ed2397, type: 2}
     - target: {fileID: 3764783259667371068, guid: bb534a47e8dc6f04daf2c4108a5fee5c, type: 3}
       propertyPath: m_Name
       value: PlumpGuy

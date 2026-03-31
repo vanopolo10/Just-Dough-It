@@ -428,6 +428,7 @@ GameObject:
   - component: {fileID: 2534847394596126580}
   - component: {fileID: 8819934650524357223}
   - component: {fileID: 8558137237171919164}
+  - component: {fileID: 7585932676626176048}
   m_Layer: 0
   m_Name: Ded
   m_TagString: Untagged
@@ -493,6 +494,19 @@ MonoBehaviour:
   _nahVariants: 1
   _subIdleDelayMin: 4
   _subIdleDelayMax: 10
+--- !u!114 &7585932676626176048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4395668138864257864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 276d6086f3099314faa0f8a4b70a551a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StepAudio
+  _config: {fileID: 11400000, guid: 2518755775cf23846af101e7c4ed2397, type: 2}
 --- !u!1 &4677896903372766203
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,8 +552,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4ab2c503d4de7441b63c78ecc645b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Customer
-  _timeoutBeforeInitializing: 2
-  _timeoutBeforeResettingDialogue: 10
   _quest: {fileID: 11400000, guid: f684700617e403d4caff9779483a0ac5, type: 2}
 --- !u!1 &4883137415424138427
 GameObject:
