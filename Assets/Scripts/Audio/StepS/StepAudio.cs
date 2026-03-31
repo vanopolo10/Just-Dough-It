@@ -11,6 +11,11 @@ public class StepAudio : MonoBehaviour
 
     private void Awake()
     {
+        if (_config == null)
+        {
+            enabled = false;
+            return;
+        }
         _audioSource = gameObject.AddComponent<AudioSource>();
         _audioSource.volume = 0.4f;
         _audioSource.spatialBlend = 1f;
