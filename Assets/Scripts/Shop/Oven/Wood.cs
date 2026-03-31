@@ -54,7 +54,7 @@ public class Wood : MonoBehaviour
             _fireLight.intensity = _baseLight * emission * flicker;
         }
 
-        _audioFilter.cutoffFrequency = Mathf.Lerp(3000, 22000, hatchOpenPercentage);
+        _audioFilter.cutoffFrequency = Mathf.Lerp(2000, 22000, hatchOpenPercentage);
         if (emission == 1)
             transform.localScale = Vector3.Lerp(_initialScale, _initialScale * 0.5f, burn / 2f);
         print(burn);
