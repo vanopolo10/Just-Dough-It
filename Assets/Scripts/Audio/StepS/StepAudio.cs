@@ -25,6 +25,7 @@ public class StepAudio : MonoBehaviour
 
     public void Step()
     {
+        if (_config == null) return;
         Ray ray = new(transform.position + transform.up * 0.01f, -transform.up + transform.forward * 0.5f);
         RaycastHit[] hits = Physics.RaycastAll(ray, 10f);
         foreach (RaycastHit hit in hits)
