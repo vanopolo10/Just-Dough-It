@@ -120,6 +120,7 @@ public class CursorController : MonoBehaviour
                     _currentPriority = CursorPriority.Drag;
                     return;
                 }
+                
                 _currentPriority = CursorPriority.PickMe;
                 return;
             }
@@ -136,7 +137,7 @@ public class CursorController : MonoBehaviour
                 return;
             }
 
-            if (hitObject.TryGetComponent<DoughController>(out _))
+            if (hitObject.GetComponentInParent<DoughController>() != null)
             {
                 _currentPriority = CursorPriority.PickMe;
                 return;
@@ -148,7 +149,7 @@ public class CursorController : MonoBehaviour
                 return;
             }
 
-            if (TryGetComponent<RollingPin>(out _))
+            if (hitObject.GetComponentInParent<RollingPin>() != null)
             {
                 _currentPriority = CursorPriority.PickMe;
                 return;
