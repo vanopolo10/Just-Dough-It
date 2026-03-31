@@ -517,7 +517,7 @@ Transform:
   m_GameObject: {fileID: 5366040747928722351}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 38.2, y: -8.1, z: 65.1}
+  m_LocalPosition: {x: 42, y: -9.7, z: 60.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -825,7 +825,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 94.84017, y: 83.43034, z: 0.9999993}
-  m_Center: {x: 37.566055, y: -18.484093, z: 111.50001}
+  m_Center: {x: 34.13, y: -18.484093, z: 111.50001}
 --- !u!65 &692203956642791078
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -846,7 +846,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 2.2999997, y: 84.01663, z: 54.55161}
-  m_Center: {x: 2.3, y: -18.19096, z: 84.07479}
+  m_Center: {x: -7.6, y: -18.19096, z: 84.07479}
 --- !u!65 &6289580925644177443
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -867,7 +867,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 2.3000002, y: 85.08788, z: 54.551598}
-  m_Center: {x: 72.52, y: -18.726591, z: 84.07485}
+  m_Center: {x: 79.63, y: -18.726591, z: 84.07485}
 --- !u!65 &7731995595206473670
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -887,8 +887,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 95.52277, y: 4.2365084, z: 60.425213}
-  m_Center: {x: 35.4, y: -48.3, z: 85.13371}
+  m_Size: {x: 97.3, y: 3.9, z: 60.425213}
+  m_Center: {x: 35.4, y: -33.1, z: 85.13371}
 --- !u!65 &3916006630377546936
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -909,7 +909,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 95.52277, y: 4.2365084, z: 56.5494}
-  m_Center: {x: 35.4, y: 9.9, z: 83.99402}
+  m_Center: {x: 33.8, y: 22.3, z: 83.99402}
 --- !u!1 &5427450511077630137 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2056901520811228412, guid: cc65db37a5ad4f54489906bd5e7ecb4a, type: 3}
@@ -928,10 +928,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Oven
   _woodPower: 25
-  _woodFullPowerTime: 5
+  _woodFullPowerTime: 30
   _speedCoef: 2
   _fadeCoef: 2
   _hatch: {fileID: 1069517281759467131}
+  _openHatchCoef: 0.7
   _woodSpawnPoint: {fileID: 4839095838857158526}
   _woodPrefab: {fileID: -3119301643690911563, guid: 63676f27f711d2e459f693f131807d17, type: 3}
   _maxWood: 4

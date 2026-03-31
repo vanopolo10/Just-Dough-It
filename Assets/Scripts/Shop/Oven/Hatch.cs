@@ -13,17 +13,11 @@ public class Hatch : MonoBehaviour
     private Coroutine _animationCoroutine;
 
     public event Action Moved;
+    public event Action<bool> StateChanged;
 
     public bool IsOpen { get; private set; }
 
     private void Awake()
-    {
-        Collider col = GetComponent<Collider>();
-        if (col != null)
-            col.isTrigger = false;
-    }
-
-    private void Reset()
     {
         Collider col = GetComponent<Collider>();
         if (col != null)
@@ -36,6 +30,14 @@ public class Hatch : MonoBehaviour
             return;
 
         TogglePosition();
+    }
+
+    private void TogglePosition()
+    {
+        if (IsOpen)
+            Close();
+        else
+            Open();
     }
 
     private void Open()
@@ -52,17 +54,6 @@ public class Hatch : MonoBehaviour
             return;
 
         StartAnimation(false);
-    }
-
-    private void TogglePosition()
-    {
-        if (_isMoving || !_canMove)
-            return;
-
-        if (IsOpen)
-            Close();
-        else
-            Open();
     }
 
     public void SetCanMove(bool can)
@@ -82,9 +73,7 @@ public class Hatch : MonoBehaviour
     {
         _isMoving = true;
 
-        float startX = transform.localEulerAngles.x;
-        startX = NormalizeAngle(startX);
-
+        float startX = NormalizeAngle(transform.localEulerAngles.x);
         float endX = open ? 0f : 90f;
 
         float t = 0f;
@@ -103,11 +92,13 @@ public class Hatch : MonoBehaviour
         }
 
         transform.localRotation = Quaternion.Euler(endX, 0f, 0f);
-        
+
         IsOpen = open;
         _isMoving = false;
         _animationCoroutine = null;
+
         Moved?.Invoke();
+        StateChanged?.Invoke(IsOpen); // ? ÊËÞ×ÅÂÎÅ
     }
 
     private float NormalizeAngle(float angle)
