@@ -13,6 +13,7 @@ Shader "Custom/WoodFire"
         _BurnProgress ("Burn Progress", Range(0,1)) = 0
         _EmissionProgress ("Emission Progress", Range(0,1)) = 0
         _EmissionIntensity ("Emission Intensity", Range(0, 20)) = 5
+        _PulseSpeed ("Pulse Speed", Range(0, 10)) = 3
 
         _Metallic ("Metallic", Range(0,1)) = 0
         _Smoothness ("Smoothness", Range(0,1)) = 0.5
@@ -71,6 +72,7 @@ Shader "Custom/WoodFire"
                 float _BurnProgress;
                 float _EmissionProgress;
                 float _EmissionIntensity;
+                float _PulseSpeed;
                 float _Metallic;
                 float _Smoothness;
             CBUFFER_END
@@ -85,9 +87,10 @@ Shader "Custom/WoodFire"
                 return o;
             }
 
-            float GetEmissionCurve(float t)
+            float GetPulse(float speed)
             {
-                return saturate((1.0 - t) * t * 4.0);
+                float p = sin(_Time.y * speed) * 0.5 + 0.5;
+                return lerp(0.7, 1.3, p);
             }
 
             half4 frag (Varyings i) : SV_Target
@@ -99,8 +102,8 @@ Shader "Custom/WoodFire"
                 float burn = smoothstep(0.3, 0.8, _BurnProgress);
                 half3 albedo = lerp(baseTex.rgb, charTex.rgb, burn) * _BaseColor.rgb;
 
-                float glow = GetEmissionCurve(_EmissionProgress);
-                float emissionStrength = glow * _EmissionIntensity * mask;
+                float pulse = GetPulse(_PulseSpeed);
+                float emissionStrength = _EmissionProgress * _EmissionIntensity * pulse * mask;
                 half3 emission = _EmissiveColor.rgb * emissionStrength;
 
                 InputData inputData = (InputData)0;

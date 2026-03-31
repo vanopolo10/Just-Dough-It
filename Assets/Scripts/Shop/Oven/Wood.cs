@@ -6,17 +6,17 @@ public class Wood : MonoBehaviour
     private static readonly int BurnProgress = Shader.PropertyToID("_BurnProgress");
     private static readonly int EmissionProgress = Shader.PropertyToID("_EmissionProgress");
     private static readonly int EmissionIntensity = Shader.PropertyToID("_EmissionIntensity");
+    private static readonly int PulseSpeed = Shader.PropertyToID("_PulseSpeed");
 
     [Header("Visual Settings")]
     [SerializeField] private float _maxEmissionIntensity = 8f;
-    [SerializeField] private AnimationCurve _intensityCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [SerializeField] private float _pulseSpeed = 3f;
     
     [Header("Effects")]
     [SerializeField] private Light _fireLight;
     
     private Material _material;
     private float _originalLightIntensity;
-    private bool _isBurning = true;
 
     private void Awake()
     {
@@ -26,7 +26,8 @@ public class Wood : MonoBehaviour
             _material = renderer.material;
             _material.SetFloat(BurnProgress, 0f);
             _material.SetFloat(EmissionProgress, 0f);
-            _material.SetFloat(EmissionIntensity, 0f);
+            _material.SetFloat(EmissionIntensity, _maxEmissionIntensity);
+            _material.SetFloat(PulseSpeed, _pulseSpeed);
         }
         
         if (_fireLight != null)
@@ -43,30 +44,17 @@ public class Wood : MonoBehaviour
     
     public void SetVisualProgress(float burnProgress, float emissionProgress)
     {
-        if (_material == null || !_isBurning)
+        if (_material == null)
             return;
             
         _material.SetFloat(BurnProgress, burnProgress);
         _material.SetFloat(EmissionProgress, emissionProgress);
         
-        float intensity = _maxEmissionIntensity * _intensityCurve.Evaluate(emissionProgress);
-        _material.SetFloat(EmissionIntensity, intensity);
-        
         if (_fireLight != null)
         {
-            float lightIntensity = _originalLightIntensity * (1 - burnProgress * 0.5f) * (0.8f + Mathf.Sin(Time.time * 15f) * 0.2f);
+            float lightIntensity = _originalLightIntensity * emissionProgress * (0.8f + Mathf.Sin(Time.time * 15f) * 0.2f);
             _fireLight.intensity = Mathf.Max(0, lightIntensity);
             _fireLight.color = Color.Lerp(new Color(1f, 0.5f, 0.2f), new Color(0.8f, 0.3f, 0.1f), burnProgress);
-        }
-    }
-    
-    public void StopBurning()
-    {
-        _isBurning = false;
-        
-        if (_fireLight != null)
-        {
-            _fireLight.intensity = 0f;
         }
     }
 }

@@ -46,7 +46,7 @@ public class Oven : MonoBehaviour
     
     public void TryAddWood()
     {
-        if (_woodQueue.Count + _burningWoods.Count >= _maxWood || _hatch.IsOpen == false)
+        if (_woodQueue.Count + _burningWoods.Count >= _maxWood || (_hatch != null && _hatch.IsOpen == false))
             return;
 
         Wood spawnedWood = Instantiate(_woodPrefab, _woodSpawnPoint.position, Random.rotation);
@@ -54,7 +54,10 @@ public class Oven : MonoBehaviour
         
         WoodAdded?.Invoke();
         
-        _processQueueCoroutine ??= StartCoroutine(ProcessWoodQueue());
+        if (_processQueueCoroutine == null)
+        {
+            _processQueueCoroutine = StartCoroutine(ProcessWoodQueue());
+        }
     }
     
     private IEnumerator ProcessWoodQueue()
@@ -92,9 +95,9 @@ public class Oven : MonoBehaviour
         Wood wood = woodData.Wood;
         
         float riseTime = _woodPower / _speedCoef;
-        float peakStartTime = riseTime;
-        float halfPeakTime = peakStartTime + (_woodFullPowerTime / 2f);
-        float totalTime = riseTime + _woodFullPowerTime + (_woodPower / _fadeCoef);
+        float peakTime = _woodFullPowerTime;
+        float fadeTime = _woodPower / _fadeCoef;
+        float totalTime = riseTime + peakTime + fadeTime;
         float elapsedTime = 0f;
         
         while (elapsedTime < totalTime && wood != null)
@@ -111,41 +114,36 @@ public class Oven : MonoBehaviour
                 emissionProgress = t;
                 burnProgress = 0f;
                 currentPower = _woodPower * t;
-                
-                woodData.CurrentPower = currentPower;
-                UpdateTotalFirePower();
             }
-            else if (elapsedTime < peakStartTime + _woodFullPowerTime)
+            else if (elapsedTime < riseTime + peakTime)
             {
                 emissionProgress = 1f;
                 currentPower = _woodPower;
                 
-                if (elapsedTime < halfPeakTime)
+                float peakElapsed = elapsedTime - riseTime;
+                float burnStartTime = peakTime / 2f;
+                
+                if (peakElapsed < burnStartTime)
                 {
                     burnProgress = 0f;
                 }
                 else
                 {
-                    burnProgress = (elapsedTime - halfPeakTime) / (_woodFullPowerTime / 2f);
+                    burnProgress = (peakElapsed - burnStartTime) / burnStartTime;
                     burnProgress = Mathf.Clamp01(burnProgress);
                 }
-                
-                woodData.CurrentPower = currentPower;
-                UpdateTotalFirePower();
             }
             else
             {
-                float fadeElapsed = elapsedTime - (peakStartTime + _woodFullPowerTime);
-                float fadeTotal = _woodPower / _fadeCoef;
-                float fadeProgress = fadeElapsed / fadeTotal;
-                
-                emissionProgress = 1f - fadeProgress;
+                float fadeElapsed = elapsedTime - (riseTime + peakTime);
+                float t = fadeElapsed / fadeTime;
+                emissionProgress = 1f - t;
                 burnProgress = 1f;
-                currentPower = _woodPower * (1f - fadeProgress);
-                
-                woodData.CurrentPower = currentPower;
-                UpdateTotalFirePower();
+                currentPower = _woodPower * (1f - t);
             }
+            
+            woodData.CurrentPower = currentPower;
+            UpdateTotalFirePower();
             
             wood.SetVisualProgress(burnProgress, emissionProgress);
             
@@ -154,7 +152,6 @@ public class Oven : MonoBehaviour
         
         if (wood != null)
         {
-            wood.StopBurning();
             _burningWoods.Remove(woodData);
             Destroy(wood.gameObject);
             UpdateTotalFirePower();
