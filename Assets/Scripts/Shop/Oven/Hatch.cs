@@ -1,43 +1,73 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class Hatch : MonoBehaviour
 {
-    [SerializeField] private CameraController _cameraController;
     [SerializeField] private AnimationCurve _openCurve;
     [SerializeField] private float _duration = 0.5f;
 
-    private bool _isOpen;
+    private bool _canMove = true;
+    private bool _isMoving;
     private Coroutine _animationCoroutine;
 
-    private void OnEnable()
+    public event Action Moved;
+
+    public bool IsOpen { get; private set; }
+
+    private void Awake()
     {
-        _cameraController.ViewChanged += OnViewChanged;
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+            col.isTrigger = false;
     }
 
-    private void OnDisable()
+    private void Reset()
     {
-        _cameraController.ViewChanged -= OnViewChanged;
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+            col.isTrigger = false;
     }
 
-    private void OnViewChanged(CameraController.CameraViewType cameraViewType)
+    private void OnMouseDown()
     {
-        if (cameraViewType == CameraController.CameraViewType.OvenDown)
-            Open();
-        else if (_isOpen)
-            Close();
+        if (_isMoving || !_canMove)
+            return;
+
+        TogglePosition();
     }
 
     private void Open()
     {
+        if (_isMoving || IsOpen)
+            return;
+
         StartAnimation(true);
-        _isOpen = true;
     }
 
     private void Close()
     {
+        if (_isMoving || !IsOpen)
+            return;
+
         StartAnimation(false);
-        _isOpen = false;
+    }
+
+    private void TogglePosition()
+    {
+        if (_isMoving || !_canMove)
+            return;
+
+        if (IsOpen)
+            Close();
+        else
+            Open();
+    }
+
+    public void SetCanMove(bool can)
+    {
+        _canMove = can;
     }
 
     private void StartAnimation(bool open)
@@ -50,6 +80,8 @@ public class Hatch : MonoBehaviour
 
     private IEnumerator Animate(bool open)
     {
+        _isMoving = true;
+
         float startX = transform.localEulerAngles.x;
         startX = NormalizeAngle(startX);
 
@@ -71,7 +103,11 @@ public class Hatch : MonoBehaviour
         }
 
         transform.localRotation = Quaternion.Euler(endX, 0f, 0f);
+        
+        IsOpen = open;
+        _isMoving = false;
         _animationCoroutine = null;
+        Moved?.Invoke();
     }
 
     private float NormalizeAngle(float angle)

@@ -3,7 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer))]
 public class Wood : MonoBehaviour
 {
-    private static readonly int Progress = Shader.PropertyToID("_Progress");
+    private static readonly int BurnProgress = Shader.PropertyToID("_BurnProgress");
+    private static readonly int EmissionProgress = Shader.PropertyToID("_EmissionProgress");
     private static readonly int EmissionIntensity = Shader.PropertyToID("_EmissionIntensity");
 
     [Header("Visual Settings")]
@@ -23,7 +24,8 @@ public class Wood : MonoBehaviour
         if (renderer != null)
         {
             _material = renderer.material;
-            _material.SetFloat(Progress, 0f);
+            _material.SetFloat(BurnProgress, 0f);
+            _material.SetFloat(EmissionProgress, 0f);
             _material.SetFloat(EmissionIntensity, 0f);
         }
         
@@ -39,20 +41,22 @@ public class Wood : MonoBehaviour
             DestroyImmediate(_material);
     }
     
-    public void SetBurnProgress(float progress)
+    public void SetVisualProgress(float burnProgress, float emissionProgress)
     {
         if (_material == null || !_isBurning)
             return;
             
-        _material.SetFloat(Progress, progress);
+        _material.SetFloat(BurnProgress, burnProgress);
+        _material.SetFloat(EmissionProgress, emissionProgress);
         
-        float intensity = _maxEmissionIntensity * _intensityCurve.Evaluate(progress);
+        float intensity = _maxEmissionIntensity * _intensityCurve.Evaluate(emissionProgress);
         _material.SetFloat(EmissionIntensity, intensity);
         
         if (_fireLight != null)
         {
-            _fireLight.intensity = _originalLightIntensity * (1 - progress * 0.5f) * (0.8f + Mathf.Sin(Time.time * 15f) * 0.2f);
-            _fireLight.color = Color.Lerp(new Color(1f, 0.5f, 0.2f), new Color(0.8f, 0.3f, 0.1f), progress);
+            float lightIntensity = _originalLightIntensity * (1 - burnProgress * 0.5f) * (0.8f + Mathf.Sin(Time.time * 15f) * 0.2f);
+            _fireLight.intensity = Mathf.Max(0, lightIntensity);
+            _fireLight.color = Color.Lerp(new Color(1f, 0.5f, 0.2f), new Color(0.8f, 0.3f, 0.1f), burnProgress);
         }
     }
     

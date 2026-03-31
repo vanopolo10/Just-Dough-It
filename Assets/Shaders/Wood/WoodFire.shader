@@ -10,13 +10,9 @@ Shader "Custom/WoodFire"
 
         _EmissiveColor ("Emissive Color", Color) = (1, 0.5, 0.1, 1)
 
-        _Progress ("Burn Progress", Range(0,1)) = 0
+        _BurnProgress ("Burn Progress", Range(0,1)) = 0
+        _EmissionProgress ("Emission Progress", Range(0,1)) = 0
         _EmissionIntensity ("Emission Intensity", Range(0, 20)) = 5
-
-        _BurnStart ("Burn Start", Range(0,1)) = 0.3
-        _BurnEnd ("Burn End", Range(0,1)) = 0.8
-
-        _PulseSpeed ("Pulse Speed", Range(0, 10)) = 3
 
         _Metallic ("Metallic", Range(0,1)) = 0
         _Smoothness ("Smoothness", Range(0,1)) = 0.5
@@ -72,12 +68,9 @@ Shader "Custom/WoodFire"
                 float4 _BaseColor;
                 float4 _EmissiveColor;
 
-                float _Progress;
+                float _BurnProgress;
+                float _EmissionProgress;
                 float _EmissionIntensity;
-                float _BurnStart;
-                float _BurnEnd;
-                float _PulseSpeed;
-
                 float _Metallic;
                 float _Smoothness;
             CBUFFER_END
@@ -97,32 +90,18 @@ Shader "Custom/WoodFire"
                 return saturate((1.0 - t) * t * 4.0);
             }
 
-            float GetPulse(float speed)
-            {
-                float p = sin(_Time.y * speed) * 0.5 + 0.5;
-                return lerp(0.7, 1.3, p);
-            }
-
             half4 frag (Varyings i) : SV_Target
             {
                 half4 baseTex = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, i.uv);
                 half4 charTex = SAMPLE_TEXTURE2D(_CharredMap, sampler_CharredMap, i.uv);
                 half mask = SAMPLE_TEXTURE2D(_EmissionMask, sampler_EmissionMask, i.uv).r;
 
-                float burn = smoothstep(_BurnStart, _BurnEnd, _Progress);
+                float burn = smoothstep(0.3, 0.8, _BurnProgress);
                 half3 albedo = lerp(baseTex.rgb, charTex.rgb, burn) * _BaseColor.rgb;
 
-                float glow = GetEmissionCurve(_Progress);
-                float pulse = GetPulse(_PulseSpeed);
-
-                float emissionStrength = glow * _EmissionIntensity * pulse;
-                half3 emission = _EmissiveColor.rgb * mask * emissionStrength;
-
-                if (_Progress > 0.9)
-                {
-                    float embers = (_Progress - 0.9) / 0.1;
-                    emission += half3(0.3, 0.1, 0.05) * embers * mask;
-                }
+                float glow = GetEmissionCurve(_EmissionProgress);
+                float emissionStrength = glow * _EmissionIntensity * mask;
+                half3 emission = _EmissiveColor.rgb * emissionStrength;
 
                 InputData inputData = (InputData)0;
                 inputData.positionWS = i.positionWS;

@@ -113,8 +113,7 @@ public class CursorController : MonoBehaviour
         {
             GameObject hitObject = hit.collider.gameObject;
 
-            Filling filling = hitObject.GetComponent<Filling>();
-            if (filling != null)
+            if (hitObject.TryGetComponent(out Filling filling))
             {
                 if (filling.IsDragging)
                 {
@@ -124,37 +123,32 @@ public class CursorController : MonoBehaviour
                 _currentPriority = CursorPriority.PickMe;
                 return;
             }
-
-            Tray tray = hitObject.GetComponent<Tray>();
-            if (tray != null)
+            
+            if (hitObject.TryGetComponent<Tray>(out _) || hitObject.TryGetComponent<Hatch>(out _))
             {
                 _currentPriority = CursorPriority.Glove;
                 return;
             }
 
-            DoughBucket doughBucket = hitObject.GetComponent<DoughBucket>();
-            if (doughBucket != null)
+            if (hitObject.TryGetComponent<DoughBucket>(out _))
             {
                 _currentPriority = CursorPriority.PickDough;
                 return;
             }
 
-            DoughController doughController = hitObject.GetComponentInParent<DoughController>();
-            if (doughController != null)
+            if (hitObject.TryGetComponent<DoughController>(out _))
             {
                 _currentPriority = CursorPriority.PickMe;
                 return;
             }
             
-            BakeManager bakeManager = hitObject.GetComponentInParent<BakeManager>();
-            if (bakeManager != null)
+            if (hitObject.TryGetComponent<BakeManager>(out _))
             {
                 _currentPriority = CursorPriority.PickDough;
                 return;
             }
 
-            RollingPin rollingPin = hitObject.GetComponent<RollingPin>();
-            if (rollingPin != null)
+            if (TryGetComponent<RollingPin>(out _))
             {
                 _currentPriority = CursorPriority.PickMe;
                 return;

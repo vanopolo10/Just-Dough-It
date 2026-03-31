@@ -20,7 +20,11 @@ public class MoneyManager : MonoBehaviour
         _money += amount;
 
         if (playPopUp)
-            Instantiate(_popUpPrefab, _questCanvas.transform).Initialize(amount);
+        {
+            var popup = Instantiate(_popUpPrefab, _questCanvas.transform);
+            popup.Initialize(amount);
+            popup.transform.position = new Vector3(694.130005f, -125.699997f, 0);
+        }
         
         UpdDisplay();
     }

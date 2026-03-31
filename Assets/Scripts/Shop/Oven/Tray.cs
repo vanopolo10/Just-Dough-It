@@ -23,7 +23,7 @@ public class Tray : MonoBehaviour
     [SerializeField] private Shelf _shelf;
 
     private Coroutine _moveRoutine;
-    private bool _canMove;
+    private bool _canMove = true;
 
     public bool IsInOven { get; private set; }
     public bool IsMoving { get; private set; }

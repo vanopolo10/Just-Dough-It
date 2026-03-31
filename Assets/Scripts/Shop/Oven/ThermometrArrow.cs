@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ThermometrArrow : MonoBehaviour
 {
-    private const float MinRotation = 120f;
-    private const float MaxRotation = -120f;
+    private const float MinRotation = 130f;
+    private const float MaxRotation = -130f;
 
     [SerializeField] private Oven _oven;
 
@@ -16,6 +16,7 @@ public class ThermometrArrow : MonoBehaviour
     {
         _rectTransform = GetComponent<RectTransform>();
         _onePercent = (MaxRotation - MinRotation) / 100f;
+        _rectTransform.localRotation = Quaternion.Euler(0f, 0f, MinRotation);
     }
 
     private void OnEnable()

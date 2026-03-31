@@ -18,13 +18,26 @@ public class Oven : MonoBehaviour
     private float _fadeCoef = 2f;
 
     [Header("Spawn")] 
+    [SerializeField] private Hatch _hatch;
     [SerializeField] private Transform _woodSpawnPoint;
     [SerializeField] private Wood _woodPrefab;
     [SerializeField] private int _maxWood = 4;
 
     private Queue<Wood> _woodQueue = new();
-    private List<Wood> _burningWoods = new();
-    private List<Coroutine> _burnCoroutines = new();
+    private List<BurningWoodData> _burningWoods = new();
+    private Coroutine _processQueueCoroutine;
+    
+    private class BurningWoodData
+    {
+        public Wood Wood;
+        public float CurrentPower;
+        
+        public BurningWoodData(Wood wood)
+        {
+            Wood = wood;
+            CurrentPower = 0;
+        }
+    }
     
     public event Action WoodAdded;
     public event Action<int> FirePowerChanged;
@@ -33,76 +46,108 @@ public class Oven : MonoBehaviour
     
     public void TryAddWood()
     {
-        if (_woodQueue.Count + _burningWoods.Count >= _maxWood)
-        {
-            Debug.Log($"Нельзя добавить бревно. Максимум: {_maxWood}, горит: {_burningWoods.Count}, в очереди: {_woodQueue.Count}");
+        if (_woodQueue.Count + _burningWoods.Count >= _maxWood || _hatch.IsOpen == false)
             return;
-        }
 
-        Wood spawnedWood = Instantiate(_woodPrefab, _woodSpawnPoint.position, new Quaternion(Random.rotation.x, 0, Random.rotation.z, 1));
+        Wood spawnedWood = Instantiate(_woodPrefab, _woodSpawnPoint.position, Random.rotation);
         _woodQueue.Enqueue(spawnedWood);
         
         WoodAdded?.Invoke();
         
-        if (_burnCoroutines.Count == 0)
-        {
-            StartCoroutine(ProcessWoodQueue());
-        }
+        _processQueueCoroutine ??= StartCoroutine(ProcessWoodQueue());
     }
     
     private IEnumerator ProcessWoodQueue()
     {
-        while (_woodQueue.Count > 0 || _burningWoods.Count > 0)
+        while (_woodQueue.Count > 0)
         {
-            if (_woodQueue.Count > 0 && _burningWoods.Count < _maxWood)
+            if (_burningWoods.Count < _maxWood)
             {
                 Wood wood = _woodQueue.Dequeue();
-                _burningWoods.Add(wood);
-                Coroutine burnCoroutine = StartCoroutine(BurnWood(wood));
-                _burnCoroutines.Add(burnCoroutine);
+                BurningWoodData woodData = new BurningWoodData(wood);
+                _burningWoods.Add(woodData);
+                StartCoroutine(BurnWood(woodData));
             }
-            
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-    
-    private IEnumerator BurnWood(Wood wood)
-    {
-        float riseTime = _woodPower / _speedCoef;
-        float burnProgress = 0f;
-        
-        while (burnProgress < 1f)
-        {
-            burnProgress += Time.deltaTime / riseTime;
-            float progress = Mathf.Clamp01(burnProgress);
-            
-            if (wood != null)
-                wood.SetBurnProgress(progress);
-            
-            FirePower = Mathf.Clamp(FirePower + 1, 0, MaxFirePower);
-            FirePowerChanged?.Invoke(FirePower);
             
             yield return null;
         }
         
-        if (wood != null)
-            wood.SetBurnProgress(1f);
-        
-        yield return new WaitForSeconds(_woodFullPowerTime);
-        
-        float fadeTime = _woodPower / _fadeCoef;
-        float fadeProgress = 0f;
-        
-        while (fadeProgress < 1f)
+        _processQueueCoroutine = null;
+    }
+    
+    private void UpdateTotalFirePower()
+    {
+        int totalPower = 0;
+        foreach (var woodData in _burningWoods)
         {
-            fadeProgress += Time.deltaTime / fadeTime;
-            float progress = Mathf.Clamp01(1f - fadeProgress);
+            totalPower += Mathf.RoundToInt(woodData.CurrentPower);
+        }
+        
+        FirePower = Mathf.Clamp(totalPower, 0, MaxFirePower);
+        FirePowerChanged?.Invoke(FirePower);
+    }
+    
+    private IEnumerator BurnWood(BurningWoodData woodData)
+    {
+        Wood wood = woodData.Wood;
+        
+        float riseTime = _woodPower / _speedCoef;
+        float peakStartTime = riseTime;
+        float halfPeakTime = peakStartTime + (_woodFullPowerTime / 2f);
+        float totalTime = riseTime + _woodFullPowerTime + (_woodPower / _fadeCoef);
+        float elapsedTime = 0f;
+        
+        while (elapsedTime < totalTime && wood != null)
+        {
+            elapsedTime += Time.deltaTime;
             
-            if (wood != null)
-                wood.SetBurnProgress(progress);
+            float emissionProgress;
+            float burnProgress;
+            float currentPower;
             
-            FirePower = Mathf.Clamp(FirePower - 1, 0, MaxFirePower);
-            FirePowerChanged?.Invoke(FirePower);
+            if (elapsedTime < riseTime)
+            {
+                float t = elapsedTime / riseTime;
+                emissionProgress = t;
+                burnProgress = 0f;
+                currentPower = _woodPower * t;
+                
+                woodData.CurrentPower = currentPower;
+                UpdateTotalFirePower();
+            }
+            else if (elapsedTime < peakStartTime + _woodFullPowerTime)
+            {
+                emissionProgress = 1f;
+                currentPower = _woodPower;
+                
+                if (elapsedTime < halfPeakTime)
+                {
+                    burnProgress = 0f;
+                }
+                else
+                {
+                    burnProgress = (elapsedTime - halfPeakTime) / (_woodFullPowerTime / 2f);
+                    burnProgress = Mathf.Clamp01(burnProgress);
+                }
+                
+                woodData.CurrentPower = currentPower;
+                UpdateTotalFirePower();
+            }
+            else
+            {
+                float fadeElapsed = elapsedTime - (peakStartTime + _woodFullPowerTime);
+                float fadeTotal = _woodPower / _fadeCoef;
+                float fadeProgress = fadeElapsed / fadeTotal;
+                
+                emissionProgress = 1f - fadeProgress;
+                burnProgress = 1f;
+                currentPower = _woodPower * (1f - fadeProgress);
+                
+                woodData.CurrentPower = currentPower;
+                UpdateTotalFirePower();
+            }
+            
+            wood.SetVisualProgress(burnProgress, emissionProgress);
             
             yield return null;
         }
@@ -110,8 +155,9 @@ public class Oven : MonoBehaviour
         if (wood != null)
         {
             wood.StopBurning();
-            _burningWoods.Remove(wood);
+            _burningWoods.Remove(woodData);
             Destroy(wood.gameObject);
+            UpdateTotalFirePower();
         }
         
         if (_burningWoods.Count == 0 && _woodQueue.Count == 0)

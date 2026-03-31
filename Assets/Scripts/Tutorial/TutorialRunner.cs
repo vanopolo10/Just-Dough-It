@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class TutorialRunner : MonoBehaviour
     private ITutorialGate _currentGate;
     private GameObject _currentIcon;
 
+    public event Action TutorialComplited;
+    
     public void StartTutorial(IEnumerable<ITutorialGate> gates)
     {
         foreach (var g in gates)
@@ -24,7 +27,7 @@ public class TutorialRunner : MonoBehaviour
         if (_gates.Count == 0)
         {
             HideIcon();
-            Debug.Log("Tutorial finished");
+            TutorialComplited?.Invoke();
             return;
         }
 
