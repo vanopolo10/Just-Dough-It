@@ -390,7 +390,15 @@ MonoBehaviour:
   _worldTime: {fileID: 0}
   _firstCustomerDelay: 0
   _schedule:
+  - {fileID: 11400000, guid: 6754f99f4cfbd0a4db8042b1197d01a2, type: 2}
+  - {fileID: 11400000, guid: 6754f99f4cfbd0a4db8042b1197d01a2, type: 2}
+  - {fileID: 11400000, guid: 6754f99f4cfbd0a4db8042b1197d01a2, type: 2}
   - {fileID: 11400000, guid: 51570c92907a1294f9d4401fad3502fa, type: 2}
+  - {fileID: 11400000, guid: 6754f99f4cfbd0a4db8042b1197d01a2, type: 2}
+  - {fileID: 11400000, guid: 6754f99f4cfbd0a4db8042b1197d01a2, type: 2}
+  - {fileID: 11400000, guid: 6754f99f4cfbd0a4db8042b1197d01a2, type: 2}
+  - {fileID: 11400000, guid: 6754f99f4cfbd0a4db8042b1197d01a2, type: 2}
+  - {fileID: 11400000, guid: 6754f99f4cfbd0a4db8042b1197d01a2, type: 2}
   - {fileID: 11400000, guid: 6754f99f4cfbd0a4db8042b1197d01a2, type: 2}
 --- !u!114 &121704674350478688
 MonoBehaviour:
@@ -425,8 +433,8 @@ MonoBehaviour:
   _doorAnimator: {fileID: 0}
   _door: {fileID: 6956929411088008698}
   _reception: {fileID: 4430367761024294800}
-  _doorInside: {fileID: 7004339562586086308}
-  _doorOutside: {fileID: 8948238021057786259}
+  _doorInside: {fileID: 4353131770629368286}
+  _doorOutside: {fileID: 2141443837163929930}
   _exit: {fileID: 1910375191258678850}
   _exitDelay: 2
 --- !u!114 &656288214822115577
@@ -453,7 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78126c4f7721371408024c408f74b7e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NpcMover
-  _moveSpeed: 1.2
+  _moveSpeed: 12
   _rotateSpeed: 8
   _stopDistance: 0.05
   _modelForwardOffsetY: 1
@@ -1185,6 +1193,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c8caf56c0b6d2f4093a47e6123458bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueOptionHandle
+--- !u!1 &5245507862232617501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2141443837163929930}
+  m_Layer: 0
+  m_Name: doorOutside
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2141443837163929930
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5245507862232617501}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.938, y: 0, z: -1.44}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1820491018487416238}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5393575969064405636
 GameObject:
   m_ObjectHideFlags: 0
@@ -1484,6 +1523,37 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &7100638754729282341
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4353131770629368286}
+  m_Layer: 0
+  m_Name: doorInside
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4353131770629368286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7100638754729282341}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.938, y: 0, z: 1.842}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1820491018487416238}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7838873763192231401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1495,7 +1565,6 @@ GameObject:
   - component: {fileID: 8409771462525654786}
   - component: {fileID: 4346398165392262372}
   - component: {fileID: 3811200679657192522}
-  - component: {fileID: 7368071322049095516}
   - component: {fileID: 8276520735931152959}
   m_Layer: 8
   m_Name: SecondaryCanvas
@@ -1570,23 +1639,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &7368071322049095516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7838873763192231401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &8276520735931152959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1913,6 +1965,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6956929411088008698}
+  - {fileID: 2141443837163929930}
+  - {fileID: 4353131770629368286}
   - {fileID: 8948238021057786259}
   - {fileID: 7004339562586086308}
   - {fileID: 4430367761024294800}
