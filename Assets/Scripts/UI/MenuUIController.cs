@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 
 public class MenuUIController : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class MenuUIController : MonoBehaviour
     [SerializeField] private GameObject _savePrefab;
     [SerializeField] private TMP_Dropdown _languageDropdown;
     [SerializeField] private Animator _sidesAnimator;
+    [SerializeField] private Button _continueButton;
 
     private List<GameSave> _saves;
     private List<string> _languageCodes = new() { "ru", "en" };
@@ -57,6 +59,8 @@ public class MenuUIController : MonoBehaviour
             .OrderByDescending(s => System.DateTime.Parse(s.ChangeTime))
             .ToList();
 
+        _continueButton.interactable = _saves.Count != 0;
+        
         foreach (GameSave save in _saves)
         {
             GameObject saveUIElement = Instantiate(_savePrefab, _viewportContent);

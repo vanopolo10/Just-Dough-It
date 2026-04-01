@@ -2257,6 +2257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9028408e12ca07d49b3e7948c510f728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneLoader
+  _postLoadDelay: 0.3
 --- !u!4 &657603394
 Transform:
   m_ObjectHideFlags: 0
@@ -4253,6 +4254,7 @@ MonoBehaviour:
   _savePrefab: {fileID: 183853357754431888, guid: 43f60095bcf3ff4499cf0105cc4c4ad0, type: 3}
   _languageDropdown: {fileID: 1141512086}
   _sidesAnimator: {fileID: 1659218799}
+  _continueButton: {fileID: 666458454}
 --- !u!4 &1070186144
 Transform:
   m_ObjectHideFlags: 0
@@ -6855,7 +6857,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -21.262}
   m_AnchorMin: {x: 0.79461694, y: 0.029457003}
   m_AnchorMax: {x: 1, y: 0.26074204}
-  m_AnchoredPosition: {x: 0, y: -8.999756}
+  m_AnchoredPosition: {x: 0, y: -8.999725}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1485295222

@@ -168,7 +168,7 @@ public class TutorialScenario : MonoBehaviour
             new OvenGate(_oven,false, 0, _ovenClickIcon),
             new ActionGate(() => _thermometer.SetCanAddWood(false)),
             new ActionGate(() => _thoughts.Think("tutorial.think.wood2")),
-            new OvenGate(_oven, true, 20),
+            new OvenGate(_oven, true, 15),
             
             new ActionGate(() => _hatch.SetCanMove(true)),
             new ActionGate(() => _thoughts.Think("tutorial.think.hatch")),

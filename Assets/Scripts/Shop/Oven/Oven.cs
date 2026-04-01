@@ -69,8 +69,8 @@ public class Oven : MonoBehaviour
         if (_woodQueue.Count + _burningWoods.Count >= _maxWood || (_hatch != null && !_hatch.IsOpen))
             return;
 
-        Wood wood = Instantiate(_woodPrefab, _woodSpawnPoint.position, Random.rotation);
-
+        Wood wood = Instantiate(_woodPrefab, _woodSpawnPoint.position, Random.rotationUniform);
+        
         wood.ResetWood();
 
         _woodQueue.Enqueue(wood);

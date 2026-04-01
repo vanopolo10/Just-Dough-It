@@ -55,9 +55,9 @@ public class Wood : MonoBehaviour
         }
 
         _audioFilter.cutoffFrequency = Mathf.Lerp(2000, 22000, hatchOpenPercentage);
-        if (emission == 1)
+        
+        if (Mathf.Approximately(emission, 1))
             transform.localScale = Vector3.Lerp(_initialScale, _initialScale * 0.5f, burn / 2f);
-        print(burn);
     }
 
     private void Apply(float burn, float emission)
