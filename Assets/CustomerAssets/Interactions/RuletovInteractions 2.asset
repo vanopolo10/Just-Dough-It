@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomerInteractionSet
   _onGreeting:
     _interactionTexts:
-    - "\u044F \u0432\u043E\u043E\u0431\u0449\u0435-\u0442\u043E"
-    - ruletov
-    _animationTriggers: []
+    - "\u041E\u0442 \u0420\u0443\u043B\u0435\u0442\u043E\u0432\u0430 \u0442\u0430\u043A
+      \u043F\u0440\u043E\u0441\u0442\u043E \u043D\u0435 \u043E\u0442\u0434\u0435\u043B\u0430\u0435\u0448\u044C\u0441\u044F"
+    _animationTriggers:
+    - 
+    - 
   _onItemAccepted:
     _interactionTexts:
     - yeee
@@ -29,11 +31,6 @@ MonoBehaviour:
   _onQuestCompleted:
     _interactionTexts:
     - ...
-    _animationTriggers: []
-  _dialogueOptions:
-  - _textKey: ask again
-    _interaction:
-      _interactionTexts:
-      - ans again 1
-      - ans again 2
-      _animationTriggers: []
+    _animationTriggers:
+    - 
+  _questDialogueOptions: []

@@ -150,7 +150,9 @@ public class CustomerInteractionSequence
     private Action _callback = null;
     private Customer _customer = null;
 
-
+    public bool IsValid() { 
+        return _interactionTexts != null && _interactionTexts.Count > 0;
+    }
     private void Initialize(Action callback)
     {
         //Debug.Log("Initializing interaction Sequence");
