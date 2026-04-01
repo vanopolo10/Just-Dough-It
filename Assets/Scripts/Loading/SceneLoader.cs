@@ -27,7 +27,7 @@ public class SceneLoader : MonoBehaviour
     {
         var darkness = Darkness.Instance;
 
-        darkness.FadeIn();
+        darkness.FadeIn(0);
         yield return new WaitUntil(() => darkness.IsDark());
 
         var op = SceneManager.LoadSceneAsync(index);
@@ -41,6 +41,6 @@ public class SceneLoader : MonoBehaviour
         yield return null;
         yield return new WaitForSecondsRealtime(_postLoadDelay);
 
-        darkness.FadeOut();
+        darkness.FadeOut(0);
     }
 }

@@ -16,9 +16,9 @@ public class SleepButton : MonoBehaviour
     private void OnEnable()
     {
         if (_isTutorial && _tutorialRunner != null)
-            _tutorialRunner.TutorialComplited += OnDayEnded;
+            _tutorialRunner.TutorialComplited += OnCustomersEnded;
         else
-            _customerManager.DayEnded += OnDayEnded;
+            _customerManager.CustomersEnded += OnCustomersEnded;
         
         _button.onClick.AddListener(OnSleep);
     }
@@ -26,27 +26,29 @@ public class SleepButton : MonoBehaviour
     private void OnDisable()
     {
         if (_isTutorial && _tutorialRunner != null)
-            _tutorialRunner.TutorialComplited -= OnDayEnded;
+            _tutorialRunner.TutorialComplited -= OnCustomersEnded;
         else
-            _customerManager.DayEnded -= OnDayEnded;
+            _customerManager.CustomersEnded -= OnCustomersEnded;
         
         _button.onClick.RemoveListener(OnSleep);
     }
 
-    private void OnDayEnded()
+    private void OnCustomersEnded()
     {
         _button.gameObject.SetActive(true);
     }
 
     private void OnSleep()
     {
+        _button.gameObject.SetActive(false);
+        
+        
         if (_isTutorial)
         {
-            _button.gameObject.SetActive(false);
             SceneLoader.Instance.LoadScene(2);
             return;
         }
 
-        _customerManager.StartNewDay();
+        _customerManager.EndDay();
     }
 }

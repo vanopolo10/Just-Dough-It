@@ -30,15 +30,15 @@ public class Darkness : MonoBehaviour
         _image.color = new Color(0, 0, 0, 0);
         _image.enabled = false;
     }
-
-    public void FadeIn()
+    
+    public void FadeIn(float time)
     {
-        StartFade(1f);
+        StartFade(1f, time);
     }
 
-    public void FadeOut()
+    public void FadeOut(float time)
     {
-        StartFade(0f);
+        StartFade(0f, time);
     }
 
     public void SetDark()
@@ -60,24 +60,27 @@ public class Darkness : MonoBehaviour
         return _image.enabled && _image.color.a >= 0.99f;
     }
 
-    private void StartFade(float target)
+    private void StartFade(float target, float time)
     {
         if (_coroutine != null) StopCoroutine(_coroutine);
 
         IsFading = true;
-        _coroutine = StartCoroutine(FadeRoutine(target));
+        _coroutine = StartCoroutine(FadeRoutine(target, time));
     }
 
-    private IEnumerator FadeRoutine(float target)
+    private IEnumerator FadeRoutine(float target, float fadeTime)
     {
+        if (fadeTime == 0)
+            fadeTime = _fadeDuration;
+        
         _image.enabled = true;
 
         float start = _image.color.a;
         float time = 0f;
 
-        while (time < _fadeDuration)
+        while (time < fadeTime)
         {
-            float t = time / _fadeDuration;
+            float t = time / fadeTime;
             float a = Mathf.Lerp(start, target, Mathf.SmoothStep(0f, 1f, t));
             _image.color = new Color(0, 0, 0, a);
 

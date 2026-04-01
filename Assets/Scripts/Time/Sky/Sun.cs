@@ -42,6 +42,8 @@ public class Sun : MonoBehaviour
     private void OnTimeChanged(WorldTime.GameTime time)
     {
         float p = time.CompletePercent;
+        _light.color = _colorGradient.Evaluate(p);
+        
         float t = Remap(p);
 
         float angle = _sunAngleCurve.Evaluate(t);
@@ -49,6 +51,5 @@ public class Sun : MonoBehaviour
         transform.rotation = Quaternion.Euler(angle, _yRotation, 0f);
 
         _light.intensity = _intensityCurve.Evaluate(t);
-        _light.color = _colorGradient.Evaluate(t);
     }
 }

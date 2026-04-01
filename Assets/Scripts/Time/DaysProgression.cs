@@ -7,7 +7,7 @@ public class DaysProgression : MonoBehaviour
     [SerializeField] private CustomerManager _customerManager;
     [SerializeField] private List<DayObjectsList> _daysObjects;
 
-    private int _currentDay;
+    private int _currentDay = -1;
     
     private void Awake()
     {
@@ -22,8 +22,11 @@ public class DaysProgression : MonoBehaviour
 
     private void ChangeDay()
     {
-        SetDayObjectsActive(_daysObjects[_currentDay].Objects, false);
-        SetDayObjectsActive(_daysObjects[++_currentDay].Objects, true);
+        if (_currentDay >= 0) 
+            SetDayObjectsActive(_daysObjects[_currentDay].Objects, false);
+        
+        if (_currentDay >= -1) 
+            SetDayObjectsActive(_daysObjects[++_currentDay].Objects, true);
     }
     
     private void SetDayObjectsActive(List<GameObject> gameObjects, bool isActive)

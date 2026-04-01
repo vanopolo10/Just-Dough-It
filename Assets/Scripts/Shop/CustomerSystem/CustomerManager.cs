@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(CustomerModelSpawner))]
 [RequireComponent(typeof(CustomerRouteMover))]
@@ -10,10 +9,10 @@ public class CustomerManager : MonoBehaviour
 {
     private const float HundredPercent = 100f;
 
-    [SerializeField] private Button _nextDayButton;
     [SerializeField] private WorldTime _worldTime;
     [SerializeField] private float _firstCustomerDelay;
     [SerializeField] private List<CustomerPool> _schedule;
+    [SerializeField] private float _blinkDuration;
 
     private CustomerRouteMover _routeMover;
     private CustomerModelSpawner _spawner;
@@ -24,7 +23,7 @@ public class CustomerManager : MonoBehaviour
 
     public event Action<Customer> CustomerSpawned;
     public event Action DayStarted;
-    public event Action DayEnded;
+    public event Action CustomersEnded;
 
     public Customer CurrentCustomer { get; private set; }
 
@@ -32,9 +31,6 @@ public class CustomerManager : MonoBehaviour
     {
         _spawner = GetComponent<CustomerModelSpawner>();
         _routeMover = GetComponent<CustomerRouteMover>();
-
-        if (_nextDayButton != null)
-            _nextDayButton.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -61,9 +57,15 @@ public class CustomerManager : MonoBehaviour
     {
         yield return null;
 
+        if (Darkness.Instance != null && Darkness.Instance.IsDark() == false)
+        {
+            Darkness.Instance.FadeIn(_blinkDuration / 2);
+            yield return new WaitUntil(() => Darkness.Instance.IsDark());
+        }
+        
         if (Darkness.Instance != null && Darkness.Instance.IsDark())
         {
-            Darkness.Instance.FadeOut();
+            Darkness.Instance.FadeOut(_blinkDuration / 2);
             yield return new WaitUntil(() => Darkness.Instance.IsDark() == false);
             yield return null;
         }
@@ -80,7 +82,7 @@ public class CustomerManager : MonoBehaviour
         }
 
         _isDayStarting = false;
-        Darkness.Instance.FadeIn();
+        StartCoroutine(StartAfterFade());
     }
 
     public void StartNewDay()
@@ -174,20 +176,10 @@ public class CustomerManager : MonoBehaviour
 
         if (_currentIndex >= _schedule.Count)
         {
-            StartCoroutine(ShowNextDayButton());
+            CustomersEnded?.Invoke();
             return;
         }
 
         SpawnCustomer();
-    }
-
-    private IEnumerator ShowNextDayButton()
-    {
-        yield return new WaitForSecondsRealtime(0.5f);
-
-        if (_nextDayButton != null)
-            _nextDayButton.gameObject.SetActive(true);
-
-        DayEnded?.Invoke();
     }
 }
