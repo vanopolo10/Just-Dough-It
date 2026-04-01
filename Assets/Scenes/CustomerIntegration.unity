@@ -1863,6 +1863,7 @@ Transform:
   - {fileID: 808724690}
   - {fileID: 2060576055}
   - {fileID: 751125638}
+  - {fileID: 303035972}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &232336350
@@ -2406,6 +2407,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272150013}
   m_Mesh: {fileID: 1056782124063008565, guid: c578e78974e44454b951dc6d8e825eb4, type: 3}
+--- !u!1 &303035971
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 303035972}
+  - component: {fileID: 303035973}
+  m_Layer: 0
+  m_Name: Days Progression
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &303035972
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303035971}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 216030782}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &303035973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303035971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fee783b71ef6a85478815877867d4d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  _customerManager: {fileID: 0}
+  _firstDay: []
+  _secondDay: []
+  _thirdDay: []
 --- !u!1 &309581821
 GameObject:
   m_ObjectHideFlags: 0
@@ -3041,14 +3090,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 2.36621, y: 0.74040294, z: 3.43}
+  m_LocalRotation: {x: 0, y: 0.99939084, z: -0.03489949, w: 0}
+  m_LocalPosition: {x: 0, y: 1.868, z: 3.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1300833610}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 4, y: 180, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6880,6 +6929,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StreetSnow
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c578e78974e44454b951dc6d8e825eb4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1066235068171334618, guid: c578e78974e44454b951dc6d8e825eb4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.133
@@ -9707,7 +9760,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &970595310
 Transform:
   m_ObjectHideFlags: 0
@@ -17111,6 +17164,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7167529513524339324, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7186412041474722696, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
+      propertyPath: _isTutorial
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8578355944731868658, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}

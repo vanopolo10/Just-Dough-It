@@ -15,7 +15,7 @@ public class SleepButton : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_isTutorial)
+        if (_isTutorial && _tutorialRunner != null)
             _tutorialRunner.TutorialComplited += OnDayEnded;
         else
             _customerManager.DayEnded += OnDayEnded;
@@ -25,7 +25,7 @@ public class SleepButton : MonoBehaviour
     
     private void OnDisable()
     {
-        if (_isTutorial)
+        if (_isTutorial && _tutorialRunner != null)
             _tutorialRunner.TutorialComplited -= OnDayEnded;
         else
             _customerManager.DayEnded -= OnDayEnded;

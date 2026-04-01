@@ -89,13 +89,13 @@ public class CustomerManager : MonoBehaviour
             return;
 
         _isDayStarting = true;
+        DayStarted?.Invoke();
         StartCoroutine(DayRoutine());
     }
 
     private IEnumerator DayRoutine()
     {
         _currentIndex = 0;
-        DayStarted?.Invoke();
 
         yield return new WaitForSecondsRealtime(_firstCustomerDelay);
 
