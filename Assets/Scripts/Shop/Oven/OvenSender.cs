@@ -19,7 +19,7 @@ public class OvenSender : MonoBehaviour
     private BoxCollider _collider;
     private DoughController _currentDough;
     private DoughDrag _currentDoughDrag;
-    private bool _canSend;
+    private bool _canSend = true;
 
     public event Action DoughSent;
 
