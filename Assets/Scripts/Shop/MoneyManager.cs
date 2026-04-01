@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class MoneyManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _display;
     [SerializeField] private Canvas _questCanvas;
     [SerializeField] private MoneyPopUp _popUpPrefab;
+    public event Action OnBalanceChanged;
 
     public int Money => _money;
 
@@ -42,5 +44,6 @@ public class MoneyManager : MonoBehaviour
     private void UpdDisplay()
     { 
         _display.text = _money + "ð";
+        OnBalanceChanged?.Invoke();
     }
 }
