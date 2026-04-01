@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class MegaShopBook : ShopBook
 {
+    private static readonly int Dispose = Animator.StringToHash("Dispose");
+    
     [SerializeField] private List<SingularShopBook> _books;
     [SerializeField] private AnimationClip _finalClip;
-    [SerializeField] private float _finalClipSpeed = 1, _finalDelay = 0;
+    [SerializeField] private float _finalClipSpeed = 1;
+    [SerializeField] private float _finalDelay = 0;
 
     private int _booksLeft;
 
@@ -37,13 +40,13 @@ public class MegaShopBook : ShopBook
     {
         _booksLeft--;
         Debug.Log("Megabook child purchased. books left: " + _booksLeft);
-        if (_booksLeft <= 0)
-        {
-            Debug.Log("Megabook last child was purchased. activating canvas");
-            _bought = true;
-            _canvas.SetActive(true);
-            Debug.Log($"Megabook canvas ({_canvas.name}) activity set to {_canvas.activeSelf}");
-        }
+        
+        if (_booksLeft > 0) return;
+        
+        Debug.Log("Megabook last child was purchased. activating canvas");
+        _bought = true;
+        _canvas.SetActive(true);
+        Debug.Log($"Megabook canvas ({_canvas.name}) activity set to {_canvas.activeSelf}");
     }
 
     public void DisposeOfBook()
@@ -56,7 +59,7 @@ public class MegaShopBook : ShopBook
 
         _canvas.SetActive(false);
         OnMovedOutOfPosition();
-        _animator.SetTrigger("Dispose");
+        _animator.SetTrigger(Dispose);
 
         shopManager.Invoke(nameof(shopManager.CycleBook), (_finalClip.length) / _finalClipSpeed + _finalDelay);
     }
