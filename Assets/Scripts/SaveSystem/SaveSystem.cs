@@ -8,7 +8,7 @@ using UnityEngine.Localization.Settings;
 
 public static class SaveSystem
 {
-    private readonly static string _basePath = Application.dataPath;
+    private readonly static string _basePath = Application.persistentDataPath;
 
     public static string SelectedSave = "None";
 
