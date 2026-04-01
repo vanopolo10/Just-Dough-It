@@ -30,8 +30,10 @@ public class CustomerQuest : ScriptableObject
     private bool _isInitialized;
 
     public event Action GreetingTypingCompleted;
-    
+    public event Action QuestStarted;
+
     public CustomerInteraction QuestInteraction => _questInteraction;
+    public int ProductsLeft => _productsLeft;
 
     public void Initialize(Customer customer)
     {
@@ -136,6 +138,8 @@ public class CustomerQuest : ScriptableObject
             Debug.LogWarning($"CustomerQuest {name}: QuestInteraction is missing");
             ShowDialogueOptions();
         }
+
+        QuestStarted?.Invoke();
     }
 
     private void OnQuestTextTypingCompleted()

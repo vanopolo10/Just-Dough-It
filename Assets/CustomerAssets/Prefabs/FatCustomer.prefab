@@ -45,17 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 340ed90497f92d6478b528a305a51647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RandomisedCustomer
-  _timeoutBeforeInitializing: 1
-  _timeoutBeforeDespawning: 3
-  _timeoutBeforeResettingDialogue: 10
   _quest: {fileID: 0}
   _quests:
   - Quest: {fileID: 11400000, guid: f9862b1bc9bf2c6459598975ff927456, type: 2}
     Weight: 2
   - Quest: {fileID: 11400000, guid: 7d4d4ba5f5c26a64199cfa89e81b46c5, type: 2}
-    Weight: 2
+    Weight: 0
   - Quest: {fileID: 11400000, guid: da699cdbe184d3b438b2d63790edae01, type: 2}
-    Weight: 2
+    Weight: 0
 --- !u!1001 &3699702030351760137
 PrefabInstance:
   m_ObjectHideFlags: 0
