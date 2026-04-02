@@ -162,6 +162,17 @@ MonoBehaviour:
   _animationDuration: 0.5
   _animationSpeed: 20
   _animationAmplitude: 1
+--- !u!114 &23082752 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4903823557044676655, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+  m_PrefabInstance: {fileID: 63782452}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bafecc94b8958748badba9757184175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueBubble
 --- !u!1 &43163331
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +382,7 @@ PrefabInstance:
     - target: {fileID: 121704674350478688, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       propertyPath: _speechBubble
       value: 
-      objectReference: {fileID: 1079135667}
+      objectReference: {fileID: 23082752}
     - target: {fileID: 121704674350478688, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       propertyPath: _baseDialogueOption
       value: 
@@ -614,6 +625,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2063118720996299947, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2185298550087372479, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2185298550087372479, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2822401586580386425, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
@@ -6686,17 +6705,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 125904487361254824, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
   m_PrefabInstance: {fileID: 63782452}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1079135667 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2745743685363583479, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
-  m_PrefabInstance: {fileID: 63782452}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bafecc94b8958748badba9757184175, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueBubble
 --- !u!1 &1088802045
 GameObject:
   m_ObjectHideFlags: 0
@@ -13203,7 +13211,7 @@ PrefabInstance:
     - target: {fileID: 8730457476020987041, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: _popUpPrefab
       value: 
-      objectReference: {fileID: 5144455799872550904, guid: a6c1b4460a9b19548af5033a78b51bc2, type: 3}
+      objectReference: {fileID: 8477980873077471149, guid: 905458fe4ab20aa4ca8ef96348fed273, type: 3}
     - target: {fileID: 8730457476020987041, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: _questCanvas
       value: 
