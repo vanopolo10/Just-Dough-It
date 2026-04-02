@@ -17,7 +17,7 @@ public class Hatch : MonoBehaviour
     private AudioSource _audioSource;
 
     public event Action Moved;
-    public event Action<bool> StateChanged;
+    public event Action<float> StateChanged;
 
     public bool IsOpen { get; private set; }
     public float OpenPercentage { get; private set; } = 0;
@@ -98,6 +98,7 @@ public class Hatch : MonoBehaviour
 
             transform.localRotation = Quaternion.Euler(x, 0f, 0f);
 
+            StateChanged?.Invoke(OpenPercentage);
             yield return null;
         }
 
@@ -108,7 +109,6 @@ public class Hatch : MonoBehaviour
         _animationCoroutine = null;
 
         Moved?.Invoke();
-        StateChanged?.Invoke(IsOpen); // ? ÊËÞ×ÅÂÎÅ
 
         _audioSource.Stop();
         _audioSource.PlayOneShot(_finalStateClip, 0.2f);

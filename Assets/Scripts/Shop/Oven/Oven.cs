@@ -16,6 +16,7 @@ public class Oven : MonoBehaviour
     [Header("Hatch")]
     [SerializeField] private Hatch _hatch;
     [SerializeField, Range(0f,1f)] private float _openHatchCoef = 0.7f;
+    [SerializeField] private AnimationCurve _hatchCoefCurve;
 
     [Header("Spawn")] 
     [SerializeField] private Transform _woodSpawnPoint;
@@ -57,9 +58,9 @@ public class Oven : MonoBehaviour
             _hatch.StateChanged -= OnHatchStateChanged;
     }
 
-    private void OnHatchStateChanged(bool isOpen)
+    private void OnHatchStateChanged(float state)
     {
-        _hatchCoef = isOpen ? _openHatchCoef : 1f;
+        _hatchCoef = Mathf.Lerp(_openHatchCoef, 1f, _hatchCoefCurve.Evaluate(state));
 
         UpdateTotalFirePower();
     }
