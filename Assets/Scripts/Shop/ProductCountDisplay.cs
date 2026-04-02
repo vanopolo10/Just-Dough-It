@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ProductCountDisplay : MonoBehaviour
@@ -8,13 +9,17 @@ public class ProductCountDisplay : MonoBehaviour
     private TextTypewriter _text;
     private Customer _customer;
 
-    private void OnEnable()
+    private void Awake()
     {
         _text = GetComponent<TextTypewriter>();
         
         if (_manager == null)
             _manager = FindAnyObjectByType<CustomerManager>();
+    }
 
+    private void OnEnable()
+    {
+        _text.Clear();
         _manager.CustomerSpawned += RecordCustomer;
     }
 

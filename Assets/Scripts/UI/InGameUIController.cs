@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,13 @@ public class InGameUIController : MonoBehaviour
     [SerializeField] private SaveManager _saveManager;
     [SerializeField] private TMP_InputField _inputField;
     [SerializeField] private TMP_Dropdown _dropdown;
+
+    private Book _book;
+
+    private void Awake()
+    {
+        _book = GetComponent<Book>();
+    }
 
     private void Start()
     {
@@ -31,7 +39,9 @@ public class InGameUIController : MonoBehaviour
 
     private void OnEscape()
     {
-        print("Escape");
+        if (_book.IsOpen)
+            return;
+        
         _dropdown.value = _dropdown.options.FindIndex(option => option.text == LocalizationSettings.SelectedLocale.LocaleName);
 
         if (_saveUI.activeSelf)

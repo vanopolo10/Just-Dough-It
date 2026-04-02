@@ -145,9 +145,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerManager
   _worldTime: {fileID: 0}
-  _firstCustomerDelay: 0
+  _firstCustomerDelay: 5
   _schedule: {fileID: 0}
-  _blinkDuration: 0
+  _blinkDuration: 8
+  _productCountDisplay: {fileID: 3673894766410076710}
 --- !u!114 &121704674350478688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,10 +162,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
   _isTutorial: 0
-  _speechBubble: {fileID: 0}
-  _typewriter: {fileID: 0}
-  _baseDialogueOption: {fileID: 0}
-  _baseInactiveDialogueOption: {fileID: 0}
+  _speechBubble: {fileID: 4903823557044676655}
+  _typewriter: {fileID: 2318800303137285093}
+  _baseDialogueOption: {fileID: 2021907301187748405}
+  _baseInactiveDialogueOption: {fileID: 8314547003859477719}
   _dialogueOptionOffset: 0.35
 --- !u!114 &4880141796525763737
 MonoBehaviour:

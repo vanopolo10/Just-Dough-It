@@ -13,6 +13,7 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private float _firstCustomerDelay;
     [SerializeField] private CustomerSchedule _schedule;
     [SerializeField] private float _blinkDuration;
+    [SerializeField] private ProductCountDisplay _productCountDisplay;
 
     private CustomerRouteMover _routeMover;
     private CustomerModelSpawner _spawner;
@@ -33,6 +34,7 @@ public class CustomerManager : MonoBehaviour
     {
         _spawner = GetComponent<CustomerModelSpawner>();
         _routeMover = GetComponent<CustomerRouteMover>();
+        _productCountDisplay.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -177,6 +179,7 @@ public class CustomerManager : MonoBehaviour
     private void OnReachedCounter()
     {
         CurrentCustomer?.OnReachedCounter();
+        _productCountDisplay.gameObject.SetActive(true);
     }
 
     private void NextCustomer()

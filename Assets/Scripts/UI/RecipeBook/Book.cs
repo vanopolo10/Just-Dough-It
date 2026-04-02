@@ -24,8 +24,8 @@ public class Book : MonoBehaviour
     private Page _currentPageRight;
 
     public event Action<ProductType> RecipeChanged;
-
     public ProductType CurrentSelectedProduct { get; private set; }
+    public bool IsOpen => _book.activeSelf;
     
     private void Start()
     {
@@ -61,6 +61,8 @@ public class Book : MonoBehaviour
 
     public void SetCanOpen(bool canOpen) => _canOpen = canOpen;
 
+    private void OnEscape() => Disable();
+    
     public void Disable()
     {
         _book.gameObject.SetActive(false);

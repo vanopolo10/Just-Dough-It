@@ -7669,7 +7669,7 @@ MonoBehaviour:
   - {fileID: 691907139}
   - {fileID: 553259653}
   _debugPie: {fileID: 5882781910535272301, guid: d420e6dc2a83d414b8796807e2dad60f, type: 3}
-  _placeDebugPies: 1
+  _placeDebugPies: 0
 --- !u!114 &1053535228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12160,6 +12160,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 330585550}
+    - target: {fileID: 3508973848734009783, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
+      propertyPath: m_SortingOrder
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4281606623442770375, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: m_Name
       value: Sound Settings
