@@ -111,7 +111,7 @@ public class BakeManager : MonoBehaviour
 
         if (_tray == null || _shelf == null) return;
         if (_tray.IsInOven || _tray.IsMoving) return;
-        if (BakeState == BakeState.Raw) return;
+        // if (BakeState == BakeState.Raw) return;
         if (_tray.TryTakeBun(this, out BakeManager taken) == false) return;
 
         taken.StopBake();

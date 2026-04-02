@@ -30,23 +30,9 @@ MonoBehaviour:
     _animationTriggers: []
   _onQuestCompleted:
     _interactionTexts:
-    - "\u043D\u0443-\u043D\u0443"
-    - "\u043C\u044B \u0435\u0449\u0451 \u0443\u0432\u0438\u0434\u0438\u043C\u0441\u044F"
+    - "\u043D\u0443-\u043D\u0443..."
+    - "\u043C\u044B \u0435\u0449\u0451 \u0443\u0432\u0438\u0434\u0438\u043C\u0441\u044F."
     _animationTriggers:
     - 
     - 
-  _dialogueOptions:
-  - _textKey: ask yet again
-    _interaction:
-      _interactionTexts:
-      - ans yet again 1
-      - ans yet again 2
-      _animationTriggers:
-      - 
-      - 
-  - _textKey: Sosal?
-    _interaction:
-      _interactionTexts:
-      - Da.
-      _animationTriggers:
-      - 
+  _questDialogueOptions: []

@@ -21,6 +21,7 @@ public class CustomerQuest : ScriptableObject
 {
     [SerializeField] private CustomerInteractionSet _interactions;
     [SerializeField] private CustomerInteraction _questInteraction;
+    [SerializeField] private CustomerInteractionSequence _customDecline;
     [SerializeField] private int _productsNeeded;
     [SerializeField] private List<ProductType> _applicableTypes;
     [SerializeField] private List<FillingType> _applicableFillings;
@@ -30,8 +31,10 @@ public class CustomerQuest : ScriptableObject
     private bool _isInitialized;
 
     public event Action GreetingTypingCompleted;
-    
+    public event Action QuestStarted;
+
     public CustomerInteraction QuestInteraction => _questInteraction;
+    public int ProductsLeft => _productsLeft;
 
     public void Initialize(Customer customer)
     {
@@ -60,6 +63,7 @@ public class CustomerQuest : ScriptableObject
         }
     }
 
+    
     private void OnGreetingTypingCompleted()
     {
         Debug.Log("[CustomerQuest] GreetingTypingCompleted fired!");
@@ -94,7 +98,7 @@ public class CustomerQuest : ScriptableObject
 
                 if (_interactions != null && _interactions.OnItemAccepted != null)
                 {
-                    _interactions.OnItemAccepted.PlayOut(_customer);
+                    _interactions.OnItemAccepted.PlayOut(_customer, DisplayQuestInteraction);
                 }
             }
         }
@@ -103,9 +107,13 @@ public class CustomerQuest : ScriptableObject
             if (_customer.AnimatorController != null)
                 _customer.AnimatorController.OnItemRejected();
 
-            if (_interactions != null && _interactions.OnItemRejected != null)
+            if (_customDecline != null && _customDecline.IsValid())
             {
-                _interactions.OnItemRejected.PlayOut(_customer);
+                _customDecline.PlayOut(_customer);
+            }
+            else if (_interactions != null && _interactions.OnItemRejected != null)
+            {
+                _interactions.OnItemRejected.PlayOut(_customer, DisplayQuestInteraction);
             }
         }
 
@@ -129,13 +137,19 @@ public class CustomerQuest : ScriptableObject
         {
             Debug.Log("[CustomerQuest] Showing quest text");
             _customer.DialogueManager.TypingCompleted += OnQuestTextTypingCompleted;
-            _customer.DialogueManager.DisplayText(_questInteraction.DialogueKey);
+            DisplayQuestInteraction();
         }
         else
         {
             Debug.LogWarning($"CustomerQuest {name}: QuestInteraction is missing");
             ShowDialogueOptions();
         }
+
+        QuestStarted?.Invoke();
+    }
+    public void DisplayQuestInteraction()
+    {
+        _customer.DialogueManager.DisplayText(_questInteraction.DialogueKey);
     }
 
     private void OnQuestTextTypingCompleted()
