@@ -3727,6 +3727,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1308419334}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &488792097 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8844563210403931992, guid: 72a21a03f5f6be84dbcc46792c3e7c84, type: 3}
+  m_PrefabInstance: {fileID: 232336350}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f567079ba549e554db93b60b7a580cb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Oven
 --- !u!4 &495025547 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1820491018487416238, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
@@ -15780,7 +15791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2c4c4750ebd1948b05c0aab8d93cda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tray
-  _oven: {fileID: 0}
+  _oven: {fileID: 488792097}
   _outsidePoint: {x: 2.2, y: 0.834, z: 4.687}
   _insidePoint: {x: 2.2, y: 0.834, z: 5.279}
   _moveDuration: 0.75
