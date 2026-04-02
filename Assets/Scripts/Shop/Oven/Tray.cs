@@ -24,6 +24,7 @@ public class Tray : MonoBehaviour
 
     private Coroutine _moveRoutine;
     private bool _canMove = true;
+    private AudioSource _audioSource;
 
     public bool IsInOven { get; private set; }
     public bool IsMoving { get; private set; }
@@ -37,6 +38,7 @@ public class Tray : MonoBehaviour
     {
         if (_oven == null)
             _oven = GetComponentInParent<Oven>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -170,6 +172,8 @@ public class Tray : MonoBehaviour
 
     private IEnumerator MoveRoutine(Vector3 targetPosition, bool toOven)
     {
+        _audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+        _audioSource.Play();
         IsMoving = true;
 
         Vector3 start = transform.position;
