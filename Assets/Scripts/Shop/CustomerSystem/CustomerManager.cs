@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ public class CustomerManager : MonoBehaviour
 
     [SerializeField] private WorldTime _worldTime;
     [SerializeField] private float _firstCustomerDelay;
-    [SerializeField] private List<CustomerPool> _schedule;
+    [SerializeField] private CustomerSchedule _schedule;
     [SerializeField] private float _blinkDuration;
 
     private CustomerRouteMover _routeMover;
@@ -20,6 +21,8 @@ public class CustomerManager : MonoBehaviour
     private int _currentIndex;
     private bool _isDayStarting;
     private Coroutine _spawnCoroutine;
+
+    private List<CustomerPool> _scheduleList;
 
     public event Action<Customer> CustomerSpawned;
     public event Action DayStarted;
@@ -81,6 +84,14 @@ public class CustomerManager : MonoBehaviour
             _spawnCoroutine = null;
         }
 
+        if (_schedule.NextDaySchedule == null)
+        {
+            Debug.LogWarning($"[CustomerManager] {name}: No next day schedule assigned.");
+            return;
+        }
+        _schedule = _schedule.NextDaySchedule;
+        _scheduleList = _schedule.List;
+
         _isDayStarting = false;
         StartCoroutine(StartAfterFade());
     }
@@ -89,6 +100,8 @@ public class CustomerManager : MonoBehaviour
     {
         if (_isDayStarting)
             return;
+
+        _scheduleList = _schedule.List;
 
         _isDayStarting = true;
         DayStarted?.Invoke();
@@ -106,7 +119,7 @@ public class CustomerManager : MonoBehaviour
 
     private void SpawnCustomer()
     {
-        if (_schedule.Count == 0)
+        if (_scheduleList.Count == 0)
             return;
 
         if (_spawnCoroutine != null)
@@ -119,13 +132,13 @@ public class CustomerManager : MonoBehaviour
     {
         yield return null;
 
-        _worldTime?.StartSmoothAddPercent(HundredPercent / _schedule.Count);
+        _worldTime?.StartSmoothAddPercent(HundredPercent / _scheduleList.Count);
 
         GameObject prefab;
 
         try
         {
-            prefab = _schedule[_currentIndex].GetCustomerFromPool();
+            prefab = _scheduleList[_currentIndex].GetCustomerFromPool();
         }
         catch
         {
@@ -174,7 +187,7 @@ public class CustomerManager : MonoBehaviour
 
         _currentIndex++;
 
-        if (_currentIndex >= _schedule.Count)
+        if (_currentIndex >= _scheduleList.Count)
         {
             CustomersEnded?.Invoke();
             return;

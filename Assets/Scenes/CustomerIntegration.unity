@@ -2408,6 +2408,10 @@ MonoBehaviour:
     RecipeSprite: {fileID: 21300000, guid: 1def08c7d6b783f439683ec8a9633623, type: 3}
     RecipeActiveSprite: {fileID: 21300000, guid: e438399b19ac55048a84ef8154dc1ca1, type: 3}
     NameKey: "\u0421\u043E\u0441\u0438\u0441\u043E\u043D\u0447\u0438\u043A"
+  - ProductType: 4
+    RecipeSprite: {fileID: 21300000, guid: 615cba46d055c364bad5ee6f1ecb6c6f, type: 3}
+    RecipeActiveSprite: {fileID: 21300000, guid: d32978ddcc061294baeec6ea0be005ae, type: 3}
+    NameKey: "\u0421\u0438\u043D\u043D\u0430\u0431\u043E\u043D\u0438\u0449\u0435"
   _imageLeft: {fileID: 719673402}
   _imageRight: {fileID: 500137818}
   _textLeft: {fileID: 732677806}
@@ -8602,6 +8606,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 435755675735181699, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
+      propertyPath: _brushSize
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 435755675735181699, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
+      propertyPath: _baseOpacity
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 435755675735181699, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
       propertyPath: _frostColor.a
       value: 0
       objectReference: {fileID: 0}
@@ -14558,6 +14570,14 @@ PrefabInstance:
     - target: {fileID: 4346398165392262372, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       propertyPath: m_SortingOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4749271440549519797, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: _schedule
+      value: 
+      objectReference: {fileID: 11400000, guid: 8bd5709cde9118e4fb30906985d46d96, type: 2}
+    - target: {fileID: 4749271440549519797, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: _schedule.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4880141796525763737, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       propertyPath: _doorAnimator
