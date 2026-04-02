@@ -6076,6 +6076,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 63.1533
       objectReference: {fileID: 0}
+    - target: {fileID: 2370391583460976546, guid: 13d9c732fe07a144da3b17f132ca7036, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3356932346240587862, guid: 13d9c732fe07a144da3b17f132ca7036, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -6194,7 +6198,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3101113988505808006, guid: 13d9c732fe07a144da3b17f132ca7036, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7628434569962325248, guid: 13d9c732fe07a144da3b17f132ca7036, type: 3}
+    - {fileID: 6540796805930591613, guid: 13d9c732fe07a144da3b17f132ca7036, type: 3}
+    - {fileID: 3019220252547475570, guid: 13d9c732fe07a144da3b17f132ca7036, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2183173399281513767, guid: 13d9c732fe07a144da3b17f132ca7036, type: 3}
       insertIndex: -1
