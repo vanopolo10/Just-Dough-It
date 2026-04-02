@@ -13,7 +13,7 @@ public class WorldTime : MonoBehaviour
 
     [SerializeField] private int _minHours = 8;
     [SerializeField] private int _maxHours = 18;
-    [SerializeField] private float _sunDuration = 20f;
+    [SerializeField] private float _secondsPerPercent = 0.2f;
 
     public GameTime InGameTime { get; private set; }
 
@@ -72,7 +72,8 @@ public class WorldTime : MonoBehaviour
         if (_smoothAddCoroutine != null)
             StopCoroutine(_smoothAddCoroutine);
 
-        _smoothAddCoroutine = StartCoroutine(SmoothAddPercent(percent / HundredPercent, _sunDuration));
+        float duration = percent * _secondsPerPercent;
+        _smoothAddCoroutine = StartCoroutine(SmoothAddPercent(percent / HundredPercent, duration));
     }
 
     private void OnDayStarted()
