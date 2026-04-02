@@ -715,11 +715,15 @@ PrefabInstance:
     - target: {fileID: 4749271440549519797, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       propertyPath: _schedule
       value: 
-      objectReference: {fileID: 11400000, guid: 8bd5709cde9118e4fb30906985d46d96, type: 2}
+      objectReference: {fileID: 11400000, guid: e8c4621b89ea6734f94d470d9cc8165c, type: 2}
     - target: {fileID: 4749271440549519797, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       propertyPath: _worldTime
       value: 
       objectReference: {fileID: 2060576056}
+    - target: {fileID: 4749271440549519797, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: _blinkDuration
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4749271440549519797, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       propertyPath: _nextDayButton
       value: 
@@ -880,6 +884,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.36000007
       objectReference: {fileID: 0}
+    - target: {fileID: 8197372267845358862, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 456152c394f68eb4b9f18339751c4f32, type: 3}
+    - target: {fileID: 8384820377232861115, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 456152c394f68eb4b9f18339751c4f32, type: 3}
+    - target: {fileID: 8384820377232861115, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384820377232861115, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9116080722159466335, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -893,6 +913,7 @@ PrefabInstance:
     - {fileID: 2129243676674718885, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
     - {fileID: 6871709229430621667, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
     - {fileID: 9125583254594877991, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+    - {fileID: 388509364238740056, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1666595820988951882, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
       insertIndex: 0
@@ -908,6 +929,17 @@ PrefabInstance:
       addedObject: {fileID: 2026677217}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb70daf2fc8a8094082210bc57f28340, type: 3}
+--- !u!114 &77117154 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6827717473360731184, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
+  m_PrefabInstance: {fileID: 1785999268}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TMP_Dropdown
 --- !u!1 &90874369
 GameObject:
   m_ObjectHideFlags: 0
@@ -2690,7 +2722,7 @@ MonoBehaviour:
   _saveUI: {fileID: 1631285166}
   _saveManager: {fileID: 1359870275}
   _inputField: {fileID: 151053742}
-  _dropdown: {fileID: 0}
+  _dropdown: {fileID: 77117154}
 --- !u!82 &330585551
 AudioSource:
   m_ObjectHideFlags: 0
