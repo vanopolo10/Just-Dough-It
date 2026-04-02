@@ -2,15 +2,19 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Collider), typeof(AudioSource))]
 public class Hatch : MonoBehaviour
 {
     [SerializeField] private AnimationCurve _openCurve;
     [SerializeField] private float _duration = 0.5f;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip _finalStateClip;
+
     private bool _canMove = true;
     private bool _isMoving;
     private Coroutine _animationCoroutine;
+    private AudioSource _audioSource;
 
     public event Action Moved;
     public event Action<bool> StateChanged;
@@ -23,6 +27,7 @@ public class Hatch : MonoBehaviour
         Collider col = GetComponent<Collider>();
         if (col != null)
             col.isTrigger = false;
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void OnMouseDown()
@@ -72,6 +77,8 @@ public class Hatch : MonoBehaviour
 
     private IEnumerator Animate(bool open)
     {
+        _audioSource.pitch = UnityEngine.Random.Range(0.8f, 1.2f);
+        _audioSource.Play();
         _isMoving = true;
 
         float startX = NormalizeAngle(transform.localEulerAngles.x);
@@ -102,6 +109,9 @@ public class Hatch : MonoBehaviour
 
         Moved?.Invoke();
         StateChanged?.Invoke(IsOpen); // ? ÊËÞ×ÅÂÎÅ
+
+        _audioSource.Stop();
+        _audioSource.PlayOneShot(_finalStateClip, 0.2f);
     }
 
     private float NormalizeAngle(float angle)
