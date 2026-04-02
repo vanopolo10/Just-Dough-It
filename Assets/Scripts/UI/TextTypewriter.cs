@@ -41,7 +41,7 @@ public class TextTypewriter : MonoBehaviour
         Clear();
     }
 
-    public async Task StartTyping(string key)
+    public async Task StartTyping(string key, string add = "")
     {
         Debug.Log($"[TextTypewriter] StartTyping called. Text: '{key}', Length: {key.Length}, IsTyping: {IsTyping}");
 
@@ -55,7 +55,7 @@ public class TextTypewriter : MonoBehaviour
         _textKey = key;
         var task = LocalizationSettingsExtension.FindStringInAllTablesAsync(_textKey);
         await task;
-        _textMeshPro.text = task.Result;
+        _textMeshPro.text = task.Result + add;
         _textMeshPro.maxVisibleCharacters = 0;
 
         _typeRoutine = StartCoroutine(TypeTextRoutine());

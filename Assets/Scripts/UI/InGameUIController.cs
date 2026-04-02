@@ -23,12 +23,6 @@ public class InGameUIController : MonoBehaviour
         StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            OnEscape();
-    }
-
     private void Switch()
     {
         _ui.SetActive(!_ui.activeSelf);
@@ -37,6 +31,7 @@ public class InGameUIController : MonoBehaviour
 
     private void OnEscape()
     {
+        print("Escape");
         _dropdown.value = _dropdown.options.FindIndex(option => option.text == LocalizationSettings.SelectedLocale.LocaleName);
 
         if (_saveUI.activeSelf)

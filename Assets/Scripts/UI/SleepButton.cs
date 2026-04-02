@@ -42,7 +42,6 @@ public class SleepButton : MonoBehaviour
     {
         _button.gameObject.SetActive(false);
         
-        
         if (_isTutorial)
         {
             SceneLoader.Instance.LoadScene(2);
