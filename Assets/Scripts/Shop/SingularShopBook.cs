@@ -1,8 +1,4 @@
-using NUnit.Framework;
-using System.Collections.Generic;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
-using UnityEngine.ProBuilder.Shapes;
 
 public class SingularShopBook : ShopBook
 {
