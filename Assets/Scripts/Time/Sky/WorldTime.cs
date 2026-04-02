@@ -14,18 +14,17 @@ public class WorldTime : MonoBehaviour
     [SerializeField] private int _minHours = 8;
     [SerializeField] private int _maxHours = 18;
     [SerializeField] private float _secondsPerPercent = 0.2f;
-
-    public GameTime InGameTime { get; private set; }
-
-    public event Action<GameTime> TimeChanged;
-
-    public bool PreferSunrise { get; private set; }
-
+    
     private bool _pendingPreferSunrise;
     private bool _hasPendingChange;
 
     private bool _dayEnded;
     private Coroutine _smoothAddCoroutine;
+    
+    public event Action<GameTime> TimeChanged;
+
+    public GameTime InGameTime { get; private set; }
+    public bool PreferSunrise { get; private set; }
 
     private void Awake()
     {
