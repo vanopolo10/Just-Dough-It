@@ -4878,6 +4878,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundLevel
   _volumeParameter: MasterVolume
   _mixer: {fileID: 24100000, guid: 63eeae5a459ef23458afa607574a6727, type: 2}
+  _clips: []
+  _group: {fileID: 24300002, guid: 63eeae5a459ef23458afa607574a6727, type: 2}
 --- !u!114 &1131875243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5733,6 +5735,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundLevel
   _volumeParameter: MusicVolume
   _mixer: {fileID: 24100000, guid: 63eeae5a459ef23458afa607574a6727, type: 2}
+  _clips: []
+  _group: {fileID: -2586768261110664974, guid: 63eeae5a459ef23458afa607574a6727, type: 2}
 --- !u!1 &1255730763
 GameObject:
   m_ObjectHideFlags: 0
@@ -7490,6 +7494,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundLevel
   _volumeParameter: CharactersVolume
   _mixer: {fileID: 24100000, guid: 63eeae5a459ef23458afa607574a6727, type: 2}
+  _clips: []
+  _group: {fileID: -2692811865316876411, guid: 63eeae5a459ef23458afa607574a6727, type: 2}
 --- !u!1 &1535812984
 GameObject:
   m_ObjectHideFlags: 0
@@ -9761,6 +9767,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundLevel
   _volumeParameter: SoundsVolume
   _mixer: {fileID: 24100000, guid: 63eeae5a459ef23458afa607574a6727, type: 2}
+  _clips:
+  - {fileID: 8300000, guid: d551c14f066cd8f49b40d270acc12a1f, type: 3}
+  - {fileID: 8300000, guid: be1eefb35b85b25408cc6a98da688d7b, type: 3}
+  - {fileID: 8300000, guid: f1121518c71937a4da76f9e5ee93513e, type: 3}
+  - {fileID: 8300000, guid: 410499fcf3347b94fafcdb7c19e7f3b1, type: 3}
+  - {fileID: 8300000, guid: 45786856e4da8584eaea5144cb0c0e48, type: 3}
+  - {fileID: 8300000, guid: 069a53c2ad7590b43aaf6ba78e83981d, type: 3}
+  - {fileID: 8300000, guid: 6a5c999a44279c542afb740bcf9dd204, type: 3}
+  - {fileID: 8300000, guid: b6cba493436442343bf1afbb1bc1ab24, type: 3}
+  - {fileID: 8300000, guid: df3eee3bc4744144a8d7812f5bbea6ab, type: 3}
+  - {fileID: 8300000, guid: 649f10aacc6fbaa4e9b6f1125455c75e, type: 3}
+  - {fileID: 8300000, guid: 70bae6fec5193014198ad222de55cae8, type: 3}
+  - {fileID: 8300000, guid: adcadde699d3e674e94c80547a6bfb07, type: 3}
+  - {fileID: 8300000, guid: 563a490cbc92418448160d2c33aa8449, type: 3}
+  - {fileID: 8300000, guid: 197581a51bf43dd47914d52eb9dcba18, type: 3}
+  - {fileID: 8300000, guid: 32db0a452163ac54d95143adb1decaf7, type: 3}
+  - {fileID: 8300000, guid: 42a346d6de428e8498fd1fd654f13e28, type: 3}
+  _group: {fileID: -1813120642327971176, guid: 63eeae5a459ef23458afa607574a6727, type: 2}
 --- !u!1 &1827986594
 GameObject:
   m_ObjectHideFlags: 0
