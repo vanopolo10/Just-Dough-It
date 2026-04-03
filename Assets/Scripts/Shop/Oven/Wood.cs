@@ -73,7 +73,7 @@ public class Wood : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        float volume = Mathf.Clamp01(collision.relativeVelocity.magnitude / 5f);
+        float volume = Mathf.Clamp01(collision.relativeVelocity.magnitude / 18f);
         _audioSource.PlayOneShot(_hitClip, volume);
     }
 }
