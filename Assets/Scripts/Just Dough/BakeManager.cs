@@ -43,6 +43,7 @@ public class BakeManager : MonoBehaviour
 
     public event Action<float, float> VisualChanged;
     public event Action<BakeManager> Sold;
+    public event Action<BakeManager> Threw;
 
     public bool IsInTray => _tray != null;
     public bool IsInShelf => _shelf != null;
@@ -57,6 +58,7 @@ public class BakeManager : MonoBehaviour
     public float CurrentBakeBlend { get; private set; }
     public float CurrentBurnAmount { get; private set; }
     public bool IsInReceptionArea { get; private set; }
+    public bool IsInTrashArea { get; private set; }
     public bool IsDragging { get; private set; }
 
     private void Awake()
@@ -100,7 +102,7 @@ public class BakeManager : MonoBehaviour
 
         if (_tray == null || _shelf == null) return;
         if (_tray.IsInOven || _tray.IsMoving) return;
-        // if (BakeState == BakeState.Raw) return;
+        if (BakeState == BakeState.Raw) return;
         if (_tray.TryTakeBun(this, out BakeManager taken) == false) return;
 
         taken.StopBake();
@@ -133,7 +135,12 @@ public class BakeManager : MonoBehaviour
                 return;
             }
         }
-
+        else if(IsInTrashArea)
+        {
+            Threw?.Invoke(this);
+            return;
+        }
+        
         if (_isOnShelf == false)
         {
             _dragBlocked = false;
@@ -163,6 +170,13 @@ public class BakeManager : MonoBehaviour
                 IsInReceptionArea = true;
             }
         }
+        
+        if(other.TryGetComponent<TrashBin>(out _))
+        {
+            Debug.Log("Entering throw field");
+            
+            IsInTrashArea = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -170,6 +184,10 @@ public class BakeManager : MonoBehaviour
         if (other.CompareTag("Product Reception Field"))
         {
             IsInReceptionArea = false;
+        }
+        else if(other.TryGetComponent<TrashBin>(out _))
+        {
+            IsInTrashArea = false;
         }
     }
 

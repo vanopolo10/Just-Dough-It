@@ -47,7 +47,7 @@ public class CustomerQuest : ScriptableObject
         _customer = customer;
         _productsLeft = _productsNeeded;
         _isInitialized = true;
-        
+
         if (_customer.AnimatorController != null)
             _customer.AnimatorController.OnGreeting();
 
@@ -63,7 +63,7 @@ public class CustomerQuest : ScriptableObject
         }
     }
 
-    
+
     private void OnGreetingTypingCompleted()
     {
         Debug.Log("[CustomerQuest] GreetingTypingCompleted fired!");
@@ -124,7 +124,7 @@ public class CustomerQuest : ScriptableObject
     public void StartQuest()
     {
         Debug.Log($"[CustomerQuest] StartQuest called");
-    
+
         if (!_isInitialized || _customer == null)
         {
             Debug.LogWarning($"CustomerQuest {name}: Cannot start quest - not properly initialized");
@@ -148,6 +148,7 @@ public class CustomerQuest : ScriptableObject
 
         QuestStarted?.Invoke();
     }
+
     public void DisplayQuestInteraction()
     {
         _customer.DialogueManager.DisplayText(_questInteraction.DialogueKey);
@@ -179,7 +180,7 @@ public class CustomerQuest : ScriptableObject
         if (_applicableTypes == null || _applicableTypes.Count == 0 ||
             _applicableFillings == null || _applicableFillings.Count == 0)
             return true;
-        
+
         bool typeFits = _applicableTypes.Any(type => product.Type == type || type == ProductType.Any);
         bool fillingFits = _applicableFillings.Any(filling => product.Filling == filling || filling == FillingType.Any);
 
@@ -190,7 +191,7 @@ public class CustomerQuest : ScriptableObject
     {
         if (_customer != null && _customer.DialogueManager != null)
             _customer.DialogueManager.TypingCompleted -= OnQuestTextTypingCompleted;
-    
+
         _customer.DisableReception();
         _customer.DialogueManager.SetDialogueOptions(null);
 
@@ -199,7 +200,7 @@ public class CustomerQuest : ScriptableObject
             Debug.LogWarning($"CustomerQuest {name}: Cannot finish quest - not properly initialized");
             return;
         }
-    
+
         if (_customer.AnimatorController != null)
             _customer.AnimatorController.OnQuestFinished();
 

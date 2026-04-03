@@ -46,6 +46,7 @@ public class Shelf : MonoBehaviour
         {
             PutToSlot(index, bun);
             bun.Sold += OnBunSold;
+            bun.Threw += OnBunThrown;
         }
         else
         {
@@ -54,14 +55,18 @@ public class Shelf : MonoBehaviour
         }
     }
 
-    private void OnBunSold(BakeManager bun)
+    private void OnBunThrown(BakeManager bun)
     {
         Remove(bun);
-        
+        Destroy(bun.gameObject);
+    }
+    
+    private void OnBunSold(BakeManager bun)
+    {
         _moneyManager.AddMoney(_basePrice + bun.PerfectActionCount /
             (bun.ImperfectActionCount + bun.PerfectActionCount) * _qualityMultiplayer);
-        
-        Destroy(bun.gameObject);
+
+        OnBunThrown(bun);
     }
 
     private void Remove(BakeManager bun)

@@ -2952,8 +2952,8 @@ MonoBehaviour:
   _frostTexture: {fileID: 2800000, guid: edee6681a07993c49a8fd50d3d999231, type: 3}
   _brushTexture: {fileID: 2800000, guid: c557d4d0abdb510498a6f0ad72fba111, type: 3}
   _pixelBrushSize: 3
-  _brushSize: 0.05
-  _baseOpacity: 0.3
+  _brushSize: 0.1
+  _baseOpacity: 0.4
   _frostColor: {r: 0.9481132, g: 0.9971174, b: 1, a: 0}
   _maskTexture: {fileID: 0}
 --- !u!114 &404384846
@@ -8075,8 +8075,8 @@ MonoBehaviour:
   _frostTexture: {fileID: 2800000, guid: edee6681a07993c49a8fd50d3d999231, type: 3}
   _brushTexture: {fileID: 2800000, guid: c557d4d0abdb510498a6f0ad72fba111, type: 3}
   _pixelBrushSize: 3
-  _brushSize: 0.05
-  _baseOpacity: 0.3
+  _brushSize: 0.1
+  _baseOpacity: 0.4
   _frostColor: {r: 0.9481132, g: 0.9971174, b: 1, a: 0}
   _maskTexture: {fileID: 0}
 --- !u!114 &1090568799
@@ -8821,6 +8821,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2459388515437975682, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
+      propertyPath: _brushSize
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2459388515437975682, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
       propertyPath: _frostColor.a
       value: 0
       objectReference: {fileID: 0}
@@ -8873,6 +8877,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 330585545}
     - target: {fileID: 4909789192752002605, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
+      propertyPath: _brushSize
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909789192752002605, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
       propertyPath: _frostColor.a
       value: 0
       objectReference: {fileID: 0}
@@ -8889,6 +8897,10 @@ PrefabInstance:
       value: 0.9481132
       objectReference: {fileID: 0}
     - target: {fileID: 4945255210059527803, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
+      propertyPath: _brushSize
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4945255210059527803, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
       propertyPath: _frostColor.a
       value: 0
       objectReference: {fileID: 0}
@@ -8903,6 +8915,10 @@ PrefabInstance:
     - target: {fileID: 4945255210059527803, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
       propertyPath: _frostColor.r
       value: 0.9481132
+      objectReference: {fileID: 0}
+    - target: {fileID: 5503517868329226300, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
+      propertyPath: _brushSize
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5503517868329226300, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
       propertyPath: _frostColor.a
@@ -8951,6 +8967,10 @@ PrefabInstance:
     - target: {fileID: 6452089289567895606, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
       propertyPath: m_Color.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459579396252766015, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
+      propertyPath: _brushSize
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6459579396252766015, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
       propertyPath: _frostColor.a
@@ -11955,8 +11975,8 @@ MonoBehaviour:
   _frostTexture: {fileID: 2800000, guid: edee6681a07993c49a8fd50d3d999231, type: 3}
   _brushTexture: {fileID: 2800000, guid: c557d4d0abdb510498a6f0ad72fba111, type: 3}
   _pixelBrushSize: 3
-  _brushSize: 0.05
-  _baseOpacity: 0.3
+  _brushSize: 0.1
+  _baseOpacity: 0.4
   _frostColor: {r: 0.9481132, g: 0.9971174, b: 1, a: 0}
   _maskTexture: {fileID: 0}
 --- !u!114 &1753300746
