@@ -12,6 +12,8 @@ public class BakeVisual : MonoBehaviour
     
     private Material _instanceMaterial;
 
+    private Vector3 _initialScale;
+
     private int _bakeId;
     private int _burnId;
 
@@ -43,6 +45,8 @@ public class BakeVisual : MonoBehaviour
 
         _instanceMaterial.SetFloat(_bakeId, bakeT);
         _instanceMaterial.SetFloat(_burnId, burnT);
+
+        _initialScale = transform.localScale;
     }
 
     private void OnDestroy()
@@ -55,6 +59,8 @@ public class BakeVisual : MonoBehaviour
     {
         float bakeT = Mathf.Clamp01(_bakeManager.CurrentBakeBlend);
         float burnT = Mathf.Clamp01(_bakeManager.CurrentBurnAmount);
+
+        transform.localScale = Vector3.Lerp(_initialScale, _initialScale * 1.1f, bakeT);
 
         _instanceMaterial.SetFloat(_bakeId, bakeT);
         _instanceMaterial.SetFloat(_burnId, burnT);
