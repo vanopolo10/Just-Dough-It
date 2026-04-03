@@ -89,7 +89,7 @@ public class RollingAgent : MonoBehaviour
             if (_controller.State == _initialState)
             {
                 _controller.SetRollRotation(_rollingPin.transform.rotation);
-                _controller.TryApplyAction(_action);
+                _controller.TryApplyAction(_action, false);
             }
     }
 }

@@ -16,7 +16,7 @@ public class CraftZone : MonoBehaviour,
     [Serializable]
     private struct DragRule
     {
-        public CraftZone EndZone;
+        public CraftZone StartZone;
         public DoughCraftAction Action;
     }
 
@@ -81,7 +81,7 @@ public class CraftZone : MonoBehaviour,
 
     public void AddComboClick(bool isPerfect) 
     {
-        bool applied = _controller.TryApplyAction(_rightClickAction, this, isPerfect);
+        bool applied = _controller.TryApplyAction(_rightClickAction, true, this, isPerfect);
     }
 
     /*
@@ -114,13 +114,13 @@ public class CraftZone : MonoBehaviour,
         if (_dragActive == false || _dragStartZone == null || _dragStartZone == this || !Input.GetMouseButton(0))
             return;
 
-        DoughCraftAction action = (from rule in _dragRules where rule.EndZone == _dragStartZone select rule.Action).FirstOrDefault();
+        DoughCraftAction action = (from rule in _dragRules where rule.StartZone == _dragStartZone select rule.Action).FirstOrDefault();
 
         if (action == DoughCraftAction.None)
             return;
 
         bool isPerfect = _dragPerfect;
-        bool applied = _controller.TryApplyAction(action, this, isPerfect);
+        bool applied = _controller.TryApplyAction(action, false, this, isPerfect);
         print($"[CraftZone] Drag {name}, action={action}, perfect={isPerfect}, applied={applied}");
 
         _dragActive = false;

@@ -94,13 +94,13 @@ public class DoughController : MonoBehaviour
     
     public void SetCanActing(bool can) => CanApplyAction = can;
 
-    public bool TryApplyAction(DoughCraftAction action, CraftZone craftZone = null, bool isPerfect = false)
+    public bool TryApplyAction(DoughCraftAction action, bool isClick = false, CraftZone craftZone = null, bool isPerfect = false)
     {
         if (CanApplyAction == false) return false;
 
         bool isComboZoneAction = craftZone != null && craftZone.IsComboZone;
 
-        if (isComboZoneAction)
+        if (isComboZoneAction && isClick)
         {
             action = DoughCraftAction.ComboClick;
 

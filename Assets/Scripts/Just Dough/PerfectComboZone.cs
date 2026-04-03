@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class PerfectComboZone : MonoBehaviour, IPointerDownHandler
 {
-    private CraftZone _craftZone;
+    [SerializeField] private CraftZone _generalCraftZone;
     
     public UnityEvent OnClick;
 
     private void Awake()
     {
-        _craftZone = transform.parent.gameObject.GetComponentInChildren<CraftZone>();
+        _generalCraftZone = transform.parent.gameObject.GetComponentInChildren<CraftZone>();
     }
 
     private void RemoveZone()
@@ -25,7 +25,7 @@ public class PerfectComboZone : MonoBehaviour, IPointerDownHandler
         if (eventData.button != PointerEventData.InputButton.Right) return;
         print("perfect combo zone clicked");
         RemoveZone();
-        _craftZone.AddComboClick(true);
+        _generalCraftZone.AddComboClick(true);
         OnClick?.Invoke();
     }
 }
