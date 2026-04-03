@@ -33,9 +33,6 @@ public class BakeManager : MonoBehaviour
     private float _dragZ;
     private Vector3 _dragOffset;
 
-    private int _perfectActionCount;
-    private int _imperfectActionCount;
-
     private Product _product;
     private Customer _depositTarget;
 
@@ -51,17 +48,9 @@ public class BakeManager : MonoBehaviour
     public bool IsInShelf => _shelf != null;
     public BakeState BakeState { get; private set; } = BakeState.Raw;
     
-    public int PerfectActionCount
-    {
-        get => _perfectActionCount;
-        set => _perfectActionCount = value;
-    }
+    public int PerfectActionCount { get; set; }
 
-    public int ImperfectActionCount
-    {
-        get => _imperfectActionCount;
-        set => _imperfectActionCount = value;
-    }
+    public int ImperfectActionCount { get; set; }
 
     public Product DoughState => _product;
 
@@ -116,7 +105,8 @@ public class BakeManager : MonoBehaviour
 
         taken.StopBake();
         _shelf.Place(taken);
-        Debug.Log($"[BakeManager] perfect={_perfectActionCount}, imperfect={_imperfectActionCount}, " +
+        
+        Debug.Log($"[BakeManager] perfect={PerfectActionCount}, imperfect={ImperfectActionCount}, " +
                   $"productType={_product.Type}, filling={_product.Filling}, bakeState={BakeState}");
     }
 
@@ -223,12 +213,12 @@ public class BakeManager : MonoBehaviour
 
     public void SetPerfectActionCount(int count)
     {
-        _perfectActionCount = Mathf.Max(0, count);
+        PerfectActionCount = Mathf.Max(0, count);
     }
 
     public void SetImperfectActionCount(int count)
     {
-        _imperfectActionCount = Mathf.Max(0, count);
+        ImperfectActionCount = Mathf.Max(0, count);
     }
 
     public void SetDoughInfo(Product product)
@@ -341,7 +331,7 @@ public class BakeManager : MonoBehaviour
     private bool AttemptDeposit()
     {
         if (_depositTarget == null) return false;
-        return _depositTarget.OfferProduct(_product, gameObject);
+        return _depositTarget.OfferProduct(_product, BakeState, gameObject);
     }
 
     private void OnCancelRequested()

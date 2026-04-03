@@ -18,6 +18,8 @@ public class Book : MonoBehaviour
     [SerializeField] private Button _recipeButtonLeft;
     [SerializeField] private Button _recipeButtonRight;
 
+    private InGameUIController _gameUIController;
+    
     private bool _canOpen = true;
     private int _id;
     private Page _currentPageLeft;
@@ -26,7 +28,12 @@ public class Book : MonoBehaviour
     public event Action<ProductType> RecipeChanged;
     public ProductType CurrentSelectedProduct { get; private set; }
     public bool IsOpen => _book.activeSelf;
-    
+
+    private void Awake()
+    {
+        _gameUIController = GetComponent<InGameUIController>();
+    }
+
     private void Start()
     {
         _id = 0;
@@ -68,9 +75,9 @@ public class Book : MonoBehaviour
         _book.gameObject.SetActive(false);
     }
     
-    private void OnBook()
+    public void OnBook()
     {
-        if(_canOpen)
+        if(_canOpen && _gameUIController.IsMenuOpen == false)
             _book.SetActive(!_book.activeSelf);
     }
     

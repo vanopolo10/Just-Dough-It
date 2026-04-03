@@ -17,6 +17,8 @@ public class InGameUIController : MonoBehaviour
 
     private Book _book;
 
+    public bool IsMenuOpen => _ui.activeSelf || _saveUI.activeSelf;
+
     private void Awake()
     {
         _book = GetComponent<Book>();

@@ -35,10 +35,10 @@ public class Shelf : MonoBehaviour
         if (bun == null)
             return;
 
-        if (bun.BakeState != BakeState.Done)
-            bun.ImperfectActionCount++;
-        else
-            bun.PerfectActionCount++;
+        if (bun.BakeState is BakeState.Rare or BakeState.Burn)
+            bun.ImperfectActionCount += 3;
+        else if(bun.BakeState == BakeState.Done)
+            bun.PerfectActionCount += 3;
 
         int index = FindFreeSlot();
 

@@ -1608,7 +1608,6 @@ GameObject:
   - component: {fileID: 2104834270343023054}
   - component: {fileID: 7781336921373840447}
   - component: {fileID: 6333316816331327005}
-  - component: {fileID: 4790565598752164123}
   m_Layer: 0
   m_Name: Perfect Zone
   m_TagString: Untagged
@@ -1634,8 +1633,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 89.966, y: 0, z: -90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.029, y: 0.0811}
-  m_SizeDelta: {x: 0.1582, y: 0.1414}
+  m_AnchoredPosition: {x: 0.0502, y: 0.0811}
+  m_SizeDelta: {x: 0.1582, y: 0.165}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7368292296033352439
 CanvasRenderer:
@@ -1745,62 +1744,6 @@ MonoBehaviour:
       - m_Target: {fileID: 7941496095529055767}
         m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
         m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &4790565598752164123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1077597341708774695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 4171489483510767691}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7467723329983357154}
-        m_TargetAssemblyTypeName: PerfectComboZone, Assembly-CSharp
-        m_MethodName: OnMouseDown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7638,7 +7581,6 @@ GameObject:
   - component: {fileID: 642586063263217054}
   - component: {fileID: 6569732496193432401}
   - component: {fileID: 7467723329983357154}
-  - component: {fileID: 3791277577253244607}
   m_Layer: 0
   m_Name: Perfect Zone (1)
   m_TagString: Untagged
@@ -7664,8 +7606,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.031, y: 0.081}
-  m_SizeDelta: {x: 0.1211, y: 0.1169}
+  m_AnchoredPosition: {x: -0.0199, y: 0.081}
+  m_SizeDelta: {x: 0.1211, y: 0.1364}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8789695433195694058
 CanvasRenderer:
@@ -7775,62 +7717,6 @@ MonoBehaviour:
       - m_Target: {fileID: 3230491541206487874}
         m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
         m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &3791277577253244607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2771052501797614700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 5270497851625510061}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7467723329983357154}
-        m_TargetAssemblyTypeName: PerfectComboZone, Assembly-CSharp
-        m_MethodName: OnMouseDown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -29776,6 +29662,7 @@ Transform:
   m_LocalScale: {x: 0.38405097, y: 0.52000004, z: 0.3758496}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8579769748732289644}
   - {fileID: 1258830810223500892}
   - {fileID: 715921857865542549}
   - {fileID: 4941083306001014669}
@@ -31728,7 +31615,6 @@ GameObject:
   - component: {fileID: 8728738907401725669}
   - component: {fileID: 5523408714768241706}
   - component: {fileID: 6192091202275493618}
-  - component: {fileID: 4942549599508710800}
   m_Layer: 0
   m_Name: Perfect Zone (2)
   m_TagString: Untagged
@@ -31754,8 +31640,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.052, y: 0.080875605}
-  m_SizeDelta: {x: 0.1204, y: 0.1329}
+  m_AnchoredPosition: {x: 0.077, y: 0.080875605}
+  m_SizeDelta: {x: 0.1204, y: 0.1551}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &464905522920310939
 CanvasRenderer:
@@ -31865,62 +31751,6 @@ MonoBehaviour:
       - m_Target: {fileID: 6801610335323344633}
         m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
         m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &4942549599508710800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7472402063583341362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 8467936105594027983}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7467723329983357154}
-        m_TargetAssemblyTypeName: PerfectComboZone, Assembly-CSharp
-        m_MethodName: OnMouseDown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -41094,7 +40924,7 @@ PrefabInstance:
       objectReference: {fileID: 2107732447674889763}
     - target: {fileID: 8582130029298481074, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: _rightClickAction
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8582130029298481074, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: _dragRules.Array.size
@@ -41532,7 +41362,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 5023096969144440128}
+    m_TransformParent: {fileID: 2182591947836800323}
     m_Modifications:
     - target: {fileID: 4551856624686275876, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: m_Type
@@ -41608,15 +41438,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7805530207129168941, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.6165122
+      value: 1.6403162
       objectReference: {fileID: 0}
     - target: {fileID: 7805530207129168941, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.87224144
+      value: 2.2711606
       objectReference: {fileID: 0}
     - target: {fileID: 7805530207129168941, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.61651206
+      value: 1.1856
       objectReference: {fileID: 0}
     - target: {fileID: 7805530207129168941, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: m_LocalPosition.x
@@ -41628,7 +41458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7805530207129168941, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.018
+      value: -0.00062608434
       objectReference: {fileID: 0}
     - target: {fileID: 7805530207129168941, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: m_LocalRotation.w
@@ -41648,11 +41478,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7805530207129168941, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.116
+      value: 0.105233565
       objectReference: {fileID: 0}
     - target: {fileID: 7805530207129168941, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.09800003
+      value: 0.021827206
       objectReference: {fileID: 0}
     - target: {fileID: 7805530207129168941, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -46660,9 +46490,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3249866387270803634, guid: be41ce768d1134a4698a6f9d50f3add5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8392153767145238489}
-    - targetCorrespondingSourceObject: {fileID: 3249866387270803634, guid: be41ce768d1134a4698a6f9d50f3add5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8579769748732289644}
     - targetCorrespondingSourceObject: {fileID: 3249866387270803634, guid: be41ce768d1134a4698a6f9d50f3add5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8945557726693088052}

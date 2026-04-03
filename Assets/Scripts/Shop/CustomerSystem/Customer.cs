@@ -67,11 +67,11 @@ public class Customer : MonoBehaviour
         _canAcceptProduct = false;
     }
 
-    public bool OfferProduct(Product product, GameObject productObj)
+    public bool OfferProduct(Product product, BakeState bakeState, GameObject productObj)
     {
         if (!_canAcceptProduct) return false;
 
-        bool successful = _quest.OfferProduct(product);
+        bool successful = _quest.OfferProduct(product, bakeState);
 
         if (successful)
             ProductAccepted?.Invoke(productObj);

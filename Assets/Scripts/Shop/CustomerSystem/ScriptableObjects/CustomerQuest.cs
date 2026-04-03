@@ -73,7 +73,7 @@ public class CustomerQuest : ScriptableObject
             _customer.DialogueManager.TypingCompleted -= OnGreetingTypingCompleted;
     }
 
-    public bool OfferProduct(Product product)
+    public bool OfferProduct(Product product, BakeState bakeState)
     {
         if (!_isInitialized || _customer == null)
         {
@@ -81,7 +81,8 @@ public class CustomerQuest : ScriptableObject
             return false;
         }
 
-        bool fits = Check(product);
+        bool isBakedWell = bakeState != BakeState.Raw && bakeState != BakeState.FullBurn;
+        bool fits = Check(product) && isBakedWell;
 
         if (fits)
         {
@@ -178,7 +179,7 @@ public class CustomerQuest : ScriptableObject
         if (_applicableTypes == null || _applicableTypes.Count == 0 ||
             _applicableFillings == null || _applicableFillings.Count == 0)
             return true;
-
+        
         bool typeFits = _applicableTypes.Any(type => product.Type == type || type == ProductType.Any);
         bool fillingFits = _applicableFillings.Any(filling => product.Filling == filling || filling == FillingType.Any);
 
