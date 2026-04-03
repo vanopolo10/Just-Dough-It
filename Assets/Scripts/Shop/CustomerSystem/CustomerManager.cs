@@ -17,8 +17,8 @@ public class CustomerManager : MonoBehaviour
 
     private CustomerRouteMover _routeMover;
     private CustomerModelSpawner _spawner;
-
-    private int _currentIndex;
+    
+    private int _customerIndex;
     private bool _isDayStarting;
     private Coroutine _spawnCoroutine;
 
@@ -29,7 +29,8 @@ public class CustomerManager : MonoBehaviour
     public event Action CustomersEnded;
 
     public Customer CurrentCustomer { get; private set; }
-
+    public int CurrentDay { get; private set; } = 0;
+    
     private void Awake()
     {
         _spawner = GetComponent<CustomerModelSpawner>();
@@ -106,12 +107,16 @@ public class CustomerManager : MonoBehaviour
 
         _isDayStarting = true;
         DayStarted?.Invoke();
+        
+        FrostManager.Instance.ResetAllWindows();
+        FrostManager.Instance.SetWarm(CurrentDay);
+        
         StartCoroutine(DayRoutine());
     }
 
     private IEnumerator DayRoutine()
     {
-        _currentIndex = 0;
+        _customerIndex = 0;
 
         yield return new WaitForSecondsRealtime(_firstCustomerDelay);
 
@@ -139,7 +144,7 @@ public class CustomerManager : MonoBehaviour
 
         try
         {
-            prefab = _scheduleList[_currentIndex].GetCustomerFromPool();
+            prefab = _scheduleList[_customerIndex].GetCustomerFromPool();
         }
         catch
         {
@@ -187,9 +192,9 @@ public class CustomerManager : MonoBehaviour
         CurrentCustomer?.Despawn();
         CurrentCustomer = null;
 
-        _currentIndex++;
+        _customerIndex++;
 
-        if (_currentIndex >= _scheduleList.Count)
+        if (_customerIndex >= _scheduleList.Count)
         {
             CustomersEnded?.Invoke();
             return;

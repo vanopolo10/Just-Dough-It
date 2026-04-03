@@ -52,6 +52,8 @@ public class WalkerSpawner : MonoBehaviour
                 GameObject prefab = _models[Random.Range(0, _models.Count)];
                 GameObject spawned = _modelSpawner.Spawn(prefab, route.Points[0]);
 
+                spawned.GetComponentInChildren<CustomerAnimatorController>().StartWalking();
+                
                 if (spawned && _npcMover)
                     _npcMover.MoveRoutine(MoveNpcRoutine(spawned.transform, route));
             }

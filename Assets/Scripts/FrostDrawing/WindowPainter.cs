@@ -8,13 +8,6 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private MonoBehaviour _frostInput;
     [SerializeField] private Material _baseWindowMaterial;
     [SerializeField] private Material _resetMaterial;
-    [SerializeField] private Texture2D _frostTexture;
-    [SerializeField] private Texture2D _brushTexture;
-    [SerializeField] private float _pixelBrushSize = 50f;
-    [SerializeField] private float _brushSize = 0.1f;
-
-    [SerializeField] private float _baseOpacity;
-    [SerializeField] private Color _frostColor;
 
     private Material _windowMaterial;
     private float _brushWidth;
@@ -23,6 +16,7 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private IFrostInput _input;
     private bool _isPainting;
     private Vector2? _lastPaintUv;
+    private int _warm;
 
     [SerializeField] private RenderTexture _maskTexture;
     private bool _isPointerOver;
@@ -30,19 +24,12 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public event Action<WindowPainter> PointerEntered;
     public event Action<WindowPainter> PointerExited;
 
-    private void OnEnable()
+    private void Start()
     {
-        FrostManager.OnResetAll += ResetMask;
-    }
-
-    private void OnDisable()
-    {
-        FrostManager.OnResetAll -= ResetMask;
-    }
-
-    private void Awake()
-    {
-        if (_brushTexture == null)
+        FrostManager.Instance.OnResetAll += ResetMask;
+        FrostManager.Instance.Warmed += OnWarmed;
+        
+        if (FrostManager.Instance.BrushTexture == null)
         {
             Debug.LogError($"_brushTexture is not assigned in FrostPainter in {gameObject.name}");
             return;
@@ -58,6 +45,12 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             _input = input;
         else
             Debug.LogError($"WindowPainter requires a MonoBehaviour that implements IFrostInput in {gameObject.name}");
+    }
+
+    private void OnDisable()
+    {
+        FrostManager.Instance.OnResetAll -= ResetMask;
+        FrostManager.Instance.Warmed += OnWarmed;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -125,6 +118,11 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
+    private void OnWarmed(int warm)
+    {
+        _warm = warm;
+    }
+
     private void GenerateMaterial()
     {
         if (_baseWindowMaterial == null)
@@ -137,8 +135,8 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         if (gameObject.TryGetComponent(out Renderer renderer))
         {
-            _brushWidth = _brushSize * _maskTexture.width;
-            _brushHeight = _brushSize * _maskTexture.height;
+            _brushWidth = FrostManager.Instance.BrushSize * _maskTexture.width;
+            _brushHeight = FrostManager.Instance.BrushSize * _maskTexture.height;
             renderer.material = _windowMaterial;
         }
         else if (TryGetComponent(out RawImage image))
@@ -150,9 +148,9 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             Debug.LogError($"WindowPainter requires a Renderer or RawImage in {gameObject.name}");
 
         _windowMaterial.SetTexture("_MaskTex", _maskTexture);
-        _windowMaterial.SetTexture("_MainTex", _frostTexture);
-        _windowMaterial.SetFloat("_BaseOpacity", _baseOpacity);
-        _windowMaterial.SetColor("_BaseColor", _frostColor);
+        _windowMaterial.SetTexture("_MainTex", FrostManager.Instance.FrostTexture);
+        _windowMaterial.SetFloat("_BaseOpacity", FrostManager.Instance.BaseOpacities[_warm]);
+        _windowMaterial.SetColor("_BaseColor", FrostManager.Instance.FrostColor);
     }
 
     private void SetBrushSizeUi(RawImage image)
@@ -167,8 +165,8 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         float uiW = screenMax.x - screenMin.x;
         float uiH = screenMax.y - screenMin.y;
 
-        float pixelRadiusX = _pixelBrushSize * _maskTexture.width / uiW;
-        float pixelRadiusY = _pixelBrushSize * _maskTexture.height / uiH;
+        float pixelRadiusX = FrostManager.Instance.PixelBrushSize * _maskTexture.width / uiW;
+        float pixelRadiusY = FrostManager.Instance.PixelBrushSize * _maskTexture.height / uiH;
         _brushWidth = pixelRadiusX * 2;
         _brushHeight = pixelRadiusY * 2;
     }
@@ -192,7 +190,7 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             _brushHeight
         );
         
-        Graphics.DrawTexture(rect, _brushTexture);
+        Graphics.DrawTexture(rect, FrostManager.Instance.BrushTexture);
         GL.PopMatrix();
         RenderTexture.active = null;
     }
@@ -208,7 +206,7 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
         
         float distance = Vector2.Distance(from, to);
-        int steps = Mathf.CeilToInt(distance / (_brushSize * 0.1f));
+        int steps = Mathf.CeilToInt(distance / (FrostManager.Instance.BrushSize * 0.1f));
         steps = Mathf.Min(steps, 50);
 
         for (int i = 0; i <= steps; i++)
@@ -222,5 +220,6 @@ public class WindowPainter : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     void ResetMask()
     {
         Graphics.Blit(Texture2D.whiteTexture, _maskTexture);
+        GenerateMaterial();
     }
 }

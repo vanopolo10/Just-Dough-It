@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,8 +64,7 @@ public class Shelf : MonoBehaviour
     
     private void OnBunSold(BakeManager bun)
     {
-        _moneyManager.AddMoney(_basePrice + bun.PerfectActionCount /
-            (bun.ImperfectActionCount + bun.PerfectActionCount) * _qualityMultiplayer);
+        _moneyManager.AddMoney(Mathf.FloorToInt(_basePrice + 1f * bun.PerfectActionCount / (bun.ImperfectActionCount + bun.PerfectActionCount) * _qualityMultiplayer));
 
         OnBunThrown(bun);
     }

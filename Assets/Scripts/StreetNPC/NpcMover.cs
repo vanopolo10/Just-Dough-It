@@ -45,7 +45,7 @@ public class NpcMover : MonoBehaviour
         }
     
         StartCoroutine(routine);
-        Debug.Log($"MoveRoutine: started routine {routine.ToString()}");
+        Debug.Log($"MoveRoutine: started routine {routine}");
     }
     
     public IEnumerator MoveTo(Transform target, Vector3 destination)
