@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,6 +16,11 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private float _dialogueOptionOffset = 1f;
 
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _talkClip;
+    [SerializeField] private AudioClip _acceptClip;
+    [SerializeField] private AudioClip _denyClip;
+
     private List<DialogueOptionData> _dialogueOptions = new();
     private readonly List<Transform> _spawnedDialogueOptions = new();
 
@@ -23,13 +29,21 @@ public class DialogueManager : MonoBehaviour
 
     private bool _isFinalQuestText;
 
+    private Customer _currentCustomer;
+    private Coroutine _talkCoroutine;
+
     public event Action SkipClicked;
     public event Action ConfirmClicked;
     public event Action TypingCompleted;
     public event Action<DialogueOption> DialogueOptionPlayed;
 
     public bool IsTextFullyVisible { get; private set; }
-    
+
+    public void SetCurrentCustomer(Customer customer)
+    {
+        _currentCustomer = customer;
+    }
+
     [Serializable]
     private class DialogueOptionData
     {
@@ -42,7 +56,7 @@ public class DialogueManager : MonoBehaviour
             IsActive = isActive;
         }
     }
-    
+
     private void Awake()
     {
         if (_typewriter == null)
@@ -72,6 +86,7 @@ public class DialogueManager : MonoBehaviour
             _speechBubble.OnBubbleClicked -= HandleClick;
 
         UnsubscribeFromTypewriter();
+        StopTalkSounds();
     }
 
     private void SubscribeToTypewriter()
@@ -94,7 +109,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (_typewriter == null)
             return;
-        
+
         if (_typewriter.IsTyping)
         {
             _typewriter.CompleteTypingInstantly();
@@ -124,8 +139,10 @@ public class DialogueManager : MonoBehaviour
 
     private void OnTypingCompleted()
     {
+        StopTalkSounds();
+
         IsTextFullyVisible = true;
-        
+
         _onTypingCompleted?.Invoke();
         TypingCompleted?.Invoke();
     }
@@ -138,16 +155,18 @@ public class DialogueManager : MonoBehaviour
 
     public void DisableBubble()
     {
+        StopTalkSounds();
+
         IsTextFullyVisible = false;
         _onTypingCompleted = null;
         _onTextClicked = null;
         _isFinalQuestText = false;
 
         ClearDialogueHandles();
-        
+
         if (_speechBubble != null)
             _speechBubble.gameObject.SetActive(false);
-            
+
         if (_typewriter != null)
             _typewriter.Clear();
 
@@ -155,7 +174,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     public void DisplayText(string text)
-    { 
+    {
         EnableBubble();
 
         IsTextFullyVisible = false;
@@ -164,6 +183,7 @@ public class DialogueManager : MonoBehaviour
         _isFinalQuestText = false;
 
         _ = _typewriter.StartTyping(text);
+        StartTalkSounds();
     }
 
     public void DisplayTextWithTypingCallback(string text, Action onTypingCompleted)
@@ -176,6 +196,7 @@ public class DialogueManager : MonoBehaviour
         _isFinalQuestText = false;
 
         _ = _typewriter.StartTyping(text);
+        StartTalkSounds();
     }
 
     public void DisplayTextWithClickCallback(string text, Action onTextClicked)
@@ -188,6 +209,7 @@ public class DialogueManager : MonoBehaviour
         _isFinalQuestText = false;
 
         _ = _typewriter.StartTyping(text);
+        StartTalkSounds();
     }
 
     public void DisplayTextWithCallbacks(string text, Action onTypingCompleted, Action onTextClicked)
@@ -200,6 +222,7 @@ public class DialogueManager : MonoBehaviour
         _isFinalQuestText = false;
 
         _ = _typewriter.StartTyping(text);
+        StartTalkSounds();
     }
 
     public void DisplayFinalQuestText(string text, Action onTextClicked)
@@ -212,6 +235,7 @@ public class DialogueManager : MonoBehaviour
         _isFinalQuestText = true;
 
         _ = _typewriter.StartTyping(text);
+        StartTalkSounds();
     }
 
     public void DisplayTextWithCallback(string text, Action onComplete)
@@ -222,11 +246,11 @@ public class DialogueManager : MonoBehaviour
     public void SetDialogueOptions(List<DialogueOption> options)
     {
         _dialogueOptions.Clear();
-        
+
         if (options != null)
             foreach (var option in options)
                 _dialogueOptions.Add(new DialogueOptionData(option));
-        
+
         RefreshDialogueHandles();
     }
 
@@ -238,10 +262,10 @@ public class DialogueManager : MonoBehaviour
             optionData.IsActive = false;
             RefreshDialogueHandles();
         }
-        
+
         DialogueOptionPlayed?.Invoke(option);
     }
-    
+
     public void ActivateDialogueOption(DialogueOption option)
     {
         var optionData = _dialogueOptions.FirstOrDefault(od => od.Option.Equals(option));
@@ -251,7 +275,7 @@ public class DialogueManager : MonoBehaviour
             RefreshDialogueHandles();
         }
     }
-    
+
     private void ClearDialogueHandles()
     {
         foreach (var t in _spawnedDialogueOptions.Where(t => t != null))
@@ -290,5 +314,66 @@ public class DialogueManager : MonoBehaviour
                     _ = handle.Setup(customerManager.CurrentCustomer, optionData.Option);
             }
         }
+    }
+
+    private void StartTalkSounds()
+    {
+        StopTalkSounds();
+        if (_talkClip == null || _audioSource == null) return;
+        if (_currentCustomer == null) return;
+
+        PlayTalkSound();
+        _talkCoroutine = StartCoroutine(TalkRoutine());
+    }
+
+    private void StopTalkSounds()
+    {
+        if (_talkCoroutine != null)
+        {
+            StopCoroutine(_talkCoroutine);
+            _talkCoroutine = null;
+        }
+    }
+
+    private IEnumerator TalkRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.3f);
+            if (_typewriter != null && _typewriter.IsTyping)
+            {
+                PlayTalkSound();
+            }
+        }
+    }
+
+    private void PlayTalkSound()
+    {
+        if (_talkClip == null || _audioSource == null) return;
+        float pitch = GetCurrentPitch() + UnityEngine.Random.Range(-0.1f, 0.1f);
+        pitch = Mathf.Clamp(pitch, 0.1f, 3f);
+        _audioSource.pitch = pitch;
+        _audioSource.PlayOneShot(_talkClip);
+    }
+
+    public void PlayAcceptSound()
+    {
+        if (_acceptClip == null || _audioSource == null) return;
+        _audioSource.pitch = GetCurrentPitch();
+        _audioSource.PlayOneShot(_acceptClip);
+    }
+
+    public void PlayDenySound()
+    {
+        if (_denyClip == null || _audioSource == null) return;
+        _audioSource.pitch = GetCurrentPitch();
+        _audioSource.PlayOneShot(_denyClip);
+    }
+
+    private float GetCurrentPitch()
+    {
+        if (_currentCustomer != null && _currentCustomer.Quest != null && _currentCustomer.Quest.Interactions != null)
+            return _currentCustomer.Quest.Interactions.Pitch;
+        return 1f;
     }
 }

@@ -33,8 +33,6 @@ public class CustomerInteraction
 
     public virtual void PlayOut(Customer target)
     {
-        Debug.Log(
-            $"[CustomerInteraction] PlayOut (single) called. DialogueKey: {_dialogueKey}, Target: {(target != null ? target.name : "null")}");
         PlayOut(target, _nextInteraction);
     }
 
@@ -56,6 +54,8 @@ public class CustomerInteraction
             Debug.LogError("[CustomerInteraction] DialogueManager is null on target customer");
             return;
         }
+
+        dialogueManager.SetCurrentCustomer(target);
 
         _targetCustomer = target;
         _nextInteraction = nextInteraction;
@@ -256,7 +256,7 @@ public class CustomerInteractionSet : ScriptableObject
     [SerializeField] private CustomerInteractionSequence _onItemRejected;
     [SerializeField] private CustomerInteractionSequence _onQuestCompleted;
     [SerializeField] private List<DialogueOption> _questDialogueOptions = new();
-
+    [SerializeField] private float _pitch = 1;
 
     public CustomerInteractionSequence OnGreeting => _onGreeting;
     public CustomerInteractionSequence OnItemAccepted => _onItemAccepted;
@@ -264,6 +264,8 @@ public class CustomerInteractionSet : ScriptableObject
     public CustomerInteractionSequence OnQuestCompleted => _onQuestCompleted;
 
     public List<DialogueOption> DialogueOptions => _questDialogueOptions;
+
+    public float Pitch => _pitch;
 
     public void AddDialogueOption(DialogueOption option)
     {

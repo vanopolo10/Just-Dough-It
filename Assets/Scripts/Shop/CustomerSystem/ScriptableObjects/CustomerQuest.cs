@@ -33,6 +33,7 @@ public class CustomerQuest : ScriptableObject
     public event Action GreetingTypingCompleted;
     public event Action QuestStarted;
 
+    public CustomerInteractionSet Interactions => _interactions;
     public CustomerInteraction QuestInteraction => _questInteraction;
     public int ProductsLeft => _productsLeft;
 
@@ -86,6 +87,9 @@ public class CustomerQuest : ScriptableObject
 
         if (fits)
         {
+            if (_customer != null && _customer.DialogueManager != null)
+                _customer.DialogueManager.PlayAcceptSound();
+
             _productsLeft--;
 
             if (_productsLeft <= 0)
@@ -105,6 +109,9 @@ public class CustomerQuest : ScriptableObject
         }
         else
         {
+            if (_customer != null && _customer.DialogueManager != null)
+                _customer.DialogueManager.PlayDenySound();
+
             if (_customer.AnimatorController != null)
                 _customer.AnimatorController.OnItemRejected();
 
@@ -151,6 +158,9 @@ public class CustomerQuest : ScriptableObject
 
     public void DisplayQuestInteraction()
     {
+        if (_customer != null && _customer.DialogueManager != null)
+            _customer.DialogueManager.SetCurrentCustomer(_customer);
+
         _customer.DialogueManager.DisplayText(_questInteraction.DialogueKey);
     }
 
