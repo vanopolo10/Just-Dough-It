@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class Shelf : MonoBehaviour
 {
-    [Header("Money")]
-    [SerializeField] private MoneyManager _moneyManager;
+    [Header("Money")] [SerializeField] private MoneyManager _moneyManager;
     [SerializeField] private int _basePrice = 30;
     [SerializeField] private int _qualityMultiplayer = 20;
-    
+
     [SerializeField] private List<Transform> _places = new();
     [SerializeField] private GameObject _debugPie;
     [SerializeField] private bool _placeDebugPies;
@@ -19,13 +18,15 @@ public class Shelf : MonoBehaviour
     {
         _occupied = new BakeManager[_places.Count];
     }
+
     private void Start()
     {
-        if (_placeDebugPies) {
-            for (int i = 0; i <3; i++) { 
-                GameObject spawnedPie = Instantiate(_debugPie, transform);
-                Place(spawnedPie.GetComponent<BakeManager>());
-            }
+        if (!_placeDebugPies) return;
+
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject spawnedPie = Instantiate(_debugPie, transform);
+            Place(spawnedPie.GetComponent<BakeManager>());
         }
     }
 
@@ -37,9 +38,7 @@ public class Shelf : MonoBehaviour
         if (bun.BakeState != BakeState.Done)
             bun.ImperfectActionCount++;
         else
-        {
             bun.PerfectActionCount++;
-        }
 
         int index = FindFreeSlot();
 
@@ -54,14 +53,17 @@ public class Shelf : MonoBehaviour
             bun.gameObject.SetActive(false);
         }
     }
-    
+
     private void OnBunSold(BakeManager bun)
     {
         Remove(bun);
-        _moneyManager.AddMoney(_basePrice + bun.PerfectActionCount / (bun.ImperfectActionCount + bun.PerfectActionCount) * _qualityMultiplayer);
+        
+        _moneyManager.AddMoney(_basePrice + bun.PerfectActionCount /
+            (bun.ImperfectActionCount + bun.PerfectActionCount) * _qualityMultiplayer);
+        
         Destroy(bun.gameObject);
     }
-    
+
     private void Remove(BakeManager bun)
     {
         if (bun == null)
