@@ -18,8 +18,15 @@ public class MenuUIController : MonoBehaviour
     [SerializeField] private Animator _sidesAnimator;
     [SerializeField] private Button _continueButton;
 
+    [Header("Cafe Name, Sunrizes & Tutorial")]
+    [SerializeField] private GameObject _choice;
+    [SerializeField] private GameObject _cafeExsist;
+    [SerializeField] private GameObject _cafeName;
+    [SerializeField] private GameObject _tutorial;
+
     private List<GameSave> _saves;
     private List<string> _languageCodes = new() { "ru", "en" };
+    private bool _doPreferSunrises;
 
     private void Awake()
     {
@@ -31,15 +38,19 @@ public class MenuUIController : MonoBehaviour
     {
         UpdateSavesList();
         StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
+        _choice.SetActive(false);
+        _cafeExsist.SetActive(false);
+        _tutorial.SetActive(false);
+        _cafeName.SetActive(true);
     }
 
-    public void NewGame(bool doPreferSunrises)
+    public void NewGame(bool needTutorial)
     {
         SaveSystem.SelectedSave = _cafeNameController.CafeName;
         SaveSystem.CreateSave(SaveSystem.SelectedSave);
-        SaveSystem.SaveData(SaveSystem.SelectedSave, "DoPreferSunrises", doPreferSunrises);
+        SaveSystem.SaveData(SaveSystem.SelectedSave, "DoPreferSunrises", _doPreferSunrises);
 
-        SceneLoader.Instance.LoadScene(1);
+        SceneLoader.Instance.LoadScene(needTutorial ? 1 : 2);
     }
 
     public void LoadLastGame()
@@ -78,6 +89,34 @@ public class MenuUIController : MonoBehaviour
     public void ChangeLanguage(int _)
     {
         StartCoroutine(SetLanguage(_languageCodes[_languageDropdown.value]));
+    }
+
+    public void CafeNameSubmit()
+    {
+        if (SaveSystem.SaveExist(_cafeNameController.CafeName))
+        {
+            _cafeName.SetActive(false);
+            _cafeExsist.SetActive(true);
+        }
+        else
+        {
+            _cafeName.SetActive(false);
+            _choice.SetActive(true);
+        }
+    }
+
+    public void RewriteSave()
+    {
+        SaveSystem.DeleteSave(_cafeNameController.CafeName);
+        _cafeExsist.SetActive(false);
+        _choice.SetActive(true);
+    }
+
+    public void SetPreferSunrises(bool preferSunrises)
+    {
+        _doPreferSunrises = preferSunrises;
+        _choice.SetActive(false);
+        _tutorial.SetActive(true);
     }
 
     private IEnumerator SetLanguage(string code)
