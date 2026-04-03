@@ -2654,7 +2654,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1813120642327971176, guid: 63eeae5a459ef23458afa607574a6727, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 2d497820e01eef440bab8412d5c6ef23, type: 3}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2774,6 +2774,8 @@ MonoBehaviour:
   _navigationButtonRight: {fileID: 676125646}
   _recipeButtonLeft: {fileID: 1119992069}
   _recipeButtonRight: {fileID: 123950887}
+  _pageClip: {fileID: 8300000, guid: af3090421c141ed47bd85915b96aa3c2, type: 3}
+  _submitClip: {fileID: 8300000, guid: 79f33674e7acb2d45b99253ecbd5deb7, type: 3}
 --- !u!1 &346286565 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4133768528493736308, guid: edeec805ea78a9f4bb758e5809da063f, type: 3}

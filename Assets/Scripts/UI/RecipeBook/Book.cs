@@ -18,8 +18,13 @@ public class Book : MonoBehaviour
     [SerializeField] private Button _recipeButtonLeft;
     [SerializeField] private Button _recipeButtonRight;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip _pageClip;
+    [SerializeField] private AudioClip _submitClip;
+
     private InGameUIController _gameUIController;
-    
+    private AudioSource _audioSource;
+
     private bool _canOpen = true;
     private int _id;
     private Page _currentPageLeft;
@@ -32,6 +37,7 @@ public class Book : MonoBehaviour
     private void Awake()
     {
         _gameUIController = GetComponent<InGameUIController>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -53,6 +59,9 @@ public class Book : MonoBehaviour
             _id++;
             _ = SetSpritesAndText();
             UpdateNavigationButtons();
+
+            _audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+            _audioSource.PlayOneShot(_pageClip);
         }
     }
     
@@ -63,6 +72,9 @@ public class Book : MonoBehaviour
             _id--;
             _ = SetSpritesAndText();
             UpdateNavigationButtons();
+
+            _audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+            _audioSource.PlayOneShot(_pageClip);
         }
     }
 
@@ -155,6 +167,10 @@ public class Book : MonoBehaviour
         
         CurrentSelectedProduct = productType;
         RecipeChanged?.Invoke(productType);
+
+
+        _audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+        _audioSource.PlayOneShot(_submitClip);
     }
     
     [Serializable]
