@@ -5,13 +5,24 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class MusicManager : MonoBehaviour
 {
+    static MusicManager Instance;
+
     [SerializeField, Min(0)] private float _fadeTime = 5;
     [SerializeField] private List<AudioClip> _clips = new();
 
     private AudioSource _audioSource;
     private float _initialVolume;
 
-    private void Awake() => DontDestroyOnLoad(gameObject);
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(this.gameObject);
+    }
 
     private void Start()
     {
