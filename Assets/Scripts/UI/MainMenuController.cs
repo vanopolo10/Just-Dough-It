@@ -7,9 +7,12 @@ public class MainMenuController : MonoBehaviour
     private static readonly int ShelfClose = Animator.StringToHash("ShelfClose");
     private static readonly int Close = Animator.StringToHash("Close");
 
-    [SerializeField] private GameObject _choices;
+    [SerializeField] private GameObject _choice;
+    [SerializeField] private GameObject _cafeExsist;
     [SerializeField] private GameObject _cafeName;
-    
+    [SerializeField] private GameObject _tutorial;
+    [SerializeField] private CafeNameController _cafeNameController;
+
     [Header("Buttons")]
     [SerializeField] private Button _settings;
     [SerializeField] private Button _load;
@@ -29,13 +32,13 @@ public class MainMenuController : MonoBehaviour
     
     private void OnEscape()
     {
-        if (_choices.activeSelf)
-        {
-            _choices.SetActive(false);
-            _cafeName.SetActive(true);
-            return;
-        }
-        
+        _choice.SetActive(false);
+        _cafeExsist.SetActive(false);
+        _tutorial.SetActive(false);
+        _cafeName.SetActive(true);
+        _cafeNameController.Clear();
+
+
         _sides.SetTrigger(TrayClose);
         _sides.SetTrigger(ShelfClose);
         
