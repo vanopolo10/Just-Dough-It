@@ -2756,15 +2756,15 @@ MonoBehaviour:
   _pages:
   - ProductType: 1
     RecipeSprite: {fileID: 21300000, guid: 425169412f8557840be9b90a3fcde020, type: 3}
-    RecipeActiveSprite: {fileID: 21300000, guid: 4de54ba6a37c94f4e959e858b2fa2679, type: 3}
+    RecipeActiveSprite: {fileID: 21300000, guid: da6a86de06325f8499aa5e894367eb1b, type: 3}
     NameKey: book.simple_pie
   - ProductType: 2
-    RecipeSprite: {fileID: 21300000, guid: d76601a345a9eb44e975e52a31b798d7, type: 3}
-    RecipeActiveSprite: {fileID: 21300000, guid: 6ff03681fa1ba5d40bc17b2f4f82179e, type: 3}
+    RecipeSprite: {fileID: 21300000, guid: 04363cf43cfa2b24bb65c30c56c57ea3, type: 3}
+    RecipeActiveSprite: {fileID: 21300000, guid: 3e7b5b0e2322b9545a06b864b9003683, type: 3}
     NameKey: book.cool_pie
   - ProductType: 3
     RecipeSprite: {fileID: 21300000, guid: f5fb72de7c315e04091c1f27fd15a94e, type: 3}
-    RecipeActiveSprite: {fileID: 21300000, guid: e438399b19ac55048a84ef8154dc1ca1, type: 3}
+    RecipeActiveSprite: {fileID: 21300000, guid: b42a45c4c6de9304d9d8401ef615f64d, type: 3}
     NameKey: book.sousage_pie
   _imageLeft: {fileID: 1198622355}
   _imageRight: {fileID: 1831915815}
@@ -14235,6 +14235,30 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 95.9
       objectReference: {fileID: 0}
+    - target: {fileID: 1034037552012321513, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 140.8192
+      objectReference: {fileID: 0}
+    - target: {fileID: 1034037552012321513, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 42.3321
+      objectReference: {fileID: 0}
+    - target: {fileID: 1034037552012321513, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.000000024835
+      objectReference: {fileID: 0}
+    - target: {fileID: 1034037552012321513, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1034037552012321513, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -67.56608
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940144378570339185, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3959210614083078395, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
       propertyPath: m_Type
       value: 0
@@ -14249,7 +14273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4816103610654494530, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5020566213441171695, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
       propertyPath: m_Type
@@ -14299,6 +14323,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 54.4
       objectReference: {fileID: 0}
+    - target: {fileID: 6832863187722290873, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7250725128023898289, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
       propertyPath: m_Type
       value: 0
@@ -14307,10 +14335,26 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: c4d47e1afb1b10d46aa1aaf10e3ef5de, type: 3}
+    - target: {fileID: 7324553725199014126, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7544912070843583751, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 330585552}
+    - target: {fileID: 7905978328144228910, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8044574685674580410, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a6159b5a514dccd4c80700db3bb20764, type: 3}
+    - target: {fileID: 8044574685674580410, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8956928804614340081, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -11.41
