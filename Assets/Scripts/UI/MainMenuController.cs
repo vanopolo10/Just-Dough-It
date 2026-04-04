@@ -10,7 +10,6 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private GameObject _choice;
     [SerializeField] private GameObject _cafeExsist;
     [SerializeField] private GameObject _cafeName;
-    [SerializeField] private GameObject _tutorial;
     [SerializeField] private CafeNameController _cafeNameController;
 
     [Header("Buttons")]
@@ -34,7 +33,6 @@ public class MainMenuController : MonoBehaviour
     {
         _choice.SetActive(false);
         _cafeExsist.SetActive(false);
-        _tutorial.SetActive(false);
         _cafeName.SetActive(true);
         _cafeNameController.Clear();
 
