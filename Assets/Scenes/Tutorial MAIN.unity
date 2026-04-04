@@ -2273,14 +2273,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.12186928, y: 0, z: 0, w: 0.9925462}
-  m_LocalPosition: {x: 2.355, y: 0.855, z: 3.223}
+  m_LocalRotation: {x: 0, y: 0.99939084, z: -0.03489949, w: 0}
+  m_LocalPosition: {x: 0, y: 1.868, z: 3.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4039310875734869389}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 14, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 4, y: 180, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13746,6 +13746,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CursorController
       objectReference: {fileID: 0}
+    - target: {fileID: 7704795753728437403, guid: cd9545a3359c7704facd62e7d7e644ba, type: 3}
+      propertyPath: _throw
+      value: 
+      objectReference: {fileID: 2800000, guid: 486755990ca2ded46a755d9c385588b7, type: 3}
     - target: {fileID: 7704795753728437403, guid: cd9545a3359c7704facd62e7d7e644ba, type: 3}
       propertyPath: _rollingPin
       value: 
