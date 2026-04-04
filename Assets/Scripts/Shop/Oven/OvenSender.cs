@@ -10,7 +10,10 @@ public class OvenSender : MonoBehaviour
     {
         DoughState.SimplePie,
         DoughState.CoolPie,
-        DoughState.HotDog
+        DoughState.HotDog,
+        DoughState.Cinnabon,
+        DoughState.DoubleCinnabon,
+        DoughState.Rose
     };
 
     [SerializeField] private Image _image;

@@ -13,10 +13,12 @@ public class CuttingZone : MonoBehaviour
     [SerializeField] private float _cuttingSpeed = 1f;
     [SerializeField] private List<GameObject> _destroyOnCut;
     [SerializeField] private List<GameObject> _detachOnCut;
+    [SerializeField] private DoughDrag _drag;
 
     private static CameraViewType _activeView = CameraViewType.Craft;
     private CameraController _cameraController;
 
+    private DoughController _controller;
     private SplineAnimate _splineAnimate;
     private Spline _spline;
     private Knife _knife;
@@ -31,6 +33,14 @@ public class CuttingZone : MonoBehaviour
         }
         _spline = GetComponentInChildren<SplineContainer>().Spline;
         _cameraController = Camera.main.GetComponent<CameraController>();
+        _controller = transform.parent.GetComponentInParent<DoughController>();
+        if(_drag==null) _drag = transform.parent.GetComponentInParent<DoughDrag>();
+        Debug.Log($"CuttingZone {name} initialized, found components: " +
+                  $"SplineAnimate: {_splineAnimate != null}, " +
+                  $"Spline: {_spline != null}, " +
+                  $"CameraController: {_cameraController != null}, " +
+                  $"DoughController: {_controller != null}, " +
+                  $"DoughDrag: {_drag != null}");
     }
     private void DisableCraftZones() { 
         //TODO: disable aa other craft zones on object
@@ -58,6 +68,8 @@ public class CuttingZone : MonoBehaviour
 
         //LockInputs();
         //DisableCraftZones();
+        if (_drag == null) _drag = transform.parent.GetComponentInParent<DoughDrag>();
+        _drag.SetDragBlock(true);
 
         _isCutting = true;
         _cutPoint.SetActive(false);
@@ -119,7 +131,8 @@ public class CuttingZone : MonoBehaviour
         _knife.FinishCutting();
         _isCutting = false;
 
-        transform.parent.GetComponentInParent<DoughController>().ProgressCutting();
+        _controller.ProgressCutting();
+        _drag.SetDragBlock(false);
 
         HandleObjectLists();
     }

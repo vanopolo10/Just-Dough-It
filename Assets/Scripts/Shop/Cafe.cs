@@ -73,6 +73,8 @@ public class Cafe : MonoBehaviour
             return;
         }
 
+        bakeManagerPrefab.SetProductFromDoughController(dough); // for transform overrides
+
         BakeManager bakedInstance = _tray.AddDough(bakeManagerPrefab);
         if (bakedInstance == null)
         {

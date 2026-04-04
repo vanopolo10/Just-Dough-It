@@ -34,6 +34,20 @@ public class Tray : MonoBehaviour
     public event Action<bool> MovedToOven;
     public event Action PastryRemoved;
 
+    [Serializable] 
+    private struct TransformOverride {
+        [SerializeField] private ProductType _affectedType;
+        [SerializeField] private Vector3 _position;
+        [SerializeField] private Vector3 _rotation;
+        [SerializeField] private Vector3 _scale;
+
+        public ProductType AffectedType => _affectedType;
+        public Vector3 Positon => _position;
+        public Vector3 Rotation => _rotation;
+        public Vector3 Scale => _scale;
+    }
+    [SerializeField] private List<TransformOverride> _transformOverrides;
+
     private void Awake()
     {
         if (_oven == null)
@@ -118,6 +132,7 @@ public class Tray : MonoBehaviour
         if (freeSlot == null)
             return null;
 
+        
         BakeManager instance = Instantiate(
             prefab,
             freeSlot.Anchor.position,
@@ -125,8 +140,29 @@ public class Tray : MonoBehaviour
             freeSlot.Anchor
         );
 
-        instance.transform.localPosition = Vector3.zero;
-        instance.transform.localRotation = Quaternion.LookRotation(transform.right);
+        bool overrideFound = false;
+        foreach (var transformOverride in _transformOverrides)
+        {
+            if (transformOverride.AffectedType == prefab.Product.Type)
+            {
+                Debug.Log($"[Tray] Applying transform override for {prefab.Product.Type} on {instance.gameObject.name}");
+                instance.transform.localPosition = transformOverride.Positon;
+                instance.transform.localRotation = Quaternion.Euler(transformOverride.Rotation);
+                instance.transform.localScale = transformOverride.Scale;
+                overrideFound = true;
+                break;
+            }
+            else { 
+                Debug.Log($"[Tray] Transform override for {prefab.Product.Type} does not match {transformOverride.AffectedType}");
+            }
+        }
+        if (!overrideFound)
+        {
+            Debug.Log($"[Tray] No transform override found for {prefab.Product.Type} on {instance.gameObject.name}");
+            instance.transform.localPosition = Vector3.zero;
+            instance.transform.localRotation = Quaternion.LookRotation(transform.right);
+        }
+        
 
         freeSlot.SetBun(instance);
         instance.Setup(this, _shelf);
