@@ -322,8 +322,10 @@ public class DialogueManager : MonoBehaviour
         if (_talkClip == null || _audioSource == null) return;
         if (_currentCustomer == null) return;
 
+        float speed = GetCurrentSpeed();
+
         PlayTalkSound();
-        _talkCoroutine = StartCoroutine(TalkRoutine());
+        _talkCoroutine = StartCoroutine(TalkRoutine(speed));
     }
 
     private void StopTalkSounds()
@@ -335,11 +337,11 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private IEnumerator TalkRoutine()
+    private IEnumerator TalkRoutine(float talkSpeed)
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(1/talkSpeed);
             if (_typewriter != null && _typewriter.IsTyping)
             {
                 PlayTalkSound();
@@ -375,5 +377,12 @@ public class DialogueManager : MonoBehaviour
         if (_currentCustomer != null && _currentCustomer.Quest != null && _currentCustomer.Quest.Interactions != null)
             return _currentCustomer.Quest.Interactions.Pitch;
         return 1f;
+    }
+
+    private float GetCurrentSpeed() 
+    { 
+        if(_currentCustomer != null && _currentCustomer.Quest != null && _currentCustomer.Quest.Interactions != null)
+            return _currentCustomer.Quest.Interactions.Speed;
+        return 4f;
     }
 }

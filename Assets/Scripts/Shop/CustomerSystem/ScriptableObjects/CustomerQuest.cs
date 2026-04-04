@@ -25,6 +25,8 @@ public class CustomerQuest : ScriptableObject
     [SerializeField] private int _productsNeeded;
     [SerializeField] private List<ProductType> _applicableTypes;
     [SerializeField] private List<FillingType> _applicableFillings;
+    [SerializeField] private bool _playReactionSounds = true;
+    //[SerializeField] private List<DialogueOption> _overrideDialogueOptions;
 
     private int _productsLeft;
     private Customer _customer;
@@ -62,6 +64,11 @@ public class CustomerQuest : ScriptableObject
             Debug.LogWarning($"CustomerQuest {name}: OnGreeting is missing. Starting quest immediately.");
             StartQuest();
         }
+        /*
+        if (_overrideDialogueOptions.Count != 0) { 
+            _customer.DialogueManager.SetDialogueOptions(_overrideDialogueOptions);
+        }
+        */
     }
 
 
@@ -87,7 +94,7 @@ public class CustomerQuest : ScriptableObject
 
         if (fits)
         {
-            if (_customer != null && _customer.DialogueManager != null)
+            if (_customer != null && _customer.DialogueManager != null && _playReactionSounds)
                 _customer.DialogueManager.PlayAcceptSound();
 
             _productsLeft--;
@@ -109,7 +116,7 @@ public class CustomerQuest : ScriptableObject
         }
         else
         {
-            if (_customer != null && _customer.DialogueManager != null)
+            if (_customer != null && _customer.DialogueManager != null && _playReactionSounds)
                 _customer.DialogueManager.PlayDenySound();
 
             if (_customer.AnimatorController != null)
