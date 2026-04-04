@@ -4,26 +4,24 @@ using UnityEngine;
 
 public class CursorController : MonoBehaviour
 {
-    [Header("Info")] 
-    [SerializeField] private DoughBucket _doughBucket;
+    [Header("Info")] [SerializeField] private DoughBucket _doughBucket;
     [SerializeField] private RollingPin _rollingPin;
-    
-    [Header("Textures")]
-    [SerializeField] private Texture2D _normal;
+
+    [Header("Textures")] [SerializeField] private Texture2D _normal;
     [SerializeField] private Texture2D _pickMe;
     [SerializeField] private Texture2D _drag;
     [SerializeField] private Texture2D _pickDough;
     [SerializeField] private Texture2D _draw;
     [SerializeField] private Texture2D _glove;
     [SerializeField] private Texture2D _give;
+    [SerializeField] private Texture2D _throw;
 
-    [Header("Settings")]
-    [SerializeField] private LayerMask _raycastLayers;
+    [Header("Settings")] [SerializeField] private LayerMask _raycastLayers;
     [SerializeField] private float _raycastDistance = 100f;
 
     private List<WindowPainter> _windowPainters;
     private bool _isHoveringDraw;
-    
+
     private Camera _mainCamera;
 
     private CursorPriority _currentPriority = CursorPriority.None;
@@ -36,14 +34,16 @@ public class CursorController : MonoBehaviour
         Glove = 3,
         PickDough = 4,
         Drag = 5,
-        Give = 6
+        Give = 6,
+        Throw = 7
     }
-    
+
     private void Awake()
     {
         _mainCamera = Camera.main;
-        
-        _windowPainters = FindObjectsByType<WindowPainter>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+
+        _windowPainters = FindObjectsByType<WindowPainter>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .ToList();
 
         foreach (var windowPainter in _windowPainters)
         {
@@ -51,7 +51,7 @@ public class CursorController : MonoBehaviour
             windowPainter.PointerExited += OnDrawPointerExited;
         }
     }
-    
+
     private void OnDestroy()
     {
         foreach (var windowPainter in _windowPainters.Where(windowPainter => windowPainter != null))
@@ -60,23 +60,23 @@ public class CursorController : MonoBehaviour
             windowPainter.PointerExited -= OnDrawPointerExited;
         }
     }
-    
+
     private void OnDrawPointerEntered(WindowPainter window)
     {
         _isHoveringDraw = true;
     }
-    
+
     private void OnDrawPointerExited(WindowPainter window)
     {
         _isHoveringDraw = false;
     }
-    
+
     private void Update()
     {
         UpdateMouseStates();
         UpdateCursor();
     }
-    
+
     private void UpdateMouseStates()
     {
         _currentPriority = CursorPriority.None;
@@ -84,6 +84,20 @@ public class CursorController : MonoBehaviour
         var draggingBake = GetDraggingBakeManager();
         if (draggingBake != null)
         {
+            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, _raycastDistance, _raycastLayers))
+            {
+                GameObject hitObject = hit.collider.gameObject;
+
+                if (hitObject.TryGetComponent<TrashBin>(out _))
+                {
+                    _currentPriority = CursorPriority.Throw;
+                    return;
+                }
+            }
+
             if (draggingBake.IsInReceptionArea)
             {
                 _currentPriority = CursorPriority.Give;
@@ -99,19 +113,19 @@ public class CursorController : MonoBehaviour
             _currentPriority = CursorPriority.Drag;
             return;
         }
-        
+
         if (IsRollingPinDragging())
         {
             _currentPriority = CursorPriority.Drag;
             return;
         }
 
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        
-        if (Physics.Raycast(ray, out hit, _raycastDistance, _raycastLayers))
+        Ray ray2 = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit2;
+
+        if (Physics.Raycast(ray2, out hit2, _raycastDistance, _raycastLayers))
         {
-            GameObject hitObject = hit.collider.gameObject;
+            GameObject hitObject = hit2.collider.gameObject;
 
             if (hitObject.TryGetComponent(out Filling filling))
             {
@@ -120,11 +134,11 @@ public class CursorController : MonoBehaviour
                     _currentPriority = CursorPriority.Drag;
                     return;
                 }
-                
+
                 _currentPriority = CursorPriority.PickMe;
                 return;
             }
-            
+
             if (hitObject.TryGetComponent<Tray>(out _) || hitObject.TryGetComponent<Hatch>(out _))
             {
                 _currentPriority = CursorPriority.Glove;
@@ -142,7 +156,7 @@ public class CursorController : MonoBehaviour
                 _currentPriority = CursorPriority.PickMe;
                 return;
             }
-            
+
             if (hitObject.TryGetComponent<BakeManager>(out _))
             {
                 _currentPriority = CursorPriority.PickDough;
@@ -166,7 +180,7 @@ public class CursorController : MonoBehaviour
     {
         return _doughBucket != null && _doughBucket.CurrentDough != null && _doughBucket.CurrentDough.IsDragging;
     }
-    
+
     private bool IsRollingPinDragging()
     {
         return _rollingPin != null && _rollingPin.IsDragging;
@@ -177,11 +191,11 @@ public class CursorController : MonoBehaviour
         return FindObjectsByType<BakeManager>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
             .FirstOrDefault(b => b.IsDragging);
     }
-    
+
     private void UpdateCursor()
     {
         Texture2D cursorToSet = null;
-        
+
         switch (_currentPriority)
         {
             case CursorPriority.Give:
@@ -202,22 +216,25 @@ public class CursorController : MonoBehaviour
             case CursorPriority.Draw:
                 cursorToSet = _draw;
                 break;
+            case CursorPriority.Throw:
+                cursorToSet = _throw;
+                break;
             default:
                 cursorToSet = _normal;
                 break;
         }
-        
+
         if (cursorToSet != null)
         {
             Cursor.SetCursor(cursorToSet, new Vector2(0.8f, 0), CursorMode.Auto);
         }
     }
-    
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying || _mainCamera == null) return;
-        
+
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         Gizmos.color = Color.red;
         Gizmos.DrawRay(ray.origin, ray.direction * _raycastDistance);
