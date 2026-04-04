@@ -2583,19 +2583,19 @@ MonoBehaviour:
   - ProductType: 1
     RecipeSprite: {fileID: 21300000, guid: 425169412f8557840be9b90a3fcde020, type: 3}
     RecipeActiveSprite: {fileID: 21300000, guid: da6a86de06325f8499aa5e894367eb1b, type: 3}
-    NameKey: "\u041F\u0438\u0440\u043E\u0436\u043E\u043A"
+    NameKey: book.simple_pie
   - ProductType: 2
     RecipeSprite: {fileID: 21300000, guid: 04363cf43cfa2b24bb65c30c56c57ea3, type: 3}
     RecipeActiveSprite: {fileID: 21300000, guid: 3e7b5b0e2322b9545a06b864b9003683, type: 3}
-    NameKey: "\u041A\u0440\u0443\u0442\u043E\u0439\u041F\u0438\u0440\u043E\u0436\u043E\u043A"
+    NameKey: book.cool_pie
   - ProductType: 3
     RecipeSprite: {fileID: 21300000, guid: f5fb72de7c315e04091c1f27fd15a94e, type: 3}
     RecipeActiveSprite: {fileID: 21300000, guid: b42a45c4c6de9304d9d8401ef615f64d, type: 3}
-    NameKey: "\u0421\u043E\u0441\u0438\u0441\u043E\u043D\u0447\u0438\u043A"
+    NameKey: book.sousage_pie
   - ProductType: 4
     RecipeSprite: {fileID: 21300000, guid: 96ab493e912b8e544813e4320bd375da, type: 3}
     RecipeActiveSprite: {fileID: 21300000, guid: a15b3f27563c8ae48857a3f7b730c945, type: 3}
-    NameKey: "\u0421\u0438\u043D\u043D\u0430\u0431\u043E\u043D\u0438\u0449\u0435"
+    NameKey: book.cinnabon
   _imageLeft: {fileID: 719673402}
   _imageRight: {fileID: 500137818}
   _textLeft: {fileID: 732677806}
@@ -3776,7 +3776,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4816103610654494530, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7544912070843583751, guid: 98794cedfc98b3e4a96be1e84f870ae2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -14271,11 +14271,11 @@ PrefabInstance:
     - target: {fileID: 7138757615568174825, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+      objectReference: {fileID: 11400000, guid: a184c66cfdc9c7c4bbe4f015ac472cfc, type: 2}
     - target: {fileID: 7138757615568174825, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+      objectReference: {fileID: 7499218146120705260, guid: a184c66cfdc9c7c4bbe4f015ac472cfc, type: 2}
     - target: {fileID: 7138757615568174825, guid: 4130ffec859698244a34dfa216c3f8e8, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
