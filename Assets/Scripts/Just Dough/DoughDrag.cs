@@ -20,6 +20,7 @@ public class DoughDrag : MonoBehaviour
                             _dragBlockedCamera == false && 
                             _rollingPin.IsRolling == false;
 
+    public void SetDragBlock(bool isBlocked) => _dragBlocked = isBlocked;
     private void OnEnable()
     {
         _rollingPin = GameObject.FindGameObjectWithTag("RollingPin").GetComponent<RollingPin>();

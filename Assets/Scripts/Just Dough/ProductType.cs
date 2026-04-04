@@ -7,6 +7,8 @@ public enum ProductType
     HotDog,
     Cinnabon,
     DoubleCinnabon,
+    Rose,
+    Boat,
 
-    Any
+    Any // не трогать, Any должно остаться на этом индексе, новые продукты дописывать в конец после него
 }

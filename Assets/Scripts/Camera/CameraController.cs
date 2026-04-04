@@ -31,6 +31,8 @@ public class CameraController : MonoBehaviour
     private bool _canUseLeft = true;
     private bool _canUseRight = true;
     private bool _canUseBack = true;
+
+    private Book _book;
     
     public event Action<bool> DragAllowedChanged;
     public event Action<CameraViewType> ViewChanged;
@@ -46,6 +48,9 @@ public class CameraController : MonoBehaviour
             
         ViewID = Mathf.Clamp(ViewID, 0, _views.Count - 1);
         InitializeView(ViewID);
+
+        _book = FindAnyObjectByType<Book>();
+        if (_book == null) Debug.Log("[CameraController] No Book found in the scene");
     }
     
     private void InitializeView(int viewID)
@@ -106,6 +111,14 @@ public class CameraController : MonoBehaviour
 
     private void OnLeft()
     {
+        if (_book != null) { 
+            if(_book.IsOpen)
+            {
+                _book.PreviousPage();
+                return;
+            }
+        }
+
         if (!_canUseLeft || _isTransitioning) return;
             
         Move(_views[ViewID].Left, TurnDirection.Left);
@@ -113,6 +126,15 @@ public class CameraController : MonoBehaviour
     
     private void OnRight()
     {
+        if (_book != null)
+        {
+            if (_book.IsOpen)
+            {
+                _book.NextPage();
+                return;
+            }
+        }
+
         if (!_canUseRight || _isTransitioning) return;
             
         Move(_views[ViewID].Right, TurnDirection.Right);
@@ -120,6 +142,15 @@ public class CameraController : MonoBehaviour
     
     private void OnBack()
     {
+        if (_book != null)
+        {
+            if (_book.IsOpen)
+            {
+                _book.FirstPage();
+                return;
+            }
+        }
+
         if (!_canUseBack || _isTransitioning) return;
             
         Move(_views[ViewID].Back, _views[ViewID].BackTurn);

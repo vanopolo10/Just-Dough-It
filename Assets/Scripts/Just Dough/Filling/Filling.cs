@@ -38,12 +38,20 @@ public class Filling : MonoBehaviour
     {
         DragCancelService.CancelRequested -= OnCancelRequested;
     }
-    
-    private void OnTriggerEnter(Collider other) =>
-        other.gameObject.TryGetComponent(out _manager);
-    
-    private void OnTriggerExit(Collider other) =>
-        _manager = null;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.TryGetComponent(out FillingManager manager)) {
+            _manager = manager;
+        }
+        Debug.Log($"[Filling] Trigger enter with {other.gameObject.name}. Manager found: {_manager != null}");
+    }
+
+    private void OnTriggerExit(Collider other) 
+    {
+        if ( other.gameObject.TryGetComponent<FillingManager>(out FillingManager _) ) _manager = null;
+        Debug.Log($"[Filling] Trigger exit with {other.gameObject.name}. Manager found: {_manager != null}");
+    }
 
     private void OnMouseDown()
     {

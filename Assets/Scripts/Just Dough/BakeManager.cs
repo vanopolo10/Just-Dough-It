@@ -48,8 +48,12 @@ public class BakeManager : MonoBehaviour
     public bool IsInTray => _tray != null;
     public bool IsInShelf => _shelf != null;
     public BakeState BakeState { get; private set; } = BakeState.Raw;
-    
+
     public int PerfectActionCount { get; set; }
+	
+    public Product Product => _product;
+
+
 
     public int ImperfectActionCount { get; set; }
 
@@ -242,6 +246,7 @@ public class BakeManager : MonoBehaviour
     public void SetDoughInfo(Product product)
     {
         _product = product;
+        Debug.Log($"[BakeManager] Dough info set: type={product.Type}, filling={product.Filling}");
     }
 
     public void SetProductFromDoughController(DoughController dough)
@@ -254,11 +259,13 @@ public class BakeManager : MonoBehaviour
         }
         catch (Exception)
         {
+            Debug.LogWarning($"[BakeManager] Failed to parse product type from dough state '{dough.State}'. Defaulting to None.");
             productType = ProductType.None;
         }
 
         product.Type = productType;
         SetProduct(product);
+        Debug.Log($"[BakeManager] Product set from dough: type={product.Type}, filling={product.Filling}");
     }
 
     private void SetProduct(Product product)
