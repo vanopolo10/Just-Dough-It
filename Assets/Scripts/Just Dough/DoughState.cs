@@ -31,5 +31,22 @@ public enum DoughState
 
     // Round flat branch
     RoundFlatCutting,
-    RoundFlatCut
+    RoundFlatCut,
+
+    // Rose branch
+    Rose_3,
+    Rose_2,
+    Rose_1,
+    RoseBase,
+    Rose,
+
+    // Square flat branch
+    SquareDoughCutting,
+    SquareDoughCut,
+
+    // Boat branch
+    Boat_2,
+    Boat_1,
+    BoatBase,
+    Boat
 }

@@ -31,8 +31,10 @@ public class Book : MonoBehaviour
     private Page _currentPageRight;
 
     public event Action<ProductType> RecipeChanged;
-    public ProductType CurrentSelectedProduct { get; private set; }
+
     public bool IsOpen => _book.activeSelf;
+
+    public ProductType CurrentSelectedProduct { get; private set; }
 
     private void Awake()
     {
@@ -76,6 +78,11 @@ public class Book : MonoBehaviour
             _audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
             _audioSource.PlayOneShot(_pageClip);
         }
+    }
+    public void FirstPage() {
+        _id = 0;
+        _ = SetSpritesAndText();
+        UpdateNavigationButtons();
     }
 
     public void SetCanOpen(bool canOpen) => _canOpen = canOpen;

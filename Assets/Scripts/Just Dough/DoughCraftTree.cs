@@ -53,6 +53,23 @@ public static class DoughCraftTree
         // Ветка нарезки круглого теста
         Add(DoughState.RoundFlat, DoughCraftAction.BeginCutting, DoughState.RoundFlatCutting);
         Add(DoughState.RoundFlatCutting, DoughCraftAction.FinishCutting, DoughState.RoundFlatCut);
+
+        // Ветка розочки
+        Add(DoughState.RoundFlatCut, DoughCraftAction.Drag, DoughState.Rose_3);
+        Add(DoughState.Rose_3, DoughCraftAction.Drag, DoughState.Rose_2);
+        Add(DoughState.Rose_2, DoughCraftAction.Drag, DoughState.Rose_1);
+        Add(DoughState.Rose_1, DoughCraftAction.Drag, DoughState.RoseBase);
+        Add(DoughState.RoseBase, DoughCraftAction.ComboClick, DoughState.Rose);
+
+        // Ветка нарезки квадратного теста
+        Add(DoughState.RoundFlat, DoughCraftAction.BeginAltCutting, DoughState.SquareDoughCutting);
+        Add(DoughState.SquareDoughCutting, DoughCraftAction.FinishCutting, DoughState.SquareDoughCut);
+
+        // Ветка лодочки
+        Add(DoughState.SquareDoughCut, DoughCraftAction.FinishCutting, DoughState.Boat_2);
+        Add(DoughState.Boat_2, DoughCraftAction.Drag, DoughState.Boat_1);
+        Add(DoughState.Boat_1, DoughCraftAction.Drag, DoughState.BoatBase);
+        Add(DoughState.BoatBase, DoughCraftAction.ComboClick, DoughState.Boat);
     }
 
     public static bool TryGetNext(DoughState current, DoughCraftAction action, out DoughState next)
