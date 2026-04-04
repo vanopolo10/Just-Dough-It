@@ -38,7 +38,8 @@ MonoBehaviour:
   _onItemRejected:
     _interactionTexts:
     - no
-    _animationTriggers: []
+    _animationTriggers:
+    - 
   _onQuestCompleted:
     _interactionTexts:
     - "\u0434\u0440\u0443\u0436\u0438\u0449\u0435"
@@ -72,4 +73,5 @@ MonoBehaviour:
       _animationTriggers:
       - 
       - Nah
-  _pitch: 1
+  _voicePitchRange: {x: 0.8, y: 1}
+  _voiceSpeed: 6

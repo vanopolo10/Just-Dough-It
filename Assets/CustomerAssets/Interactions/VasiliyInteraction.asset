@@ -20,7 +20,8 @@ MonoBehaviour:
   _onItemAccepted:
     _interactionTexts:
     - "\u0414\u0430, \u044D\u0442\u043E \u0442\u043E \u0447\u0442\u043E \u043D\u0443\u0436\u043D\u043E!"
-    _animationTriggers: []
+    _animationTriggers:
+    - 
   _onItemRejected:
     _interactionTexts:
     - "\u041D\u0435\u0442, \u044F \u043D\u0435 \u0442\u0430\u043A\u043E\u0435 \u0437\u0430\u043A\u0430\u0437\u044B\u0432\u0430\u043B"
@@ -33,4 +34,5 @@ MonoBehaviour:
     _animationTriggers:
     - 
   _questDialogueOptions: []
-  _pitch: 1
+  _voicePitchRange: {x: 1000, y: 1000}
+  _voiceSpeed: 1

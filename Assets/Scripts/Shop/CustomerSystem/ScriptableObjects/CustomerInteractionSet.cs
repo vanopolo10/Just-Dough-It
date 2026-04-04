@@ -256,7 +256,8 @@ public class CustomerInteractionSet : ScriptableObject
     [SerializeField] private CustomerInteractionSequence _onItemRejected;
     [SerializeField] private CustomerInteractionSequence _onQuestCompleted;
     [SerializeField] private List<DialogueOption> _questDialogueOptions = new();
-    [SerializeField] private float _pitch = 1;
+    [SerializeField] private Vector2 _voicePitchRange = Vector2.one;
+    [SerializeField] private float _voiceSpeed = 4;
 
     public CustomerInteractionSequence OnGreeting => _onGreeting;
     public CustomerInteractionSequence OnItemAccepted => _onItemAccepted;
@@ -265,7 +266,8 @@ public class CustomerInteractionSet : ScriptableObject
 
     public List<DialogueOption> DialogueOptions => _questDialogueOptions;
 
-    public float Pitch => _pitch;
+    public float Pitch => UnityEngine.Random.Range(_voicePitchRange.x, _voicePitchRange.y);
+    public float Speed => _voiceSpeed;
 
     public void AddDialogueOption(DialogueOption option)
     {
