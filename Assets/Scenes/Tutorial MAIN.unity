@@ -10188,6 +10188,10 @@ PrefabInstance:
       value: UI
       objectReference: {fileID: 0}
     - target: {fileID: 7186412041474722696, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
+      propertyPath: _isTutorial
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7186412041474722696, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: _tutorialRunner
       value: 
       objectReference: {fileID: 1896390617}
@@ -12997,6 +13001,7 @@ MonoBehaviour:
   - _anchor: {fileID: 895492486}
   - _anchor: {fileID: 2135180250}
   _shelf: {fileID: 1053535225}
+  _transformOverrides: []
 --- !u!4 &4821043576278458731 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5779833653028312817, guid: 31dcd021702980243a127665d9e006c6, type: 3}
