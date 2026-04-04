@@ -25,6 +25,8 @@ public class Book : MonoBehaviour
 
     public event Action<ProductType> RecipeChanged;
 
+    public bool IsOpen => _book.activeSelf;
+
     public ProductType CurrentSelectedProduct { get; private set; }
     
     private void Start()
@@ -57,6 +59,11 @@ public class Book : MonoBehaviour
             _ = SetSpritesAndText();
             UpdateNavigationButtons();
         }
+    }
+    public void FirstPage() {
+        _id = 0;
+        _ = SetSpritesAndText();
+        UpdateNavigationButtons();
     }
 
     public void SetCanOpen(bool canOpen) => _canOpen = canOpen;

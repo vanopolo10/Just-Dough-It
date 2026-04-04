@@ -14,6 +14,7 @@ public class CuttingZone : MonoBehaviour
     [SerializeField] private List<GameObject> _destroyOnCut;
     [SerializeField] private List<GameObject> _detachOnCut;
     [SerializeField] private DoughDrag _drag;
+    [SerializeField] private GameObject _guide;
 
     private static CameraViewType _activeView = CameraViewType.Craft;
     private CameraController _cameraController;
@@ -134,6 +135,7 @@ public class CuttingZone : MonoBehaviour
         _controller.ProgressCutting();
         _drag.SetDragBlock(false);
 
+        _guide.SetActive(false);
         HandleObjectLists();
     }
 
