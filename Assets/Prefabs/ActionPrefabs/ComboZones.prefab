@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d561272e016ca4d8e1bcf5d2c9414e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PerfectComboZone
+  _generalCraftZone: {fileID: 0}
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -349,6 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d561272e016ca4d8e1bcf5d2c9414e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PerfectComboZone
+  _generalCraftZone: {fileID: 0}
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -640,6 +642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d561272e016ca4d8e1bcf5d2c9414e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PerfectComboZone
+  _generalCraftZone: {fileID: 0}
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -908,6 +911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d561272e016ca4d8e1bcf5d2c9414e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PerfectComboZone
+  _generalCraftZone: {fileID: 0}
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -1124,6 +1128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d561272e016ca4d8e1bcf5d2c9414e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PerfectComboZone
+  _generalCraftZone: {fileID: 0}
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -2660,7 +2665,8 @@ PrefabInstance:
       propertyPath: _dragRules.Array.data[0]._fromCraftZone
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2385770860537026431, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7805530207129168941, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
