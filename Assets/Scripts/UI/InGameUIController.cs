@@ -9,15 +9,13 @@ public class InGameUIController : MonoBehaviour
 {
     [SerializeField] private CameraController _cameraController;
     [SerializeField] private GameObject _ui;
-    [SerializeField] private GameObject _saveUI;
 
     [SerializeField] private SaveManager _saveManager;
-    [SerializeField] private TMP_InputField _inputField;
     [SerializeField] private TMP_Dropdown _dropdown;
 
     private Book _book;
 
-    public bool IsMenuOpen => _ui.activeSelf || _saveUI.activeSelf;
+    public bool IsMenuOpen => _ui.activeSelf;
 
     private void Awake()
     {
@@ -27,7 +25,6 @@ public class InGameUIController : MonoBehaviour
     private void Start()
     {
         _ui.SetActive(false);
-        _saveUI.SetActive(false);
         _cameraController.enabled = true;
 
         StartCoroutine(SetLanguage(SaveSystem.GetSaveLanguage()));
@@ -46,21 +43,17 @@ public class InGameUIController : MonoBehaviour
         
         _dropdown.value = _dropdown.options.FindIndex(option => option.text == LocalizationSettings.SelectedLocale.LocaleName);
 
-        if (_saveUI.activeSelf)
-            SwitchSaveMenu();
-        else
-            Switch();
+        Switch();
     }
 
-    public void SwitchSaveMenu()
-    {
-        _saveUI.SetActive(!_saveUI.activeSelf);
-        _ui.SetActive(!_ui.activeSelf);
-    }
-
-    public void ExitButton()
+    public void Save()
     {
         _saveManager.SaveGame();
+    }
+
+    public void Exit()
+    {
+        Save();
         SceneLoader.Instance.LoadScene(0);
     }
 
