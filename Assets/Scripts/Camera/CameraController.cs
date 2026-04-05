@@ -27,7 +27,11 @@ public class CameraController : MonoBehaviour
     private Coroutine _transitionRoutine;
     private bool _isTransitioning;
     private bool _isMouseLookActive;
-    
+
+    private int _queuedAction = 0; // 0 - none, 1 - left, 2 - right, 3 - back
+    private float _queueThreshold = 0.5f;
+    private float _transitionProgress = 0f;
+
     private bool _canUseLeft = true;
     private bool _canUseRight = true;
     private bool _canUseBack = true;
@@ -119,8 +123,12 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        if (!_canUseLeft || _isTransitioning) return;
-            
+        if (!_canUseLeft) return;
+        if (_isTransitioning) {
+            if (_transitionProgress >= _queueThreshold) _queuedAction = 1;
+            return;
+        }
+
         Move(_views[ViewID].Left, TurnDirection.Left);
     }
     
@@ -135,8 +143,13 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        if (!_canUseRight || _isTransitioning) return;
-            
+        if (!_canUseRight) return;
+        if (_isTransitioning)
+        {
+            if(_transitionProgress >= _queueThreshold) _queuedAction = 2;
+            return;
+        }
+
         Move(_views[ViewID].Right, TurnDirection.Right);
     }
     
@@ -151,8 +164,13 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        if (!_canUseBack || _isTransitioning) return;
-            
+        if (!_canUseBack) return;
+        if (_isTransitioning)
+        {
+            if (_transitionProgress >= _queueThreshold) _queuedAction = 3;
+            return;
+        }
+
         Move(_views[ViewID].Back, _views[ViewID].BackTurn);
     }
     
@@ -198,10 +216,10 @@ public class CameraController : MonoBehaviour
         while (time < _transitionDuration)
         {
             time += Time.deltaTime;
-            float t = Mathf.Clamp01(time / _transitionDuration);
+            _transitionProgress = Mathf.Clamp01(time / _transitionDuration);
             
-            transform.position = Vector3.Lerp(startPos, targetPos, t);
-            transform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+            transform.position = Vector3.Lerp(startPos, targetPos, _transitionProgress);
+            transform.rotation = Quaternion.Slerp(startRot, targetRot, _transitionProgress);
             
             yield return null;
         }
@@ -224,6 +242,15 @@ public class CameraController : MonoBehaviour
         
         DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Craft);
         print(_views[ViewID].Type);
+
+        if(_queuedAction != 0)
+        {
+            int action = _queuedAction;
+            _queuedAction = 0;
+            if (action == 1) OnLeft();
+            else if (action == 2) OnRight();
+            else if (action == 3) OnBack();
+        }
     }
     
     private Quaternion GetAdjustedRotation(Quaternion from, Quaternion to, TurnDirection turn)
