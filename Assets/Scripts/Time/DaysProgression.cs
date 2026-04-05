@@ -8,6 +8,8 @@ public class DaysProgression : MonoBehaviour
     [SerializeField] private List<DayObjectsList> _daysObjects;
 
     private int _currentDay = -1;
+
+    public int CurrentDay => _currentDay;
     
     private void Awake()
     {
@@ -34,6 +36,13 @@ public class DaysProgression : MonoBehaviour
         foreach (var progressionObject in gameObjects)
             progressionObject.SetActive(isActive);
     }
+
+    public void SetDay(int day)
+    {
+        _currentDay = day;
+        ChangeDay();
+    }
+
     
     [Serializable]
     private class DayObjectsList
