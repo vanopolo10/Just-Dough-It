@@ -80,7 +80,7 @@ public class SingularShopBook : ShopBook
 
     public override void OnMovedOutOfPosition()
     {
-        _canvas.SetActive(false);
+        //_canvas.SetActive(false);
     }
 
     public void OnSuccessfulPurchase()
@@ -123,7 +123,7 @@ public class ShopBook : MonoBehaviour
         _initialPosition = transform.position;
         _targetPosition = _target.position;
 
-        _canvas.SetActive(false);
+        _canvas.SetActive(true);
     }
 
     public virtual void OnMovedToPosition() { }

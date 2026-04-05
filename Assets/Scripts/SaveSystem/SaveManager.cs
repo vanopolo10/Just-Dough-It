@@ -14,6 +14,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private GameObject _ui;
     [SerializeField] private DaysProgression _progression;
     [SerializeField] private WorldTime _time;
+    [SerializeField] private Shelf _shelf;
 
     private void Start()
     {
@@ -24,7 +25,7 @@ public class SaveManager : MonoBehaviour
             int id = SaveSystem.LoadData<int>(currentSave, "CameraViewID");
             _cameraController.SetViewID(id);
         }
-        
+
         if (Cafe.Instance != null)
         {
             int vibe = SaveSystem.LoadData<int>(currentSave, "VibeLevel");
@@ -36,21 +37,21 @@ public class SaveManager : MonoBehaviour
             int money = SaveSystem.LoadData<int>(currentSave, "MoneyCount");
             _moneyManager.AddMoney(money, false);
         }
-        
+
         if (_questSystem != null)
         {
             List<QuestDisplay> quests = SaveSystem.LoadData<List<QuestDisplay>>(currentSave, "Quests");
             if (quests != null)
                 _questSystem.SetQuests(quests);
         }
-        
+
         if (_doughBucket != null)
         {
             DoughSave dough = SaveSystem.LoadData<DoughSave>(currentSave, "Dough");
             if (_doughBucket != null)
                 _doughBucket.SpawnDough(dough.State, dough.Filling);
         }
-        
+
         if (_shopTransform != null)
         {
             BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
@@ -61,12 +62,19 @@ public class SaveManager : MonoBehaviour
                 content.Back.SetActive(!bought);
             }
         }
-        
+
         if (_progression != null)
             _progression.SetDay(SaveSystem.LoadData<int>(currentSave, "Day"));
 
         if (_time != null)
             _time.SetGameTime(SaveSystem.LoadData<WorldTime.GameTime>(currentSave, "Time"));
+
+        if (_shelf != null)
+        {
+            Shelf.ShelfSaveData shelfData = SaveSystem.LoadData<Shelf.ShelfSaveData>(currentSave, "ShelfData");
+            if (shelfData != null)
+                _shelf.LoadFromSaveData(shelfData);
+        }
     }
 
     public void SaveGame()
@@ -76,24 +84,24 @@ public class SaveManager : MonoBehaviour
 
     private IEnumerator Save()
     {
-        string currentSave = SaveSystem.SelectedSave; 
+        string currentSave = SaveSystem.SelectedSave;
         SaveSystem.CreateSave(currentSave);
         _ui.SetActive(false);
         yield return new WaitForEndOfFrame();
         SaveSystem.SaveImage(currentSave);
-        
+
         if (_cameraController != null)
             SaveSystem.SaveData(currentSave, "CameraViewID", _cameraController.ViewID);
-        
+
         if (Cafe.Instance != null)
             SaveSystem.SaveData(currentSave, "VibeLevel", Cafe.Instance.VibeLevel);
-        
+
         if (_moneyManager != null)
             SaveSystem.SaveData(currentSave, "MoneyCount", _moneyManager.Money);
-        
+
         if (_questSystem != null)
             SaveSystem.SaveData(currentSave, "Quests", _questSystem.Quests);
-        
+
         if (_doughBucket != null && _doughBucket.CurrentDough != null)
             SaveSystem.SaveData(currentSave, "Dough", new DoughSave(_doughBucket.CurrentDough.State, _doughBucket.CurrentDough.Filling));
 
@@ -112,6 +120,12 @@ public class SaveManager : MonoBehaviour
 
         if (_time != null)
             SaveSystem.SaveData(currentSave, "Time", _time.InGameTime);
+
+        if (_shelf != null)
+        {
+            Shelf.ShelfSaveData shelfData = _shelf.GetSaveData();
+            SaveSystem.SaveData(currentSave, "ShelfData", shelfData);
+        }
     }
 
     [Serializable]

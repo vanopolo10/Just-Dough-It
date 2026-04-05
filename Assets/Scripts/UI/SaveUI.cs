@@ -32,7 +32,7 @@ public class SaveUI : MonoBehaviour
     {
         _animator.SetTrigger("TrayClose");
         SaveSystem.SelectedSave = _name.text;
-        SceneLoader.Instance.LoadScene(1);
+        SceneLoader.Instance.LoadScene(2);
     }
 
     public void RemoveSave()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Shelf : MonoBehaviour
 {
-    [Header("Money")] [SerializeField] private MoneyManager _moneyManager;
+    [Header("Money")][SerializeField] private MoneyManager _moneyManager;
     [SerializeField] private int _basePrice = 30;
     [SerializeField] private int _qualityMultiplayer = 20;
 
@@ -38,7 +38,7 @@ public class Shelf : MonoBehaviour
 
         if (bun.BakeState is BakeState.Rare or BakeState.Burn)
             bun.ImperfectActionCount += 3;
-        else if(bun.BakeState == BakeState.Done)
+        else if (bun.BakeState == BakeState.Done)
             bun.PerfectActionCount += 3;
 
         int index = FindFreeSlot();
@@ -61,7 +61,7 @@ public class Shelf : MonoBehaviour
         Remove(bun);
         Destroy(bun.gameObject);
     }
-    
+
     private void OnBunSold(BakeManager bun)
     {
         _moneyManager.AddMoney(Mathf.FloorToInt(_basePrice + 1f * bun.PerfectActionCount / (bun.ImperfectActionCount + bun.PerfectActionCount) * _qualityMultiplayer));
@@ -82,6 +82,7 @@ public class Shelf : MonoBehaviour
             _occupied[i] = null;
 
             bun.Sold -= OnBunSold;
+            bun.Threw -= OnBunThrown;
 
             TryFillSlot(i);
             break;
@@ -127,5 +128,91 @@ public class Shelf : MonoBehaviour
             PutToSlot(index, next);
             break;
         }
+    }
+
+    public ShelfSaveData GetSaveData()
+    {
+        ShelfSaveData data = new ShelfSaveData();
+        data.slots = new List<SlotData>();
+        for (int i = 0; i < _occupied.Length; i++)
+        {
+            if (_occupied[i] != null)
+            {
+                data.slots.Add(new SlotData { slotIndex = i, bakeData = _occupied[i].GetSaveData() });
+            }
+        }
+        data.queue = new List<BakeManager.BakeSaveData>();
+        foreach (BakeManager bun in _queue)
+        {
+            if (bun != null)
+                data.queue.Add(bun.GetSaveData());
+        }
+        return data;
+    }
+
+    public void LoadFromSaveData(ShelfSaveData data)
+    {
+        foreach (BakeManager bun in _occupied)
+        {
+            if (bun != null)
+                Destroy(bun.gameObject);
+        }
+        _occupied = new BakeManager[_places.Count];
+        _queue.Clear();
+
+        if (data.slots != null)
+        {
+            foreach (SlotData slot in data.slots)
+            {
+                BakeManager newBun = CreateBakeFromData(slot.bakeData);
+                if (newBun != null)
+                {
+                    PutToSlot(slot.slotIndex, newBun);
+                    newBun.Sold += OnBunSold;
+                    newBun.Threw += OnBunThrown;
+                }
+            }
+        }
+
+        if (data.queue != null)
+        {
+            foreach (BakeManager.BakeSaveData bakeData in data.queue)
+            {
+                BakeManager queuedBun = CreateBakeFromData(bakeData);
+                if (queuedBun != null)
+                {
+                    _queue.Enqueue(queuedBun);
+                    queuedBun.gameObject.SetActive(false);
+                    queuedBun.Sold += OnBunSold;
+                    queuedBun.Threw += OnBunThrown;
+                }
+            }
+        }
+    }
+
+    private BakeManager CreateBakeFromData(BakeManager.BakeSaveData data)
+    {
+        if (_debugPie == null) return null;
+        GameObject newObj = Instantiate(_debugPie, transform);
+        BakeManager bun = newObj.GetComponent<BakeManager>();
+        if (bun != null)
+        {
+            bun.RestoreFromSaveData(data, this);
+        }
+        return bun;
+    }
+
+    [Serializable]
+    public class SlotData
+    {
+        public int slotIndex;
+        public BakeManager.BakeSaveData bakeData;
+    }
+
+    [Serializable]
+    public class ShelfSaveData
+    {
+        public List<SlotData> slots;
+        public List<BakeManager.BakeSaveData> queue;
     }
 }

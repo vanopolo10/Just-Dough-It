@@ -15,6 +15,8 @@ public class MegaShopBook : ShopBook
     public override void Start()
     {
         base.Start();
+        _canvas.SetActive(false);
+
         _booksLeft = _books.Count;
         Debug.Log($"Megabook initial position set to {_initialPosition} while actual position is {transform.position}");
     }

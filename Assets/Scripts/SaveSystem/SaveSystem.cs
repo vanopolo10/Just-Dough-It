@@ -89,7 +89,7 @@ public static class SaveSystem
         if (File.Exists(path))
         {
             byte[] bytes = File.ReadAllBytes(path);
-            
+
             Texture2D texture = new(1, 1);
             texture.LoadImage(bytes);
 
