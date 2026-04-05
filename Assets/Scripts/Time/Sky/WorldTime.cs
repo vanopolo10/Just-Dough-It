@@ -119,6 +119,9 @@ public class WorldTime : MonoBehaviour
         SetDayPercent(target);
     }
 
+    public void SetGameTime(GameTime gameTime) => InGameTime = gameTime;
+
+    [Serializable]
     public class GameTime
     {
         private const int ClockPower = 60;

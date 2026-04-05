@@ -13,6 +13,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private Transform _shopTransform;
     [SerializeField] private GameObject _ui;
     [SerializeField] private DaysProgression _progression;
+    [SerializeField] private WorldTime _time;
 
     private void Start()
     {
@@ -44,6 +45,8 @@ public class SaveManager : MonoBehaviour
         }
 
         _progression.SetDay(SaveSystem.LoadData<int>(currentSave, "Day"));
+
+        _time.SetGameTime(SaveSystem.LoadData<WorldTime.GameTime>(currentSave, "Time"));
     }
 
     public void SaveGame()
@@ -73,6 +76,8 @@ public class SaveManager : MonoBehaviour
         }
 
         SaveSystem.SaveData(currentSave, "Day", _progression.CurrentDay);
+
+        SaveSystem.SaveData(currentSave, "Time", _time.InGameTime);
     }
 
     [Serializable]
