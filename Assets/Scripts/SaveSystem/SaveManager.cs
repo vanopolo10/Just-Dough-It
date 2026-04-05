@@ -22,33 +22,31 @@ public class SaveManager : MonoBehaviour
 
         if (_cameraController != null)
         {
-            int id = SaveSystem.LoadData<int>(currentSave, "CameraViewID");
-            _cameraController.SetViewID(id);
+            if (SaveSystem.TryLoadData<int>(currentSave, "CameraViewID", out int id))
+                _cameraController.SetViewID(id);
         }
 
         if (Cafe.Instance != null)
         {
-            int vibe = SaveSystem.LoadData<int>(currentSave, "VibeLevel");
-            Cafe.Instance.SetVibeLevel(vibe);
+            if (SaveSystem.TryLoadData<int>(currentSave, "VibeLevel", out int vibe))
+                Cafe.Instance.SetVibeLevel(vibe);
         }
 
         if (_moneyManager != null)
         {
-            int money = SaveSystem.LoadData<int>(currentSave, "MoneyCount");
-            _moneyManager.AddMoney(money, false);
+            if (SaveSystem.TryLoadData<int>(currentSave, "MoneyCount", out int money))
+                _moneyManager.AddMoney(money, false);
         }
 
         if (_questSystem != null)
         {
-            List<QuestDisplay> quests = SaveSystem.LoadData<List<QuestDisplay>>(currentSave, "Quests");
-            if (quests != null)
+            if (SaveSystem.TryLoadData<List<QuestDisplay>>(currentSave, "Quests", out List<QuestDisplay> quests) && quests != null)
                 _questSystem.SetQuests(quests);
         }
 
         if (_doughBucket != null)
         {
-            DoughSave dough = SaveSystem.LoadData<DoughSave>(currentSave, "Dough");
-            if (_doughBucket != null)
+            if (SaveSystem.TryLoadData<DoughSave>(currentSave, "Dough", out DoughSave dough))
                 _doughBucket.SpawnDough(dough.State, dough.Filling);
         }
 
@@ -57,22 +55,29 @@ public class SaveManager : MonoBehaviour
             BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
             foreach (BuyButtonContent content in boughtContent)
             {
-                bool bought = SaveSystem.LoadData<bool>(currentSave, $"Buyable.{content.Key}");
-                content.BuyableThing.SetActive(bought);
-                content.Back.SetActive(!bought);
+                if (SaveSystem.TryLoadData<bool>(currentSave, $"Buyable.{content.Key}", out bool bought))
+                {
+                    content.BuyableThing.SetActive(bought);
+                    content.Back.SetActive(!bought);
+                }
             }
         }
 
         if (_progression != null)
-            _progression.SetDay(SaveSystem.LoadData<int>(currentSave, "Day"));
+        {
+            if (SaveSystem.TryLoadData<int>(currentSave, "Day", out int day))
+                _progression.SetDay(day);
+        }
 
         if (_time != null)
-            _time.SetGameTime(SaveSystem.LoadData<WorldTime.GameTime>(currentSave, "Time"));
+        {
+            if (SaveSystem.TryLoadData<WorldTime.GameTime>(currentSave, "Time", out WorldTime.GameTime time))
+                _time.SetGameTime(time);
+        }
 
         if (_shelf != null)
         {
-            Shelf.ShelfSaveData shelfData = SaveSystem.LoadData<Shelf.ShelfSaveData>(currentSave, "ShelfData");
-            if (shelfData != null)
+            if (SaveSystem.TryLoadData<Shelf.ShelfSaveData>(currentSave, "ShelfData", out Shelf.ShelfSaveData shelfData) && shelfData != null)
                 _shelf.LoadFromSaveData(shelfData);
         }
     }
