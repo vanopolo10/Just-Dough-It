@@ -44,15 +44,33 @@ public static class SaveSystem
         else return;
     }
 
-    public static T LoadData<T>(string saveFileName, string key)
+    public static bool TryLoadData<T>(string saveFileName, string key, out T value)
     {
+        value = default;
         string path = Path.Combine(_basePath, "Saves", $"{saveFileName}\\", "save.json");
 
-        if (DataExist(saveFileName, key) == false) return default;
+        if (!File.Exists(path)) return false;
+
         string json = File.ReadAllText(path);
         GameSave gameState = JsonConvert.DeserializeObject<GameSave>(json, _settings);
-        var value = gameState.SavedData.First(data => data.Key == key).Value;
-        return (T)Convert.ChangeType(value, typeof(T));
+        var match = gameState.SavedData.FirstOrDefault(data => data.Key == key);
+        if (match == null) return false;
+
+        try
+        {
+            value = (T)Convert.ChangeType(match.Value, typeof(T));
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public static T LoadData<T>(string saveFileName, string key)
+    {
+        TryLoadData(saveFileName, key, out T value);
+        return value;
     }
 
     public static bool DataExist(string saveFileName, string key)

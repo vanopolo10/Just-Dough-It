@@ -10,10 +10,10 @@ public class DaysProgression : MonoBehaviour
     private int _currentDay = -1;
 
     public int CurrentDay => _currentDay;
-    
+
     private void Awake()
     {
-        foreach (var days in  _daysObjects)
+        foreach (var days in _daysObjects)
             SetDayObjectsActive(days.Objects, false);
     }
 
@@ -22,33 +22,43 @@ public class DaysProgression : MonoBehaviour
         _customerManager.DayStarted += ChangeDay;
     }
 
+    private void OnDisable()
+    {
+        _customerManager.DayStarted -= ChangeDay;
+    }
+
     private void ChangeDay()
     {
-        if (_currentDay >= 0) 
+        if (_currentDay >= 0)
             SetDayObjectsActive(_daysObjects[_currentDay].Objects, false);
-        
-        if (_currentDay >= -1) 
+
+        if (_currentDay + 1 < _daysObjects.Count)
             SetDayObjectsActive(_daysObjects[++_currentDay].Objects, true);
     }
-    
+
     private void SetDayObjectsActive(List<GameObject> gameObjects, bool isActive)
     {
         foreach (var progressionObject in gameObjects)
-            progressionObject.SetActive(isActive);
+            if (progressionObject != null)
+                progressionObject.SetActive(isActive);
     }
 
     public void SetDay(int day)
     {
+        foreach (var days in _daysObjects)
+            SetDayObjectsActive(days.Objects, false);
+
         _currentDay = day;
-        ChangeDay();
+
+        if (_currentDay >= 0 && _currentDay < _daysObjects.Count)
+            SetDayObjectsActive(_daysObjects[_currentDay].Objects, true);
     }
 
-    
     [Serializable]
     private class DayObjectsList
     {
         [SerializeField] private List<GameObject> _objects = new();
-    
+
         public List<GameObject> Objects => _objects;
     }
 }
