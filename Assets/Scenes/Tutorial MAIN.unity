@@ -1165,7 +1165,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 14
   m_TargetDisplay: 0
 --- !u!224 &129402380
 RectTransform:
@@ -1440,11 +1440,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -8665100149589268848, guid: 3d79893648b5b7543ba336773af2fc99, type: 3}
---- !u!1 &182274481 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1780699209764635217, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
-  m_PrefabInstance: {fileID: 1785999268}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &213665373
 GameObject:
   m_ObjectHideFlags: 0
@@ -3337,7 +3332,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 544945692}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -3385,8 +3380,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 3.169983}
-  m_SizeDelta: {x: 0, y: 6.3400674}
+  m_AnchoredPosition: {x: 0, y: -1.9849854}
+  m_SizeDelta: {x: 0, y: -3.970081}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &553259652
 GameObject:
@@ -6717,7 +6712,7 @@ MonoBehaviour:
   _questSystem: {fileID: 926123350}
   _doughBucket: {fileID: 2100052986}
   _shopTransform: {fileID: 1053535222}
-  _ui: {fileID: 182274481}
+  _ui: {fileID: 0}
   _progression: {fileID: 0}
   _time: {fileID: 2060576056}
 --- !u!4 &1359870276
@@ -12889,7 +12884,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8844563210403931992, guid: 72a21a03f5f6be84dbcc46792c3e7c84, type: 3}
       propertyPath: _woodPower
-      value: 20
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8844563210403931992, guid: 72a21a03f5f6be84dbcc46792c3e7c84, type: 3}
       propertyPath: _openHatchCoef

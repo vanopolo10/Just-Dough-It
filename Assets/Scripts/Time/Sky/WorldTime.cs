@@ -30,6 +30,7 @@ public class WorldTime : MonoBehaviour
     {
         PreferSunrise = SaveSystem.LoadData<bool>(SaveSystem.SelectedSave, "DoPreferSunrises");
         OnDayStarted();
+        SetDayPercent(_isTutorial ? _tutorialTime : 0f);
     }
 
     private void OnEnable()
@@ -40,11 +41,6 @@ public class WorldTime : MonoBehaviour
     private void OnDisable()
     {
         _customerManager.DayStarted -= OnDayStarted;
-    }
-
-    private void Start()
-    {
-        SetDayPercent(_isTutorial ? _tutorialTime : 0f);
     }
 
     public void SetPreference(bool preferSunrise)
