@@ -24,7 +24,7 @@ public class CafeNameController : MonoBehaviour
     public void OnValueChanged(string value)
     {
         _submitButton.gameObject.SetActive(value != string.Empty);
-
+        if (value.Length > 12) _input.text = value[..12];
         CafeName = value;
     }
 
