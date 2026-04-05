@@ -12,33 +12,38 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private DoughBucket _doughBucket;
     [SerializeField] private Transform _shopTransform;
     [SerializeField] private GameObject _ui;
+    [SerializeField] private DaysProgression _progression;
 
     private void Start()
     {
-        int id = SaveSystem.LoadData<int>(SaveSystem.SelectedSave, "CameraViewID");
+        string currentSave = SaveSystem.SelectedSave;
+
+        int id = SaveSystem.LoadData<int>(currentSave, "CameraViewID");
         _cameraController.SetViewID(id);
 
-        int vibe = SaveSystem.LoadData<int>(SaveSystem.SelectedSave, "VibeLevel");
+        int vibe = SaveSystem.LoadData<int>(currentSave, "VibeLevel");
         Cafe.Instance.SetVibeLevel(vibe);
 
-        int money = SaveSystem.LoadData<int>(SaveSystem.SelectedSave, "MoneyCount");
+        int money = SaveSystem.LoadData<int>(currentSave, "MoneyCount");
         _moneyManager.AddMoney(money, false);
 
-        List<QuestDisplay> quests = SaveSystem.LoadData<List<QuestDisplay>>(SaveSystem.SelectedSave, "Quests");
+        List<QuestDisplay> quests = SaveSystem.LoadData<List<QuestDisplay>>(currentSave, "Quests");
         if (quests != null)
             _questSystem.SetQuests(quests);
 
-        DoughSave dough = SaveSystem.LoadData<DoughSave>(SaveSystem.SelectedSave, "Dough");
+        DoughSave dough = SaveSystem.LoadData<DoughSave>(currentSave, "Dough");
         if (_doughBucket != null)
             _doughBucket.SpawnDough(dough.State, dough.Filling);
 
         BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
         foreach (BuyButtonContent content in boughtContent)
         {
-            bool bought = SaveSystem.LoadData<bool>(SaveSystem.SelectedSave, $"Buyable.{content.Key}");
+            bool bought = SaveSystem.LoadData<bool>(currentSave, $"Buyable.{content.Key}");
             content.BuyableThing.SetActive(bought);
             content.Back.SetActive(!bought);
         }
+
+        _progression.SetDay(SaveSystem.LoadData<int>(currentSave, "Day"));
     }
 
     public void SaveGame()
@@ -66,6 +71,8 @@ public class SaveManager : MonoBehaviour
             SaveSystem.SaveData(currentSave, $"Buyable.{content.Key}", content.BuyableThing.activeSelf);
             yield return null;
         }
+
+        SaveSystem.SaveData(currentSave, "Day", _progression.CurrentDay);
     }
 
     [Serializable]
