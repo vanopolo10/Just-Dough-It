@@ -5,10 +5,18 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
+public struct RecipeBookPage
+{
+    [SerializeField] public ProductType ProductType;
+    [SerializeField] public Sprite RecipeSprite;
+    [SerializeField] public Sprite RecipeActiveSprite;
+    [SerializeField] public string NameKey;
+}
 public class Book : MonoBehaviour
 {
     [SerializeField] private GameObject _book;
-    [SerializeField] private List<Page> _pages;
+    [SerializeField] private List<RecipeBookPage> _pages;
     [SerializeField] private Image _imageLeft;
     [SerializeField] private Image _imageRight;
     [SerializeField] private TMP_Text _textLeft;
@@ -27,8 +35,8 @@ public class Book : MonoBehaviour
 
     private bool _canOpen = true;
     private int _id;
-    private Page _currentPageLeft;
-    private Page _currentPageRight;
+    private RecipeBookPage _currentPageLeft;
+    private RecipeBookPage _currentPageRight;
 
     public event Action<ProductType> RecipeChanged;
 
@@ -138,7 +146,7 @@ public class Book : MonoBehaviour
         }
     }
 
-    private Sprite GetCorrectSprite(Page page)
+    private Sprite GetCorrectSprite(RecipeBookPage page)
     {
         if (CurrentSelectedProduct != ProductType.None && CurrentSelectedProduct == page.ProductType)
             return page.RecipeActiveSprite;
@@ -179,13 +187,12 @@ public class Book : MonoBehaviour
         _audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
         _audioSource.PlayOneShot(_submitClip);
     }
-    
-    [Serializable]
-    private struct Page
-    {
-        [SerializeField] public ProductType ProductType;
-        [SerializeField] public Sprite RecipeSprite;
-        [SerializeField] public Sprite RecipeActiveSprite;
-        [SerializeField] public string NameKey;
+
+    public void AddNewPage(RecipeBookPage page) { 
+        _pages.Add(page);
+        _ = SetSpritesAndText();
+        UpdateNavigationButtons();
     }
+    
+    
 }
