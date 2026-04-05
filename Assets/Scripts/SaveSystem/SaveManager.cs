@@ -19,34 +19,54 @@ public class SaveManager : MonoBehaviour
     {
         string currentSave = SaveSystem.SelectedSave;
 
-        int id = SaveSystem.LoadData<int>(currentSave, "CameraViewID");
-        _cameraController.SetViewID(id);
-
-        int vibe = SaveSystem.LoadData<int>(currentSave, "VibeLevel");
-        Cafe.Instance.SetVibeLevel(vibe);
-
-        int money = SaveSystem.LoadData<int>(currentSave, "MoneyCount");
-        _moneyManager.AddMoney(money, false);
-
-        List<QuestDisplay> quests = SaveSystem.LoadData<List<QuestDisplay>>(currentSave, "Quests");
-        if (quests != null)
-            _questSystem.SetQuests(quests);
-
-        DoughSave dough = SaveSystem.LoadData<DoughSave>(currentSave, "Dough");
-        if (_doughBucket != null)
-            _doughBucket.SpawnDough(dough.State, dough.Filling);
-
-        BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
-        foreach (BuyButtonContent content in boughtContent)
+        if (_cameraController != null)
         {
-            bool bought = SaveSystem.LoadData<bool>(currentSave, $"Buyable.{content.Key}");
-            content.BuyableThing.SetActive(bought);
-            content.Back.SetActive(!bought);
+            int id = SaveSystem.LoadData<int>(currentSave, "CameraViewID");
+            _cameraController.SetViewID(id);
+        }
+        
+        if (Cafe.Instance != null)
+        {
+            int vibe = SaveSystem.LoadData<int>(currentSave, "VibeLevel");
+            Cafe.Instance.SetVibeLevel(vibe);
         }
 
-        _progression.SetDay(SaveSystem.LoadData<int>(currentSave, "Day"));
+        if (_moneyManager != null)
+        {
+            int money = SaveSystem.LoadData<int>(currentSave, "MoneyCount");
+            _moneyManager.AddMoney(money, false);
+        }
+        
+        if (_questSystem != null)
+        {
+            List<QuestDisplay> quests = SaveSystem.LoadData<List<QuestDisplay>>(currentSave, "Quests");
+            if (quests != null)
+                _questSystem.SetQuests(quests);
+        }
+        
+        if (_doughBucket != null)
+        {
+            DoughSave dough = SaveSystem.LoadData<DoughSave>(currentSave, "Dough");
+            if (_doughBucket != null)
+                _doughBucket.SpawnDough(dough.State, dough.Filling);
+        }
+        
+        if (_shopTransform != null)
+        {
+            BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
+            foreach (BuyButtonContent content in boughtContent)
+            {
+                bool bought = SaveSystem.LoadData<bool>(currentSave, $"Buyable.{content.Key}");
+                content.BuyableThing.SetActive(bought);
+                content.Back.SetActive(!bought);
+            }
+        }
+        
+        if (_progression != null)
+            _progression.SetDay(SaveSystem.LoadData<int>(currentSave, "Day"));
 
-        _time.SetGameTime(SaveSystem.LoadData<WorldTime.GameTime>(currentSave, "Time"));
+        if (_time != null)
+            _time.SetGameTime(SaveSystem.LoadData<WorldTime.GameTime>(currentSave, "Time"));
     }
 
     public void SaveGame()
@@ -61,23 +81,37 @@ public class SaveManager : MonoBehaviour
         _ui.SetActive(false);
         yield return new WaitForEndOfFrame();
         SaveSystem.SaveImage(currentSave);
-        SaveSystem.SaveData(currentSave, "CameraViewID", _cameraController.ViewID);
-        SaveSystem.SaveData(currentSave, "VibeLevel", Cafe.Instance.VibeLevel);
-        SaveSystem.SaveData(currentSave, "MoneyCount", _moneyManager.Money);
-        SaveSystem.SaveData(currentSave, "Quests", _questSystem.Quests);
-        if (_doughBucket.CurrentDough != null)
+        
+        if (_cameraController != null)
+            SaveSystem.SaveData(currentSave, "CameraViewID", _cameraController.ViewID);
+        
+        if (Cafe.Instance != null)
+            SaveSystem.SaveData(currentSave, "VibeLevel", Cafe.Instance.VibeLevel);
+        
+        if (_moneyManager != null)
+            SaveSystem.SaveData(currentSave, "MoneyCount", _moneyManager.Money);
+        
+        if (_questSystem != null)
+            SaveSystem.SaveData(currentSave, "Quests", _questSystem.Quests);
+        
+        if (_doughBucket != null && _doughBucket.CurrentDough != null)
             SaveSystem.SaveData(currentSave, "Dough", new DoughSave(_doughBucket.CurrentDough.State, _doughBucket.CurrentDough.Filling));
 
-        BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
-        foreach (BuyButtonContent content in boughtContent)
+        if (_shopTransform != null)
         {
-            SaveSystem.SaveData(currentSave, $"Buyable.{content.Key}", content.BuyableThing.activeSelf);
-            yield return null;
+            BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
+            foreach (BuyButtonContent content in boughtContent)
+            {
+                SaveSystem.SaveData(currentSave, $"Buyable.{content.Key}", content.BuyableThing.activeSelf);
+                yield return null;
+            }
         }
 
-        SaveSystem.SaveData(currentSave, "Day", _progression.CurrentDay);
+        if (_progression != null)
+            SaveSystem.SaveData(currentSave, "Day", _progression.CurrentDay);
 
-        SaveSystem.SaveData(currentSave, "Time", _time.InGameTime);
+        if (_time != null)
+            SaveSystem.SaveData(currentSave, "Time", _time.InGameTime);
     }
 
     [Serializable]
