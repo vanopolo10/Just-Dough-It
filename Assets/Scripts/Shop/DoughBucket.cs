@@ -5,7 +5,7 @@ using UnityEngine;
 public class DoughBucket : MonoBehaviour
 {
     [SerializeField] private DoughController _doughPrefab;
-    [SerializeField] private Vector3 _spawnPoint;
+    [SerializeField] private Transform _spawnPoint;
 
     private SphereCollider _collider;
     private DoughController _currentDough;
@@ -45,7 +45,7 @@ public class DoughBucket : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos = _spawnPoint;
+        Vector3 spawnPos = _spawnPoint.position;
 
         DoughController instance = Instantiate(_doughPrefab, spawnPos, new Quaternion());
         SetDough(instance);
@@ -63,7 +63,7 @@ public class DoughBucket : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos = _spawnPoint;
+        Vector3 spawnPos = _spawnPoint.position;
 
         DoughController instance = Instantiate(_doughPrefab, spawnPos, new Quaternion());
         instance.SetState(state);
