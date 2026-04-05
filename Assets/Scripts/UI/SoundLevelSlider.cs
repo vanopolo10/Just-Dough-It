@@ -35,6 +35,7 @@ public class SoundLevel : MonoBehaviour
     {
         _slider.onValueChanged.AddListener(HandleSliderValueChange);
         _slider.value = PlayerPrefs.GetFloat(_volumeParameter, 0);
+        HandleSliderValueChange(_slider.value);
     }
 
     private void OnDisable()
