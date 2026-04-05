@@ -10284,6 +10284,7 @@ MonoBehaviour:
   _shopTransform: {fileID: 1053535222}
   _ui: {fileID: 966392693}
   _progression: {fileID: 303035973}
+  _time: {fileID: 0}
 --- !u!4 &1359870276
 Transform:
   m_ObjectHideFlags: 0
@@ -15642,6 +15643,38 @@ PrefabInstance:
       propertyPath: _slots.Array.data[2]._anchor
       value: 
       objectReference: {fileID: 2135180250}
+    - target: {fileID: 4802450644807293239, guid: 31dcd021702980243a127665d9e006c6, type: 3}
+      propertyPath: _transformOverrides.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4802450644807293239, guid: 31dcd021702980243a127665d9e006c6, type: 3}
+      propertyPath: _transformOverrides.Array.data[0]._scale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4802450644807293239, guid: 31dcd021702980243a127665d9e006c6, type: 3}
+      propertyPath: _transformOverrides.Array.data[0]._scale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4802450644807293239, guid: 31dcd021702980243a127665d9e006c6, type: 3}
+      propertyPath: _transformOverrides.Array.data[0]._scale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4802450644807293239, guid: 31dcd021702980243a127665d9e006c6, type: 3}
+      propertyPath: _transformOverrides.Array.data[0]._position.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4802450644807293239, guid: 31dcd021702980243a127665d9e006c6, type: 3}
+      propertyPath: _transformOverrides.Array.data[0]._position.y
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 4802450644807293239, guid: 31dcd021702980243a127665d9e006c6, type: 3}
+      propertyPath: _transformOverrides.Array.data[0]._rotation.y
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4802450644807293239, guid: 31dcd021702980243a127665d9e006c6, type: 3}
+      propertyPath: _transformOverrides.Array.data[0]._affectedType
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5779833653028312817, guid: 31dcd021702980243a127665d9e006c6, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
