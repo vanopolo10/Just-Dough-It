@@ -49,6 +49,9 @@ public class TutorialScenario : MonoBehaviour
 
     private void Start()
     {
+        if (_doughBucket.CurrentDough == null)
+            _doughBucket.SpawnDough(DoughState.Raw, FillingType.None);
+
         _doughBucket.CurrentDough.SetCanDrag(false);
         
         _camera.SetControlBlock(false, false, false);
