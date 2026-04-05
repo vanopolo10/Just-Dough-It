@@ -1,8 +1,10 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SingularShopBook : ShopBook
 {
-    [SerializeField] protected GameObject _baseButton, _boughtButton, _noMoneyButton, _boughtOverlay;
+    [SerializeField] protected GameObject _baseButton, _boughtButton, _noMoneyButton, _boughtOverlay, _priceTag, _boughtObject;
     [SerializeField] protected int _price = 600;
 
     private MegaShopBook _parentMegaBook;
@@ -10,15 +12,36 @@ public class SingularShopBook : ShopBook
     public override void Start()
     {
         base.Start();
+        /*
         PaidEvent[] events = GetComponentsInChildren<PaidEvent>();
         for (int i = 0; i < events.Length; i++)
         {
             events[i].SetPrice(_price);
         }
+        */
+        PaidEvent paidEvent = _baseButton.GetComponent<PaidEvent>();
+        paidEvent.SetPrice(_price);
+        Button button = _baseButton.GetComponent<Button>();
+        button.onClick.AddListener(ActivateObject);
 
-        _hasParentBook = transform.parent.TryGetComponent<MegaShopBook>(out _parentMegaBook);
+        Transform seeker = transform;
+        Transform initialParent = transform.parent;
+        while (!_hasParentBook && seeker.parent != null)
+        {
+            if (transform.parent.TryGetComponent<MegaShopBook>(out _parentMegaBook))
+            {
+                _hasParentBook = true;
+                break;
+            }
+            seeker.SetParent(seeker.parent.parent);
+        }
+        transform.SetParent(initialParent);
+
+        if(_priceTag!=null) _priceTag.GetComponent<TextMeshProUGUI>().SetText(_price.ToString() + "ð");
     }
-
+    public void ActivateObject() { 
+        _boughtObject.SetActive(true);
+    }
     public void OnEnable()
     {
         _moneyManager = FindAnyObjectByType<MoneyManager>();
