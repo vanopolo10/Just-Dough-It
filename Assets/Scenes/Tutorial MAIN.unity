@@ -1440,6 +1440,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -8665100149589268848, guid: 3d79893648b5b7543ba336773af2fc99, type: 3}
+--- !u!1 &182274481 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1780699209764635217, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
+  m_PrefabInstance: {fileID: 1785999268}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &213665373
 GameObject:
   m_ObjectHideFlags: 0
@@ -6667,6 +6672,17 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &1353146331 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5181558081599156029, guid: 5fe7a358d211af84dae5ebddb8176520, type: 3}
+  m_PrefabInstance: {fileID: 491846000}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4023212c33c9e9b4abb3772a635aa46e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Filling
 --- !u!1 &1359870274
 GameObject:
   m_ObjectHideFlags: 0
@@ -6699,10 +6715,11 @@ MonoBehaviour:
   _cameraController: {fileID: 330585548}
   _moneyManager: {fileID: 1638504442}
   _questSystem: {fileID: 926123350}
-  _doughBucket: {fileID: 0}
+  _doughBucket: {fileID: 2100052986}
   _shopTransform: {fileID: 1053535222}
-  _ui: {fileID: 0}
+  _ui: {fileID: 182274481}
   _progression: {fileID: 0}
+  _time: {fileID: 2060576056}
 --- !u!4 &1359870276
 Transform:
   m_ObjectHideFlags: 0
@@ -7084,7 +7101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Cafe
   _ovenSender: {fileID: 1471361162}
   _tray: {fileID: 4821043576278458728}
-  _doughBucket: {fileID: 0}
+  _doughBucket: {fileID: 2100052986}
 --- !u!1 &1427202835
 GameObject:
   m_ObjectHideFlags: 0
@@ -10090,7 +10107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TutorialScenario
   _runner: {fileID: 1896390617}
   _camera: {fileID: 330585548}
-  _doughBucket: {fileID: 0}
+  _doughBucket: {fileID: 2100052986}
   _thoughts: {fileID: 1048248142}
   _dialogueManager: {fileID: 1851663132}
   _book: {fileID: 330585552}
@@ -10100,8 +10117,8 @@ MonoBehaviour:
   _ovenSender: {fileID: 1471361162}
   _tray: {fileID: 4821043576278458728}
   _oven: {fileID: 4585047968041042984}
-  _jam: {fileID: 0}
-  _farce: {fileID: 0}
+  _jam: {fileID: 2107722833}
+  _farce: {fileID: 1353146331}
   _thermometer: {fileID: 6045594313887061280}
   _hatch: {fileID: 1406636815}
   _nextDialogueIcon: {fileID: 1850360863}
@@ -11000,6 +11017,17 @@ MonoBehaviour:
   _minHours: 8
   _maxHours: 18
   _secondsPerPercent: 0.2
+--- !u!114 &2100052986 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8207106840364544895, guid: 5fe7a358d211af84dae5ebddb8176520, type: 3}
+  m_PrefabInstance: {fileID: 491846000}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6795e8f38780af549a79adaafb83dcf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoughBucket
 --- !u!1001 &2105941444
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11078,6 +11106,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2368756544372497800, guid: 17249a58b70b82d41bf86c331b8bb401, type: 3}
   m_PrefabInstance: {fileID: 2105941444}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2107722833 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5338710306844890364, guid: 5fe7a358d211af84dae5ebddb8176520, type: 3}
+  m_PrefabInstance: {fileID: 491846000}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4023212c33c9e9b4abb3772a635aa46e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Filling
 --- !u!4 &2117856404 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7424515385280593607, guid: 72a21a03f5f6be84dbcc46792c3e7c84, type: 3}
