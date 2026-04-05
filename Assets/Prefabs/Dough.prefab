@@ -6856,7 +6856,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1000395273355122287}
   - component: {fileID: 707351682723161263}
-  - component: {fileID: 4659883764959522109}
   - component: {fileID: 1632862349889129968}
   - component: {fileID: 1586099998706561567}
   - component: {fileID: 6817252566295062374}
@@ -6910,23 +6909,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &4659883764959522109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 424640465002461439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1632862349889129968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77561,7 +77543,7 @@ MonoBehaviour:
   _isDragStartZone: 0
   _isDragEndZone: 1
   _dragRules:
-  - StartZone: {fileID: 0}
+  - StartZone: {fileID: 2538898812730425032}
     Action: 3
   _isComboZone: 0
   _perfectDragArea: {fileID: 0}
@@ -100077,7 +100059,7 @@ MonoBehaviour:
   _isDragStartZone: 0
   _isDragEndZone: 1
   _dragRules:
-  - StartZone: {fileID: 0}
+  - StartZone: {fileID: 1640130149723939502}
     Action: 3
   _isComboZone: 0
   _perfectDragArea: {fileID: 0}
@@ -208734,7 +208716,7 @@ MonoBehaviour:
   _isDragStartZone: 0
   _isDragEndZone: 1
   _dragRules:
-  - StartZone: {fileID: 0}
+  - StartZone: {fileID: 271958762522530932}
     Action: 3
   _isComboZone: 0
   _perfectDragArea: {fileID: 0}
@@ -224951,7 +224933,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5412480116040565217}
   - component: {fileID: 5706033608830251809}
-  - component: {fileID: 456508801399192243}
   - component: {fileID: 5789364580592982654}
   - component: {fileID: 5835563706265609617}
   - component: {fileID: 1757913315546919144}
@@ -225005,23 +224986,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &456508801399192243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4835251429256146801}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &5789364580592982654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266040,7 +266004,7 @@ MonoBehaviour:
   _isDragStartZone: 0
   _isDragEndZone: 1
   _dragRules:
-  - StartZone: {fileID: 0}
+  - StartZone: {fileID: 8109593406321109396}
     Action: 3
   _isComboZone: 0
   _perfectDragArea: {fileID: 0}
@@ -271256,7 +271220,7 @@ MonoBehaviour:
   _isDragStartZone: 0
   _isDragEndZone: 1
   _dragRules:
-  - StartZone: {fileID: 0}
+  - StartZone: {fileID: 8200037383487534369}
     Action: 3
   _isComboZone: 0
   _perfectDragArea: {fileID: 0}
@@ -285347,7 +285311,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3796536613135954857
 Transform:
   m_ObjectHideFlags: 0
@@ -400300,7 +400264,7 @@ MonoBehaviour:
   _isDragStartZone: 0
   _isDragEndZone: 1
   _dragRules:
-  - StartZone: {fileID: 0}
+  - StartZone: {fileID: 5044904214185812230}
     Action: 3
   _isComboZone: 0
   _perfectDragArea: {fileID: 0}
@@ -465332,7 +465296,8 @@ PrefabInstance:
       propertyPath: _dragRules.Array.data[0]._fromCraftZone
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2385770860537026431, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7805530207129168941, guid: 17e16dab6820e394e81bbae40bd74a75, type: 3}
@@ -470109,6 +470074,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Simple Pie (BM)
       objectReference: {fileID: 0}
+    - target: {fileID: 3838618357785386439, guid: 7cd9b7b1fb5a76c4f921c655fe327a17, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -470772,6 +470741,10 @@ PrefabInstance:
     - target: {fileID: 7377962262651732356, guid: 3edd66faf424edc4a987b3705a0e2de9, type: 3}
       propertyPath: m_Name
       value: Cool Pie (BM)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7377962262651732356, guid: 3edd66faf424edc4a987b3705a0e2de9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -473226,7 +473199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5194918119980237695, guid: 56042505dd3a6bd4fbb2a72c6eb2e29c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5194918119980237695, guid: 56042505dd3a6bd4fbb2a72c6eb2e29c, type: 3}
       propertyPath: m_TagString
