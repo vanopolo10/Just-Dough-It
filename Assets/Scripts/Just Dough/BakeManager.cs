@@ -1,18 +1,21 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
 public class BakeManager : MonoBehaviour
 {
-    [Header("Время прожарки, сек")] [SerializeField]
+    [Header("Время прожарки, сек")]
+    [SerializeField]
     private float _rareInSeconds = 3f;
 
     [SerializeField] private float _doneInSeconds = 6f;
     [SerializeField] private float _burnStartInSeconds = 10f;
     [SerializeField] private float _burnFullInSeconds = 20f;
 
-    [Header("Возврат на полку")] [SerializeField]
+    [Header("Возврат на полку")]
+    [SerializeField]
     private float _returnDuration = 0.25f;
 
     private float _timeInOven;
@@ -50,10 +53,8 @@ public class BakeManager : MonoBehaviour
     public BakeState BakeState { get; private set; } = BakeState.Raw;
 
     public int PerfectActionCount { get; set; }
-	
+
     public Product Product => _product;
-
-
 
     public int ImperfectActionCount { get; set; }
 
@@ -111,7 +112,7 @@ public class BakeManager : MonoBehaviour
 
         taken.StopBake();
         _shelf.Place(taken);
-        
+
         Debug.Log($"[BakeManager] perfect={PerfectActionCount}, imperfect={ImperfectActionCount}, " +
                   $"productType={_product.Type}, filling={_product.Filling}, bakeState={BakeState}");
     }
@@ -139,12 +140,12 @@ public class BakeManager : MonoBehaviour
                 return;
             }
         }
-        else if(IsInTrashArea)
+        else if (IsInTrashArea)
         {
             Threw?.Invoke(this);
             return;
         }
-        
+
         if (_isOnShelf == false)
         {
             _dragBlocked = false;
@@ -167,18 +168,18 @@ public class BakeManager : MonoBehaviour
         if (other.CompareTag("Product Reception Field"))
         {
             Debug.Log("Entering reception field");
-            
+
             if (other.transform.parent.gameObject.TryGetComponent(out CustomerManager manager))
             {
                 _depositTarget = manager.CurrentCustomer;
                 IsInReceptionArea = true;
             }
         }
-        
-        if(other.TryGetComponent<TrashBin>(out _))
+
+        if (other.TryGetComponent<TrashBin>(out _))
         {
             Debug.Log("Entering throw field");
-            
+
             IsInTrashArea = true;
         }
     }
@@ -189,7 +190,7 @@ public class BakeManager : MonoBehaviour
         {
             IsInReceptionArea = false;
         }
-        else if(other.TryGetComponent<TrashBin>(out _))
+        else if (other.TryGetComponent<TrashBin>(out _))
         {
             IsInTrashArea = false;
         }
@@ -199,7 +200,7 @@ public class BakeManager : MonoBehaviour
     {
         if (_bakeRoutine != null)
             return;
-        
+
         Debug.Log("Baking started");
         _bakeRoutine = StartCoroutine(BakeRoutine());
     }
@@ -272,7 +273,7 @@ public class BakeManager : MonoBehaviour
     {
         _product = product;
     }
-    
+
     private IEnumerator BakeRoutine()
     {
         while (true)
@@ -362,10 +363,10 @@ public class BakeManager : MonoBehaviour
     private void OnCancelRequested()
     {
         if (_isOnShelf == false || IsDragging == false) return;
-        
+
         IsDragging = false;
         _dragBlocked = true;
-        
+
         if (_shelfAnchor != null) StartCoroutine(ReturnToShelfRoutine(_shelfAnchor.position, _shelfAnchor.rotation));
     }
 
@@ -393,7 +394,7 @@ public class BakeManager : MonoBehaviour
         Vector3 startPos = transform.position;
         Quaternion startRot = transform.rotation;
         float time = 0f;
-        
+
         while (time < _returnDuration)
         {
             float t = time / _returnDuration;
@@ -405,5 +406,42 @@ public class BakeManager : MonoBehaviour
 
         transform.position = targetPos;
         transform.rotation = targetRot;
+    }
+
+    public BakeSaveData GetSaveData()
+    {
+        return new BakeSaveData
+        {
+            timeInOven = _timeInOven,
+            perfectActionCount = PerfectActionCount,
+            imperfectActionCount = ImperfectActionCount,
+            product = _product
+        };
+    }
+
+    public void RestoreFromSaveData(BakeSaveData data, Shelf shelf)
+    {
+        _timeInOven = data.timeInOven;
+        PerfectActionCount = data.perfectActionCount;
+        ImperfectActionCount = data.imperfectActionCount;
+        _product = data.product;
+        _shelf = shelf;
+        _isOnShelf = true;
+        UpdateBakeLogic();
+    }
+
+    public void SetTimeInOven(float time)
+    {
+        _timeInOven = time;
+        UpdateBakeLogic();
+    }
+
+    [Serializable]
+    public class BakeSaveData
+    {
+        public float timeInOven;
+        public int perfectActionCount;
+        public int imperfectActionCount;
+        public Product product;
     }
 }

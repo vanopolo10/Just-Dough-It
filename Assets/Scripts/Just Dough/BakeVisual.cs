@@ -9,7 +9,7 @@ public class BakeVisual : MonoBehaviour
 
     [SerializeField] private MeshRenderer _renderer;
     [SerializeField] private BakeManager _bakeManager;
-    
+
     private Material _instanceMaterial;
 
     private Vector3 _initialScale;

@@ -17,10 +17,11 @@ public class CustomerManager : MonoBehaviour
 
     private CustomerRouteMover _routeMover;
     private CustomerModelSpawner _spawner;
-    
+
     private int _customerIndex;
     private bool _isDayStarting;
     private Coroutine _spawnCoroutine;
+    private bool _isEndingDay;
 
     private List<CustomerPool> _scheduleList;
 
@@ -29,8 +30,7 @@ public class CustomerManager : MonoBehaviour
     public event Action CustomersEnded;
 
     public Customer CurrentCustomer { get; private set; }
-    public int CurrentDay { get; private set; } = 0;
-    
+
     private void Awake()
     {
         _spawner = GetComponent<CustomerModelSpawner>();
@@ -42,12 +42,16 @@ public class CustomerManager : MonoBehaviour
     {
         _routeMover.ReachedCounter += OnReachedCounter;
         _routeMover.LeftCafe += NextCustomer;
+        _worldTime.DayFinished += OnDayFinished;
+        CustomersEnded += OnCustomersEnded;
     }
 
     private void OnDisable()
     {
         _routeMover.ReachedCounter -= OnReachedCounter;
         _routeMover.LeftCafe -= NextCustomer;
+        _worldTime.DayFinished -= OnDayFinished;
+        CustomersEnded -= OnCustomersEnded;
 
         if (_spawnCoroutine != null)
             StopCoroutine(_spawnCoroutine);
@@ -67,7 +71,7 @@ public class CustomerManager : MonoBehaviour
             Darkness.Instance.FadeIn(_blinkDuration / 2);
             yield return new WaitUntil(() => Darkness.Instance.IsDark());
         }
-        
+
         if (Darkness.Instance != null && Darkness.Instance.IsDark())
         {
             Darkness.Instance.FadeOut(_blinkDuration / 2);
@@ -80,6 +84,11 @@ public class CustomerManager : MonoBehaviour
 
     public void EndDay()
     {
+        if (_isEndingDay)
+            return;
+
+        _isEndingDay = true;
+
         if (_spawnCoroutine != null)
         {
             StopCoroutine(_spawnCoroutine);
@@ -89,13 +98,16 @@ public class CustomerManager : MonoBehaviour
         if (_schedule.NextDaySchedule == null)
         {
             Debug.LogWarning($"[CustomerManager] {name}: No next day schedule assigned.");
+            _isEndingDay = false;
             return;
         }
         _schedule = _schedule.NextDaySchedule;
         _scheduleList = _schedule.List;
 
         _isDayStarting = false;
+        _worldTime.NextDay();
         StartCoroutine(StartAfterFade());
+        _isEndingDay = false;
     }
 
     public void StartNewDay()
@@ -107,10 +119,10 @@ public class CustomerManager : MonoBehaviour
 
         _isDayStarting = true;
         DayStarted?.Invoke();
-        
+
         FrostManager.Instance.ResetAllWindows();
-        FrostManager.Instance.SetWarm(CurrentDay);
-        
+        FrostManager.Instance.SetWarm(_worldTime.CurrentDay);
+
         StartCoroutine(DayRoutine());
     }
 
@@ -201,5 +213,15 @@ public class CustomerManager : MonoBehaviour
         }
 
         SpawnCustomer();
+    }
+
+    private void OnDayFinished()
+    {
+        EndDay();
+    }
+
+    private void OnCustomersEnded()
+    {
+        EndDay();
     }
 }
