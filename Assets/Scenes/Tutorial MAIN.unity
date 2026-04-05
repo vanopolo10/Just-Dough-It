@@ -6703,6 +6703,7 @@ MonoBehaviour:
   _shopTransform: {fileID: 1053535222}
   _ui: {fileID: 0}
   _progression: {fileID: 0}
+  _time: {fileID: 0}
 --- !u!4 &1359870276
 Transform:
   m_ObjectHideFlags: 0
@@ -9576,6 +9577,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 71746943124618835, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 330585550}
+    - target: {fileID: 71746943124618835, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Save
+      objectReference: {fileID: 0}
     - target: {fileID: 181577868355798400, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -9700,9 +9709,13 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 330585550}
+    - target: {fileID: 2407567849667579402, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Exit
+      objectReference: {fileID: 0}
     - target: {fileID: 2873646497982486673, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3421661471300705485, guid: c3fa2a39ceeea9945a28a9d4e1be1d11, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -10040,6 +10053,7 @@ GameObject:
   - component: {fileID: 1896390616}
   - component: {fileID: 1896390618}
   - component: {fileID: 1896390617}
+  - component: {fileID: 1896390619}
   m_Layer: 0
   m_Name: Tutorial
   m_TagString: Untagged
@@ -10124,6 +10138,18 @@ MonoBehaviour:
   _waitingGuide: {fileID: 221174971}
   _trayDoughIcon: {fileID: 213665373}
   _shelfDragIcon: {fileID: 1009679233}
+--- !u!114 &1896390619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896390615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc06c6851f4552428fcd70d131197cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialImageCapture
 --- !u!1 &1901029662
 GameObject:
   m_ObjectHideFlags: 0
