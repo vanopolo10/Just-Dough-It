@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
+[Serializable]
 public class BakeVisual : MonoBehaviour
 {
     [SerializeField] private int _materialIndex = 0;
@@ -16,6 +18,8 @@ public class BakeVisual : MonoBehaviour
 
     private int _bakeId;
     private int _burnId;
+
+    public Vector3 InitialScale => _initialScale;
 
     private void Awake()
     {
@@ -46,7 +50,8 @@ public class BakeVisual : MonoBehaviour
         _instanceMaterial.SetFloat(_bakeId, bakeT);
         _instanceMaterial.SetFloat(_burnId, burnT);
 
-        _initialScale = transform.localScale;
+        if (_initialScale != null)
+            _initialScale = transform.localScale;
     }
 
     private void OnDestroy()
@@ -64,5 +69,10 @@ public class BakeVisual : MonoBehaviour
 
         _instanceMaterial.SetFloat(_bakeId, bakeT);
         _instanceMaterial.SetFloat(_burnId, burnT);
+    }
+
+    public void SetupAfterSave(Vector3 initialScale)
+    {
+        _initialScale = initialScale;
     }
 }

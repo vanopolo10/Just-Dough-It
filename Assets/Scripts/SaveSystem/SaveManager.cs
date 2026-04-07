@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static QuestSystem;
 
@@ -77,8 +78,25 @@ public class SaveManager : MonoBehaviour
 
         if (_shelf != null)
         {
-            if (SaveSystem.TryLoadData<Shelf.ShelfSaveData>(currentSave, "ShelfData", out Shelf.ShelfSaveData shelfData) && shelfData != null)
-                _shelf.LoadFromSaveData(shelfData);
+            if (SaveSystem.TryLoadData<ShelfStuff>(currentSave, "Shelf", out ShelfStuff shelfStuff))
+            {
+                for (int i = 0; i < _shelf.Occupied.Length; i++)
+                {
+                    if (shelfStuff.Buns.TryGetValue(i, out ShelfBun bun))
+                    {
+                        GameObject obj = Instantiate(_shelf.GetPrefabByType(bun.BakeData.Product.Type));
+                        if (!obj.TryGetComponent<BakeManager>(out BakeManager bakeManager))
+                            bakeManager = obj.GetComponentInChildren<BakeManager>();
+                        bakeManager.SetData(bun.BakeData);
+                        if (!obj.TryGetComponent<BakeVisual>(out BakeVisual bakeVisual))
+                            bakeVisual = obj.GetComponentInChildren<BakeVisual>();
+                        bakeVisual.SetupAfterSave(bun.InitialScale.GetVector3());
+                        bakeManager.transform.localScale = bun.Scale.GetVector3();
+
+                        _shelf.Place(bakeManager);
+                    } 
+                }
+            }
         }
     }
 
@@ -128,8 +146,20 @@ public class SaveManager : MonoBehaviour
 
         if (_shelf != null)
         {
-            Shelf.ShelfSaveData shelfData = _shelf.GetSaveData();
-            SaveSystem.SaveData(currentSave, "ShelfData", shelfData);
+            ShelfStuff shelfStuff = new(false);
+            for (int i = 0; i < _shelf.Occupied.Length; i++)
+            {
+                BakeManager bakeManager = _shelf.Occupied[i];
+                if (bakeManager != null)
+                {
+                    BakeVisual bakeVisual = bakeManager.gameObject.GetComponent<BakeVisual>();
+                    Transform transform = bakeManager.transform;
+
+                    ShelfBun bun = new(transform.localScale, bakeVisual.InitialScale, bakeManager.GetData());
+                    shelfStuff.Buns.Add(i, bun);
+                }
+                SaveSystem.SaveData(currentSave, "Shelf", shelfStuff);
+            }
         }
     }
 
@@ -154,6 +184,52 @@ public class SaveManager : MonoBehaviour
         public BuyedStuff(List<BuyButtonContent> values)
         {
             Values = values;
+        }
+    }
+
+    [Serializable]
+    private struct ShelfStuff
+    {
+        public Dictionary<int, ShelfBun> Buns;
+
+        public ShelfStuff(bool _)
+        {
+            Buns = new();
+        }
+    }
+
+    [Serializable]
+    public struct ShelfBun
+    {
+        public SerializableVector3 InitialScale;
+        public SerializableVector3 Scale;
+        public BakeManager.BakeManagerData BakeData;
+
+        public ShelfBun(Vector3 initialScale, Vector3 scale, BakeManager.BakeManagerData bakeData)
+        {
+            InitialScale = new SerializableVector3(initialScale);
+            Scale = new SerializableVector3(scale);
+            BakeData = bakeData;
+        }
+    }
+
+    [Serializable]
+    public struct SerializableVector3
+    {
+        public float X;
+        public float Y;
+        public float Z;
+
+        public SerializableVector3(Vector3 vector)
+        {
+            X = vector.x;
+            Y = vector.y;
+            Z = vector.z;
+        }
+
+        public readonly Vector3 GetVector3()
+        {
+            return new Vector3(X, Y, Z);
         }
     }
 }

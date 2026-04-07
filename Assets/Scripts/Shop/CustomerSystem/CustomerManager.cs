@@ -115,15 +115,22 @@ public class CustomerManager : MonoBehaviour
         if (_isDayStarting)
             return;
 
+        StartCoroutine(NewDayRoutine());
+        StartCoroutine(DayRoutine());
+    }
+
+    private IEnumerator NewDayRoutine()
+    {
         _scheduleList = _schedule.List;
 
         _isDayStarting = true;
         DayStarted?.Invoke();
 
+        while (FrostManager.Instance == null)
+            yield return null;
+
         FrostManager.Instance.ResetAllWindows();
         FrostManager.Instance.SetWarm(_worldTime.CurrentDay);
-
-        StartCoroutine(DayRoutine());
     }
 
     private IEnumerator DayRoutine()

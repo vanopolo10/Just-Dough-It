@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Shelf : MonoBehaviour
@@ -12,8 +13,12 @@ public class Shelf : MonoBehaviour
     [SerializeField] private GameObject _debugPie;
     [SerializeField] private bool _placeDebugPies;
 
+    [SerializeField] private List<EnumPrefabPair> _prefabPairs = new();
+
     private readonly Queue<BakeManager> _queue = new();
     private BakeManager[] _occupied;
+
+    public BakeManager[] Occupied => _occupied;
 
     private void Awake()
     {
@@ -42,6 +47,29 @@ public class Shelf : MonoBehaviour
             bun.PerfectActionCount += 3;
 
         int index = FindFreeSlot();
+
+        if (index >= 0)
+        {
+            PutToSlot(index, bun);
+            bun.Sold += OnBunSold;
+            bun.Threw += OnBunThrown;
+        }
+        else
+        {
+            _queue.Enqueue(bun);
+            bun.gameObject.SetActive(false);
+        }
+    }
+
+    public void PlaceAt(BakeManager bun, int index)
+    {
+        if (bun == null)
+            return;
+
+        if (bun.BakeState is BakeState.Rare or BakeState.Burn)
+            bun.ImperfectActionCount += 3;
+        else if (bun.BakeState == BakeState.Done)
+            bun.PerfectActionCount += 3;
 
         if (index >= 0)
         {
@@ -130,89 +158,15 @@ public class Shelf : MonoBehaviour
         }
     }
 
-    public ShelfSaveData GetSaveData()
+    public GameObject GetPrefabByType(ProductType type)
     {
-        ShelfSaveData data = new ShelfSaveData();
-        data.slots = new List<SlotData>();
-        for (int i = 0; i < _occupied.Length; i++)
-        {
-            if (_occupied[i] != null)
-            {
-                data.slots.Add(new SlotData { slotIndex = i, bakeData = _occupied[i].GetSaveData() });
-            }
-        }
-        data.queue = new List<BakeManager.BakeSaveData>();
-        foreach (BakeManager bun in _queue)
-        {
-            if (bun != null)
-                data.queue.Add(bun.GetSaveData());
-        }
-        return data;
-    }
-
-    public void LoadFromSaveData(ShelfSaveData data)
-    {
-        foreach (BakeManager bun in _occupied)
-        {
-            if (bun != null)
-                Destroy(bun.gameObject);
-        }
-        _occupied = new BakeManager[_places.Count];
-        _queue.Clear();
-
-        if (data.slots != null)
-        {
-            foreach (SlotData slot in data.slots)
-            {
-                BakeManager newBun = CreateBakeFromData(slot.bakeData);
-                if (newBun != null)
-                {
-                    PutToSlot(slot.slotIndex, newBun);
-                    newBun.Sold += OnBunSold;
-                    newBun.Threw += OnBunThrown;
-                }
-            }
-        }
-
-        if (data.queue != null)
-        {
-            foreach (BakeManager.BakeSaveData bakeData in data.queue)
-            {
-                BakeManager queuedBun = CreateBakeFromData(bakeData);
-                if (queuedBun != null)
-                {
-                    _queue.Enqueue(queuedBun);
-                    queuedBun.gameObject.SetActive(false);
-                    queuedBun.Sold += OnBunSold;
-                    queuedBun.Threw += OnBunThrown;
-                }
-            }
-        }
-    }
-
-    private BakeManager CreateBakeFromData(BakeManager.BakeSaveData data)
-    {
-        if (_debugPie == null) return null;
-        GameObject newObj = Instantiate(_debugPie, transform);
-        BakeManager bun = newObj.GetComponent<BakeManager>();
-        if (bun != null)
-        {
-            bun.RestoreFromSaveData(data, this);
-        }
-        return bun;
+        return _prefabPairs.FirstOrDefault(prefab => prefab.Type == type).Prefab;
     }
 
     [Serializable]
-    public class SlotData
+    private struct EnumPrefabPair
     {
-        public int slotIndex;
-        public BakeManager.BakeSaveData bakeData;
-    }
-
-    [Serializable]
-    public class ShelfSaveData
-    {
-        public List<SlotData> slots;
-        public List<BakeManager.BakeSaveData> queue;
+        public ProductType Type;
+        public GameObject Prefab;
     }
 }

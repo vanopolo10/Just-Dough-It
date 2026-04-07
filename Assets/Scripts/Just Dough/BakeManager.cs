@@ -1,9 +1,10 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Data.Common;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Collider)), Serializable]
 public class BakeManager : MonoBehaviour
 {
     [Header("Время прожарки, сек")]
@@ -57,8 +58,6 @@ public class BakeManager : MonoBehaviour
     public Product Product => _product;
 
     public int ImperfectActionCount { get; set; }
-
-    public Product DoughState => _product;
 
     public float CurrentBakeBlend { get; private set; }
     public float CurrentBurnAmount { get; private set; }
@@ -408,40 +407,38 @@ public class BakeManager : MonoBehaviour
         transform.rotation = targetRot;
     }
 
-    public BakeSaveData GetSaveData()
+    public BakeManagerData GetData()
     {
-        return new BakeSaveData
+        BakeManagerData data = new()
         {
-            timeInOven = _timeInOven,
-            perfectActionCount = PerfectActionCount,
-            imperfectActionCount = ImperfectActionCount,
-            product = _product
+            TimeInOven = _timeInOven,
+            BakeBlend = CurrentBakeBlend,
+            BurnAmount = CurrentBurnAmount,
+            Product = _product,
+            ImperfectActionCount = ImperfectActionCount,
+            PerfectActionCount = PerfectActionCount
         };
+
+        return data;
     }
 
-    public void RestoreFromSaveData(BakeSaveData data, Shelf shelf)
+    public void SetData(BakeManagerData data)
     {
-        _timeInOven = data.timeInOven;
-        PerfectActionCount = data.perfectActionCount;
-        ImperfectActionCount = data.imperfectActionCount;
-        _product = data.product;
-        _shelf = shelf;
-        _isOnShelf = true;
-        UpdateBakeLogic();
+        _timeInOven = data.TimeInOven;
+        CurrentBakeBlend = data.BakeBlend;
+        CurrentBurnAmount = data.BurnAmount;
+        _product = data.Product;
+        ImperfectActionCount = data.ImperfectActionCount;
+        PerfectActionCount = data.PerfectActionCount;
     }
 
-    public void SetTimeInOven(float time)
+    public struct BakeManagerData
     {
-        _timeInOven = time;
-        UpdateBakeLogic();
-    }
-
-    [Serializable]
-    public class BakeSaveData
-    {
-        public float timeInOven;
-        public int perfectActionCount;
-        public int imperfectActionCount;
-        public Product product;
+        public float TimeInOven;
+        public float BakeBlend;
+        public float BurnAmount;
+        public Product Product;
+        public int PerfectActionCount;
+        public int ImperfectActionCount;
     }
 }
