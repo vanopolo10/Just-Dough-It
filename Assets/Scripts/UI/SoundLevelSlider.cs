@@ -29,13 +29,9 @@ public class SoundLevel : MonoBehaviour
             _audioSource.outputAudioMixerGroup = _group;
             _lastPlay = Time.time;
         }
-    }
-
-    private void OnEnable()
-    {
         _slider.onValueChanged.AddListener(HandleSliderValueChange);
         _slider.value = PlayerPrefs.GetFloat(_volumeParameter, 0);
-        HandleSliderValueChange(_slider.value);
+        _mixer.SetFloat(_volumeParameter, _slider.value);
     }
 
     private void OnDisable()
