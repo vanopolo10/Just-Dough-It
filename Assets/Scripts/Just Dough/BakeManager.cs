@@ -114,6 +114,11 @@ public class BakeManager : MonoBehaviour
 
         Debug.Log($"[BakeManager] perfect={PerfectActionCount}, imperfect={ImperfectActionCount}, " +
                   $"productType={_product.Type}, filling={_product.Filling}, bakeState={BakeState}");
+
+        if (SaveSystem.TryLoadData<int>(SaveSystem.SelectedSave, "KPI", out int value))
+            SaveSystem.SaveData(SaveSystem.SelectedSave, "KPI",  value + 1);
+        else
+            SaveSystem.SaveData(SaveSystem.SelectedSave, "KPI", 1);
     }
 
     private void OnMouseDrag()
