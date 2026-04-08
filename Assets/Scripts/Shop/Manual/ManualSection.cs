@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManualSection : MonoBehaviour
+[CreateAssetMenu(fileName = "CustomerInteraction",
+    menuName = "ScriptableObjects/Manual/ManualSection")]
+public class ManualSection : ScriptableObject
 {
-    private List<ManualPage> _pages = new();
+    [SerializeField] private List<ManualPage> _pages = new();
+    public IReadOnlyList<ManualPage> Pages => _pages;
 
     public void AddPage(ManualPage page)
     {
