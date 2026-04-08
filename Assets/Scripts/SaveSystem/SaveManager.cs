@@ -108,10 +108,8 @@ public class SaveManager : MonoBehaviour
 
         if (_customerManager != null)
         {
-            if (SaveSystem.TryLoadData<CustomerStuff>(currentSave, "Customer", out CustomerStuff customerStuff))
-            {
-                _customerManager.SetCurrentCustomer(customerStuff.Index);
-            }
+            if (SaveSystem.TryLoadData<int>(currentSave, "Customer", out int index))
+                _customerManager.SetCurrentCustomer(index);
         }
     }
 
@@ -185,13 +183,7 @@ public class SaveManager : MonoBehaviour
         }
 
         if (_customerManager != null)
-        {
-            CustomerStuff customerStuff = new();
-            customerStuff.Index = _customerManager.CustomerIndex;
-            if (_customerManager.CurrentCustomer != null)
-                customerStuff.Quest = _customerManager.CurrentCustomer.Quest;
-            SaveSystem.SaveData(currentSave, "Customer", customerStuff);
-        }
+            SaveSystem.SaveData(currentSave, "Customer", _customerManager.CustomerIndex);
     }
 
     [Serializable]
@@ -285,12 +277,5 @@ public class SaveManager : MonoBehaviour
                 IsBuyed = new bool[pages];
             }
         }
-    }
-
-    [Serializable]
-    public struct CustomerStuff
-    {
-        public int Index;
-        public CustomerQuest Quest;
     }
 }
