@@ -88,7 +88,7 @@ public class SingularShopBook : ShopBook
     {
         _bought = true;
         UpdateButtons();
-
+        _boughtObject.SetActive(true);
         if (_hasParentBook) _parentMegaBook.OnChildBookPurchase();
         else Debug.Log("Shop book purchased, but has no parent");
     }
