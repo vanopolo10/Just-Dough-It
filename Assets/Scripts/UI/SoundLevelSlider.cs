@@ -19,7 +19,7 @@ public class SoundLevel : MonoBehaviour
     private bool _hasPrePlay;
     private float _lastPlay;
 
-    private void Start()
+    private void Awake()
     {
         _slider = GetComponent<Slider>();
         _hasPrePlay = _clips.Count > 0;
@@ -31,7 +31,7 @@ public class SoundLevel : MonoBehaviour
         }
         _slider.onValueChanged.AddListener(HandleSliderValueChange);
         _slider.value = PlayerPrefs.GetFloat(_volumeParameter, 0);
-        _mixer.SetFloat(_volumeParameter, PlayerPrefs.GetFloat(_volumeParameter, 0));
+        _mixer.SetFloat(_volumeParameter, _slider.value);
     }
 
     private void OnDisable()
@@ -43,7 +43,7 @@ public class SoundLevel : MonoBehaviour
     private void HandleSliderValueChange(float value)
     {
         if (value < 0) value *= 2;
-        if (value <= -9.9f) value = -80;
+        if (value <= -39.9f) value = -80;
         _mixer.SetFloat(_volumeParameter, value);
 
         Preplay();
