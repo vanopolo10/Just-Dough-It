@@ -20,14 +20,12 @@ public class WorldTime : MonoBehaviour
 
     private bool _dayEnded;
     private Coroutine _smoothAddCoroutine;
-    private int _currentDay;
 
     public event Action<GameTime> TimeChanged;
     public event Action DayFinished;
 
     public GameTime InGameTime { get; private set; }
     public bool PreferSunrise { get; private set; }
-    public int CurrentDay => _currentDay;
 
     private void Awake()
     {
@@ -120,11 +118,6 @@ public class WorldTime : MonoBehaviour
     }
 
     public void SetGameTime(GameTime gameTime) => InGameTime = gameTime;
-
-    public void NextDay()
-    {
-        _currentDay++;
-    }
 
     [Serializable]
     public class GameTime

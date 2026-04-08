@@ -8752,6 +8752,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Manual
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5cd5604a1bad6784c8ef7c7aa523fe1a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2816210388215862242, guid: 5cd5604a1bad6784c8ef7c7aa523fe1a, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -10067,6 +10071,7 @@ MonoBehaviour:
   _time: {fileID: 2060576056}
   _shelf: {fileID: 1053535225}
   _shopManager: {fileID: 985103495}
+  _customerManager: {fileID: 7992484661926676747}
 --- !u!4 &1359870276
 Transform:
   m_ObjectHideFlags: 0
