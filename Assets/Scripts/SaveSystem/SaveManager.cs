@@ -20,11 +20,6 @@ public class SaveManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Load());
-    }
-
-    private IEnumerator Load()
-    {
         string currentSave = SaveSystem.SelectedSave;
 
         if (_cameraController != null)
@@ -116,9 +111,6 @@ public class SaveManager : MonoBehaviour
             if (SaveSystem.TryLoadData<CustomerStuff>(currentSave, "Customer", out CustomerStuff customerStuff))
             {
                 _customerManager.SetCurrentCustomer(customerStuff.Index);
-                while (_customerManager.CurrentCustomer == null)
-                    yield return null;
-                _customerManager.CurrentCustomer.SetQuest(customerStuff.Quest);
             }
         }
     }

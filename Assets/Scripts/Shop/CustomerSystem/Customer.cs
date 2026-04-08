@@ -91,6 +91,4 @@ public class Customer : MonoBehaviour
         Debug.Log($"[Customer] Initialized Quest");
         QuestInitialized?.Invoke();
     }
-
-    public void SetQuest(CustomerQuest quest) => _quest = quest;
 }
