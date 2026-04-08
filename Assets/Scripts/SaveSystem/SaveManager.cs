@@ -15,6 +15,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private DaysProgression _progression;
     [SerializeField] private WorldTime _time;
     [SerializeField] private Shelf _shelf;
+    [SerializeField] private ShopManager _shopManager;
 
     private void Awake()
     {
@@ -50,18 +51,10 @@ public class SaveManager : MonoBehaviour
                 _doughBucket.SpawnDough(dough.State, dough.Filling);
         }
 
-        //if (_shopTransform != null)
-        //{
-        //    BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
-        //    foreach (BuyButtonContent content in boughtContent)
-        //    {
-        //        if (SaveSystem.TryLoadData<bool>(currentSave, $"Buyable.{content.Key}", out bool bought))
-        //        {
-        //            content.BuyableThing.SetActive(bought);
-        //            content.Back.SetActive(!bought);
-        //        }
-        //    }
-        //}
+        if (_shopManager != null)
+        {
+
+        }
 
         if (_progression != null)
         {
@@ -94,7 +87,7 @@ public class SaveManager : MonoBehaviour
 
                         FillingManager fillingManager = obj.GetComponentInChildren<FillingManager>();
                         if (fillingManager)
-                            fillingManager.SetFilling(bun.BakeData.Product.Filling);
+                            fillingManager.SetFillingWithoutController(bun.BakeData.Product.Filling);
 
                         _shelf.Place(bakeManager);
                     } 
@@ -131,15 +124,28 @@ public class SaveManager : MonoBehaviour
         if (_doughBucket != null && _doughBucket.CurrentDough != null)
             SaveSystem.SaveData(currentSave, "Dough", new DoughSave(_doughBucket.CurrentDough.State, _doughBucket.CurrentDough.Filling));
 
-        //if (_shopTransform != null)
-        //{
-        //    BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
-        //    foreach (BuyButtonContent content in boughtContent)
-        //    {
-        //        SaveSystem.SaveData(currentSave, $"Buyable.{content.Key}", content.BuyableThing.activeSelf);
-        //        yield return null;
-        //    }
-        //}
+        if (_shopManager != null)
+        {
+            PurshcasesStuff purshcasesStuff = new(false);
+            purshcasesStuff.CurrentBook = _shopManager.CurrentBook;
+            for (int i = 0; i < _shopManager.Books.Count; i++)
+            {
+                PurshcasesStuff.Book book;
+                if (_shopManager.Books[i].GetType() == typeof(SingularShopBook))
+                {
+                    book = new(1);
+                    book.IsBuyed[0] = ((SingularShopBook)_shopManager.Books[i]).IsBought;
+                }
+                else
+                {
+                    book = new(2);
+                    for (int p = 0; p < _shopManager.Books.Count; p++)
+                        book.IsBuyed[p] = ((MegaShopBook)_shopManager.Books[i]).Books[p].IsBought;
+                }
+                purshcasesStuff.Books.Add(i, book);
+            }
+            SaveSystem.SaveData(currentSave, "Books", purshcasesStuff);
+        }
 
         if (_progression != null)
             SaveSystem.SaveData(currentSave, "Day", _progression.CurrentDay);
@@ -232,6 +238,29 @@ public class SaveManager : MonoBehaviour
         public readonly Vector3 GetVector3()
         {
             return new Vector3(X, Y, Z);
+        }
+    }
+
+    [Serializable]
+    public struct PurshcasesStuff
+    {
+        public int CurrentBook;
+        public Dictionary<int, Book> Books;
+
+        public PurshcasesStuff(bool _)
+        {
+            CurrentBook = 0;
+            Books = new Dictionary<int, Book>();
+        }
+
+        public struct Book
+        {
+            public bool[] IsBuyed;
+
+            public Book(int pages)
+            {
+                IsBuyed = new bool[pages];
+            }
         }
     }
 }

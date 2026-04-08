@@ -9,6 +9,7 @@ public class SingularShopBook : ShopBook
 
     private MegaShopBook _parentMegaBook;
     private bool _hasParentBook= false;
+
     public override void Start()
     {
         base.Start();
@@ -108,6 +109,7 @@ public class ShopBook : MonoBehaviour
     public Vector3 TargetPosition => _targetPosition;
     public Vector3 InitialPosition => _initialPosition;
     public Animator Animator => _animator;
+    public bool IsBought => _bought;
 
     public virtual void Start()
     {

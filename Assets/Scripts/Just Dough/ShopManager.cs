@@ -1,10 +1,6 @@
-using NUnit.Framework;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Mathematics;
-using UnityEditor;
 
 
 public class ShopManager : MonoBehaviour
@@ -19,6 +15,9 @@ public class ShopManager : MonoBehaviour
     private bool _inPosition = false;
     [SerializeField] private int _currentlyMovingBooks = 0;
     private int _currentBook = 0;
+
+    public int CurrentBook => _currentBook;
+    public List<ShopBook> Books => _books;
 
     private void OnMouseDown()
     {

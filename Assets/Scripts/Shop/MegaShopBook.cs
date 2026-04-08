@@ -12,6 +12,8 @@ public class MegaShopBook : ShopBook
 
     private int _booksLeft;
 
+    public List<SingularShopBook> Books => _books;
+
     public override void Start()
     {
         base.Start();
