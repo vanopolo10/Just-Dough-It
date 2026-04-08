@@ -7,24 +7,24 @@ public class DaysProgression : MonoBehaviour
     [SerializeField] private CustomerManager _customerManager;
     [SerializeField] private List<DayObjectsList> _daysObjects;
 
-    private int _currentDay = -1;
+    private int _currentDay = 0;
 
     public int CurrentDay => _currentDay;
+
+    private void OnEnable()
+    {
+        _customerManager.DayEnded += ChangeDay;
+    }
+
+    private void OnDisable()
+    {
+        _customerManager.DayEnded -= ChangeDay;
+    }
 
     private void Awake()
     {
         foreach (var days in _daysObjects)
             SetDayObjectsActive(days.Objects, false);
-    }
-
-    private void OnEnable()
-    {
-        _customerManager.DayStarted += ChangeDay;
-    }
-
-    private void OnDisable()
-    {
-        _customerManager.DayStarted -= ChangeDay;
     }
 
     private void ChangeDay()

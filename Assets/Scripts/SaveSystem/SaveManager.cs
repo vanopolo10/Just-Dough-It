@@ -16,6 +16,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private WorldTime _time;
     [SerializeField] private Shelf _shelf;
     [SerializeField] private ShopManager _shopManager;
+    [SerializeField] private CustomerManager _customerManager;
 
     private void Start()
     {
@@ -100,8 +101,16 @@ public class SaveManager : MonoBehaviour
                         bakeVisual.SetupAfterSave(bun.InitialScale.GetVector3());
 
                         _shelf.Place(bakeManager);
-                    } 
+                    }
                 }
+            }
+        }
+
+        if (_customerManager != null)
+        {
+            if (SaveSystem.TryLoadData<CustomerStuff>(currentSave, "Customer", out CustomerStuff customerStuff))
+            {
+                _customerManager.SetCurrentCustomer(customerStuff.Index);
             }
         }
     }
@@ -173,6 +182,15 @@ public class SaveManager : MonoBehaviour
                 }
                 SaveSystem.SaveData(currentSave, "Shelf", shelfStuff);
             }
+        }
+
+        if (_customerManager != null)
+        {
+            CustomerStuff customerStuff = new();
+            customerStuff.Index = _customerManager.CustomerIndex;
+            if (_customerManager.CurrentCustomer != null)
+                customerStuff.Quest = _customerManager.CurrentCustomer.Quest;
+            SaveSystem.SaveData(currentSave, "Customer", customerStuff);
         }
     }
 
@@ -267,5 +285,12 @@ public class SaveManager : MonoBehaviour
                 IsBuyed = new bool[pages];
             }
         }
+    }
+
+    [Serializable]
+    public struct CustomerStuff
+    {
+        public int Index;
+        public CustomerQuest Quest;
     }
 }

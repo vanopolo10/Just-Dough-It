@@ -16,7 +16,7 @@ public struct Product
     public FillingType Filling { get; set; }
 }
 
-[CreateAssetMenu(fileName = "CustomerQuest", menuName = "ScriptableObjects/CustomerSystem/CustomerQuest")]
+[Serializable, CreateAssetMenu(fileName = "CustomerQuest", menuName = "ScriptableObjects/CustomerSystem/CustomerQuest")]
 public class CustomerQuest : ScriptableObject
 {
     [SerializeField] private CustomerInteractionSet _interactions;

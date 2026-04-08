@@ -28,8 +28,11 @@ public class CustomerManager : MonoBehaviour
     public event Action<Customer> CustomerSpawned;
     public event Action DayStarted;
     public event Action CustomersEnded;
+    public event Action DayEnded;
 
+    public int CustomerIndex => _customerIndex;
     public Customer CurrentCustomer { get; private set; }
+    public CustomerRouteMover CustomerRouteMover => _routeMover;
 
     private void Awake()
     {
@@ -105,7 +108,7 @@ public class CustomerManager : MonoBehaviour
         _scheduleList = _schedule.List;
 
         _isDayStarting = false;
-        _worldTime.NextDay();
+        DayEnded?.Invoke();
         StartCoroutine(StartAfterFade());
         _isEndingDay = false;
     }
@@ -130,7 +133,7 @@ public class CustomerManager : MonoBehaviour
             yield return null;
 
         FrostManager.Instance.ResetAllWindows();
-        FrostManager.Instance.SetWarm(_worldTime.CurrentDay);
+        FrostManager.Instance.SetWarm(SaveSystem.LoadData<int>(SaveSystem.SelectedSave, "Day"));
     }
 
     private IEnumerator DayRoutine()
@@ -222,13 +225,9 @@ public class CustomerManager : MonoBehaviour
         SpawnCustomer();
     }
 
-    private void OnDayFinished()
-    {
-        EndDay();
-    }
+    private void OnDayFinished() => EndDay();
 
-    private void OnCustomersEnded()
-    {
-        EndDay();
-    }
+    private void OnCustomersEnded() => EndDay();
+
+    public void SetCurrentCustomer(int index) => _customerIndex = index;
 }
