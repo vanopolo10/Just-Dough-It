@@ -114,10 +114,10 @@ public class Manual : MonoBehaviour
     {
         var pageData = _manualSections[_sectionId].Pages[_pageId];
 
-        if (_currentLeft != null)
+        if (_currentLeft)
             Destroy(_currentLeft.gameObject);
 
-        if (_currentRight != null)
+        if (_currentRight)
             Destroy(_currentRight.gameObject);
 
         _currentLeft = Instantiate(pageData.LeftPage, _leftSlot);
