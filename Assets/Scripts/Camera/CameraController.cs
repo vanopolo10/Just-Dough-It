@@ -7,12 +7,14 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class CameraController : MonoBehaviour
 {
-    [Header("Camera Views")]
-    [SerializeField] private List<CameraView> _views;
+    [Header("Camera Views")] [SerializeField]
+    private List<CameraView> _views;
+
     [SerializeField] private float _transitionDuration = 0.7f;
-    
-    [Header("Mouse Look Settings")]
-    [SerializeField] private bool _enableMouseLook = true;
+
+    [Header("Mouse Look Settings")] [SerializeField]
+    private bool _enableMouseLook = true;
+
     [SerializeField] private float _mouseSensitivity = 2f;
     [SerializeField] private float _smoothTime = 0.15f;
     [SerializeField] private Vector2 _rotationLimit = new(10f, 10f);
@@ -23,7 +25,7 @@ public class CameraController : MonoBehaviour
     private float _currentRotationY;
     private float _velocityX;
     private float _velocityY;
-    
+
     private Coroutine _transitionRoutine;
     private bool _isTransitioning;
     private bool _isMouseLookActive;
@@ -37,43 +39,43 @@ public class CameraController : MonoBehaviour
     private bool _canUseBack = true;
 
     private Book _book;
-    
+
     public event Action<bool> DragAllowedChanged;
     public event Action<CameraViewType> ViewChanged;
 
     public int ViewID { get; private set; }
-    
+
     public CameraViewType ViewType => _views[ViewID].Type;
-    
+
     private void Start()
     {
         if (_views.Count == 0)
             return;
-            
+
         ViewID = Mathf.Clamp(ViewID, 0, _views.Count - 1);
         InitializeView(ViewID);
 
         _book = FindAnyObjectByType<Book>();
         if (_book == null) Debug.Log("[CameraController] No Book found in the scene");
     }
-    
+
     private void InitializeView(int viewID)
     {
         var view = _views[viewID];
         transform.position = view.Position;
         transform.rotation = view.Rotation;
-        
+
         _isMouseLookActive = view.AllowMouseLook;
-        
+
         Vector3 currentRot = transform.localEulerAngles;
         _targetRotationX = currentRot.x;
         _targetRotationY = currentRot.y;
         _currentRotationX = _targetRotationX;
         _currentRotationY = _targetRotationY;
-        
+
         DragAllowedChanged?.Invoke(view.Type == CameraViewType.Craft);
     }
-    
+
     private void Update()
     {
         if (_enableMouseLook && _isMouseLookActive && !_isTransitioning)
@@ -98,12 +100,12 @@ public class CameraController : MonoBehaviour
         CameraView currentView = _views[ViewID];
         float baseRotX = currentView.Rotation.eulerAngles.x;
         float baseRotY = currentView.Rotation.eulerAngles.y;
-        
+
         float minX = baseRotX - _rotationLimit.x;
         float maxX = baseRotX + _rotationLimit.x;
         float minY = baseRotY - _rotationLimit.y;
         float maxY = baseRotY + _rotationLimit.y;
-        
+
         _targetRotationX = Mathf.Clamp(_targetRotationX, minX, maxX);
         _targetRotationY = Mathf.Clamp(_targetRotationY, minY, maxY);
 
@@ -115,56 +117,50 @@ public class CameraController : MonoBehaviour
 
     private void OnLeft()
     {
-        if (_book != null) { 
-            if(_book.IsOpen)
-            {
-                _book.PreviousPage();
-                return;
-            }
+        if (_book && _book.IsOpen)
+        {
+            _book.PreviousPage();
+            return;
         }
 
         if (!_canUseLeft) return;
-        if (_isTransitioning) {
+        if (_isTransitioning)
+        {
             if (_transitionProgress >= _queueThreshold) _queuedAction = 1;
             return;
         }
 
         Move(_views[ViewID].Left, TurnDirection.Left);
     }
-    
+
     private void OnRight()
     {
-        if (_book != null)
+        if (_book && _book.IsOpen)
         {
-            if (_book.IsOpen)
-            {
-                _book.NextPage();
-                return;
-            }
+            _book.NextPage();
+            return;
         }
 
         if (!_canUseRight) return;
         if (_isTransitioning)
         {
-            if(_transitionProgress >= _queueThreshold) _queuedAction = 2;
+            if (_transitionProgress >= _queueThreshold) _queuedAction = 2;
             return;
         }
 
         Move(_views[ViewID].Right, TurnDirection.Right);
     }
-    
+
     private void OnBack()
     {
-        if (_book != null)
+        if (_book && _book.IsOpen)
         {
-            if (_book.IsOpen)
-            {
-                _book.FirstPage();
-                return;
-            }
+            _book.FirstPage();
+            return;
         }
 
         if (!_canUseBack) return;
+        
         if (_isTransitioning)
         {
             if (_transitionProgress >= _queueThreshold) _queuedAction = 3;
@@ -173,77 +169,77 @@ public class CameraController : MonoBehaviour
 
         Move(_views[ViewID].Back, _views[ViewID].BackTurn);
     }
-    
+
     private void Move(CameraViewType link, TurnDirection turnDirection)
     {
         if (link == CameraViewType.None)
             return;
-            
+
         int targetID = FindView(link);
+        
         if (targetID == ViewID)
             return;
-            
+
         StartTransition(targetID, turnDirection);
     }
-    
+
     private int FindView(CameraViewType type)
     {
         int index = _views.FindIndex(v => v.Type == type);
         return index >= 0 ? index : ViewID;
     }
-    
+
     private void StartTransition(int targetID, TurnDirection turn)
     {
         if (_transitionRoutine != null)
             StopCoroutine(_transitionRoutine);
-            
+
         _transitionRoutine = StartCoroutine(TransitionRoutine(ViewID, targetID, turn));
     }
-    
+
     private IEnumerator TransitionRoutine(int fromID, int toID, TurnDirection turn)
     {
         _isTransitioning = true;
         DragAllowedChanged?.Invoke(false);
-        
+
         Vector3 startPos = transform.position;
         Quaternion startRot = transform.rotation;
-        
+
         Vector3 targetPos = _views[toID].Position;
         Quaternion targetRot = GetAdjustedRotation(startRot, _views[toID].Rotation, turn);
-        
+
         float time = 0f;
-        
+
         while (time < _transitionDuration)
         {
             time += Time.deltaTime;
             _transitionProgress = Mathf.Clamp01(time / _transitionDuration);
-            
+
             transform.position = Vector3.Lerp(startPos, targetPos, _transitionProgress);
             transform.rotation = Quaternion.Slerp(startRot, targetRot, _transitionProgress);
-            
+
             yield return null;
         }
-        
+
         transform.position = targetPos;
         transform.rotation = targetRot;
-        
+
         ViewID = toID;
         ViewChanged?.Invoke(ViewType);
         _isMouseLookActive = _views[toID].AllowMouseLook;
-        
+
         Vector3 newRot = transform.localEulerAngles;
         _targetRotationX = newRot.x;
         _targetRotationY = newRot.y;
         _currentRotationX = _targetRotationX;
         _currentRotationY = _targetRotationY;
-        
+
         _transitionRoutine = null;
         _isTransitioning = false;
-        
-        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Craft);
-        print(_views[ViewID].Type);
 
-        if(_queuedAction != 0)
+        DragAllowedChanged?.Invoke(_views[ViewID].Type == CameraViewType.Craft);
+
+        if (_queuedAction != 0)
         {
             int action = _queuedAction;
             _queuedAction = 0;
@@ -252,35 +248,35 @@ public class CameraController : MonoBehaviour
             else if (action == 3) OnBack();
         }
     }
-    
+
     private Quaternion GetAdjustedRotation(Quaternion from, Quaternion to, TurnDirection turn)
     {
         if (turn == TurnDirection.None)
             return to;
-            
+
         Vector3 fromEuler = from.eulerAngles;
         Vector3 toEuler = to.eulerAngles;
-        
+
         float deltaY = Mathf.DeltaAngle(fromEuler.y, toEuler.y);
-        
+
         if (turn == TurnDirection.Left && deltaY > 0)
             toEuler.y -= 360f;
-            
+
         if (turn == TurnDirection.Right && deltaY < 0)
             toEuler.y += 360f;
-            
+
         return Quaternion.Euler(toEuler);
     }
-    
+
     public void SetViewID(int viewID)
     {
         if (_isTransitioning)
             return;
-            
+
         ViewID = Mathf.Clamp(viewID, 0, _views.Count - 1);
         InitializeView(ViewID);
     }
-    
+
     [Serializable]
     private struct CameraView
     {
@@ -291,13 +287,12 @@ public class CameraController : MonoBehaviour
         public CameraViewType Right;
         public CameraViewType Back;
         public TurnDirection BackTurn;
-        
-        [Header("Mouse Look Settings")]
-        public bool AllowMouseLook;
-        
+
+        [Header("Mouse Look Settings")] public bool AllowMouseLook;
+
         public Quaternion Rotation => Quaternion.Euler(RotationEuler);
     }
-    
+
     private enum TurnDirection
     {
         None,
