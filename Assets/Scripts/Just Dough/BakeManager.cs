@@ -415,6 +415,7 @@ public class BakeManager : MonoBehaviour
             BakeBlend = CurrentBakeBlend,
             BurnAmount = CurrentBurnAmount,
             Product = _product,
+            State = BakeState,
             ImperfectActionCount = ImperfectActionCount,
             PerfectActionCount = PerfectActionCount
         };
@@ -428,6 +429,7 @@ public class BakeManager : MonoBehaviour
         CurrentBakeBlend = data.BakeBlend;
         CurrentBurnAmount = data.BurnAmount;
         _product = data.Product;
+        BakeState = data.State;
         ImperfectActionCount = data.ImperfectActionCount;
         PerfectActionCount = data.PerfectActionCount;
     }
@@ -438,6 +440,7 @@ public class BakeManager : MonoBehaviour
         public float BakeBlend;
         public float BurnAmount;
         public Product Product;
+        public BakeState State;
         public int PerfectActionCount;
         public int ImperfectActionCount;
     }

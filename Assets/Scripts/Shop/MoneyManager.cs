@@ -11,19 +11,23 @@ public class MoneyManager : MonoBehaviour
 
     public int Money => _money;
 
-    private void Start()
-    {
-        UpdDisplay();
-    }
+    private void Start() => UpdateText();
 
     public void AddMoney(int amount, bool playPopUp = true)
     {
         _money += amount;
-
+        
         if (playPopUp)
             Instantiate(_popUpPrefab).GetComponentInChildren<MoneyPopUp>().Initialize(amount);
 
-        UpdDisplay();
+        UpdateText();
+        OnBalanceChanged?.Invoke();
+    }
+
+    public void SetMoney(int amout)
+    {
+        _money = Math.Clamp(amout, 0, int.MaxValue);
+        UpdateText();
     }
 
     public bool TrySpendMoney(int amount) 
@@ -32,13 +36,10 @@ public class MoneyManager : MonoBehaviour
             return false;
 
         _money -= amount;
-        UpdDisplay();
+        UpdateText();
+        OnBalanceChanged?.Invoke();
         return true;
     }
     
-    private void UpdDisplay()
-    { 
-        _display.text = _money + "ð";
-        OnBalanceChanged?.Invoke();
-    }
+    private void UpdateText() => _display.text = _money + "ð";
 }

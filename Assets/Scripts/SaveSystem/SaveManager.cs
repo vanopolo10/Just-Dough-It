@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using static QuestSystem;
 
@@ -17,7 +16,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private WorldTime _time;
     [SerializeField] private Shelf _shelf;
 
-    private void Start()
+    private void Awake()
     {
         string currentSave = SaveSystem.SelectedSave;
 
@@ -36,7 +35,7 @@ public class SaveManager : MonoBehaviour
         if (_moneyManager != null)
         {
             if (SaveSystem.TryLoadData<int>(currentSave, "MoneyCount", out int money))
-                _moneyManager.AddMoney(money, false);
+                _moneyManager.SetMoney(money);
         }
 
         if (_questSystem != null)
@@ -51,18 +50,18 @@ public class SaveManager : MonoBehaviour
                 _doughBucket.SpawnDough(dough.State, dough.Filling);
         }
 
-        if (_shopTransform != null)
-        {
-            BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
-            foreach (BuyButtonContent content in boughtContent)
-            {
-                if (SaveSystem.TryLoadData<bool>(currentSave, $"Buyable.{content.Key}", out bool bought))
-                {
-                    content.BuyableThing.SetActive(bought);
-                    content.Back.SetActive(!bought);
-                }
-            }
-        }
+        //if (_shopTransform != null)
+        //{
+        //    BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
+        //    foreach (BuyButtonContent content in boughtContent)
+        //    {
+        //        if (SaveSystem.TryLoadData<bool>(currentSave, $"Buyable.{content.Key}", out bool bought))
+        //        {
+        //            content.BuyableThing.SetActive(bought);
+        //            content.Back.SetActive(!bought);
+        //        }
+        //    }
+        //}
 
         if (_progression != null)
         {
@@ -88,10 +87,14 @@ public class SaveManager : MonoBehaviour
                         if (!obj.TryGetComponent<BakeManager>(out BakeManager bakeManager))
                             bakeManager = obj.GetComponentInChildren<BakeManager>();
                         bakeManager.SetData(bun.BakeData);
+                        bakeManager.transform.localScale = bun.Scale.GetVector3();
                         if (!obj.TryGetComponent<BakeVisual>(out BakeVisual bakeVisual))
                             bakeVisual = obj.GetComponentInChildren<BakeVisual>();
                         bakeVisual.SetupAfterSave(bun.InitialScale.GetVector3());
-                        bakeManager.transform.localScale = bun.Scale.GetVector3();
+
+                        FillingManager fillingManager = obj.GetComponentInChildren<FillingManager>();
+                        if (fillingManager)
+                            fillingManager.SetFilling(bun.BakeData.Product.Filling);
 
                         _shelf.Place(bakeManager);
                     } 
@@ -128,15 +131,15 @@ public class SaveManager : MonoBehaviour
         if (_doughBucket != null && _doughBucket.CurrentDough != null)
             SaveSystem.SaveData(currentSave, "Dough", new DoughSave(_doughBucket.CurrentDough.State, _doughBucket.CurrentDough.Filling));
 
-        if (_shopTransform != null)
-        {
-            BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
-            foreach (BuyButtonContent content in boughtContent)
-            {
-                SaveSystem.SaveData(currentSave, $"Buyable.{content.Key}", content.BuyableThing.activeSelf);
-                yield return null;
-            }
-        }
+        //if (_shopTransform != null)
+        //{
+        //    BuyButtonContent[] boughtContent = _shopTransform.GetComponentsInChildren<BuyButtonContent>();
+        //    foreach (BuyButtonContent content in boughtContent)
+        //    {
+        //        SaveSystem.SaveData(currentSave, $"Buyable.{content.Key}", content.BuyableThing.activeSelf);
+        //        yield return null;
+        //    }
+        //}
 
         if (_progression != null)
             SaveSystem.SaveData(currentSave, "Day", _progression.CurrentDay);
@@ -154,7 +157,6 @@ public class SaveManager : MonoBehaviour
                 {
                     BakeVisual bakeVisual = bakeManager.gameObject.GetComponent<BakeVisual>();
                     Transform transform = bakeManager.transform;
-
                     ShelfBun bun = new(transform.localScale, bakeVisual.InitialScale, bakeManager.GetData());
                     shelfStuff.Buns.Add(i, bun);
                 }
