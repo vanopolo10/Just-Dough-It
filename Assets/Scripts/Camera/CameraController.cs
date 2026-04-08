@@ -7,13 +7,13 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class CameraController : MonoBehaviour
 {
-    [Header("Camera Views")] [SerializeField]
-    private List<CameraView> _views;
+    [Header("Camera Views")] 
+    [SerializeField] private List<CameraView> _views;
 
     [SerializeField] private float _transitionDuration = 0.7f;
 
-    [Header("Mouse Look Settings")] [SerializeField]
-    private bool _enableMouseLook = true;
+    [Header("Mouse Look Settings")] 
+    [SerializeField] private bool _enableMouseLook = true;
 
     [SerializeField] private float _mouseSensitivity = 2f;
     [SerializeField] private float _smoothTime = 0.15f;
@@ -39,6 +39,7 @@ public class CameraController : MonoBehaviour
     private bool _canUseBack = true;
 
     private Book _book;
+    private Manual _manual;
 
     public event Action<bool> DragAllowedChanged;
     public event Action<CameraViewType> ViewChanged;
@@ -47,6 +48,15 @@ public class CameraController : MonoBehaviour
 
     public CameraViewType ViewType => _views[ViewID].Type;
 
+    private void Awake()
+    {
+        _manual = FindAnyObjectByType<Manual>();
+        if (_manual == null) Debug.Log("[CameraController] No Manual found in the scene");
+        
+        _book = FindAnyObjectByType<Book>();
+        if (_book == null) Debug.Log("[CameraController] No Book found in the scene");
+    }
+
     private void Start()
     {
         if (_views.Count == 0)
@@ -54,9 +64,6 @@ public class CameraController : MonoBehaviour
 
         ViewID = Mathf.Clamp(ViewID, 0, _views.Count - 1);
         InitializeView(ViewID);
-
-        _book = FindAnyObjectByType<Book>();
-        if (_book == null) Debug.Log("[CameraController] No Book found in the scene");
     }
 
     private void InitializeView(int viewID)
@@ -117,6 +124,12 @@ public class CameraController : MonoBehaviour
 
     private void OnLeft()
     {
+        if (_manual.IsOpen)
+        {
+            _manual.PreviousPage();
+            return;
+        }
+        
         if (_book && _book.IsOpen)
         {
             _book.PreviousPage();
@@ -135,6 +148,12 @@ public class CameraController : MonoBehaviour
 
     private void OnRight()
     {
+        if (_manual.IsOpen)
+        {
+            _manual.NextPage();
+            return;
+        }
+        
         if (_book && _book.IsOpen)
         {
             _book.NextPage();
