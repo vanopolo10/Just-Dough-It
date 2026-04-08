@@ -46,6 +46,18 @@ public class ShopManager : MonoBehaviour
         StartCoroutine(MoveBookRoutine(_books[_currentBook], false));
         _inPosition = true;
     }
+
+    public void HandleCurrentBook()
+    {
+        if (_currentBook >= _books.Count)
+        {
+            Debug.Log("[ShopManager] No more books to display");
+            return;
+        }
+
+        StartCoroutine(MoveBookRoutine(_books[_currentBook], false));
+        _inPosition = true;
+    }
     private IEnumerator MoveAllBooks() {
         bool toInitial = _inPosition;
         _inPosition = !_inPosition;
@@ -101,4 +113,6 @@ public class ShopManager : MonoBehaviour
         _currentlyMovingBooks--;
         yield break; 
     }
+
+    public void SetCurrentBook(int index) => _currentBook = index;
 }

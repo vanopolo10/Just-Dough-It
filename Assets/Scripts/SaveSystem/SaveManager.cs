@@ -17,7 +17,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private Shelf _shelf;
     [SerializeField] private ShopManager _shopManager;
 
-    private void Awake()
+    private void Start()
     {
         string currentSave = SaveSystem.SelectedSave;
 
@@ -53,7 +53,21 @@ public class SaveManager : MonoBehaviour
 
         if (_shopManager != null)
         {
-
+            if (SaveSystem.TryLoadData<PurshcasesStuff>(currentSave, "Books", out PurshcasesStuff stuff))
+            {
+                _shopManager.SetCurrentBook(stuff.CurrentBook);
+                for (int i = 0; i < _shopManager.Books.Count; i++)
+                {
+                    MegaShopBook megaBook = (MegaShopBook)_shopManager.Books[i];
+                    for (int page = 0; page < megaBook.Books.Count; page++)
+                        if (stuff.Books.TryGetValue(i, out PurshcasesStuff.Book book))
+                            if (book.IsBuyed[page])
+                                megaBook.Books[page].OnSuccessfulPurchase();
+                }
+                for (int i = 0; i < stuff.CurrentBook; i++)
+                    _shopManager.Books[i].gameObject.SetActive(false);
+                _shopManager.HandleCurrentBook();
+            }
         }
 
         if (_progression != null)
@@ -84,10 +98,6 @@ public class SaveManager : MonoBehaviour
                         if (!obj.TryGetComponent<BakeVisual>(out BakeVisual bakeVisual))
                             bakeVisual = obj.GetComponentInChildren<BakeVisual>();
                         bakeVisual.SetupAfterSave(bun.InitialScale.GetVector3());
-
-                        FillingManager fillingManager = obj.GetComponentInChildren<FillingManager>();
-                        if (fillingManager)
-                            fillingManager.SetFillingWithoutController(bun.BakeData.Product.Filling);
 
                         _shelf.Place(bakeManager);
                     } 
@@ -131,17 +141,12 @@ public class SaveManager : MonoBehaviour
             for (int i = 0; i < _shopManager.Books.Count; i++)
             {
                 PurshcasesStuff.Book book;
-                if (_shopManager.Books[i].GetType() == typeof(SingularShopBook))
-                {
-                    book = new(1);
-                    book.IsBuyed[0] = ((SingularShopBook)_shopManager.Books[i]).IsBought;
-                }
-                else
-                {
-                    book = new(2);
-                    for (int p = 0; p < _shopManager.Books.Count; p++)
-                        book.IsBuyed[p] = ((MegaShopBook)_shopManager.Books[i]).Books[p].IsBought;
-                }
+
+                MegaShopBook megaBook = (MegaShopBook)_shopManager.Books[i];
+                book = new(megaBook.Books.Count);
+                for (int p = 0; p < megaBook.Books.Count; p++)
+                    book.IsBuyed[p] = megaBook.Books[p].IsBought;
+
                 purshcasesStuff.Books.Add(i, book);
             }
             SaveSystem.SaveData(currentSave, "Books", purshcasesStuff);

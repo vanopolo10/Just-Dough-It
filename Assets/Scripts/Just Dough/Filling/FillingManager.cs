@@ -23,12 +23,6 @@ public class FillingManager : MonoBehaviour
         _controller.SetGlobalFilling(filling);
         DisplayFilling();
     }
-
-    public void SetFillingWithoutController(FillingType filling)
-    {
-        foreach (FillingDisplay display in _displays)
-            display.Display.SetActive(display.Type == filling);
-    }
     
     private void DisplayFilling() 
     {
