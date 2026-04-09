@@ -39,6 +39,13 @@ public class RandomisedCustomer : Customer
     {
         _quest = ChooseRandomQuest();
 
+        CustomerManager manager = FindAnyObjectByType<CustomerManager>();
+        while(_quest == manager.LastQuest)
+        {
+            _quest = ChooseRandomQuest();
+            Debug.Log("Customer Quest Rerolled!");
+        }
+
         base.Start();
     }
 }

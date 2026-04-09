@@ -7179,6 +7179,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6990544386005594885, guid: db8190659fb72a54baf589e50652d909, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6990544386005594886, guid: db8190659fb72a54baf589e50652d909, type: 3}
       propertyPath: lengthInSec
       value: 4
@@ -7234,6 +7238,10 @@ PrefabInstance:
     - target: {fileID: 6990544386005594886, guid: db8190659fb72a54baf589e50652d909, type: 3}
       propertyPath: ShapeModule.m_Texture
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6990544386005594886, guid: db8190659fb72a54baf589e50652d909, type: 3}
+      propertyPath: EmissionModule.enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6990544386005594886, guid: db8190659fb72a54baf589e50652d909, type: 3}
       propertyPath: startDelay.minMaxState
