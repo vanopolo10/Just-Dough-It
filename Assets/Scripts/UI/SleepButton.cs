@@ -59,14 +59,13 @@ public class SleepButton : MonoBehaviour
 
     private void OnSleep()
     {
-        _button.interactable = false;
-        
         if (_isTutorial)
         {
             SceneLoader.Instance.LoadScene(2);
             return;
         }
-
+        
+        _button.interactable = false;
         _customerManager.EndDay();
     }
 }
