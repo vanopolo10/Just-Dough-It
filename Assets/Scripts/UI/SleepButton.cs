@@ -3,16 +3,16 @@ using UnityEngine.UI;
 
 public class SleepButton : MonoBehaviour
 {
-    [SerializeField] private bool _isTutorial;
     [SerializeField] private CustomerManager _customerManager;
     [SerializeField] private TutorialRunner _tutorialRunner;
     
     private Button _button;
+    private bool _isTutorial = false;
 
     private void Awake()
     {
         _button = GetComponent<Button>();
-        _button.gameObject.SetActive(false);
+        //_button.interactable = false;
         
         if (_customerManager == null)
             _customerManager = FindAnyObjectByType<CustomerManager>();
@@ -41,14 +41,19 @@ public class SleepButton : MonoBehaviour
         _button.onClick.RemoveListener(OnSleep);
     }
 
+    public void SetTutorial(bool isTutorial)
+    {
+        _isTutorial = isTutorial;
+    }
+    
     private void OnCustomersEnded()
     {
-        _button.gameObject.SetActive(true);
+        _button.interactable = true;
     }
 
     private void OnSleep()
     {
-        _button.gameObject.SetActive(false);
+        _button.interactable = false;
         
         if (_isTutorial)
         {

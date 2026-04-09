@@ -65,6 +65,7 @@ public class TutorialScenario : MonoBehaviour
         _thermometer.gameObject.SetActive(false);
         _hatch.SetCanMove(false);
         _manual.SetCanOpen(false);
+        _manual.GetComponentInChildren<SleepButton>().SetTutorial(true);
     }
 
     private void OnEnable()
