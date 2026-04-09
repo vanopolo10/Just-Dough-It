@@ -2501,6 +2501,7 @@ GameObject:
   - component: {fileID: 330585551}
   - component: {fileID: 330585552}
   - component: {fileID: 330585553}
+  - component: {fileID: 330585554}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2889,6 +2890,19 @@ MonoBehaviour:
     RecipeSprite: {fileID: 21300000, guid: 41946c189a5e96045874faefde91c487, type: 3}
     RecipeActiveSprite: {fileID: 21300000, guid: 94f90d17d561eb243bd9ecbc37a07df6, type: 3}
     NameKey: book.boat
+--- !u!114 &330585554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22e0ab066112d6248a1547b26efdfbb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FreeCamera
+  _speed: 2
 --- !u!1001 &338233870
 PrefabInstance:
   m_ObjectHideFlags: 0
