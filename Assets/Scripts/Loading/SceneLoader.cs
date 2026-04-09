@@ -30,15 +30,7 @@ public class SceneLoader : MonoBehaviour
         darkness.FadeIn(0);
         yield return new WaitUntil(() => darkness.IsDark());
 
-        var op = SceneManager.LoadSceneAsync(index);
-        op.allowSceneActivation = false;
-
-        yield return new WaitUntil(() => op.progress >= 0.9f);
-
-        op.allowSceneActivation = true;
-
-        yield return null;
-        yield return null;
+        SceneManager.LoadScene(index);
         yield return new WaitForSecondsRealtime(_postLoadDelay);
 
         darkness.FadeOut(0);
