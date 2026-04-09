@@ -95,7 +95,6 @@ public class SaveManager : MonoBehaviour
                         if (!obj.TryGetComponent<BakeManager>(out BakeManager bakeManager))
                             bakeManager = obj.GetComponentInChildren<BakeManager>();
                         bakeManager.SetData(bun.BakeData);
-                        bakeManager.transform.localScale = bun.Scale.GetVector3();
                         if (!obj.TryGetComponent<BakeVisual>(out BakeVisual bakeVisual))
                             bakeVisual = obj.GetComponentInChildren<BakeVisual>();
                         bakeVisual.SetupAfterSave(bun.InitialScale.GetVector3());
@@ -174,12 +173,11 @@ public class SaveManager : MonoBehaviour
                 if (bakeManager != null)
                 {
                     BakeVisual bakeVisual = bakeManager.gameObject.GetComponent<BakeVisual>();
-                    Transform transform = bakeManager.transform;
-                    ShelfBun bun = new(transform.localScale, bakeVisual.InitialScale, bakeManager.GetData());
+                    ShelfBun bun = new(bakeVisual.InitialScale, bakeManager.GetData());
                     shelfStuff.Buns.Add(i, bun);
                 }
-                SaveSystem.SaveData(currentSave, "Shelf", shelfStuff);
             }
+            SaveSystem.SaveData(currentSave, "Shelf", shelfStuff);
         }
 
         if (_customerManager != null)
@@ -225,13 +223,11 @@ public class SaveManager : MonoBehaviour
     public struct ShelfBun
     {
         public SerializableVector3 InitialScale;
-        public SerializableVector3 Scale;
         public BakeManager.BakeManagerData BakeData;
 
-        public ShelfBun(Vector3 initialScale, Vector3 scale, BakeManager.BakeManagerData bakeData)
+        public ShelfBun(Vector3 initialScale, BakeManager.BakeManagerData bakeData)
         {
             InitialScale = new SerializableVector3(initialScale);
-            Scale = new SerializableVector3(scale);
             BakeData = bakeData;
         }
     }
