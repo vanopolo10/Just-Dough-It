@@ -46,7 +46,7 @@ public class SleepButton : MonoBehaviour
         _isTutorial = isTutorial;
     }
     
-    private void OnCustomersEnded()
+    public void OnCustomersEnded()
     {
         _button.interactable = true;
     }

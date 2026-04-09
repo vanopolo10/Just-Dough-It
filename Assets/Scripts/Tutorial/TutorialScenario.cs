@@ -203,7 +203,8 @@ public class TutorialScenario : MonoBehaviour
             new CustomerLeftGate(_routeMover),
             new ThoughtGate(_thoughts, "tutorial.think.open"),
             new ActionGate(() => _manual.SetCanOpen(true)),
-            new ManualGate(_manual, _clickManualIcon)
+            new ManualGate(_manual, _clickManualIcon),
+            new ActionGate(() => _manual.GetComponentInChildren<SleepButton>().OnCustomersEnded()),
         });
     }
 }
