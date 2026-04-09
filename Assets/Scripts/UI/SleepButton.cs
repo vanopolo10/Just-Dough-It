@@ -27,6 +27,8 @@ public class SleepButton : MonoBehaviour
     
     private void OnEnable()
     {
+        _button = GetComponent<Button>();
+        
         if (_isTutorial && _tutorialRunner != null)
             _tutorialRunner.TutorialComplited += OnCustomersEnded;
         else if (_customerManager != null)
