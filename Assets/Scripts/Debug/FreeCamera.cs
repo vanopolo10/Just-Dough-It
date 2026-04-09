@@ -14,7 +14,7 @@ public class FreeCamera : MonoBehaviour
 
     private void OnP()
     {
-        if (!Application.isEditor) return;
+        if (!Debug.isDebugBuild || !Application.isEditor) return;
 
         _enabled = !_enabled;
         _controller.SetControlBlock(!_enabled, !_enabled, !_enabled);
@@ -23,7 +23,7 @@ public class FreeCamera : MonoBehaviour
 
     private void OnI()
     {
-        if (!Application.isEditor) return;
+        if (!Debug.isDebugBuild || !Application.isEditor) return;
 
         string directoryPath = Path.Combine(Application.dataPath, "Images");
         if (!Directory.Exists(directoryPath))
