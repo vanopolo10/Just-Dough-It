@@ -46,17 +46,12 @@ public class CustomerManager : MonoBehaviour
     {
         _routeMover.ReachedCounter += OnReachedCounter;
         _routeMover.LeftCafe += NextCustomer;
-        _worldTime.DayFinished += OnDayFinished;
-        CustomersEnded += OnCustomersEnded;
     }
 
     private void OnDisable()
     {
         _routeMover.ReachedCounter -= OnReachedCounter;
         _routeMover.LeftCafe -= NextCustomer;
-        _worldTime.DayFinished -= OnDayFinished;
-        CustomersEnded -= OnCustomersEnded;
-
         if (_spawnCoroutine != null)
             StopCoroutine(_spawnCoroutine);
     }
@@ -220,7 +215,7 @@ public class CustomerManager : MonoBehaviour
 
         _customerIndex++;
 
-        if (_customerIndex >= _scheduleList.Count)
+        if (_customerIndex > _scheduleList.Count)
         {
             CustomersEnded?.Invoke();
             return;
@@ -228,10 +223,6 @@ public class CustomerManager : MonoBehaviour
 
         SpawnCustomer();
     }
-
-    private void OnDayFinished() => EndDay();
-
-    private void OnCustomersEnded() => EndDay();
 
     public void SetCurrentCustomer(int index) => _customerIndex = index;
 }
