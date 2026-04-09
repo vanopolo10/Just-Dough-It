@@ -220,7 +220,7 @@ public class CustomerManager : MonoBehaviour
 
         _customerIndex++;
 
-        if (_customerIndex >= _scheduleList.Count)
+        if (_customerIndex > _scheduleList.Count)
         {
             CustomersEnded?.Invoke();
             return;
