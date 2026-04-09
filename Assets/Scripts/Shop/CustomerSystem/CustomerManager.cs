@@ -25,6 +25,7 @@ public class CustomerManager : MonoBehaviour
     private bool _isEndingDay;
 
     private List<CustomerPool> _scheduleList;
+    private CustomerQuest _lastQuest;
 
     public event Action<Customer> CustomerSpawned;
     public event Action DayStarted;
@@ -34,6 +35,7 @@ public class CustomerManager : MonoBehaviour
     public int CustomerIndex => _customerIndex;
     public Customer CurrentCustomer { get; private set; }
     public CustomerRouteMover CustomerRouteMover => _routeMover;
+    public CustomerQuest LastQuest => _lastQuest;
 
     private void Awake()
     {
