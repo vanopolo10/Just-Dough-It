@@ -63,6 +63,8 @@ public class SessionTracker : MonoBehaviour
         }
         else
         {
+            if (!SaveSystem.SaveExist(currentSave))
+                SaveSystem.CreateSave(currentSave);
             SaveSystem.SaveData(currentSave, "Sessions", new List<double>());
             SaveSession();
         }
