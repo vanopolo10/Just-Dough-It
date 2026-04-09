@@ -14,6 +14,7 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private CustomerSchedule _schedule;
     [SerializeField] private float _blinkDuration;
     [SerializeField] private ProductCountDisplay _productCountDisplay;
+    [SerializeField] private Manual _manual;
 
     private CustomerRouteMover _routeMover;
     private CustomerModelSpawner _spawner;
@@ -106,7 +107,10 @@ public class CustomerManager : MonoBehaviour
         }
         _schedule = _schedule.NextDaySchedule;
         _scheduleList = _schedule.List;
-
+        
+        foreach (var page in _schedule.ManualPages)
+            _manual.LoreSection.AddPage(page);
+        
         _isDayStarting = false;
         DayEnded?.Invoke();
         StartCoroutine(StartAfterFade());

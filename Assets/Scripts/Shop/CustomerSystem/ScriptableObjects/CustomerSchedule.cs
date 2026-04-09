@@ -6,8 +6,10 @@ using UnityEngine;
 public class CustomerSchedule : ScriptableObject
 {
     [SerializeField] private List<CustomerPool> _list;
+    [SerializeField] private List<ManualPage> _manualPages;
     [SerializeField] private CustomerSchedule _nextDaySchedule;
 
     public List<CustomerPool> List => _list;
+    public IReadOnlyList<ManualPage> ManualPages => _manualPages;
     public CustomerSchedule NextDaySchedule => _nextDaySchedule;
 }

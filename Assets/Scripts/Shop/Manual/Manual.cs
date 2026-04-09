@@ -41,6 +41,7 @@ public class Manual : MonoBehaviour
     public event Action Opened;
     
     public bool IsOpen { get; private set; } = false;
+    public ManualSection LoreSection => _manualSections[0];
 
     private void Awake()
     {

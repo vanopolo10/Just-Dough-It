@@ -12,7 +12,7 @@ public class SleepButton : MonoBehaviour
     private void Awake()
     {
         _button = GetComponent<Button>();
-        //_button.interactable = false;
+        _button.interactable = false;
         
         if (_customerManager == null)
             _customerManager = FindAnyObjectByType<CustomerManager>();
