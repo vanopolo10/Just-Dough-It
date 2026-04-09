@@ -28,9 +28,13 @@ public class FreeCamera : MonoBehaviour
         string directoryPath = Path.Combine(Application.dataPath, "Images");
         if (!Directory.Exists(directoryPath))
             Directory.CreateDirectory(directoryPath);
-        string path = Path.Combine(directoryPath, $"{Directory.GetFiles(directoryPath).Length + 1}.png");
-        if (File.Exists(path))
-            OnI();
+        int id = Directory.GetFiles(directoryPath).Length + 1;
+        string path = Path.Combine(directoryPath, $"{id}.png");
+        while (File.Exists(path))
+        {
+            id++;
+            path = Path.Combine(directoryPath, $"{id}.png");
+        }
         ScreenCapture.CaptureScreenshot(path);
     }
 
