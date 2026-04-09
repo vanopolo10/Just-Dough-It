@@ -172,6 +172,12 @@ public class CameraController : MonoBehaviour
 
     private void OnBack()
     {
+        if (_manual && _manual.IsOpen)
+        {
+            _manual.GoToSection(0);
+            return;
+        }
+        
         if (_book && _book.IsOpen)
         {
             _book.FirstPage();

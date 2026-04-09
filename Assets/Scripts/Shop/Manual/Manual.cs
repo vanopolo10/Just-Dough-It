@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,7 +36,7 @@ public class Manual : MonoBehaviour
 
     private bool _isAnimating = false;
 
-    public bool IsOpen { get; private set; }
+    public bool IsOpen { get; private set; } = false;
 
     private void Awake()
     {
@@ -104,6 +105,14 @@ public class Manual : MonoBehaviour
         DrawPages();
     }
 
+    public void GoToSection(int sectionId)
+    {
+        _sectionId = sectionId;
+        _pageId = 0;
+        
+        DrawPages();
+    }
+
     private void Redraw()
     {
         ClearPages();
@@ -138,7 +147,7 @@ public class Manual : MonoBehaviour
             Destroy(child.gameObject);
     }
 
-    private System.Collections.IEnumerator Move()
+    private IEnumerator Move()
     {
         _isAnimating = true;
 
@@ -169,8 +178,8 @@ public class Manual : MonoBehaviour
         transform.rotation = targetRot;
         _cover.transform.localRotation = targetCoverRot;
 
-        IsOpen = !IsOpen;
         _coverCollider.enabled = IsOpen;
+        IsOpen = !IsOpen;
 
         _isAnimating = false;
     }
