@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,7 +36,10 @@ public class Manual : MonoBehaviour
     private Quaternion _openCoverRotation;
 
     private bool _isAnimating = false;
+    private bool _canOpen = true;
 
+    public event Action Opened;
+    
     public bool IsOpen { get; private set; } = false;
 
     private void Awake()
@@ -55,7 +59,7 @@ public class Manual : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!_isAnimating && !IsOpen)
+        if (!_isAnimating && !IsOpen && _canOpen)
             StartCoroutine(Move());
     }
 
@@ -68,6 +72,11 @@ public class Manual : MonoBehaviour
         }
     }
 
+    public void SetCanOpen(bool canOpen)
+    {
+        _canOpen = canOpen;
+    }
+    
     public void NextPage()
     {
         if (_sectionId == _manualSections.Count - 1 &&
@@ -178,6 +187,9 @@ public class Manual : MonoBehaviour
         transform.rotation = targetRot;
         _cover.transform.localRotation = targetCoverRot;
 
+        if(IsOpen == false)
+            Opened?.Invoke();
+        
         _coverCollider.enabled = IsOpen;
         IsOpen = !IsOpen;
 

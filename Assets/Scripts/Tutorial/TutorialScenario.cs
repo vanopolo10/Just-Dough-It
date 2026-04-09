@@ -21,6 +21,7 @@ public class TutorialScenario : MonoBehaviour
     [SerializeField] private Filling _farce;
     [SerializeField] private Thermometer _thermometer;
     [SerializeField] private Hatch _hatch;
+    [SerializeField] private Manual _manual;
     
     [Header("Icons")] 
     [SerializeField] private GameObject _nextDialogueIcon;
@@ -43,6 +44,7 @@ public class TutorialScenario : MonoBehaviour
     [SerializeField] private GameObject _waitingGuide;
     [SerializeField] private GameObject _trayDoughIcon;
     [SerializeField] private GameObject _shelfDragIcon;
+    [SerializeField] private GameObject _clickManualIcon;
 
     private Customer _customer;
     private bool _tutorialStarted = false;
@@ -62,6 +64,7 @@ public class TutorialScenario : MonoBehaviour
         _tray.SetCanMove(false);
         _thermometer.gameObject.SetActive(false);
         _hatch.SetCanMove(false);
+        _manual.SetCanOpen(false);
     }
 
     private void OnEnable()
@@ -83,7 +86,7 @@ public class TutorialScenario : MonoBehaviour
     {
         _customer = customer;
 
-        if (_customer != null && _customer.Quest != null)
+        if (_customer && _customer.Quest)
             _customer.Quest.GreetingTypingCompleted += StartTutorialScenario;
     }
 
@@ -92,7 +95,7 @@ public class TutorialScenario : MonoBehaviour
         if (_tutorialStarted) return;
         _tutorialStarted = true;
         
-        if (_customer != null && _customer.Quest != null)
+        if (_customer && _customer.Quest)
             _customer.Quest.GreetingTypingCompleted -= StartTutorialScenario;
         
         _runner.StartTutorial(new List<ITutorialGate>
@@ -197,7 +200,9 @@ public class TutorialScenario : MonoBehaviour
             new ActionGate(() => _camera.SetControlBlock(false, false, false)),
             new ItemAcceptGate(_customer, _shelfDragIcon),
             new CustomerLeftGate(_routeMover),
-            new ThoughtGate(_thoughts, "tutorial.think.open")
+            new ThoughtGate(_thoughts, "tutorial.think.open"),
+            new ActionGate(() => _manual.SetCanOpen(true)),
+            new ManualGate(_manual, _clickManualIcon)
         });
     }
 }
