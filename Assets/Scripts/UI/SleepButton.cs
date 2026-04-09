@@ -11,9 +11,6 @@ public class SleepButton : MonoBehaviour
 
     private void Awake()
     {
-        _button = GetComponent<Button>();
-        _button.interactable = false;
-        
         if (_customerManager == null)
             _customerManager = FindAnyObjectByType<CustomerManager>();
         
@@ -21,8 +18,15 @@ public class SleepButton : MonoBehaviour
             _tutorialRunner = FindAnyObjectByType<TutorialRunner>();
     }
 
+    private void Start()
+    {
+        _button.interactable = false;
+    }
+    
     private void OnEnable()
     {
+        _button = GetComponent<Button>();
+        
         if (_isTutorial && _tutorialRunner != null)
             _tutorialRunner.TutorialComplited += OnCustomersEnded;
         else if (_customerManager != null)

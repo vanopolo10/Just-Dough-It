@@ -131,7 +131,7 @@ public class Manual : MonoBehaviour
 
     private void DrawPages()
     {
-        var pageData = _manualSections[_sectionId].Pages[_pageId];
+        var page = _manualSections[_sectionId].Pages[_pageId];
 
         if (_currentLeft)
             Destroy(_currentLeft.gameObject);
@@ -139,11 +139,11 @@ public class Manual : MonoBehaviour
         if (_currentRight)
             Destroy(_currentRight.gameObject);
 
-        _currentLeft = Instantiate(pageData.LeftPage, _leftSlot);
+        _currentLeft = Instantiate(page.LeftPage, _leftSlot);
         _currentLeft.transform.localPosition = Vector3.zero;
         _currentLeft.transform.localRotation = Quaternion.identity;
 
-        _currentRight = Instantiate(pageData.RightPage, _rightSlot);
+        _currentRight = Instantiate(page.RightPage, _rightSlot);
         _currentRight.transform.localPosition = Vector3.zero;
         _currentRight.transform.localRotation = Quaternion.identity;
     }
