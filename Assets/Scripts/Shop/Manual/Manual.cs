@@ -160,6 +160,7 @@ public class Manual : MonoBehaviour
     private IEnumerator Move()
     {
         _isAnimating = true;
+        _coverCollider.enabled = IsOpen;
 
         Vector3 startPos = IsOpen ? _openPosition : _closedPosition;
         Vector3 targetPos = IsOpen ? _closedPosition : _openPosition;
@@ -169,6 +170,11 @@ public class Manual : MonoBehaviour
 
         Quaternion startCoverRot = IsOpen ? _openCoverRotation : _closedCoverRotation;
         Quaternion targetCoverRot = IsOpen ? _closedCoverRotation : _openCoverRotation;
+
+        if(IsOpen == false)
+            Opened?.Invoke();
+
+        IsOpen = !IsOpen;
 
         float time = 0f;
 
@@ -188,11 +194,6 @@ public class Manual : MonoBehaviour
         transform.rotation = targetRot;
         _cover.transform.localRotation = targetCoverRot;
 
-        if(IsOpen == false)
-            Opened?.Invoke();
-        
-        _coverCollider.enabled = IsOpen;
-        IsOpen = !IsOpen;
 
         _isAnimating = false;
     }
