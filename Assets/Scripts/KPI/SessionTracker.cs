@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,9 +57,9 @@ public class SessionTracker : MonoBehaviour
         if (SaveSystem.TryLoadData<List<double>>(currentSave, "Sessions", out List<double> sessions))
         {
             if (_sessionId < sessions.Count && _sessionId > 0)
-                sessions[_sessionId] = _endTime - _startTime;
+                sessions[_sessionId] = Math.Abs(_endTime - _startTime);
             else
-                sessions.Add(_endTime - _startTime);
+                sessions.Add(Math.Abs(_endTime - _startTime));
             SaveSystem.SaveData(currentSave, "Sessions", sessions);
         }
         else
