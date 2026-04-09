@@ -19,11 +19,6 @@ public class SleepButton : MonoBehaviour
         if (_tutorialRunner == null)
             _tutorialRunner = FindAnyObjectByType<TutorialRunner>();
     }
-
-    private void Start()
-    {
-        _button.interactable = false;
-    }
     
     private void OnEnable()
     {
