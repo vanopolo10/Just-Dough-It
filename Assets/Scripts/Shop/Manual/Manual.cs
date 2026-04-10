@@ -117,6 +117,9 @@ public class Manual : MonoBehaviour
 
     public void GoToSection(int sectionId)
     {
+        if (sectionId == 0 && _sectionId == 0 && _pageId == 0)
+            return;
+
         _sectionId = sectionId;
         _pageId = 0;
         

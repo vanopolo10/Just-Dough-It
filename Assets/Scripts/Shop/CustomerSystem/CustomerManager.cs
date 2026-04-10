@@ -73,6 +73,8 @@ public class CustomerManager : MonoBehaviour
             yield return new WaitUntil(() => Darkness.Instance.IsDark());
         }
 
+        DayEnded?.Invoke();
+
         if (Darkness.Instance != null && Darkness.Instance.IsDark())
         {
             Darkness.Instance.FadeOut(_blinkDuration / 2);
@@ -109,7 +111,6 @@ public class CustomerManager : MonoBehaviour
             _manual.LoreSection.AddPage(page);
         
         _isDayStarting = false;
-        DayEnded?.Invoke();
         StartCoroutine(StartAfterFade());
         _isEndingDay = false;
     }

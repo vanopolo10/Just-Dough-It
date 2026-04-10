@@ -7,7 +7,7 @@ public class DaysProgression : MonoBehaviour
     [SerializeField] private CustomerManager _customerManager;
     [SerializeField] private List<DayObjectsList> _daysObjects;
 
-    private int _currentDay = 0;
+    private int _currentDay = -1;
 
     public int CurrentDay => _currentDay;
 

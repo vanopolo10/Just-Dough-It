@@ -8566,7 +8566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698896644123146318, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6763081702250973058, guid: 5988726392fc7dc4989f9e0253e1f5a8, type: 3}
       propertyPath: m_Pivot.x
@@ -9505,7 +9505,7 @@ MonoBehaviour:
   _time: {fileID: 2060576056}
   _shelf: {fileID: 1053535225}
   _shopManager: {fileID: 985103495}
-  _customerManager: {fileID: 0}
+  _customerManager: {fileID: 7992484661926676747}
 --- !u!4 &1359870276
 Transform:
   m_ObjectHideFlags: 0
@@ -12922,7 +12922,7 @@ PrefabInstance:
       objectReference: {fileID: 330585545}
     - target: {fileID: 3156746612694841073, guid: 8495f0dc762d51640a787e1c5b761847, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3621604882827175171, guid: 8495f0dc762d51640a787e1c5b761847, type: 3}
       propertyPath: _camera
@@ -12934,7 +12934,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4767405403398405468, guid: 8495f0dc762d51640a787e1c5b761847, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5416179260440004578, guid: 8495f0dc762d51640a787e1c5b761847, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12975,6 +12975,10 @@ PrefabInstance:
     - target: {fileID: 5416179260440004578, guid: 8495f0dc762d51640a787e1c5b761847, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5843081888743094272, guid: 8495f0dc762d51640a787e1c5b761847, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7002549744850518486, guid: 8495f0dc762d51640a787e1c5b761847, type: 3}
       propertyPath: _camera
@@ -14036,7 +14040,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5543796705064963666, guid: be55c4df9e6f0424fae9846976e3ba84, type: 3}
       propertyPath: _manualSections.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5543796705064963666, guid: be55c4df9e6f0424fae9846976e3ba84, type: 3}
       propertyPath: '_manualSections.Array.data[0]'
@@ -14045,7 +14049,11 @@ PrefabInstance:
     - target: {fileID: 5543796705064963666, guid: be55c4df9e6f0424fae9846976e3ba84, type: 3}
       propertyPath: '_manualSections.Array.data[1]'
       value: 
-      objectReference: {fileID: 2917340864405089299, guid: 79850a7396ae7ca4bbeedc7bbbf5d7c3, type: 3}
+      objectReference: {fileID: 2917340864405089299, guid: 8fe922cacec954344b5cf4c4ead62020, type: 3}
+    - target: {fileID: 5543796705064963666, guid: be55c4df9e6f0424fae9846976e3ba84, type: 3}
+      propertyPath: '_manualSections.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2917340864405089299, guid: e8a2aa87dc7c95b4da94c2d8fe426d36, type: 3}
     - target: {fileID: 7033190692423393005, guid: be55c4df9e6f0424fae9846976e3ba84, type: 3}
       propertyPath: m_Name
       value: Manual

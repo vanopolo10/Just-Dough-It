@@ -12,6 +12,7 @@ public class SleepButton : MonoBehaviour
     private void Awake()
     {
         _button = GetComponent<Button>();
+        _button.interactable = false;
 
         if (_customerManager == null)
             _customerManager = FindAnyObjectByType<CustomerManager>();
@@ -56,7 +57,17 @@ public class SleepButton : MonoBehaviour
     {
         if (_isTutorial)
         {
-            SceneLoader.Instance.LoadScene(2);
+            Debug.Log($"SceneLoader.Instance is null: {SceneLoader.Instance == null}");
+
+            if (SceneLoader.Instance != null)
+            {
+                SceneLoader.Instance.LoadScene(2);
+            }
+            else
+            {
+                Debug.LogError("SceneLoader.Instance is null! Loading directly.");
+                UnityEngine.SceneManagement.SceneManager.LoadScene(2);
+            }
             return;
         }
         
